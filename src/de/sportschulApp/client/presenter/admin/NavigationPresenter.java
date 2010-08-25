@@ -1,0 +1,84 @@
+package de.sportschulApp.client.presenter.admin;
+
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Widget;
+
+import de.sportschulApp.client.event.LogoutEvent;
+import de.sportschulApp.client.presenter.Presenter;
+
+public class NavigationPresenter implements Presenter{
+	public interface Display{
+		HasClickHandlers getMenuHomeShowSummary();
+		HasClickHandlers getMenuHomeSettings();
+		HasClickHandlers getMenuMembersShowMembers();
+		HasClickHandlers getMenuMembersCreateMember();
+		HasClickHandlers getMenuEventsShowEvents();
+		HasClickHandlers getMenuEventsCreateEvent();
+		HasClickHandlers getLogoutButton();
+		Widget asWidget();
+	}
+	
+	private final Display display;
+	private final HandlerManager eventBus;
+	
+	public NavigationPresenter(HandlerManager eventBus, Display display) {
+		this.eventBus = eventBus;
+		this.display = display;
+		bind();
+	}
+	
+	private void bind() {
+		this.display.getLogoutButton().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				eventBus.fireEvent(new LogoutEvent());
+			}
+		});
+		
+		this.display.getMenuHomeShowSummary().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				History.newItem("adminHomeShowSummary");
+			}
+		});
+		
+		this.display.getMenuHomeSettings().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				History.newItem("adminHomeSettings");
+			}
+		});
+		
+		this.display.getMenuMembersShowMembers().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				History.newItem("adminMembersShowMembers");
+			}
+		});
+		
+		this.display.getMenuMembersCreateMember().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				History.newItem("adminMembersCreateMember");
+			}
+		});
+		
+		this.display.getMenuEventsShowEvents().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				History.newItem("adminEventsShowEvents");
+			}
+		});
+		
+		this.display.getMenuEventsCreateEvent().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				History.newItem("adminEventsCreateEvent");
+			}
+		});
+		
+	}
+	
+	public void go(HasWidgets container) {
+		container.clear();
+		container.add(display.asWidget());
+	}
+}
