@@ -16,10 +16,10 @@ public class DataBankerMember implements DataBankerMemberInterface {
 	 * @param ein
 	 *            Objekt des Typs Member
 	 * 
-	 * @return "member created" wenn ein neues Mitglied angelegt wurde,
-	 *         "error" wenn das anlegen nicht funktioniert hat und
-	 *         "barcode_id already used", wenn Barcodenummer schon
-	 *         vorhanden ist.
+	 * @return "member created" wenn ein neues Mitglied angelegt wurde, "error"
+	 *         wenn das anlegen nicht funktioniert hat und
+	 *         "barcode_id already used", wenn Barcodenummer schon vorhanden
+	 *         ist.
 	 */
 	public String createMember(Member member) {
 		DataBankerConnection dbc = new DataBankerConnection();
@@ -147,8 +147,8 @@ public class DataBankerMember implements DataBankerMemberInterface {
 	 *         vorhanden ist.
 	 */
 	public String updateMember(Member member) {
-		//TODO Update ändern, damit primery key zurück gesetzt wird
-		
+		// TODO Update ändern, damit primery key zurück gesetzt wird
+
 		DataBankerConnection dbc = new DataBankerConnection();
 		try {
 			ResultSet rs = null;
@@ -310,6 +310,86 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			return null;
 		}
 		return member;
+	}
+
+	/**
+	 * Liefert einen Mitgliedereintrag
+	 * 
+	 * @param barcodeID
+	 *            eines Mitglieds
+	 * 
+	 * @return Objekt des typs Member
+	 */
+
+	public ArrayList<Member> getMemberList() {
+
+		ArrayList<Member> memberList = new ArrayList<Member>();
+
+		ResultSet rs = null;
+
+		DataBankerConnection dbc = new DataBankerConnection();
+		Statement stmt = dbc.getStatement();
+		String query = "SELECT * FROM Member";
+		try {
+			rs = stmt.executeQuery(query);
+			if (rs.wasNull()) {
+			}
+			while (rs.next()) {
+				Member member = new Member();
+				member.setMemberID(rs.getInt("Member_id"));
+				member.setBarcodeID(rs.getInt("barcode_id"));
+				member.setForename(rs.getString("forename"));
+				member.setSurname(rs.getString("surname"));
+				member.setZipcode(rs.getInt("zipcode"));
+				member.setCity(rs.getString("city"));
+				member.setStreet(rs.getString("street"));
+				member.setPhone(rs.getString("phone"));
+				member.setMobilephone(rs.getString("mobilephone"));
+				member.setFax(rs.getString("fax"));
+				member.setEmail(rs.getString("email"));
+				member.setHomepage(rs.getString("homepage"));
+				member.setBirth(rs.getDate("birth"));
+				member.setPicture(rs.getString("picture"));
+				member.setDiseases(rs.getString("diseases"));
+				member.setBeltsize(rs.getString("beltsize"));
+				member.setNote(rs.getString("note"));
+
+				ArrayList<Integer> courses = new ArrayList<Integer>();
+				courses.add(rs.getInt("course_01"));
+				courses.add(rs.getInt("course_02"));
+				courses.add(rs.getInt("course_03"));
+				courses.add(rs.getInt("course_04"));
+				courses.add(rs.getInt("course_05"));
+				courses.add(rs.getInt("course_06"));
+				courses.add(rs.getInt("course_07"));
+				courses.add(rs.getInt("course_08"));
+				courses.add(rs.getInt("course_09"));
+				courses.add(rs.getInt("course_10"));
+
+				ArrayList<Integer> graduation = new ArrayList<Integer>();
+				graduation.add(rs.getInt("graduation_01"));
+				graduation.add(rs.getInt("graduation_02"));
+				graduation.add(rs.getInt("graduation_03"));
+				graduation.add(rs.getInt("graduation_04"));
+				graduation.add(rs.getInt("graduation_05"));
+				graduation.add(rs.getInt("graduation_06"));
+				graduation.add(rs.getInt("graduation_07"));
+				graduation.add(rs.getInt("graduation_08"));
+				graduation.add(rs.getInt("graduation_09"));
+				graduation.add(rs.getInt("graduation_10"));
+
+				memberList.add(member);
+			}
+			rs.close();
+			dbc.close();
+			stmt.close();
+			dbc.closeStatement();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return memberList;
 	}
 
 	/**

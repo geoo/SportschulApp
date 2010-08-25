@@ -17,7 +17,7 @@ import de.sportschulApp.shared.User;
 public class LoginServiceImpl extends RemoteServiceServlet implements
 		LoginService {
 
-	// private SessionHandler sh = new SessionHandler(); 
+	// private SessionHandler sh = new SessionHandler();
 
 	public User login(User user) {
 
@@ -189,10 +189,17 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 		 * System.out.println("Ergebnis: "+dbc.nextBelt(1, 2)); }
 		 */
 		// dbc.updateCourse(course);
-		System.out.println("Gürtelfarben für 3: " + dbc.getBelts(3));
-		System.out.println("Alle Kursname: " + dbc.getCourseNames());
-
-		System.out.println("getCourses: " + dbc.getCourses().get(0));
-
+		/*
+		 * System.out.println("Gürtelfarben für 3: " + dbc.getBelts(3));
+		 * System.out.println("Alle Kursname: " + dbc.getCourseNames());
+		 * 
+		 * System.out.println("getCourses: " + dbc.getCourses().get(0));
+		 */
+		ArrayList<Member> test = dbm.getMemberList();
+		System.out.println("Member 0: " + test.get(0).getForename()
+				+ test.get(0).getSurname());
+		
+		System.out.println("Member 1: " + test.get(1).getForename()
+				+ test.get(1).getSurname());
 	}
 }

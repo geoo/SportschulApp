@@ -26,4 +26,7 @@ public interface DataBankerMemberInterface {
 	public int getTrainingsPresenceInt(int memberID, int month, int year);
 	
 	public boolean deleteTrainingsPresence(int memberID, int day, int month, int year);
+	
+	public ArrayList<Member> getMemberList();
+
 }
