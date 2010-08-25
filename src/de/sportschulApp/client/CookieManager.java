@@ -7,7 +7,7 @@ import com.google.gwt.user.client.Cookies;
 public class CookieManager {
 	
 	/*
-	 * Erstellt den Cookie für den User
+	 * Erstellt den Cookie für den User 
 	 * 
 	 * */
 	public static void setUserCookie(String username, String userRight){
