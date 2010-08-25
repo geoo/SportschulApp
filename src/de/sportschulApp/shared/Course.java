@@ -1,8 +1,11 @@
 package de.sportschulApp.shared;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Course {
+@SuppressWarnings("serial")
+
+public class Course implements Serializable{
 
 	private int courseID;
 	private String name;

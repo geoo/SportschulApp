@@ -24,47 +24,46 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	private final HandlerManager eventBus;
 	private final LoginServiceAsync rpcService;
 	private HasWidgets container;
-	
+
 	public AppController(LoginServiceAsync rpcService, HandlerManager eventBus) {
-	    this.eventBus = eventBus;
-	    this.rpcService = rpcService;
-	    bind();
-	  }
-	
+		this.eventBus = eventBus;
+		this.rpcService = rpcService;
+		bind();
+	}
+
 	private void bind() {
 		History.addValueChangeHandler(this);
-		
-		eventBus.addHandler(LoginEvent.TYPE,
-				new LoginEventHandler() {
-					public void onLogin(LoginEvent event) {
-						doLogin();	
-				}
+
+		eventBus.addHandler(LoginEvent.TYPE, new LoginEventHandler() {
+			public void onLogin(LoginEvent event) {
+				doLogin();
+			}
 		});
-		
-		eventBus.addHandler(LogoutEvent.TYPE, 
-				new LogoutEventHandler() {
-					public void onLogout(LogoutEvent event) {
-						doLogout();
+
+		eventBus.addHandler(LogoutEvent.TYPE, new LogoutEventHandler() {
+			public void onLogout(LogoutEvent event) {
+				doLogout();
 			}
 		});
 	}
-	
+
 	/*
-	 * Nach der Loginprozedur entscheidet der AppController welcher Presenter geladen wird.
-	 * */
-	
+	 * Nach der Loginprozedur entscheidet der AppController welcher Presenter
+	 * geladen wird.
+	 */
+
 	private void doLogin() {
-		if(Cookies.getCookie("SportschuleUserRight").equals("admin")){
+		if (Cookies.getCookie("SportschuleUserRight").equals("admin")) {
 			History.newItem("adminHomeShowSummary");
 			History.fireCurrentHistoryState();
 		}
-		if(Cookies.getCookie("SportschuleUserRight").equals("trainer")){
+		if (Cookies.getCookie("SportschuleUserRight").equals("trainer")) {
 			History.newItem("trainerPanel");
 			History.fireCurrentHistoryState();
 		}
-		
+
 	}
-	
+
 	private void doLogout() {
 		CookieManager.deleteAllCookies();
 		History.newItem("login");
@@ -73,58 +72,62 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 	public void go(final HasWidgets container) {
 		this.container = container;
-	    
-	    if ("".equals(History.getToken())) {
-	      History.newItem("login");
-	    }
-	    else {
-	      History.fireCurrentHistoryState();
-	    }
-	}
-	
-	/*
-	 * Bei onValueChange (URL/History Token änderung) wird überprüft ob es für den jeweiligen Token
-	 * einen Presenter gibt. Zusätzlich wird im try/catch Block überprüft ob ein Cookie im Browser
-	 * abgelegt wurde. Falls nicht, wird der LoginPresenter geladen. Falls doch, wird überprüft ob ein
-	 * Admin oder Trainier angemeldet ist.
-	 * */
-	
-	public void onValueChange(ValueChangeEvent<String> event) {  
-		String token = event.getValue();
-		
-		if (token != null) {
-	      Presenter presenter = null;
-	      
-	      
-	      if (token.equals("login")) {
-	        presenter = new LoginPresenter(rpcService, eventBus, new LoginView());
-	      } else {
-		      try {
-		    	if (!Cookies.getCookie("SportschuleUserName").isEmpty()) {
-		    		if(Cookies.getCookie("SportschuleUserRight").equals("admin")){
-		    			if (token.substring(0, 5).equals("admin")) { 
-		    				presenter = new AdminPanelPresenter(eventBus, new AdminPanelView(), token); 
-		    			}
-		    		}
-		    		if(Cookies.getCookie("SportschuleUserRight").equals("trainer")){
-		    			if (token.substring(0, 7).equals("trainer")) {
-				    		presenter = new TrainerPanelPresenter(eventBus, new TrainerPanelView());
-		    			} 
-		    		}
-			    } else {
-			    	  presenter = new LoginPresenter(rpcService, eventBus, new LoginView());
-			    }
-		      } catch (NullPointerException e) {
-		    	  presenter = new LoginPresenter(rpcService, eventBus, new LoginView());
-		      }
-	      }
-	      
-	      if (presenter != null) {
-	        presenter.go(container);		
-	      }		
+
+		if ("".equals(History.getToken())) {
+			History.newItem("login");
+		} else {
+			History.fireCurrentHistoryState();
 		}
 	}
-	
-	
+
+	/*
+	 * Bei onValueChange (URL/History Token änderung) wird überprüft ob es für
+	 * den jeweiligen Token einen Presenter gibt. Zusätzlich wird im try/catch
+	 * Block überprüft ob ein Cookie im Browser abgelegt wurde. Falls nicht,
+	 * wird der LoginPresenter geladen. Falls doch, wird überprüft ob ein Admin
+	 * oder Trainier angemeldet ist.
+	 */
+
+	public void onValueChange(ValueChangeEvent<String> event) {
+		String token = event.getValue();
+
+		if (token != null) {
+			Presenter presenter = null;
+
+			if (token.equals("login")) {
+				presenter = new LoginPresenter(rpcService, eventBus,
+						new LoginView());
+			} else {
+				try {
+					if (!Cookies.getCookie("SportschuleUserName").isEmpty()) {
+						if (Cookies.getCookie("SportschuleUserRight").equals(
+								"admin")) {
+							if (token.substring(0, 5).equals("admin")) {
+								presenter = new AdminPanelPresenter(eventBus,
+										new AdminPanelView(), token);
+							}
+						}
+						if (Cookies.getCookie("SportschuleUserRight").equals(
+								"trainer")) {
+							if (token.substring(0, 7).equals("trainer")) {
+								presenter = new TrainerPanelPresenter(eventBus,
+										new TrainerPanelView());
+							}
+						}
+					} else {
+						presenter = new LoginPresenter(rpcService, eventBus,
+								new LoginView());
+					}
+				} catch (NullPointerException e) {
+					presenter = new LoginPresenter(rpcService, eventBus,
+							new LoginView());
+				}
+			}
+
+			if (presenter != null) {
+				presenter.go(container);
+			}
+		}
+	}
 
 }
