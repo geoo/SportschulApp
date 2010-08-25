@@ -8,6 +8,8 @@ import de.sportschulApp.shared.Member;
 public interface DataBankerMemberInterface {
 
 	public String createMember(Member member);
+	
+	//TODO Memberliste
 
 	public boolean deleteMember(int memberID);
 
