@@ -107,7 +107,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 								"admin")) {
 							if (token.substring(0, 5).equals("admin")) {
 								presenter = new AdminPanelPresenter(eventBus,
-										new AdminPanelView(), token);
+										new AdminPanelView(), constants, token);
 							}
 						}
 						if (Cookies.getCookie("SportschuleUserRight").equals(

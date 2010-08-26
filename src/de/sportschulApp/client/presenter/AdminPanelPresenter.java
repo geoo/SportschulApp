@@ -21,6 +21,7 @@ import de.sportschulApp.client.view.admin.MemberListView;
 import de.sportschulApp.client.view.admin.NavigationView;
 import de.sportschulApp.client.view.admin.SettingsView;
 import de.sportschulApp.client.view.admin.SummaryView;
+import de.sportschulApp.client.view.localization.LocalizationConstants;
 
 public class AdminPanelPresenter implements Presenter {
 	public interface Display{
@@ -32,12 +33,14 @@ public class AdminPanelPresenter implements Presenter {
 	private final Display display;
 	private final HandlerManager eventBus;
 	private final AdminServiceAsync rpcService;
+	private LocalizationConstants constants;
 	
 	
-	public AdminPanelPresenter( HandlerManager eventBus, Display display, String token) {
+	public AdminPanelPresenter( HandlerManager eventBus, Display display, LocalizationConstants constants, String token) {
 		this.eventBus = eventBus;
 		this.display = display;
 		this.rpcService = GWT.create(AdminService.class);
+		this.constants = constants;
 		bind();
 		buildAdminPanel(token);
 	}
@@ -68,7 +71,7 @@ public class AdminPanelPresenter implements Presenter {
 			contentPresenter =  new MemberListPresenter(rpcService, eventBus, new MemberListView());
 		} else if (token.equals("adminMembersCreateMember")) {
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(1));
-			contentPresenter =  new CreateMemberPresenter(rpcService, eventBus, new CreateMemberView());
+			contentPresenter =  new CreateMemberPresenter(rpcService, eventBus, new CreateMemberView(constants));
 		} else if (token.equals("adminEventsShowEvents")) {
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(2));
 			contentPresenter =  new EventListPresenter(rpcService, eventBus, new EventListView());

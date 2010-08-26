@@ -11,6 +11,8 @@ public interface LocalizationConstants extends Constants{
 	
 	String login();
 	
+	String forename();
+	
 	String surname();
 	
 	

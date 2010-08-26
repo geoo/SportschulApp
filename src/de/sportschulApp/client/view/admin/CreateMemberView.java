@@ -14,27 +14,29 @@ import de.sportschulApp.client.view.localization.LocalizationConstants;
 public class CreateMemberView extends Composite implements
 		CreateMemberPresenter.Display {
 
+	private LocalizationConstants constants;
 	private Label forenameLabel;
 	private TextBox forenameTextBox;
 	private Label surnameLabel;
 	private TextBox surnameTextBox;
+	
 
+	public CreateMemberView(LocalizationConstants constants) {
 
-	public CreateMemberView() {
-
+		this.constants = constants;
 		VerticalPanel createMemberPanel = new VerticalPanel();
 		createMemberPanel.setWidth("100%");
 		initWidget(createMemberPanel);
 
 		HorizontalPanel forenameInputPanel = new HorizontalPanel();
-		forenameLabel = new Label("Vorname: ");
+		forenameLabel = new Label(constants.forename()+": ");
 		forenameLabel.setWidth("100px");
 		forenameTextBox = new TextBox();
 		forenameInputPanel.add(forenameLabel);
 		forenameInputPanel.add(forenameTextBox);
 
 		HorizontalPanel surnameInputPanel = new HorizontalPanel();
-		surnameLabel = new Label("Nachname: ");
+		surnameLabel = new Label(constants.surname()+": ");
 		surnameLabel.setWidth("100px");
 		surnameTextBox = new TextBox();
 		surnameInputPanel.add(surnameLabel);
@@ -42,7 +44,7 @@ public class CreateMemberView extends Composite implements
 
 		
 		
-
+		createMemberPanel.add(forenameInputPanel);
 		createMemberPanel.add(surnameInputPanel);
 
 	}
