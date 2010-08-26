@@ -15,6 +15,18 @@ public interface LocalizationConstants extends Constants{
 	
 	String surname();
 	
+	String barcode();
+	
+	String street();
+	
+	String zipcode();
+	
+	String city();
+	
+	String phone();
+	
+	String mobilephone();
+	
 	
 	
 
