@@ -1,11 +1,11 @@
-package de.sportschulApp.client.view.trainer;
+package de.sportschulApp.client.view;
 
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import de.sportschulApp.client.presenter.trainer.TrainerPanelPresenter;
+import de.sportschulApp.client.presenter.TrainerPanelPresenter;
 
 public class TrainerPanelView extends Composite implements TrainerPanelPresenter.Display {
 

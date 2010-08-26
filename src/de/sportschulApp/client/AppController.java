@@ -11,14 +11,14 @@ import de.sportschulApp.client.event.LoginEvent;
 import de.sportschulApp.client.event.LoginEventHandler;
 import de.sportschulApp.client.event.LogoutEvent;
 import de.sportschulApp.client.event.LogoutEventHandler;
+import de.sportschulApp.client.presenter.AdminPanelPresenter;
 import de.sportschulApp.client.presenter.LoginPresenter;
 import de.sportschulApp.client.presenter.Presenter;
-import de.sportschulApp.client.presenter.admin.AdminPanelPresenter;
-import de.sportschulApp.client.presenter.trainer.TrainerPanelPresenter;
+import de.sportschulApp.client.presenter.TrainerPanelPresenter;
 import de.sportschulApp.client.services.LoginServiceAsync;
+import de.sportschulApp.client.view.AdminPanelView;
 import de.sportschulApp.client.view.LoginView;
-import de.sportschulApp.client.view.admin.AdminPanelView;
-import de.sportschulApp.client.view.trainer.TrainerPanelView;
+import de.sportschulApp.client.view.TrainerPanelView;
 
 public class AppController implements Presenter, ValueChangeHandler<String> {
 	private final HandlerManager eventBus;

@@ -1,11 +1,17 @@
-package de.sportschulApp.client.presenter.admin;
+package de.sportschulApp.client.presenter;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
-import de.sportschulApp.client.presenter.Presenter;
+import de.sportschulApp.client.presenter.admin.CreateEventPresenter;
+import de.sportschulApp.client.presenter.admin.CreateMemberPresenter;
+import de.sportschulApp.client.presenter.admin.EventListPresenter;
+import de.sportschulApp.client.presenter.admin.MemberListPresenter;
+import de.sportschulApp.client.presenter.admin.NavigationPresenter;
+import de.sportschulApp.client.presenter.admin.SettingsPresenter;
+import de.sportschulApp.client.presenter.admin.SummaryPresenter;
 import de.sportschulApp.client.services.AdminService;
 import de.sportschulApp.client.services.AdminServiceAsync;
 import de.sportschulApp.client.view.admin.CreateEventView;

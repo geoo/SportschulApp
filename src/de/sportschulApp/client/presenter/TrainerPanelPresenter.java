@@ -1,11 +1,10 @@
-package de.sportschulApp.client.presenter.trainer;
+package de.sportschulApp.client.presenter;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
-import de.sportschulApp.client.presenter.Presenter;
 import de.sportschulApp.client.services.TrainerService;
 import de.sportschulApp.client.services.TrainerServiceAsync;
 

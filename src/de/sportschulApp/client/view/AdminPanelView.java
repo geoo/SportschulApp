@@ -1,11 +1,11 @@
-package de.sportschulApp.client.view.admin;
+package de.sportschulApp.client.view;
 
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import de.sportschulApp.client.presenter.admin.AdminPanelPresenter;
+import de.sportschulApp.client.presenter.AdminPanelPresenter;
 
 public class AdminPanelView extends Composite implements AdminPanelPresenter.Display {
 	
