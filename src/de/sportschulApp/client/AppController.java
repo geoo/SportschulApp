@@ -19,15 +19,18 @@ import de.sportschulApp.client.services.LoginServiceAsync;
 import de.sportschulApp.client.view.AdminPanelView;
 import de.sportschulApp.client.view.LoginView;
 import de.sportschulApp.client.view.TrainerPanelView;
+import de.sportschulApp.client.view.localization.LocalizationConstants;
 
 public class AppController implements Presenter, ValueChangeHandler<String> {
 	private final HandlerManager eventBus;
 	private final LoginServiceAsync rpcService;
 	private HasWidgets container;
+	private LocalizationConstants constants;
 
-	public AppController(LoginServiceAsync rpcService, HandlerManager eventBus) {
+	public AppController(LoginServiceAsync rpcService, HandlerManager eventBus, LocalizationConstants constants) {
 		this.eventBus = eventBus;
 		this.rpcService = rpcService;
+		this.constants = constants;
 		bind();
 	}
 
@@ -96,7 +99,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 			if (token.equals("login")) {
 				presenter = new LoginPresenter(rpcService, eventBus,
-						new LoginView());
+						new LoginView(constants));
 			} else {
 				try {
 					if (!Cookies.getCookie("SportschuleUserName").isEmpty()) {
@@ -116,11 +119,11 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 						}
 					} else {
 						presenter = new LoginPresenter(rpcService, eventBus,
-								new LoginView());
+								new LoginView(constants));
 					}
 				} catch (NullPointerException e) {
 					presenter = new LoginPresenter(rpcService, eventBus,
-							new LoginView());
+							new LoginView(constants));
 				}
 			}
 

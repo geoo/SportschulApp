@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.sportschulApp.client.presenter.LoginPresenter;
+import de.sportschulApp.client.view.localization.LocalizationConstants;
 
 public class LoginView extends Composite implements LoginPresenter.Display{
 	
@@ -21,8 +22,11 @@ public class LoginView extends Composite implements LoginPresenter.Display{
     private TextBox userNameTextBox;
 	private PasswordTextBox passwordTextBox;
 	private Button loginButton;
+	private LocalizationConstants constants;
     
-	public LoginView() {
+	public LoginView(LocalizationConstants constants) {
+		this.constants = constants;
+		
     	DecoratorPanel loginDecorator = new DecoratorPanel();
     	loginDecorator.setWidth("18em");
         initWidget(loginDecorator);
@@ -31,20 +35,20 @@ public class LoginView extends Composite implements LoginPresenter.Display{
         loginPanel.setWidth("100%");
         
         HorizontalPanel userNameInputPanel = new HorizontalPanel();
-        userNameLabel = new Label("Benutzername: ");
+        userNameLabel = new Label(constants.username()+": ");
         userNameLabel.setWidth("100px");
         userNameTextBox = new TextBox();
         userNameInputPanel.add(userNameLabel);
         userNameInputPanel.add(userNameTextBox);
         
         HorizontalPanel passwordInputPanel = new HorizontalPanel();
-        passwordLabel = new Label("Passwort: ");
+        passwordLabel = new Label(constants.password()+": ");
         passwordLabel.setWidth("100px");
         passwordTextBox = new PasswordTextBox();
         passwordInputPanel.add(passwordLabel);
         passwordInputPanel.add(passwordTextBox);
         
-        loginButton = new Button("Anmelden");
+        loginButton = new Button(constants.login());
         
         loginPanel.add(userNameInputPanel);
         loginPanel.add(passwordInputPanel);
