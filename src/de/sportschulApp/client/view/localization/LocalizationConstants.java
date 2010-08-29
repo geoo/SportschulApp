@@ -27,6 +27,26 @@ public interface LocalizationConstants extends Constants{
 	
 	String mobilephone();
 	
+	String fax();
+	
+	String email();
+	
+	String homepage();
+	
+	String birth();
+	
+	String diseases();
+	
+	String beltsize();
+	
+	String note();
+	
+	String trainingunits();
+	
+	String course();
+	
+	String grade();
+	
 	
 	
 
