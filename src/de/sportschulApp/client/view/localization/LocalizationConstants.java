@@ -47,6 +47,8 @@ public interface LocalizationConstants extends Constants{
 	
 	String grade();
 	
+	String select();
+	
 	
 	
 

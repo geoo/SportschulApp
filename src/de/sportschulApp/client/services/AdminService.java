@@ -11,4 +11,8 @@ import de.sportschulApp.shared.Member;
 @RemoteServiceRelativePath("AdminService")
 public interface AdminService extends RemoteService {
 	ArrayList<Member> getMemberList();
+
+	ArrayList<String> getCourseList();
+
+	ArrayList<String> getBeltList(String courseName);
 }

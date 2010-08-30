@@ -97,3 +97,31 @@ h1 {
 .memberListWrapper {
 	margin: 20px auto 0 auto;
 }
+
+.memberCreateWrapper {
+	margin: 20px auto 0 auto;
+	padding-top: 10px;
+	background-color: #f5f7fa !important;
+}
+
+.memberCreateWrapper .gwt-TextBox{
+	width: 200px;
+}
+
+.memberCreateWrapper .gwt-Label{
+	width: 200px;
+}
+
+.memberCreateWrapper .gwt-ListBox{
+	width: 210px;
+}
+
+.memberCreateWrapper td{
+	height: 50px;
+	background-color: #f5f7fa;
+	width: 200px;
+}
+
+
+
+

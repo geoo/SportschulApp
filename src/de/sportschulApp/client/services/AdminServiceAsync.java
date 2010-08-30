@@ -8,4 +8,9 @@ import de.sportschulApp.shared.Member;
 
 public interface AdminServiceAsync {
 	void getMemberList(AsyncCallback<ArrayList<Member>> callback);
+
+	void getCourseList(AsyncCallback<ArrayList<String>> asyncCallback);
+
+	void getBeltList(String courseName,
+			AsyncCallback<ArrayList<String>> callback);
 }

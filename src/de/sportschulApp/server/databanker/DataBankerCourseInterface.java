@@ -16,6 +16,8 @@ public interface DataBankerCourseInterface {
 	
 	public ArrayList<String> getCourseNames();
 	
+	public int getCourseID(String courseName);
+	
 	public ArrayList<String> getBelts(int courseID);
 	
 	public boolean setBelts(int courseID, ArrayList<String> belts);

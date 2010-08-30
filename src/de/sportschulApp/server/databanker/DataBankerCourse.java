@@ -117,16 +117,15 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 	}
 
 	public ArrayList<Course> getCourses() {
-		
-		ArrayList<Course> courses= new ArrayList<Course>();
-		
+
+		ArrayList<Course> courses = new ArrayList<Course>();
+
 		DataBankerConnection dbc = new DataBankerConnection();
 		ResultSet rs = null;
 		Statement stmt = dbc.getStatement();
 
 		String query = "SELECT * FROM Courses";
 
-		
 		try {
 			rs = stmt.executeQuery(query);
 			while (rs.next()) {
@@ -201,10 +200,10 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 	}
 
 	/**
-	 * Erstellt einen GŸrteleintrag
+	 * Erstellt einen Gï¿½rteleintrag
 	 * 
 	 * @param courseID
-	 *            der GŸrtel, ArraList<String> mit GŸrtelfarben
+	 *            der Gï¿½rtel, ArraList<String> mit Gï¿½rtelfarben
 	 * 
 	 * 
 	 * @return true bei erfolg, false bei scheitern
@@ -242,10 +241,10 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 	}
 
 	/**
-	 * Updated einen GŸrteleintrag
+	 * Updated einen Gï¿½rteleintrag
 	 * 
 	 * @param courseID
-	 *            der GŸrtel, ArrayList<String> mit den farben
+	 *            der Gï¿½rtel, ArrayList<String> mit den farben
 	 * 
 	 * 
 	 * @return true bei erfolg, false bei scheitern
@@ -260,10 +259,10 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 	}
 
 	/**
-	 * Lšscht einen GŸrteleintrag
+	 * Lï¿½scht einen Gï¿½rteleintrag
 	 * 
 	 * @param courseID
-	 *            der GŸrtel
+	 *            der Gï¿½rtel
 	 * 
 	 * 
 	 * @return true bei erfolg, false bei scheitern
@@ -314,5 +313,29 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 		}
 
 		return null;
+	}
+
+	public int getCourseID(String courseName) {
+		int courseID=0;
+		DataBankerConnection dbc = new DataBankerConnection();
+		ResultSet rs = null;
+		Statement stmt = dbc.getStatement();
+
+		String query = "SELECT Courses_id FROM Courses WHERE name = '"
+				+ courseName + "'";
+
+		try {
+			rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				courseID=rs.getInt(1);
+			}
+			rs.close();
+			dbc.close();
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println(e);
+			return 0;
+		}
+		return courseID;
 	}
 }
