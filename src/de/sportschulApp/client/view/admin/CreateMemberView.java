@@ -12,6 +12,7 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -133,7 +134,8 @@ public class CreateMemberView extends Composite implements
 	private Label pictureUploadLabel;
 	private PreloadedImage image;
 	HorizontalPanel pictureUploadPanel;
-	
+	private String imageUrl;
+
 	public CreateMemberView(LocalizationConstants constants) {
 
 		this.constants = constants;
@@ -321,12 +323,15 @@ public class CreateMemberView extends Composite implements
 	public MultiUploader getUploadHandler() {
 		return defaultUploader;
 	}
+	
+	
 
-	public void setImage(PreloadedImage image) {
-		
+	public void setImage(PreloadedImage image, String imageUrl) {
+
 		pictureUploadPanel.remove(defaultUploader);
 		pictureUploadPanel.add(image);
-		
+		this.imageUrl=imageUrl;
+		System.out.println("imageURL: " + this.imageUrl);
 
 	}
 

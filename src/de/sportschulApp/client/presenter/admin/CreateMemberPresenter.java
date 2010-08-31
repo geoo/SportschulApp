@@ -4,7 +4,6 @@ import gwtupload.client.IUploader;
 import gwtupload.client.MultiUploader;
 import gwtupload.client.PreloadedImage;
 import gwtupload.client.IUploadStatus.Status;
-import gwtupload.client.IUploader.Utils;
 import gwtupload.client.PreloadedImage.OnLoadPreloadedImageHandler;
 
 import java.util.ArrayList;
@@ -20,8 +19,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.xml.client.Document;
-import com.google.gwt.xml.client.XMLParser;
 
 import de.sportschulApp.client.presenter.Presenter;
 import de.sportschulApp.client.services.AdminServiceAsync;
@@ -33,8 +30,8 @@ public class CreateMemberPresenter implements Presenter {
 		void setBeltList(int index, ArrayList<String> beltList);
 
 		void addNewCourseSelector();
-		
-		void setImage(PreloadedImage image);
+
+		void setImage(PreloadedImage image, String imageUrl);
 
 		HasClickHandlers getSendButton();
 
@@ -50,6 +47,7 @@ public class CreateMemberPresenter implements Presenter {
 
 	}
 
+	private String imageUrl;
 	private final Display display;
 	private final AdminServiceAsync rpcService;
 
@@ -127,22 +125,13 @@ public class CreateMemberPresenter implements Presenter {
 	// Load the image in the document and in the case of success attach it to
 	// the viewer
 	private IUploader.OnFinishUploaderHandler onFinishUploaderHandler = new IUploader.OnFinishUploaderHandler() {
+
 		public void onFinish(IUploader uploader) {
 			if (uploader.getStatus() == Status.SUCCESS) {
 
 				new PreloadedImage(uploader.fileUrl(), showImage);
-				System.out.println("Image URL: " + uploader.getFileName());
-
-				// The server can send information to the client.
-				// You can parse this information using XML or JSON libraries
-				/*
-				 * Document doc = XMLParser.parse(uploader.getServerResponse());
-				 * String size = Utils.getXmlNodeValue(doc, "file-1-size");
-				 * String type = Utils.getXmlNodeValue(doc, "file-1-type");
-				 * System.out .println(
-				 * "Client-Side: The server sent information about the uploaded file -> size: "
-				 * + size + " Bytes, type: " + type);
-				 */}
+				imageUrl = uploader.getFileName();
+			}
 		}
 	};
 
@@ -150,9 +139,7 @@ public class CreateMemberPresenter implements Presenter {
 	private OnLoadPreloadedImageHandler showImage = new OnLoadPreloadedImageHandler() {
 		public void onLoad(PreloadedImage image) {
 			image.setWidth("100px");
-			System.out.println("image2222URL: "+image.getUrl());
-			display.setImage(image);
-			// panelImages.add(image);
+			display.setImage(image, "uploads/" + imageUrl);
 		}
 	};
 
