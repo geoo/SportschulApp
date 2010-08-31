@@ -49,6 +49,9 @@ public interface LocalizationConstants extends Constants{
 	
 	String select();
 	
+	String send();
+	
+	String picture();
 	
 	
 

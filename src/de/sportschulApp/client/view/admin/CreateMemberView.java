@@ -1,19 +1,20 @@
 package de.sportschulApp.client.view.admin;
 
+import gwtupload.client.IFileInput.FileInputType;
+import gwtupload.client.MultiUploader;
+import gwtupload.client.PreloadedImage;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.shared.HasHandlers;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -23,7 +24,7 @@ import de.sportschulApp.client.view.localization.LocalizationConstants;
 public class CreateMemberView extends Composite implements
 		CreateMemberPresenter.Display {
 	public class CourseSelectorWidget {
-		VerticalPanel courseVerticalPanel;
+		private VerticalPanel courseVerticalPanel;
 		private Label courseLabel;
 		private ListBox courseListBox;
 		private Label gradeLabel;
@@ -124,23 +125,35 @@ public class CreateMemberView extends Composite implements
 	private Widget noteTextBox;
 	private Widget trainingunitsLabel;
 	private Widget trainingunitsTextBox;
-	private ListBox trainingunitsListBox;
-	private Label grade01Label;
-	private Label course01Label;
-	private ListBox course01ListBox;
-	private ListBox grade01ListBox;
-	VerticalPanel createMemberPanel = new VerticalPanel();
-
+	private VerticalPanel createMemberPanel = new VerticalPanel();
+	private VerticalPanel wrapper = new VerticalPanel();
+	private Button sendButton = new Button();
+	private MultiUploader defaultUploader;
 	ArrayList<CourseSelectorWidget> courseList = new ArrayList<CourseSelectorWidget>();
-
+	private Label pictureUploadLabel;
+	private PreloadedImage image;
+	HorizontalPanel pictureUploadPanel;
+	
 	public CreateMemberView(LocalizationConstants constants) {
 
 		this.constants = constants;
-
-		createMemberPanel.addStyleName("memberCreateWrapper");
+		wrapper.add(createMemberPanel);
+		wrapper.addStyleName("memberCreateWrapper");
 		createMemberPanel.setWidth("700px");
+		initWidget(wrapper);
 
-		initWidget(createMemberPanel);
+		sendButton.setText(constants.send());
+
+		pictureUploadPanel = new HorizontalPanel();
+		pictureUploadLabel = new Label(constants.picture() + ": ");
+		defaultUploader = new MultiUploader(FileInputType.LABEL);
+		pictureUploadPanel.add(pictureUploadLabel);
+		pictureUploadPanel.add(defaultUploader);
+		image = new PreloadedImage();
+		image.setWidth("75px");
+
+		wrapper.add(pictureUploadPanel);
+		wrapper.add(sendButton);
 
 		HorizontalPanel forenameInputPanel = new HorizontalPanel();
 		forenameLabel = new Label(constants.forename() + ": ");
@@ -238,20 +251,6 @@ public class CreateMemberView extends Composite implements
 		trainingunitsInputPanel.add(trainingunitsLabel);
 		trainingunitsInputPanel.add(trainingunitsTextBox);
 
-		/*
-		 * HorizontalPanel course01InputPanel = new HorizontalPanel();
-		 * course01Label = new Label(constants.course() + ": "); course01ListBox
-		 * = new ListBox(); course01ListBox.insertItem("<" + constants.select()
-		 * + ">", 0); course01InputPanel.add(course01Label);
-		 * course01InputPanel.add(course01ListBox);
-		 * 
-		 * HorizontalPanel grade01InputPanel = new HorizontalPanel();
-		 * grade01Label = new Label(constants.grade() + ": "); grade01ListBox =
-		 * new ListBox(); grade01ListBox.insertItem("<" + constants.select() +
-		 * ">", 0); grade01InputPanel.add(grade01Label);
-		 * grade01InputPanel.add(grade01ListBox);
-		 */
-
 		for (int i = 0; i < 10; i++) {
 			courseList.add(new CourseSelectorWidget());
 		}
@@ -275,9 +274,6 @@ public class CreateMemberView extends Composite implements
 		createMemberPanel.add(trainingunitsInputPanel);
 		createMemberPanel.add(courseList.get(1).getCourseSelector());
 
-		// createMemberPanel.add(course01InputPanel);
-		// createMemberPanel.add(grade01InputPanel);
-
 		// TODO Picture
 
 	}
@@ -290,6 +286,10 @@ public class CreateMemberView extends Composite implements
 		for (int i = 0; i < 10; i++) {
 			this.courseList.get(i).setCourseList(courseList);
 		}
+	}
+
+	public HasClickHandlers getSendButton() {
+		return sendButton;
 	}
 
 	public HasChangeHandlers getCourseHandler(int index) {
@@ -316,6 +316,18 @@ public class CreateMemberView extends Composite implements
 				break;
 			}
 		}
+	}
+
+	public MultiUploader getUploadHandler() {
+		return defaultUploader;
+	}
+
+	public void setImage(PreloadedImage image) {
+		
+		pictureUploadPanel.remove(defaultUploader);
+		pictureUploadPanel.add(image);
+		
+
 	}
 
 }
