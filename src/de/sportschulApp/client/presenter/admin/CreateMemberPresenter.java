@@ -52,13 +52,12 @@ public class CreateMemberPresenter implements Presenter {
 		String getSelectedCourseName(int index);
 
 		MultiUploader getUploadHandler();
-		
+
 		TextBox getForenameTextBox();
-		
+
 		TextBox getSurnameTextBox();
 
 		TextBox getBarcodeTextBox();
-
 
 		Widget asWidget();
 
@@ -177,24 +176,25 @@ public class CreateMemberPresenter implements Presenter {
 		this.validator = display.getValidator();
 		ValidationMessages messages = new ValidationMessages();
 		popupDesc = new PopupDescription(messages);
-		
-		validator.addValidators( "forename",
-			new StringLengthValidator(display.getForenameTextBox(), 3, 20)
-				.addActionForFailure(new StyleAction("validationFailedBorder"))
-				//.addActionForFailure(new LabelTextAction(forenameErrorLabel))
-		);
-		
-		validator.addValidators( "surname",
-				new StringLengthValidator(display.getSurnameTextBox(), 3, 20)
-					.addActionForFailure(new StyleAction("validationFailedBorder"))
-					//.addActionForFailure(new LabelTextAction(forenameErrorLabel))
-			);
-		
-		validator.addValidators( "barcode",
-				new IntegerValidator(display.getBarcodeTextBox(), 2, 4)
-					.addActionForFailure(new StyleAction("validationFailedBorder"))
-					//.addActionForFailure(new LabelTextAction(forenameErrorLabel))
-			);
+
+		validator.addValidators("forename",
+				new StringLengthValidator(display.getForenameTextBox(), 3, 20)
+						.addActionForFailure(new StyleAction(
+								"validationFailedBorder"))
+		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
+				);
+
+		/*
+		 * validator.addValidators( "surname", new
+		 * StringLengthValidator(display.getSurnameTextBox(), 3, 20)
+		 * .addActionForFailure(new StyleAction("validationFailedBorder"))
+		 * //.addActionForFailure(new LabelTextAction(forenameErrorLabel)) );
+		 * 
+		 * validator.addValidators( "barcode", new
+		 * IntegerValidator(display.getBarcodeTextBox(), 2, 4)
+		 * .addActionForFailure(new StyleAction("validationFailedBorder"))
+		 * //.addActionForFailure(new LabelTextAction(forenameErrorLabel)) );
+		 */
 
 		popupDesc.addDescription("forenameHelp", display.getForenameTextBox());
 	}
