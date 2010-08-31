@@ -332,7 +332,6 @@ public class CreateMemberView extends Composite implements
 		pictureUploadPanel.add(image);
 		this.imageUrl=imageUrl;
 		System.out.println("imageURL: " + this.imageUrl);
-
 	}
 
 }
