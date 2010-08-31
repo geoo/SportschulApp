@@ -20,10 +20,8 @@
     <!-- Load dinamically predefined styles in the library when the application starts -->
   <stylesheet src="Upload.css"/>
   
-   <inherits name="com.google.gwt.validation.Validation">
-  </inherits>
-
-  
+   <inherits name="eu.maydu.gwt.validation.ValidationLibrary"/>
+ 
   
   
   <!-- Specify the app entry point class.                         -->

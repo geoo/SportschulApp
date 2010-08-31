@@ -121,6 +121,9 @@ h1 {
 	width: 150px;
 }
 
+.validationFailedBorder {
+	border:2px solid red;
+}
 
 .memberCreateWrapper td {
 	height: 50px;

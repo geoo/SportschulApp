@@ -12,7 +12,6 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -21,6 +20,13 @@ import com.google.gwt.user.client.ui.Widget;
 
 import de.sportschulApp.client.presenter.admin.CreateMemberPresenter;
 import de.sportschulApp.client.view.localization.LocalizationConstants;
+import eu.maydu.gwt.validation.client.DefaultValidationProcessor;
+import eu.maydu.gwt.validation.client.ValidationProcessor;
+import eu.maydu.gwt.validation.client.actions.LabelTextAction;
+import eu.maydu.gwt.validation.client.actions.StyleAction;
+import eu.maydu.gwt.validation.client.description.PopupDescription;
+import eu.maydu.gwt.validation.client.i18n.ValidationMessages;
+import eu.maydu.gwt.validation.client.validators.numeric.IntegerValidator;
 
 public class CreateMemberView extends Composite implements
 		CreateMemberPresenter.Display {
@@ -135,6 +141,10 @@ public class CreateMemberView extends Composite implements
 	private PreloadedImage image;
 	HorizontalPanel pictureUploadPanel;
 	private String imageUrl;
+	private Label forenameErrorLabel;
+	private DefaultValidationProcessor validator;
+	private Object showcaseMessages;
+	private PopupDescription popupDesc;
 
 	public CreateMemberView(LocalizationConstants constants) {
 
@@ -160,8 +170,22 @@ public class CreateMemberView extends Composite implements
 		HorizontalPanel forenameInputPanel = new HorizontalPanel();
 		forenameLabel = new Label(constants.forename() + ": ");
 		forenameTextBox = new TextBox();
+		forenameErrorLabel = new Label("lala");
 		forenameInputPanel.add(forenameLabel);
 		forenameInputPanel.add(forenameTextBox);
+
+		validator = new DefaultValidationProcessor();
+		/*
+		 * ValidationMessages messages = new ValidationMessages(); popupDesc =
+		 * new PopupDescription(messages);
+		 * 
+		 * validator.addValidators( "forename", new
+		 * IntegerValidator(forenameTextBox, 1890, 2009)
+		 * .addActionForFailure(new StyleAction("validationFailedBorder"))
+		 * .addActionForFailure(new LabelTextAction(forenameErrorLabel)) );
+		 * 
+		 * popupDesc.addDescription("positiveIntegerHelp", forenameTextBox);
+		 */// TODO
 
 		HorizontalPanel surnameInputPanel = new HorizontalPanel();
 		surnameLabel = new Label(constants.surname() + ": ");
@@ -323,15 +347,29 @@ public class CreateMemberView extends Composite implements
 	public MultiUploader getUploadHandler() {
 		return defaultUploader;
 	}
-	
-	
 
 	public void setImage(PreloadedImage image, String imageUrl) {
 
 		pictureUploadPanel.remove(defaultUploader);
 		pictureUploadPanel.add(image);
-		this.imageUrl=imageUrl;
+		this.imageUrl = imageUrl;
 		System.out.println("imageURL: " + this.imageUrl);
+	}
+
+	public ValidationProcessor getValidator() {
+		return validator;
+	}
+
+	public TextBox getForenameTextBox() {
+		return forenameTextBox;
+	}
+
+	public TextBox getSurnameTextBox() {
+		return getSurnameTextBox();
+	}
+
+	public TextBox getBarcodeTextBox() {
+		return getBarcodeTextBox();
 	}
 
 }

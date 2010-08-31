@@ -18,10 +18,18 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.sportschulApp.client.presenter.Presenter;
 import de.sportschulApp.client.services.AdminServiceAsync;
+import eu.maydu.gwt.validation.client.ValidationProcessor;
+import eu.maydu.gwt.validation.client.actions.LabelTextAction;
+import eu.maydu.gwt.validation.client.actions.StyleAction;
+import eu.maydu.gwt.validation.client.description.PopupDescription;
+import eu.maydu.gwt.validation.client.i18n.ValidationMessages;
+import eu.maydu.gwt.validation.client.validators.numeric.IntegerValidator;
+import eu.maydu.gwt.validation.client.validators.strings.StringLengthValidator;
 
 public class CreateMemberPresenter implements Presenter {
 	public interface Display {
@@ -33,6 +41,8 @@ public class CreateMemberPresenter implements Presenter {
 
 		void setImage(PreloadedImage image, String imageUrl);
 
+		ValidationProcessor getValidator();
+
 		HasClickHandlers getSendButton();
 
 		HasChangeHandlers getCourseHandler(int index);
@@ -42,6 +52,13 @@ public class CreateMemberPresenter implements Presenter {
 		String getSelectedCourseName(int index);
 
 		MultiUploader getUploadHandler();
+		
+		TextBox getForenameTextBox();
+		
+		TextBox getSurnameTextBox();
+
+		TextBox getBarcodeTextBox();
+
 
 		Widget asWidget();
 
@@ -50,6 +67,7 @@ public class CreateMemberPresenter implements Presenter {
 	private String imageUrl;
 	private final Display display;
 	private final AdminServiceAsync rpcService;
+	private ValidationProcessor validator;
 
 	public CreateMemberPresenter(AdminServiceAsync rpcService,
 			HandlerManager eventBus, Display display) {
@@ -57,13 +75,24 @@ public class CreateMemberPresenter implements Presenter {
 		this.rpcService = rpcService;
 		bind();
 		getCourseList();
+		setupValidation();
 	}
 
 	private void bind() {
 		this.display.getSendButton().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				Window.alert("lala");
-				// TODO
+				boolean success = display.getValidator().validate();
+				if (success) {
+					System.out.println("validation succes");
+					// No validation errors found. We can submit the data to the
+					// server!
+				} else {
+					System.out.println("validation error");
+
+					// One (or more) validations failed. The actions will have
+					// been
+					// already invoked by the validator.validate() call.
+				}
 			}
 		});
 
@@ -142,5 +171,31 @@ public class CreateMemberPresenter implements Presenter {
 			display.setImage(image, "uploads/" + imageUrl);
 		}
 	};
+	private PopupDescription popupDesc;
 
+	private void setupValidation() {
+		this.validator = display.getValidator();
+		ValidationMessages messages = new ValidationMessages();
+		popupDesc = new PopupDescription(messages);
+		
+		validator.addValidators( "forename",
+			new StringLengthValidator(display.getForenameTextBox(), 3, 20)
+				.addActionForFailure(new StyleAction("validationFailedBorder"))
+				//.addActionForFailure(new LabelTextAction(forenameErrorLabel))
+		);
+		
+		validator.addValidators( "surname",
+				new StringLengthValidator(display.getSurnameTextBox(), 3, 20)
+					.addActionForFailure(new StyleAction("validationFailedBorder"))
+					//.addActionForFailure(new LabelTextAction(forenameErrorLabel))
+			);
+		
+		validator.addValidators( "barcode",
+				new IntegerValidator(display.getBarcodeTextBox(), 2, 4)
+					.addActionForFailure(new StyleAction("validationFailedBorder"))
+					//.addActionForFailure(new LabelTextAction(forenameErrorLabel))
+			);
+
+		popupDesc.addDescription("forenameHelp", display.getForenameTextBox());
+	}
 }
