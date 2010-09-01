@@ -130,3 +130,43 @@ h1 {
 	background-color: #f5f7fa;
 	width: 200px;
 }
+
+.mm-logo {
+	display: block;
+	padding-top: 120px;
+	margin: auto;
+}
+
+.loginContainer {
+	margin: auto;
+	padding-top: 10px;
+}
+
+.loginContainer .gwt-Label{
+	font-size: 16px;
+	padding-left: 30px;
+	padding-right: 7px;
+}
+
+.loginInput {
+	border: 3px solid #d4dced;
+	background-color:#f7f8fb;
+	height: 16px;
+}
+
+.loginLabel {
+	margin-left: 30px;
+	cursor: pointer;
+	font-size: 16px;
+	color: #346492;
+}
+
+.loginLabel:hover {
+	text-decoration: underline;
+}
+
+.loginErrorLabel {
+	display: table;
+	margin: auto;
+	color: #ac2f2f;
+}

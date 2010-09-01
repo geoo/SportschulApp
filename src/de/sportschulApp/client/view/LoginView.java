@@ -3,9 +3,9 @@ package de.sportschulApp.client.view;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -21,49 +21,66 @@ public class LoginView extends Composite implements LoginPresenter.Display{
 	private Label passwordLabel;
     private TextBox userNameTextBox;
 	private PasswordTextBox passwordTextBox;
-	private Button loginButton;
-	private LocalizationConstants constants;
+	private Label loginLabel;
+	private Label loginErrorLabel = new Label("Login fehlgeschlagen. Der Benutzername und das Passwort stimmen nich Überein.");
     
 	public LoginView(LocalizationConstants constants) {
-		this.constants = constants;
 		
-    	DecoratorPanel loginDecorator = new DecoratorPanel();
-    	loginDecorator.setWidth("18em");
-        initWidget(loginDecorator);
+		VerticalPanel loginPanel = new VerticalPanel();
+		loginPanel.setSize("100%", "100%");
+		initWidget(loginPanel);
+		
+		VerticalPanel metaHeadPanel = new VerticalPanel();
+		metaHeadPanel.setStyleName("metaHeadPanel");
+		metaHeadPanel.setSize("100%", "28px");
+		
+		loginErrorLabel.setStyleName("loginErrorLabel");
+		loginErrorLabel.setVisible(false);
+		metaHeadPanel.add(loginErrorLabel);
+		
+		HorizontalPanel loginContainer = new HorizontalPanel();
+		loginContainer.setStyleName("loginContainer");
 
-        VerticalPanel loginPanel = new VerticalPanel();
-        loginPanel.setWidth("100%");
-        
-        HorizontalPanel userNameInputPanel = new HorizontalPanel();
-        userNameLabel = new Label(constants.username()+": ");
-        userNameLabel.setWidth("100px");
+		userNameLabel = new Label(constants.username()+": ");
         userNameTextBox = new TextBox();
-        userNameInputPanel.add(userNameLabel);
-        userNameInputPanel.add(userNameTextBox);
+        userNameTextBox.setStyleName("loginInput");
         
-        HorizontalPanel passwordInputPanel = new HorizontalPanel();
         passwordLabel = new Label(constants.password()+": ");
-        passwordLabel.setWidth("100px");
         passwordTextBox = new PasswordTextBox();
-        passwordInputPanel.add(passwordLabel);
-        passwordInputPanel.add(passwordTextBox);
+        passwordTextBox.setStyleName("loginInput");
+
+        loginLabel = new Label(constants.login());
+        loginLabel.setStyleName("loginLabel");
         
-        loginButton = new Button(constants.login());
+        loginContainer.add(userNameLabel);
+        loginContainer.add(userNameTextBox);
+        loginContainer.add(passwordLabel);
+        loginContainer.add(passwordTextBox);
+
+        loginContainer.add(loginLabel);
         
-        loginPanel.add(userNameInputPanel);
-        loginPanel.add(passwordInputPanel);
-        loginPanel.add(loginButton);
-        loginDecorator.add(loginPanel);
+		HorizontalPanel mainHeadPanel = new HorizontalPanel();
+		mainHeadPanel.setStyleName("mainHeadPanel");
+		mainHeadPanel.setHeight("54px");
+		mainHeadPanel.setWidth("100%");
+		
+		mainHeadPanel.add(loginContainer);
+		
+		Image mmLogo = new Image("imgs/mm-logo.jpg");
+		mmLogo.addStyleName("mm-logo");
+		
+		loginPanel.add(metaHeadPanel);
+		loginPanel.add(mainHeadPanel);
+		loginPanel.add(mmLogo);
     }
     
    	public HasClickHandlers getLoginButton() {
-		return loginButton;
+		return loginLabel;
 	}
 	
 	public Widget asWidget() {
 		return this;
 	}
-
 	
 	public HasValue<String> getUserName() {
 		return userNameTextBox;
@@ -71,6 +88,10 @@ public class LoginView extends Composite implements LoginPresenter.Display{
 	
 	public HasValue<String> getPassword() {
 		return passwordTextBox;
+	}
+	
+	public void setErrorLabel() {
+		loginErrorLabel.setVisible(true);
 	}
 }
 	

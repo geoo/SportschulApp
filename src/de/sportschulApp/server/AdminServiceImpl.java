@@ -30,5 +30,8 @@ public class AdminServiceImpl extends RemoteServiceServlet implements
 		return dbc.getBelts(courseID);
 	}
 
-	
+	public Member getMemberByMemberID(int memberID) {
+		return dbm.getMemberWithMemberID(memberID);
+	}
+
 }

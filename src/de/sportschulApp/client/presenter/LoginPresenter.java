@@ -18,12 +18,10 @@ import de.sportschulApp.shared.User;
 public class LoginPresenter implements Presenter {
 	public interface Display {
 		HasClickHandlers getLoginButton();
-
 		HasValue<String> getUserName();
-
 		HasValue<String> getPassword();
-
 		Widget asWidget();
+		void setErrorLabel();
 	}
 
 	private User loginUser;
@@ -68,7 +66,7 @@ public class LoginPresenter implements Presenter {
 					System.out.println("Permission: "+user.getPermission());
 				}
 				else{
-					Window.alert("Falscher Benutzername oder Passwort!");
+					showErrorLabel();
 				}
 			}
 
@@ -76,5 +74,9 @@ public class LoginPresenter implements Presenter {
 				Window.alert("Anmelden fehlgeschlagen");
 			}
 		});
+	}
+	
+	public void showErrorLabel() {
+		this.display.setErrorLabel();
 	}
 }

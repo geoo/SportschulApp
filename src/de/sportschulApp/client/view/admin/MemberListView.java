@@ -2,10 +2,12 @@ package de.sportschulApp.client.view.admin;
 
 import java.util.ArrayList;
 
+import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -17,6 +19,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.SelectionModel.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionModel.SelectionChangeHandler;
 
+import de.sportschulApp.client.event.ShowMemberEvent;
 import de.sportschulApp.client.presenter.admin.MemberListPresenter;
 import de.sportschulApp.shared.Member;
 
@@ -26,8 +29,10 @@ public class MemberListView extends Composite implements MemberListPresenter.Dis
     CellTable<Member> cellTable = new CellTable<Member>();
     ListViewAdapter<Member> lva = new ListViewAdapter<Member>();
     VerticalPanel wrapper = new VerticalPanel();
+    HandlerManager eventBus;
 	
-	public MemberListView() {
+	public MemberListView(HandlerManager eventBus) {
+		this.eventBus = eventBus;
 		wrapper.addStyleName("memberListWrapper");
 		initWidget(wrapper);
 		HorizontalPanel searchPanel = new HorizontalPanel();
@@ -83,6 +88,7 @@ public class MemberListView extends Composite implements MemberListPresenter.Dis
 		SelectionChangeHandler selectionHandler = new SelectionChangeHandler() {
 			public void onSelectionChange(SelectionChangeEvent event) {
 				Member member = selectionModel.getSelectedObject();
+				eventBus.fireEvent(new ShowMemberEvent(member));
 			}
 		};
 		selectionModel.addSelectionChangeHandler(selectionHandler);
