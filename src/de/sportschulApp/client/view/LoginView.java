@@ -22,7 +22,7 @@ public class LoginView extends Composite implements LoginPresenter.Display{
     private TextBox userNameTextBox;
 	private PasswordTextBox passwordTextBox;
 	private Label loginLabel;
-	private Label loginErrorLabel = new Label("Login fehlgeschlagen. Der Benutzername und das Passwort stimmen nich Überein.");
+	private Label loginErrorLabel = new Label("Login fehlgeschlagen. Der Benutzername und das Passwort stimmen nich überein.");
     
 	public LoginView(LocalizationConstants constants) {
 		
