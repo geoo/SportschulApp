@@ -151,7 +151,6 @@ public class CreateMemberView extends Composite implements
 		this.constants = constants;
 		wrapper.add(createMemberPanel);
 		wrapper.addStyleName("memberCreateWrapper");
-		createMemberPanel.setWidth("700px");
 		initWidget(wrapper);
 
 		sendButton.setText(constants.send());
@@ -175,17 +174,6 @@ public class CreateMemberView extends Composite implements
 		forenameInputPanel.add(forenameTextBox);
 
 		validator = new DefaultValidationProcessor();
-		/*
-		 * ValidationMessages messages = new ValidationMessages(); popupDesc =
-		 * new PopupDescription(messages);
-		 * 
-		 * validator.addValidators( "forename", new
-		 * IntegerValidator(forenameTextBox, 1890, 2009)
-		 * .addActionForFailure(new StyleAction("validationFailedBorder"))
-		 * .addActionForFailure(new LabelTextAction(forenameErrorLabel)) );
-		 * 
-		 * popupDesc.addDescription("positiveIntegerHelp", forenameTextBox);
-		 */// TODO
 
 		HorizontalPanel surnameInputPanel = new HorizontalPanel();
 		surnameLabel = new Label(constants.surname() + ": ");

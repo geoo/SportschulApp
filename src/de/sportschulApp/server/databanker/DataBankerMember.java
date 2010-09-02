@@ -61,7 +61,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			stmt.setString(16, member.getNote());
 			stmt.setInt(17, member.getTrainingunits());
 
-			// HinzufŸgen der ArrayList Courses
+			// Hinzufï¿½gen der ArrayList Courses
 			int size = member.getCourses().size();
 			try {
 				for (int i = 0; i < size; i++) {
@@ -71,14 +71,14 @@ public class DataBankerMember implements DataBankerMemberInterface {
 				System.out.println(e);
 				System.out.println("courses out of bounds");
 			}
-			// AuffŸllen mit Nullen, wenn Courses<10
+			// Auffï¿½llen mit Nullen, wenn Courses<10
 			if (size < 10) {
 				for (int i = 18 + size; i < 28; i++) {
 					stmt.setInt(i, 0);
 				}
 			}
 
-			// HinzufŸgen der ArrayList Graduations
+			// Hinzufï¿½gen der ArrayList Graduations
 			size = member.getGraduations().size();
 			try {
 				for (int i = 0; i < size; i++) {
@@ -88,7 +88,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 				System.out.println(e);
 				System.out.println("graduations out of bounds");
 			}
-			// AuffŸllen mit Nullen, wenn Graduations<10
+			// Auffï¿½llen mit Nullen, wenn Graduations<10
 			if (size < 10) {
 				for (int i = 28 + size; i < 38; i++) {
 					stmt.setInt(i, 0);
@@ -108,7 +108,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 	}
 
 	/**
-	 * Lšscht einen Mitgliedereintrag
+	 * Lï¿½scht einen Mitgliedereintrag
 	 * 
 	 * @param memberID
 	 *            eines Mitgliedes
@@ -136,18 +136,18 @@ public class DataBankerMember implements DataBankerMemberInterface {
 	}
 
 	/**
-	 * €ndert einen Mitgliedereintrag
+	 * ï¿½ndert einen Mitgliedereintrag
 	 * 
 	 * @param ein
 	 *            Objekt des Typs Member
 	 * 
-	 * @return "Mitglied gespeichert" wenn Mitglied geŠndert wurde,
-	 *         "Fehler beim Speichern" wenn das Šndern nicht funktioniert hat
+	 * @return "Mitglied gespeichert" wenn Mitglied geï¿½ndert wurde,
+	 *         "Fehler beim Speichern" wenn das ï¿½ndern nicht funktioniert hat
 	 *         und "Barcodenummer schon vorhanden", wenn Barcodenummer schon
 	 *         vorhanden ist.
 	 */
 	public String updateMember(Member member) {
-		// TODO Update Šndern, damit primery key zurŸck gesetzt wird
+		// TODO Update ï¿½ndern, damit primery key zurï¿½ck gesetzt wird
 
 		DataBankerConnection dbc = new DataBankerConnection();
 		try {
@@ -191,7 +191,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			stmt.setString(17, member.getNote());
 			stmt.setInt(18, member.getTrainingunits());
 
-			// HinzufŸgen der ArrayList Courses
+			// Hinzufï¿½gen der ArrayList Courses
 			int size = member.getCourses().size();
 			try {
 				for (int i = 0; i < size; i++) {
@@ -201,14 +201,14 @@ public class DataBankerMember implements DataBankerMemberInterface {
 				System.out.println(e);
 				System.out.println("courses out of bounds");
 			}
-			// AuffŸllen mit Nullen, wenn Courses<10
+			// Auffï¿½llen mit Nullen, wenn Courses<10
 			if (size < 10) {
 				for (int i = 19 + size; i < 29; i++) {
 					stmt.setInt(i, 0);
 				}
 			}
 
-			// HinzufŸgen der ArrayList Graduations
+			// Hinzufï¿½gen der ArrayList Graduations
 			size = member.getGraduations().size();
 			try {
 				for (int i = 0; i < size; i++) {
@@ -218,7 +218,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 				System.out.println(e);
 				System.out.println("graduations out of bounds");
 			}
-			// AuffŸllen mit Nullen, wenn Graduations<10
+			// Auffï¿½llen mit Nullen, wenn Graduations<10
 			if (size < 10) {
 				for (int i = 29 + size; i < 39; i++) {
 					stmt.setInt(i, 0);
@@ -424,7 +424,6 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			e.printStackTrace();
 			return null;
 		}
-
 		return member;
 	}
 
@@ -457,7 +456,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			rs.next();
 
 			if (rs.getInt(1) == 0) {
-				// Datum fŸr dieses Mitglied noch nicht eingetragen
+				// Datum fï¿½r dieses Mitglied noch nicht eingetragen
 				Statement stmt2 = dbc.getStatement();
 
 				String query2 = "INSERT INTO TrainingPresence(member_id, day,month,year) VALUES ('"
@@ -480,7 +479,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 
 			} else {
 
-				// Datum fŸr dieses Mitglied schon eingetragen
+				// Datum fï¿½r dieses Mitglied schon eingetragen
 				stmt.close();
 				rs.close();
 				dbc.closeStatement();
@@ -497,11 +496,11 @@ public class DataBankerMember implements DataBankerMemberInterface {
 	}
 
 	/**
-	 * liefert die Trainingsteilnahme eines Mitglieds fŸr einen speziellen Monat
+	 * liefert die Trainingsteilnahme eines Mitglieds fï¿½r einen speziellen Monat
 	 * und Jahr in einem 2 Dimensionalen int Array
 	 * 
 	 * @param memberId
-	 *            eines Mitglieds, gewŸnschter Monat und Jahr
+	 *            eines Mitglieds, gewï¿½nschter Monat und Jahr
 	 * 
 	 * @return ArrayList<String> presence
 	 */
@@ -547,11 +546,11 @@ public class DataBankerMember implements DataBankerMemberInterface {
 	}
 
 	/**
-	 * liefert die Anzahl der Trainingsteilnahmen eines Mitglieds fŸr einen
+	 * liefert die Anzahl der Trainingsteilnahmen eines Mitglieds fï¿½r einen
 	 * speziellen Monat
 	 * 
 	 * @param memberId
-	 *            eines Mitglieds, gewŸnschter Monat und Jahr
+	 *            eines Mitglieds, gewï¿½nschter Monat und Jahr
 	 * 
 	 * @return int
 	 */
@@ -580,10 +579,10 @@ public class DataBankerMember implements DataBankerMemberInterface {
 	}
 
 	/**
-	 * lšscht die Trainingsanwesenheit an einen bestimmten Datum
+	 * lï¿½scht die Trainingsanwesenheit an einen bestimmten Datum
 	 * 
 	 * @param memberId
-	 *            eines Mitglieds, gewŸnschter Monat
+	 *            eines Mitglieds, gewï¿½nschter Monat
 	 * 
 	 * @return true bei Erfolg, false bei Scheitern oder leerem Monat
 	 */
