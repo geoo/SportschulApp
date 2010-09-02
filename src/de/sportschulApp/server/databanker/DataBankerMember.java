@@ -42,7 +42,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 
 					.getConnection()
 					.prepareStatement(
-							"INSERT INTO Member(barcode_id, forename, surname, zipcode, city, street, phone, mobilephone, fax, email, homepage, birth, picture, diseases, beltsize, note, trainingunits, course_01, course_02, course_03, course_04, course_05, course_06, course_07, course_08, course_09, course_10, graduation_01, graduation_02, graduation_03, graduation_04, graduation_05, graduation_06, graduation_07, graduation_08, graduation_09, graduation_10) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+							"INSERT INTO Member(barcode_id, forename, surname, zipcode, city, street, phone, mobilephone, fax, email, homepage, birthDay, birthMonth, birthYear, picture, diseases, beltsize, note, trainingunits, course_01, course_02, course_03, course_04, course_05, course_06, course_07, course_08, course_09, course_10, graduation_01, graduation_02, graduation_03, graduation_04, graduation_05, graduation_06, graduation_07, graduation_08, graduation_09, graduation_10) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			stmt.setInt(1, member.getBarcodeID());
 			stmt.setString(2, member.getForename());
 			stmt.setString(3, member.getSurname());
@@ -54,18 +54,20 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			stmt.setString(9, member.getFax());
 			stmt.setString(10, member.getEmail());
 			stmt.setString(11, member.getHomepage());
-			stmt.setString(12, member.getBirth());
-			stmt.setString(13, member.getPicture());
-			stmt.setString(14, member.getDiseases());
-			stmt.setString(15, member.getBeltsize());
-			stmt.setString(16, member.getNote());
-			stmt.setInt(17, member.getTrainingunits());
+			stmt.setString(12, member.getBirthDay());
+			stmt.setString(13, member.getBirthMonth());
+			stmt.setString(14, member.getBirthYear());
+			stmt.setString(15, member.getPicture());
+			stmt.setString(16, member.getDiseases());
+			stmt.setString(17, member.getBeltsize());
+			stmt.setString(18, member.getNote());
+			stmt.setInt(19, member.getTrainingunits());
 
 			// Hinzuf�gen der ArrayList Courses
 			int size = member.getCourses().size();
 			try {
 				for (int i = 0; i < size; i++) {
-					stmt.setInt(i + 18, member.getCourses().get(i));
+					stmt.setInt(i + 20, member.getCourses().get(i));
 				}
 			} catch (IndexOutOfBoundsException e) {
 				System.out.println(e);
@@ -73,7 +75,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			}
 			// Auff�llen mit Nullen, wenn Courses<10
 			if (size < 10) {
-				for (int i = 18 + size; i < 28; i++) {
+				for (int i = 20 + size; i < 30; i++) {
 					stmt.setInt(i, 0);
 				}
 			}
@@ -82,7 +84,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			size = member.getGraduations().size();
 			try {
 				for (int i = 0; i < size; i++) {
-					stmt.setInt(i + 28, member.getGraduations().get(i));
+					stmt.setInt(i + 30, member.getGraduations().get(i));
 				}
 			} catch (IndexOutOfBoundsException e) {
 				System.out.println(e);
@@ -90,7 +92,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			}
 			// Auff�llen mit Nullen, wenn Graduations<10
 			if (size < 10) {
-				for (int i = 28 + size; i < 38; i++) {
+				for (int i = 30 + size; i < 40; i++) {
 					stmt.setInt(i, 0);
 				}
 			}
@@ -171,7 +173,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 
 					.getConnection()
 					.prepareStatement(
-							"INSERT INTO Member(Member_id, barcode_id, forename, surname, zipcode, city, street, phone, mobilephone, fax, email, homepage, birth, picture, diseases, beltsize, note, trainingunits, course_01, course_02, course_03, course_04, course_05, course_06, course_07, course_08, course_09, course_10, graduation_01, graduation_02, graduation_03, graduation_04, graduation_05, graduation_06, graduation_07, graduation_08, graduation_09, graduation_10) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+							"INSERT INTO Member(Member_id, barcode_id, forename, surname, zipcode, city, street, phone, mobilephone, fax, email, homepage, birthDay, birthMonth, birthYear, picture, diseases, beltsize, note, trainingunits, course_01, course_02, course_03, course_04, course_05, course_06, course_07, course_08, course_09, course_10, graduation_01, graduation_02, graduation_03, graduation_04, graduation_05, graduation_06, graduation_07, graduation_08, graduation_09, graduation_10) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			stmt.setInt(1, id);
 			stmt.setInt(2, member.getBarcodeID());
 			stmt.setString(3, member.getForename());
@@ -184,18 +186,20 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			stmt.setString(10, member.getFax());
 			stmt.setString(11, member.getEmail());
 			stmt.setString(12, member.getHomepage());
-			stmt.setString(13, member.getBirth());
-			stmt.setString(14, member.getPicture());
-			stmt.setString(15, member.getDiseases());
-			stmt.setString(16, member.getBeltsize());
-			stmt.setString(17, member.getNote());
-			stmt.setInt(18, member.getTrainingunits());
+			stmt.setString(13, member.getBirthDay());
+			stmt.setString(14, member.getBirthMonth());
+			stmt.setString(15, member.getBirthYear());
+			stmt.setString(16, member.getPicture());
+			stmt.setString(17, member.getDiseases());
+			stmt.setString(18, member.getBeltsize());
+			stmt.setString(19, member.getNote());
+			stmt.setInt(20, member.getTrainingunits());
 
 			// Hinzuf�gen der ArrayList Courses
 			int size = member.getCourses().size();
 			try {
 				for (int i = 0; i < size; i++) {
-					stmt.setInt(i + 19, member.getCourses().get(i));
+					stmt.setInt(i + 21, member.getCourses().get(i));
 				}
 			} catch (IndexOutOfBoundsException e) {
 				System.out.println(e);
@@ -203,7 +207,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			}
 			// Auff�llen mit Nullen, wenn Courses<10
 			if (size < 10) {
-				for (int i = 19 + size; i < 29; i++) {
+				for (int i = 21 + size; i < 21; i++) {
 					stmt.setInt(i, 0);
 				}
 			}
@@ -212,7 +216,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			size = member.getGraduations().size();
 			try {
 				for (int i = 0; i < size; i++) {
-					stmt.setInt(i + 29, member.getGraduations().get(i));
+					stmt.setInt(i + 21, member.getGraduations().get(i));
 				}
 			} catch (IndexOutOfBoundsException e) {
 				System.out.println(e);
@@ -220,7 +224,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			}
 			// Auff�llen mit Nullen, wenn Graduations<10
 			if (size < 10) {
-				for (int i = 29 + size; i < 39; i++) {
+				for (int i = 31 + size; i < 41; i++) {
 					stmt.setInt(i, 0);
 				}
 			}
@@ -271,7 +275,9 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			member.setFax(rs.getString("fax"));
 			member.setEmail(rs.getString("email"));
 			member.setHomepage(rs.getString("homepage"));
-			member.setBirth(rs.getString("birth"));
+			member.setBirthDay(rs.getString("birthDay"));
+			member.setBirthMonth(rs.getString("birthMonth"));
+			member.setBirthYear(rs.getString("birthYear"));
 			member.setPicture(rs.getString("picture"));
 			member.setDiseases(rs.getString("diseases"));
 			member.setBeltsize(rs.getString("beltsize"));
@@ -348,7 +354,9 @@ public class DataBankerMember implements DataBankerMemberInterface {
 				member.setFax(rs.getString("fax"));
 				member.setEmail(rs.getString("email"));
 				member.setHomepage(rs.getString("homepage"));
-				member.setBirth(rs.getString("birth"));
+				member.setBirthDay(rs.getString("birthDay"));
+				member.setBirthMonth(rs.getString("birthMonth"));
+				member.setBirthYear(rs.getString("birthYear"));
 				member.setPicture(rs.getString("picture"));
 				member.setDiseases(rs.getString("diseases"));
 				member.setBeltsize(rs.getString("beltsize"));

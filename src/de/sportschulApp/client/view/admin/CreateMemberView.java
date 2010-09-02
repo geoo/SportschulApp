@@ -132,7 +132,10 @@ public class CreateMemberView extends Composite implements
 	private TextBox emailTextBox;
 	private Label homepageLabel;
 	private TextBox homepageTextBox;
-	private TextBox birthTextBox;
+	private TextBox birthTextBox1;
+	private TextBox birthTextBox2;
+	private TextBox birthTextBox3;
+
 	private Label birthLabel;
 	private TextArea diseasesTextBox;
 	private Widget diseasesLabel;
@@ -247,9 +250,22 @@ public class CreateMemberView extends Composite implements
 
 		HorizontalPanel birthInputPanel = new HorizontalPanel();
 		birthLabel = new Label(constants.birth() + ":* ");
-		birthTextBox = new TextBox();
+		birthTextBox1 = new TextBox();
+		birthTextBox2 = new TextBox();
+		birthTextBox3 = new TextBox();
+		
+		birthTextBox1.addStyleName("birthDayTextBox");
+		birthTextBox2.addStyleName("birthMonthTextBox");
+		birthTextBox3.addStyleName("birthYearTextBox");
+		
+		birthTextBox1.setText(constants.day());
+		birthTextBox2.setText(constants.month());
+		birthTextBox3.setText(constants.year());
+		
 		birthInputPanel.add(birthLabel);
-		birthInputPanel.add(birthTextBox);
+		birthInputPanel.add(birthTextBox1);
+		birthInputPanel.add(birthTextBox2);
+		birthInputPanel.add(birthTextBox3);
 
 		HorizontalPanel diseasesInputPanel = new HorizontalPanel();
 		diseasesLabel = new Label(constants.diseases() + ": ");
@@ -405,8 +421,16 @@ public class CreateMemberView extends Composite implements
 		return homepageTextBox;
 	}
 
-	public TextBox getBirthTextBox() {
-		return birthTextBox;
+	public TextBox getBirthTextBox1() {
+		return birthTextBox1;
+	}
+	
+	public TextBox getBirthTextBox2() {
+		return birthTextBox2;
+	}
+	
+	public TextBox getBirthTextBox3() {
+		return birthTextBox3;
 	}
 
 	public TextArea getDiseasesTextBox() {

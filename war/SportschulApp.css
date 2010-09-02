@@ -109,16 +109,30 @@ h1 {
 	border: 1px solid #a9adc3 !important;
 }
 
+.birthDayTextBox {
+	width: 70px !important;
+	margin-right: 12px !important;
+}
+
+.birthMonthTextBox {
+	width: 70px !important;
+	margin-right: 12px !important;
+}
+
+.birthYearTextBox {
+	width: 70px !important;
+}
+
 .memberCreateWrapper .gwt-TextBox {
 	border: 2px solid #d4dced;
-	background-color:#ffffff !important;
-	width: 250px !important;
+	background-color: #ffffff !important;
+	width: 250px;
 	height: 16px !important;
 }
 
 .memberCreateWrapper .gwt-TextArea {
 	border: 2px solid #d4dced;
-	background-color:#ffffff !important;
+	background-color: #ffffff !important;
 	width: 250px !important;
 	height: 60px !important;
 	margin-bottom: 20px !important;
@@ -141,9 +155,8 @@ h1 {
 	width: 150px;
 }
 
-
 .validationFailedBorder {
-	border:2px solid red !important;
+	border: 2px solid red !important;
 }
 
 .memberCreateWrapper td {
@@ -163,7 +176,7 @@ h1 {
 	padding-top: 10px;
 }
 
-.loginContainer .gwt-Label{
+.loginContainer .gwt-Label {
 	font-size: 16px;
 	padding-left: 30px;
 	padding-right: 7px;
@@ -171,7 +184,7 @@ h1 {
 
 .loginInput {
 	border: 3px solid #d4dced;
-	background-color:#f7f8fb;
+	background-color: #f7f8fb;
 	height: 16px;
 }
 

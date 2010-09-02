@@ -8,7 +8,6 @@ import gwtupload.client.PreloadedImage.OnLoadPreloadedImageHandler;
 
 import java.util.ArrayList;
 
-
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -86,7 +85,11 @@ public class CreateMemberPresenter implements Presenter {
 
 		TextBox getHomepageTextBox();
 
-		TextBox getBirthTextBox();
+		TextBox getBirthTextBox1();
+
+		TextBox getBirthTextBox2();
+
+		TextBox getBirthTextBox3();
 
 		TextArea getDiseasesTextBox();
 
@@ -105,7 +108,7 @@ public class CreateMemberPresenter implements Presenter {
 		ArrayList<CourseSelectorWidget> getCourseList();
 
 		String getListBoxString();
-		
+
 		LocalizationConstants getConstants();
 
 	}
@@ -257,7 +260,9 @@ public class CreateMemberPresenter implements Presenter {
 						display.getFaxTextBox().getText(),
 						display.getEmailTextBox().getText(),
 						display.getHomepageTextBox().getText(),
-						display.getBirthTextBox().getText(),
+						display.getBirthTextBox1().getText(),
+						display.getBirthTextBox2().getText(),
+						display.getBirthTextBox3().getText(),
 						display.getPictureUrl(),
 						display.getDiseasesTextBox().getText(),
 						display.getBeltsizeTextBox().getText(),
@@ -366,8 +371,20 @@ public class CreateMemberPresenter implements Presenter {
 		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
 				);
 
-		validator.addValidators("birth",
-				new StringLengthValidator(display.getBirthTextBox(), 1, 30)
+		validator.addValidators("birthDay",
+				new IntegerValidator(display.getBirthTextBox1(), 1, 31)
+						.addActionForFailure(new StyleAction(
+								"validationFailedBorder"))
+		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
+				);
+		validator.addValidators("birthMonth",
+				new IntegerValidator(display.getBirthTextBox2(), 1, 12)
+						.addActionForFailure(new StyleAction(
+								"validationFailedBorder"))
+		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
+				);
+		validator.addValidators("birthYear",
+				new IntegerValidator(display.getBirthTextBox3(), 1900, 2030)
 						.addActionForFailure(new StyleAction(
 								"validationFailedBorder"))
 		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))

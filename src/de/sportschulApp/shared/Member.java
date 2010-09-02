@@ -4,9 +4,8 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
 
-
 @SuppressWarnings("serial")
-public class Member implements Serializable{
+public class Member implements Serializable {
 	private int memberID;
 	private int barcodeID;
 	private String forename;
@@ -19,7 +18,9 @@ public class Member implements Serializable{
 	private String fax;
 	private String email;
 	private String homepage;
-	private String birth;
+	private String birthDay;
+	private String birthMonth;
+	private String birthYear;
 	private String picture;
 	private String diseases;
 	private String beltsize;
@@ -28,12 +29,13 @@ public class Member implements Serializable{
 	private ArrayList<Integer> courses;
 	private ArrayList<Integer> graduations;
 
-
 	public Member(int memberID, int barcodeID, String forename, String surname,
 			int zipcode, String city, String street, String phone,
 			String mobilephone, String fax, String email, String homepage,
-			String birth, String picture, String diseases, String beltsize,
-			String note, int trainingunits, ArrayList<Integer> courses, ArrayList<Integer> graduations) {
+			String birthDay, String birthMonth, String birthYear,
+			String picture, String diseases, String beltsize, String note,
+			int trainingunits, ArrayList<Integer> courses,
+			ArrayList<Integer> graduations) {
 
 		this.setMemberID(memberID);
 		this.setBarcodeID(barcodeID);
@@ -47,7 +49,9 @@ public class Member implements Serializable{
 		this.setFax(fax);
 		this.setEmail(email);
 		this.setHomepage(homepage);
-		this.setBirth(birth);
+		this.setBirthDay(birthDay);
+		this.setBirthMonth(birthMonth);
+		this.setBirthYear(birthYear);
 		this.setPicture(picture);
 		this.setDiseases(diseases);
 		this.setBeltsize(beltsize);
@@ -62,7 +66,8 @@ public class Member implements Serializable{
 	}
 
 	/**
-	 * @param memberID the memberID to set
+	 * @param memberID
+	 *            the memberID to set
 	 */
 	public void setMemberID(int memberID) {
 		this.memberID = memberID;
@@ -76,7 +81,8 @@ public class Member implements Serializable{
 	}
 
 	/**
-	 * @param barcodeID the barcodeID to set
+	 * @param barcodeID
+	 *            the barcodeID to set
 	 */
 	public void setBarcodeID(int barcodeID) {
 		this.barcodeID = barcodeID;
@@ -90,7 +96,8 @@ public class Member implements Serializable{
 	}
 
 	/**
-	 * @param forename the forename to set
+	 * @param forename
+	 *            the forename to set
 	 */
 	public void setForename(String forename) {
 		this.forename = forename;
@@ -104,7 +111,8 @@ public class Member implements Serializable{
 	}
 
 	/**
-	 * @param surname the surname to set
+	 * @param surname
+	 *            the surname to set
 	 */
 	public void setSurname(String surname) {
 		this.surname = surname;
@@ -118,7 +126,8 @@ public class Member implements Serializable{
 	}
 
 	/**
-	 * @param zipcode the zipcode to set
+	 * @param zipcode
+	 *            the zipcode to set
 	 */
 	public void setZipcode(int zipcode) {
 		this.zipcode = zipcode;
@@ -132,7 +141,8 @@ public class Member implements Serializable{
 	}
 
 	/**
-	 * @param city the city to set
+	 * @param city
+	 *            the city to set
 	 */
 	public void setCity(String city) {
 		this.city = city;
@@ -146,7 +156,8 @@ public class Member implements Serializable{
 	}
 
 	/**
-	 * @param street the street to set
+	 * @param street
+	 *            the street to set
 	 */
 	public void setStreet(String street) {
 		this.street = street;
@@ -160,7 +171,8 @@ public class Member implements Serializable{
 	}
 
 	/**
-	 * @param phone the phone to set
+	 * @param phone
+	 *            the phone to set
 	 */
 	public void setPhone(String phone) {
 		this.phone = phone;
@@ -174,7 +186,8 @@ public class Member implements Serializable{
 	}
 
 	/**
-	 * @param mobilephone the mobilephone to set
+	 * @param mobilephone
+	 *            the mobilephone to set
 	 */
 	public void setMobilephone(String mobilephone) {
 		this.mobilephone = mobilephone;
@@ -188,7 +201,8 @@ public class Member implements Serializable{
 	}
 
 	/**
-	 * @param fax the fax to set
+	 * @param fax
+	 *            the fax to set
 	 */
 	public void setFax(String fax) {
 		this.fax = fax;
@@ -202,7 +216,8 @@ public class Member implements Serializable{
 	}
 
 	/**
-	 * @param email the email to set
+	 * @param email
+	 *            the email to set
 	 */
 	public void setEmail(String email) {
 		this.email = email;
@@ -216,7 +231,8 @@ public class Member implements Serializable{
 	}
 
 	/**
-	 * @param homepage the homepage to set
+	 * @param homepage
+	 *            the homepage to set
 	 */
 	public void setHomepage(String homepage) {
 		this.homepage = homepage;
@@ -230,21 +246,8 @@ public class Member implements Serializable{
 	}
 
 	/**
-	 * @param date the birth to set
-	 */
-	public void setBirth(String date) {
-		this.birth = date;
-	}
-
-	/**
-	 * @return the birth
-	 */
-	public String getBirth() {
-		return birth;
-	}
-
-	/**
-	 * @param picture the picture to set
+	 * @param picture
+	 *            the picture to set
 	 */
 	public void setPicture(String picture) {
 		this.picture = picture;
@@ -258,7 +261,8 @@ public class Member implements Serializable{
 	}
 
 	/**
-	 * @param diseases the diseases to set
+	 * @param diseases
+	 *            the diseases to set
 	 */
 	public void setDiseases(String diseases) {
 		this.diseases = diseases;
@@ -272,7 +276,8 @@ public class Member implements Serializable{
 	}
 
 	/**
-	 * @param beltsize the beltsize to set
+	 * @param beltsize
+	 *            the beltsize to set
 	 */
 	public void setBeltsize(String beltsize) {
 		this.beltsize = beltsize;
@@ -286,7 +291,8 @@ public class Member implements Serializable{
 	}
 
 	/**
-	 * @param note the note to set
+	 * @param note
+	 *            the note to set
 	 */
 	public void setNote(String note) {
 		this.note = note;
@@ -300,7 +306,8 @@ public class Member implements Serializable{
 	}
 
 	/**
-	 * @param trainingunits the trainingunits to set
+	 * @param trainingunits
+	 *            the trainingunits to set
 	 */
 	public void setTrainingunits(int trainingunits) {
 		this.trainingunits = trainingunits;
@@ -314,7 +321,8 @@ public class Member implements Serializable{
 	}
 
 	/**
-	 * @param courses the courses to set
+	 * @param courses
+	 *            the courses to set
 	 */
 	public void setCourses(ArrayList<Integer> courses) {
 		this.courses = courses;
@@ -328,7 +336,8 @@ public class Member implements Serializable{
 	}
 
 	/**
-	 * @param graduations the graduations to set
+	 * @param graduations
+	 *            the graduations to set
 	 */
 	public void setGraduations(ArrayList<Integer> graduations) {
 		this.graduations = graduations;
@@ -339,5 +348,50 @@ public class Member implements Serializable{
 	 */
 	public ArrayList<Integer> getGraduations() {
 		return graduations;
+	}
+
+	/**
+	 * @param birthDay
+	 *            the birthDay to set
+	 */
+	public void setBirthDay(String birthDay) {
+		this.birthDay = birthDay;
+	}
+
+	/**
+	 * @return the birthDay
+	 */
+	public String getBirthDay() {
+		return birthDay;
+	}
+
+	/**
+	 * @param birthMonth
+	 *            the birthMonth to set
+	 */
+	public void setBirthMonth(String birthMonth) {
+		this.birthMonth = birthMonth;
+	}
+
+	/**
+	 * @return the birthMonth
+	 */
+	public String getBirthMonth() {
+		return birthMonth;
+	}
+
+	/**
+	 * @param birthYear
+	 *            the birthYear to set
+	 */
+	public void setBirthYear(String birthYear) {
+		this.birthYear = birthYear;
+	}
+
+	/**
+	 * @return the birthYear
+	 */
+	public String getBirthYear() {
+		return birthYear;
 	}
 }
