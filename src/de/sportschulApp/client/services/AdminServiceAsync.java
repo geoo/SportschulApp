@@ -15,4 +15,11 @@ public interface AdminServiceAsync {
 			AsyncCallback<ArrayList<String>> callback);
 	
 	void getMemberByMemberID(int memberID, AsyncCallback<Member> callback);
+
+	void getCourseID(String courseName, AsyncCallback<Integer> asyncCallback);
+
+	void getCourseIDs(ArrayList<String> courseNames,
+			AsyncCallback<ArrayList<Integer>> asyncCallback);
+
+	void saveMember(Member member, AsyncCallback<String> asyncCallback);
 }

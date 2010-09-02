@@ -8,6 +8,7 @@ import gwtupload.client.PreloadedImage.OnLoadPreloadedImageHandler;
 
 import java.util.ArrayList;
 
+
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -15,27 +16,26 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.sportschulApp.client.presenter.Presenter;
 import de.sportschulApp.client.services.AdminServiceAsync;
+import de.sportschulApp.client.view.admin.CreateMemberView.CourseSelectorWidget;
+import de.sportschulApp.client.view.localization.LocalizationConstants;
 import de.sportschulApp.shared.Member;
 import eu.maydu.gwt.validation.client.ValidationProcessor;
-import eu.maydu.gwt.validation.client.actions.LabelTextAction;
 import eu.maydu.gwt.validation.client.actions.StyleAction;
 import eu.maydu.gwt.validation.client.description.PopupDescription;
 import eu.maydu.gwt.validation.client.i18n.ValidationMessages;
-import eu.maydu.gwt.validation.client.validators.multifield.MultiStringLengthValidator;
-import eu.maydu.gwt.validation.client.validators.multifield.MultiStringsEqualsValidator;
 import eu.maydu.gwt.validation.client.validators.numeric.IntegerValidator;
 import eu.maydu.gwt.validation.client.validators.standard.NotEmptyValidator;
-import eu.maydu.gwt.validation.client.validators.standard.RegularExpressionValidator;
 import eu.maydu.gwt.validation.client.validators.strings.StringLengthValidator;
 
 public class CreateMemberPresenter implements Presenter {
@@ -57,6 +57,8 @@ public class CreateMemberPresenter implements Presenter {
 		HasChangeHandlers getGradeHandler(int index);
 
 		String getSelectedCourseName(int index);
+
+		int getSelectedBeltNr(int index);
 
 		String getPictureUrl();
 
@@ -86,11 +88,11 @@ public class CreateMemberPresenter implements Presenter {
 
 		TextBox getBirthTextBox();
 
-		TextBox getDiseasesTextBox();
+		TextArea getDiseasesTextBox();
 
 		TextBox getBeltsizeTextBox();
 
-		TextBox getNoteTextBox();
+		TextArea getNoteTextBox();
 
 		TextBox getTrainingunitsTextBox();
 
@@ -100,12 +102,21 @@ public class CreateMemberPresenter implements Presenter {
 
 		Widget asWidget();
 
+		ArrayList<CourseSelectorWidget> getCourseList();
+
+		String getListBoxString();
+		
+		LocalizationConstants getConstants();
+
 	}
 
 	private String imageUrl;
 	private final Display display;
 	private final AdminServiceAsync rpcService;
 	private ValidationProcessor validator;
+	private ArrayList<Integer> courses;
+	private ArrayList<Integer> grades;
+	private ArrayList<Integer> courseNumbers;
 
 	public CreateMemberPresenter(AdminServiceAsync rpcService,
 			HandlerManager eventBus, Display display) {
@@ -135,7 +146,6 @@ public class CreateMemberPresenter implements Presenter {
 
 		this.display.getUploadHandler().addOnFinishUploadHandler(
 				onFinishUploaderHandler);
-
 		for (int i = 0; i < 10; i++) {
 			final int test = i;
 			this.display.getCourseHandler(i).addChangeHandler(
@@ -149,6 +159,7 @@ public class CreateMemberPresenter implements Presenter {
 					new ChangeHandler() {
 
 						public void onChange(ChangeEvent event) {
+
 							display.addNewCourseSelector();
 						}
 					});
@@ -189,28 +200,87 @@ public class CreateMemberPresenter implements Presenter {
 	}
 
 	public void fillForm() {
+		courses = new ArrayList<Integer>();
+		grades = new ArrayList<Integer>();
 
-		ArrayList<Integer> courses = new ArrayList<Integer>();
-		ArrayList<Integer> grades = new ArrayList<Integer>();
+		ArrayList<CourseSelectorWidget> courseListWidget = display
+				.getCourseList();
 
-		int test = new Integer(display.getZipcodeTextBox().getText());
+		ArrayList<String> courseNames = new ArrayList<String>();
 
-		System.out.println("string to int: " + test);
+		for (int index = 0; index < 10; index++) {
+			if (!courseListWidget.get(index).getSelectedCourseName()
+					.equals(display.getListBoxString())) {
+				if (!courseListWidget.get(index).getSelectedBeltName()
+						.equals(display.getListBoxString())) {
+					courseNames.add(courseListWidget.get(index)
+							.getSelectedCourseName());
+					grades.add(display.getSelectedBeltNr(index));
+				} else {
+					Window.alert("Sie haben einen Kurs ohne Gürtelfarbe angegeben");
+				}
+			}
+		}
 
-		Member member = new Member(0, new Integer(display.getBarcodeTextBox()
-				.getText()), display.getForenameTextBox().getText(), display
-				.getSurnameTextBox().getText(), new Integer(display
-				.getZipcodeTextBox().getText()), display.getCityTextBox()
-				.getText(), display.getStreetTextBox().getText(), display
-				.getPhoneTextBox().getText(), display.getmobilephoneTextBox()
-				.getText(), display.getFaxTextBox().getText(), display
-				.getEmailTextBox().getText(), display.getHomepageTextBox()
-				.getText(), display.getBirthTextBox().getText(),
-				display.getPictureUrl(),
-				display.getDiseasesTextBox().getText(), display
-						.getBeltsizeTextBox().getText(), display
-						.getNoteTextBox().getText(), new Integer(display
-						.getTrainingunitsTextBox().getText()), courses, grades);
+		System.out.println("courseNames: " + courseNames);
+
+		rpcService.getCourseIDs(courseNames,
+				new AsyncCallback<ArrayList<Integer>>() {
+
+					public void onSuccess(ArrayList<Integer> result) {
+						// courseNumbers = result;
+						// System.out.println("NUMBERS:" + result);
+						courses = result;
+
+					}
+
+					public void onFailure(Throwable caught) {
+						System.out.println("rpc errror");
+					}
+				});
+		Timer timer = new Timer() {
+			public void run() {
+
+				// System.out.println("courses: " + courses);
+				// System.out.println("grades: " + grades);
+
+				Member member = new Member(
+						0,
+						new Integer(display.getBarcodeTextBox().getText()),
+						display.getForenameTextBox().getText(),
+						display.getSurnameTextBox().getText(),
+						new Integer(display.getZipcodeTextBox().getText()),
+						display.getCityTextBox().getText(),
+						display.getStreetTextBox().getText(),
+						display.getPhoneTextBox().getText(),
+						display.getmobilephoneTextBox().getText(),
+						display.getFaxTextBox().getText(),
+						display.getEmailTextBox().getText(),
+						display.getHomepageTextBox().getText(),
+						display.getBirthTextBox().getText(),
+						display.getPictureUrl(),
+						display.getDiseasesTextBox().getText(),
+						display.getBeltsizeTextBox().getText(),
+						display.getNoteTextBox().getText(),
+						new Integer(display.getTrainingunitsTextBox().getText()),
+						courses, grades);
+
+				rpcService.saveMember(member, new AsyncCallback<String>() {
+
+					public void onSuccess(String result) {
+						System.out.println("result: " + result);
+						if (result.equals("barcode_id already used")) {
+							Window.alert(display.getConstants().barcodeUsed());
+						}
+					}
+
+					public void onFailure(Throwable caught) {
+						System.out.println("rpc errror");
+					}
+				});
+			}
+		};
+		timer.schedule(2000);
 
 	}
 

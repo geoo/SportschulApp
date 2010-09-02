@@ -116,6 +116,14 @@ h1 {
 	height: 16px !important;
 }
 
+.memberCreateWrapper .gwt-TextArea {
+	border: 2px solid #d4dced;
+	background-color:#ffffff !important;
+	width: 250px !important;
+	height: 60px !important;
+	margin-bottom: 20px !important;
+}
+
 .memberCreateWrapper .gwt-Label {
 	width: 160px;
 	font-size: 16px;
@@ -127,11 +135,12 @@ h1 {
 }
 
 .memberCreateWrapper .gwt-Button {
-	margin-left: 200px;
+	margin-left: 160px;
 	margin-top: 20px;
 	margin-bottom: 20px;
 	width: 150px;
 }
+
 
 .validationFailedBorder {
 	border:2px solid red !important;

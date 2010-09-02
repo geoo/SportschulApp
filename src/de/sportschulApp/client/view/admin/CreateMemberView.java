@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -76,6 +77,15 @@ public class CreateMemberView extends Composite implements
 			return courseListBox.getItemText(selected);
 		}
 
+		public int getSelectedBeltNr() {
+			return gradeListBox.getSelectedIndex();
+		}
+
+		public String getSelectedBeltName() {
+			int selected = gradeListBox.getSelectedIndex();
+			return gradeListBox.getItemText(selected);
+		}
+
 		public void setCourseList(ArrayList<String> courseList) {
 			Iterator<String> itr = courseList.iterator();
 			int i = 1;
@@ -124,12 +134,12 @@ public class CreateMemberView extends Composite implements
 	private TextBox homepageTextBox;
 	private TextBox birthTextBox;
 	private Label birthLabel;
-	private TextBox diseasesTextBox;
+	private TextArea diseasesTextBox;
 	private Widget diseasesLabel;
 	private TextBox beltsizeTextBox;
 	private Label beltsizeLabel;
 	private Label noteLabel;
-	private TextBox noteTextBox;
+	private TextArea noteTextBox;
 	private Label trainingunitsLabel;
 	private TextBox trainingunitsTextBox;
 	private VerticalPanel createMemberPanel = new VerticalPanel();
@@ -243,7 +253,7 @@ public class CreateMemberView extends Composite implements
 
 		HorizontalPanel diseasesInputPanel = new HorizontalPanel();
 		diseasesLabel = new Label(constants.diseases() + ": ");
-		diseasesTextBox = new TextBox();
+		diseasesTextBox = new TextArea();
 		diseasesInputPanel.add(diseasesLabel);
 		diseasesInputPanel.add(diseasesTextBox);
 
@@ -255,7 +265,7 @@ public class CreateMemberView extends Composite implements
 
 		HorizontalPanel noteInputPanel = new HorizontalPanel();
 		noteLabel = new Label(constants.note() + ": ");
-		noteTextBox = new TextBox();
+		noteTextBox = new TextArea();
 		noteInputPanel.add(noteLabel);
 		noteInputPanel.add(noteTextBox);
 
@@ -282,13 +292,12 @@ public class CreateMemberView extends Composite implements
 		createMemberPanel.add(emailInputPanel);
 		createMemberPanel.add(homepageInputPanel);
 		createMemberPanel.add(homepageInputPanel);
-		createMemberPanel.add(diseasesInputPanel);
 		createMemberPanel.add(beltsizeInputPanel);
 		createMemberPanel.add(trainingunitsInputPanel);
+		createMemberPanel.add(diseasesInputPanel);
 		createMemberPanel.add(noteInputPanel);
 		createMemberPanel.add(courseList.get(1).getCourseSelector());
 
-		// TODO Picture
 
 	}
 
@@ -317,6 +326,10 @@ public class CreateMemberView extends Composite implements
 	public String getSelectedCourseName(int index) {
 		return courseList.get(index).getSelectedCourseName();
 
+	}
+
+	public int getSelectedBeltNr(int index) {
+		return courseList.get(index).getSelectedBeltNr();
 	}
 
 	public void setBeltList(int index, ArrayList<String> beltList) {
@@ -396,7 +409,7 @@ public class CreateMemberView extends Composite implements
 		return birthTextBox;
 	}
 
-	public TextBox getDiseasesTextBox() {
+	public TextArea getDiseasesTextBox() {
 		return diseasesTextBox;
 	}
 
@@ -404,7 +417,7 @@ public class CreateMemberView extends Composite implements
 		return beltsizeTextBox;
 	}
 
-	public TextBox getNoteTextBox() {
+	public TextArea getNoteTextBox() {
 		return noteTextBox;
 	}
 
@@ -422,6 +435,18 @@ public class CreateMemberView extends Composite implements
 
 	public String getPictureUrl() {
 		return imageUrl;
+	}
+
+	public ArrayList<CourseSelectorWidget> getCourseList() {
+		return courseList;
+	}
+
+	public String getListBoxString() {
+		return "<" + constants.select() + ">";
+	}
+
+	public LocalizationConstants getConstants() {
+		return constants;
 	}
 
 }

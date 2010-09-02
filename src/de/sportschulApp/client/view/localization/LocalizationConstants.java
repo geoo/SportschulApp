@@ -52,6 +52,8 @@ public interface LocalizationConstants extends Constants{
 	String send();
 	
 	String picture();
+
+	String barcodeUsed();
 	
 	
 
