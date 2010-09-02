@@ -19,7 +19,7 @@ public class Member implements Serializable{
 	private String fax;
 	private String email;
 	private String homepage;
-	private Date birth;
+	private String birth;
 	private String picture;
 	private String diseases;
 	private String beltsize;
@@ -32,7 +32,7 @@ public class Member implements Serializable{
 	public Member(int memberID, int barcodeID, String forename, String surname,
 			int zipcode, String city, String street, String phone,
 			String mobilephone, String fax, String email, String homepage,
-			Date birth, String picture, String diseases, String beltsize,
+			String birth, String picture, String diseases, String beltsize,
 			String note, int trainingunits, ArrayList<Integer> courses, ArrayList<Integer> graduations) {
 
 		this.setMemberID(memberID);
@@ -232,14 +232,14 @@ public class Member implements Serializable{
 	/**
 	 * @param date the birth to set
 	 */
-	public void setBirth(Date date) {
+	public void setBirth(String date) {
 		this.birth = date;
 	}
 
 	/**
 	 * @return the birth
 	 */
-	public Date getBirth() {
+	public String getBirth() {
 		return birth;
 	}
 

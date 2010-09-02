@@ -101,6 +101,8 @@ h1 {
 	padding-top: 10px;
 	padding-left: 20px;
 	background-color: #f5f7fa !important;
+		margin-bottom: 80px;
+	
 }
 
 .memberCreateWrapper .gwt-TextBox {
@@ -118,6 +120,7 @@ h1 {
 .memberCreateWrapper .gwt-Button {
 	margin-left: 200px;
 	margin-top: 20px;
+	margin-bottom: 20px;
 	width: 150px;
 }
 

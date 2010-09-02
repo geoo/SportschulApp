@@ -17,18 +17,25 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.sportschulApp.client.presenter.Presenter;
 import de.sportschulApp.client.services.AdminServiceAsync;
+import de.sportschulApp.shared.Member;
 import eu.maydu.gwt.validation.client.ValidationProcessor;
 import eu.maydu.gwt.validation.client.actions.LabelTextAction;
 import eu.maydu.gwt.validation.client.actions.StyleAction;
 import eu.maydu.gwt.validation.client.description.PopupDescription;
 import eu.maydu.gwt.validation.client.i18n.ValidationMessages;
+import eu.maydu.gwt.validation.client.validators.multifield.MultiStringLengthValidator;
+import eu.maydu.gwt.validation.client.validators.multifield.MultiStringsEqualsValidator;
 import eu.maydu.gwt.validation.client.validators.numeric.IntegerValidator;
+import eu.maydu.gwt.validation.client.validators.standard.NotEmptyValidator;
+import eu.maydu.gwt.validation.client.validators.standard.RegularExpressionValidator;
 import eu.maydu.gwt.validation.client.validators.strings.StringLengthValidator;
 
 public class CreateMemberPresenter implements Presenter {
@@ -51,6 +58,8 @@ public class CreateMemberPresenter implements Presenter {
 
 		String getSelectedCourseName(int index);
 
+		String getPictureUrl();
+
 		MultiUploader getUploadHandler();
 
 		TextBox getForenameTextBox();
@@ -58,6 +67,36 @@ public class CreateMemberPresenter implements Presenter {
 		TextBox getSurnameTextBox();
 
 		TextBox getBarcodeTextBox();
+
+		TextBox getStreetTextBox();
+
+		TextBox getZipcodeTextBox();
+
+		TextBox getCityTextBox();
+
+		TextBox getPhoneTextBox();
+
+		TextBox getmobilephoneTextBox();
+
+		TextBox getEmailTextBox();
+
+		TextBox getFaxTextBox();
+
+		TextBox getHomepageTextBox();
+
+		TextBox getBirthTextBox();
+
+		TextBox getDiseasesTextBox();
+
+		TextBox getBeltsizeTextBox();
+
+		TextBox getNoteTextBox();
+
+		TextBox getTrainingunitsTextBox();
+
+		ListBox getCourseListBox();
+
+		ListBox getGradeListBox();
 
 		Widget asWidget();
 
@@ -83,8 +122,7 @@ public class CreateMemberPresenter implements Presenter {
 				boolean success = display.getValidator().validate();
 				if (success) {
 					System.out.println("validation succes");
-					// No validation errors found. We can submit the data to the
-					// server!
+					fillForm();
 				} else {
 					System.out.println("validation error");
 
@@ -150,6 +188,32 @@ public class CreateMemberPresenter implements Presenter {
 
 	}
 
+	public void fillForm() {
+
+		ArrayList<Integer> courses = new ArrayList<Integer>();
+		ArrayList<Integer> grades = new ArrayList<Integer>();
+
+		int test = new Integer(display.getZipcodeTextBox().getText());
+
+		System.out.println("string to int: " + test);
+
+		Member member = new Member(0, new Integer(display.getBarcodeTextBox()
+				.getText()), display.getForenameTextBox().getText(), display
+				.getSurnameTextBox().getText(), new Integer(display
+				.getZipcodeTextBox().getText()), display.getCityTextBox()
+				.getText(), display.getStreetTextBox().getText(), display
+				.getPhoneTextBox().getText(), display.getmobilephoneTextBox()
+				.getText(), display.getFaxTextBox().getText(), display
+				.getEmailTextBox().getText(), display.getHomepageTextBox()
+				.getText(), display.getBirthTextBox().getText(),
+				display.getPictureUrl(),
+				display.getDiseasesTextBox().getText(), display
+						.getBeltsizeTextBox().getText(), display
+						.getNoteTextBox().getText(), new Integer(display
+						.getTrainingunitsTextBox().getText()), courses, grades);
+
+	}
+
 	// Load the image in the document and in the case of success attach it to
 	// the viewer
 	private IUploader.OnFinishUploaderHandler onFinishUploaderHandler = new IUploader.OnFinishUploaderHandler() {
@@ -178,23 +242,80 @@ public class CreateMemberPresenter implements Presenter {
 		popupDesc = new PopupDescription(messages);
 
 		validator.addValidators("forename",
-				new StringLengthValidator(display.getForenameTextBox(), 3, 20)
+				new StringLengthValidator(display.getForenameTextBox(), 3, 30)
 						.addActionForFailure(new StyleAction(
 								"validationFailedBorder"))
 		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
 				);
 
-		/*
-		 * validator.addValidators( "surname", new
-		 * StringLengthValidator(display.getSurnameTextBox(), 3, 20)
-		 * .addActionForFailure(new StyleAction("validationFailedBorder"))
-		 * //.addActionForFailure(new LabelTextAction(forenameErrorLabel)) );
-		 * 
-		 * validator.addValidators( "barcode", new
-		 * IntegerValidator(display.getBarcodeTextBox(), 2, 4)
-		 * .addActionForFailure(new StyleAction("validationFailedBorder"))
-		 * //.addActionForFailure(new LabelTextAction(forenameErrorLabel)) );
-		 */
+		validator.addValidators("surname",
+				new StringLengthValidator(display.getSurnameTextBox(), 3, 30)
+						.addActionForFailure(new StyleAction(
+								"validationFailedBorder"))
+		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
+				);
+
+		validator.addValidators("barcode",
+				new IntegerValidator(display.getBarcodeTextBox(), 0,
+						Integer.MAX_VALUE).addActionForFailure(new StyleAction(
+						"validationFailedBorder"))
+		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
+				);
+
+		validator.addValidators("street",
+				new StringLengthValidator(display.getStreetTextBox(), 3, 30)
+						.addActionForFailure(new StyleAction(
+								"validationFailedBorder"))
+		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
+				);
+
+		validator.addValidators("zipcodeInt",
+				new IntegerValidator(display.getZipcodeTextBox(), 0,
+						Integer.MAX_VALUE).addActionForFailure(new StyleAction(
+						"validationFailedBorder"))
+		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
+				);
+
+		validator.addValidators("zipcodeLength", new StringLengthValidator(
+				display.getZipcodeTextBox(), 5, 5)
+				.addActionForFailure(new StyleAction("validationFailedBorder"))
+		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
+				);
+
+		validator.addValidators("city",
+				new StringLengthValidator(display.getCityTextBox(), 2, 30)
+						.addActionForFailure(new StyleAction(
+								"validationFailedBorder"))
+		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
+				);
+
+		validator.addValidators("phone",
+				new StringLengthValidator(display.getPhoneTextBox(), 1, 30)
+						.addActionForFailure(new StyleAction(
+								"validationFailedBorder"))
+		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
+				);
+
+		validator.addValidators("birth",
+				new StringLengthValidator(display.getBirthTextBox(), 1, 30)
+						.addActionForFailure(new StyleAction(
+								"validationFailedBorder"))
+		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
+				);
+
+		validator.addValidators("beltsize",
+				new NotEmptyValidator(display.getBeltsizeTextBox())
+						.addActionForFailure(new StyleAction(
+								"validationFailedBorder"))
+		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
+				);
+
+		validator.addValidators("trainingunits",
+				new IntegerValidator(display.getTrainingunitsTextBox(), 1,
+						Integer.MAX_VALUE).addActionForFailure(new StyleAction(
+						"validationFailedBorder"))
+		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
+				);
 
 		popupDesc.addDescription("forenameHelp", display.getForenameTextBox());
 	}

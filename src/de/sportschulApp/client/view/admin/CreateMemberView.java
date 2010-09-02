@@ -116,22 +116,22 @@ public class CreateMemberView extends Composite implements
 	private TextBox phoneTextBox;
 	private Label mobilephoneLabel;
 	private TextBox mobilephoneTextBox;
-	private Widget faxLabel;
+	private Label faxLabel;
 	private TextBox faxTextBox;
 	private Label emailLabel;
 	private TextBox emailTextBox;
-	private Widget homepageLabel;
-	private Widget homepageTextBox;
-	private Widget birthTextBox;
-	private Widget birthLabel;
-	private Widget diseasesTextBox;
+	private Label homepageLabel;
+	private TextBox homepageTextBox;
+	private TextBox birthTextBox;
+	private Label birthLabel;
+	private TextBox diseasesTextBox;
 	private Widget diseasesLabel;
-	private Widget beltsizeTextBox;
-	private Widget beltsizeLabel;
-	private Widget noteLabel;
-	private Widget noteTextBox;
-	private Widget trainingunitsLabel;
-	private Widget trainingunitsTextBox;
+	private TextBox beltsizeTextBox;
+	private Label beltsizeLabel;
+	private Label noteLabel;
+	private TextBox noteTextBox;
+	private Label trainingunitsLabel;
+	private TextBox trainingunitsTextBox;
 	private VerticalPanel createMemberPanel = new VerticalPanel();
 	private VerticalPanel wrapper = new VerticalPanel();
 	private Button sendButton = new Button();
@@ -168,57 +168,46 @@ public class CreateMemberView extends Composite implements
 		wrapper.add(sendButton);
 
 		HorizontalPanel forenameInputPanel = new HorizontalPanel();
-		forenameLabel = new Label(constants.forename() + ": ");
+		forenameLabel = new Label(constants.forename() + ":* ");
 		forenameTextBox = new TextBox();
 		forenameErrorLabel = new Label("lala");
 		forenameInputPanel.add(forenameLabel);
 		forenameInputPanel.add(forenameTextBox);
 
 		validator = new DefaultValidationProcessor();
-		/*
-		 * ValidationMessages messages = new ValidationMessages(); popupDesc =
-		 * new PopupDescription(messages);
-		 * 
-		 * validator.addValidators( "forename", new
-		 * IntegerValidator(forenameTextBox, 1890, 2009)
-		 * .addActionForFailure(new StyleAction("validationFailedBorder"))
-		 * .addActionForFailure(new LabelTextAction(forenameErrorLabel)) );
-		 * 
-		 * popupDesc.addDescription("positiveIntegerHelp", forenameTextBox);
-		 */// TODO
 
 		HorizontalPanel surnameInputPanel = new HorizontalPanel();
-		surnameLabel = new Label(constants.surname() + ": ");
+		surnameLabel = new Label(constants.surname() + ":* ");
 		surnameTextBox = new TextBox();
 		surnameInputPanel.add(surnameLabel);
 		surnameInputPanel.add(surnameTextBox);
 
 		HorizontalPanel barcodeInputPanel = new HorizontalPanel();
-		barcodeLabel = new Label(constants.barcode() + ": ");
+		barcodeLabel = new Label(constants.barcode() + ":* ");
 		barcodeTextBox = new TextBox();
 		barcodeInputPanel.add(barcodeLabel);
 		barcodeInputPanel.add(barcodeTextBox);
 
 		HorizontalPanel streetInputPanel = new HorizontalPanel();
-		streetLabel = new Label(constants.street() + ": ");
+		streetLabel = new Label(constants.street() + ":* ");
 		streetTextBox = new TextBox();
 		streetInputPanel.add(streetLabel);
 		streetInputPanel.add(streetTextBox);
 
 		HorizontalPanel zipcodeInputPanel = new HorizontalPanel();
-		zipcodeLabel = new Label(constants.zipcode() + ": ");
+		zipcodeLabel = new Label(constants.zipcode() + ":* ");
 		zipcodeTextBox = new TextBox();
 		zipcodeInputPanel.add(zipcodeLabel);
 		zipcodeInputPanel.add(zipcodeTextBox);
 
 		HorizontalPanel cityInputPanel = new HorizontalPanel();
-		cityLabel = new Label(constants.city() + ": ");
+		cityLabel = new Label(constants.city() + ":* ");
 		cityTextBox = new TextBox();
 		cityInputPanel.add(cityLabel);
 		cityInputPanel.add(cityTextBox);
 
 		HorizontalPanel phoneInputPanel = new HorizontalPanel();
-		phoneLabel = new Label(constants.phone() + ": ");
+		phoneLabel = new Label(constants.phone() + ":* ");
 		phoneTextBox = new TextBox();
 		phoneInputPanel.add(phoneLabel);
 		phoneInputPanel.add(phoneTextBox);
@@ -248,7 +237,7 @@ public class CreateMemberView extends Composite implements
 		homepageInputPanel.add(homepageTextBox);
 
 		HorizontalPanel birthInputPanel = new HorizontalPanel();
-		birthLabel = new Label(constants.birth() + ": ");
+		birthLabel = new Label(constants.birth() + ":* ");
 		birthTextBox = new TextBox();
 		birthInputPanel.add(birthLabel);
 		birthInputPanel.add(birthTextBox);
@@ -260,7 +249,7 @@ public class CreateMemberView extends Composite implements
 		diseasesInputPanel.add(diseasesTextBox);
 
 		HorizontalPanel beltsizeInputPanel = new HorizontalPanel();
-		beltsizeLabel = new Label(constants.beltsize() + ": ");
+		beltsizeLabel = new Label(constants.beltsize() + ":* ");
 		beltsizeTextBox = new TextBox();
 		beltsizeInputPanel.add(beltsizeLabel);
 		beltsizeInputPanel.add(beltsizeTextBox);
@@ -272,7 +261,7 @@ public class CreateMemberView extends Composite implements
 		noteInputPanel.add(noteTextBox);
 
 		HorizontalPanel trainingunitsInputPanel = new HorizontalPanel();
-		trainingunitsLabel = new Label(constants.trainingunits() + ": ");
+		trainingunitsLabel = new Label(constants.trainingunits() + ":* ");
 		trainingunitsTextBox = new TextBox();
 		trainingunitsInputPanel.add(trainingunitsLabel);
 		trainingunitsInputPanel.add(trainingunitsTextBox);
@@ -287,17 +276,17 @@ public class CreateMemberView extends Composite implements
 		createMemberPanel.add(streetInputPanel);
 		createMemberPanel.add(zipcodeInputPanel);
 		createMemberPanel.add(cityInputPanel);
+		createMemberPanel.add(birthInputPanel);
 		createMemberPanel.add(phoneInputPanel);
 		createMemberPanel.add(mobilephoneInputPanel);
 		createMemberPanel.add(faxInputPanel);
 		createMemberPanel.add(emailInputPanel);
 		createMemberPanel.add(homepageInputPanel);
 		createMemberPanel.add(homepageInputPanel);
-		createMemberPanel.add(birthInputPanel);
 		createMemberPanel.add(diseasesInputPanel);
 		createMemberPanel.add(beltsizeInputPanel);
-		createMemberPanel.add(noteInputPanel);
 		createMemberPanel.add(trainingunitsInputPanel);
+		createMemberPanel.add(noteInputPanel);
 		createMemberPanel.add(courseList.get(1).getCourseSelector());
 
 		// TODO Picture
@@ -365,11 +354,75 @@ public class CreateMemberView extends Composite implements
 	}
 
 	public TextBox getSurnameTextBox() {
-		return getSurnameTextBox();
+		return surnameTextBox;
 	}
 
 	public TextBox getBarcodeTextBox() {
-		return getBarcodeTextBox();
+		return barcodeTextBox;
+	}
+
+	public TextBox getStreetTextBox() {
+		return streetTextBox;
+	}
+
+	public TextBox getZipcodeTextBox() {
+		return zipcodeTextBox;
+	}
+
+	public TextBox getCityTextBox() {
+		return cityTextBox;
+	}
+
+	public TextBox getPhoneTextBox() {
+		return phoneTextBox;
+	}
+
+	public TextBox getmobilephoneTextBox() {
+		return mobilephoneTextBox;
+	}
+
+	public TextBox getEmailTextBox() {
+		return emailTextBox;
+	}
+
+	public TextBox getFaxTextBox() {
+		return faxTextBox;
+	}
+
+	public TextBox getHomepageTextBox() {
+		return homepageTextBox;
+	}
+
+	public TextBox getBirthTextBox() {
+		return birthTextBox;
+	}
+
+	public TextBox getDiseasesTextBox() {
+		return diseasesTextBox;
+	}
+
+	public TextBox getBeltsizeTextBox() {
+		return beltsizeTextBox;
+	}
+
+	public TextBox getNoteTextBox() {
+		return noteTextBox;
+	}
+
+	public TextBox getTrainingunitsTextBox() {
+		return trainingunitsTextBox;
+	}
+
+	public ListBox getCourseListBox() {
+		return courseList.get(0).courseListBox;
+	}
+
+	public ListBox getGradeListBox() {
+		return null;
+	}
+
+	public String getPictureUrl() {
+		return imageUrl;
 	}
 
 }
