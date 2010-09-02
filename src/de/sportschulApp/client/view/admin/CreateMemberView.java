@@ -151,7 +151,6 @@ public class CreateMemberView extends Composite implements
 		this.constants = constants;
 		wrapper.add(createMemberPanel);
 		wrapper.addStyleName("memberCreateWrapper");
-		createMemberPanel.setWidth("700px");
 		initWidget(wrapper);
 
 		sendButton.setText(constants.send());

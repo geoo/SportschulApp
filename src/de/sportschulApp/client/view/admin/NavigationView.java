@@ -4,11 +4,14 @@ package de.sportschulApp.client.view.admin;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 
 import de.sportschulApp.client.CookieManager;
 import de.sportschulApp.client.presenter.admin.NavigationPresenter;
@@ -45,8 +48,8 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 		metaHeadLoginDetailsPanel.add(logOutLabel);
 		metaHeadPanel.add(metaHeadLoginDetailsPanel);
 		
-		Label logoPlaceholder = new Label("");
-		logoPlaceholder.setWidth("55px");
+		Image naviLogo = new Image("imgs/mm-logo-navi.png");
+		naviLogo.addStyleName("naviLogo");
 		
 		TabLayoutPanel navigationPanel = new TabLayoutPanel(1.5, Unit.EM);
 		navigationPanel.addStyleName("navigationPanel");
@@ -63,8 +66,11 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 		mainHeadPanel.setStyleName("mainHeadPanel");
 		mainHeadPanel.setHeight("54px");
 		mainHeadPanel.setWidth("100%");
-		mainHeadPanel.add(logoPlaceholder);
+		HorizontalPanel spacer = new HorizontalPanel();
+		
+		mainHeadPanel.add(naviLogo);
 		mainHeadPanel.add(navigationPanel);
+
 
 		adminHeadPanel.add(metaHeadPanel);
 		adminHeadPanel.add(mainHeadPanel);

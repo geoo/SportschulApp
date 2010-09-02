@@ -424,7 +424,6 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			e.printStackTrace();
 			return null;
 		}
-
 		return member;
 	}
 

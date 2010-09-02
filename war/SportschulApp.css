@@ -44,7 +44,10 @@ h1 {
 }
 
 .navigationPanel .gwt-TabLayoutPanelContent {
-	border-style: none !important;
+	border-top: 1px solid #d4dced !important;
+	border-left: none !important;
+	border-right: none !important;
+	border-bottom: none !important;
 	padding-left: 12px !important;
 	padding-top: 2px !important;
 }
@@ -66,7 +69,7 @@ h1 {
 
 .mainHeadPanel {
 	background: url(imgs/headMainNavBg.jpg) top left repeat-x;
-	padding-top: 5px;
+	padding-top: 3px;
 }
 
 .metaHeadLoginDetailsPanel .gwt-Label {
@@ -97,20 +100,26 @@ h1 {
 }
 
 .memberCreateWrapper {
+	width: 480px;
 	margin: 20px auto 0 auto;
-	padding-top: 10px;
+	padding-top: 20px;
 	padding-left: 20px;
 	background-color: #f5f7fa !important;
-		margin-bottom: 80px;
-	
+	margin-bottom: 80px;
+	border: 1px solid #a9adc3 !important;
 }
 
 .memberCreateWrapper .gwt-TextBox {
-	width: 200px;
+	border: 2px solid #d4dced;
+	background-color:#ffffff !important;
+	width: 250px !important;
+	height: 16px !important;
 }
 
 .memberCreateWrapper .gwt-Label {
-	width: 200px;
+	width: 160px;
+	font-size: 16px;
+	padding-right: 7px;
 }
 
 .memberCreateWrapper .gwt-ListBox {
@@ -125,11 +134,55 @@ h1 {
 }
 
 .validationFailedBorder {
-	border:2px solid red;
+	border:2px solid red !important;
 }
 
 .memberCreateWrapper td {
 	height: 50px;
 	background-color: #f5f7fa;
 	width: 200px;
+}
+
+.mm-logo {
+	display: block;
+	padding-top: 120px;
+	margin: auto;
+}
+
+.loginContainer {
+	margin: auto;
+	padding-top: 10px;
+}
+
+.loginContainer .gwt-Label{
+	font-size: 16px;
+	padding-left: 30px;
+	padding-right: 7px;
+}
+
+.loginInput {
+	border: 3px solid #d4dced;
+	background-color:#f7f8fb;
+	height: 16px;
+}
+
+.loginLabel {
+	margin-left: 30px;
+	cursor: pointer;
+	font-size: 16px;
+	color: #346492;
+}
+
+.loginLabel:hover {
+	text-decoration: underline;
+}
+
+.loginErrorLabel {
+	display: table;
+	margin: auto;
+	color: #ac2f2f;
+}
+
+.naviLogo {
+	padding-left: 25px;
 }

@@ -13,4 +13,6 @@ public interface AdminServiceAsync {
 
 	void getBeltList(String courseName,
 			AsyncCallback<ArrayList<String>> callback);
+	
+	void getMemberByMemberID(int memberID, AsyncCallback<Member> callback);
 }
