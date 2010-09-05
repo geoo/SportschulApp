@@ -61,6 +61,8 @@ public interface LocalizationConstants extends Constants{
 
 	String year();
 	
+	String language();
+	
 	
 
 }

@@ -5,8 +5,11 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 
+import de.sportschulApp.client.event.LanguageChangeEvent;
+import de.sportschulApp.client.event.LanguageChangeHandler;
 import de.sportschulApp.client.event.LoginEvent;
 import de.sportschulApp.client.event.LoginEventHandler;
 import de.sportschulApp.client.event.LogoutEvent;
@@ -48,6 +51,12 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 				doLogout();
 			}
 		});
+		
+		eventBus.addHandler(LanguageChangeEvent.TYPE, new LanguageChangeHandler() {
+			public void onLanguageChange(LanguageChangeEvent event) {
+				Window.alert(event.getValue());	
+			}
+		});
 	}
 
 	/*
@@ -84,10 +93,10 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	}
 
 	/*
-	 * Bei onValueChange (URL/History Token Šnderung) wird ŸberprŸft ob es fŸr
-	 * den jeweiligen Token einen Presenter gibt. ZusŠtzlich wird im try/catch
-	 * Block ŸberprŸft ob ein Cookie im Browser abgelegt wurde. Falls nicht,
-	 * wird der LoginPresenter geladen. Falls doch, wird ŸberprŸft ob ein Admin
+	 * Bei onValueChange (URL/History Token ï¿½nderung) wird ï¿½berprï¿½ft ob es fï¿½r
+	 * den jeweiligen Token einen Presenter gibt. Zusï¿½tzlich wird im try/catch
+	 * Block ï¿½berprï¿½ft ob ein Cookie im Browser abgelegt wurde. Falls nicht,
+	 * wird der LoginPresenter geladen. Falls doch, wird ï¿½berprï¿½ft ob ein Admin
 	 * oder Trainier angemeldet ist.
 	 */
 

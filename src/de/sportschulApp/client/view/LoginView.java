@@ -1,12 +1,14 @@
 package de.sportschulApp.client.view;
 
+import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.event.dom.client.HasKeyUpHandlers;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -23,20 +25,30 @@ public class LoginView extends Composite implements LoginPresenter.Display{
 	private PasswordTextBox passwordTextBox;
 	private Label loginLabel;
 	private Label loginErrorLabel = new Label("Login fehlgeschlagen. Der Benutzername und das Passwort stimmen nich überein.");
-    
+    private ListBox languagePicker = new ListBox();
+	
 	public LoginView(LocalizationConstants constants) {
 		
 		VerticalPanel loginPanel = new VerticalPanel();
 		loginPanel.setSize("100%", "100%");
 		initWidget(loginPanel);
 		
-		VerticalPanel metaHeadPanel = new VerticalPanel();
+		HorizontalPanel metaHeadPanel = new HorizontalPanel();
 		metaHeadPanel.setStyleName("metaHeadPanel");
 		metaHeadPanel.setSize("100%", "28px");
+		
+		HorizontalPanel languagePanel = new HorizontalPanel();
+		languagePanel.addStyleName("languagePanel");
+		Label languageLabel = new Label(constants.language() + ": ");
+		languagePicker.addItem("Deutsch");
+		languagePicker.addItem("English");
+		languagePanel.add(languageLabel);
+		languagePanel.add(languagePicker);
 		
 		loginErrorLabel.setStyleName("loginErrorLabel");
 		loginErrorLabel.setVisible(false);
 		metaHeadPanel.add(loginErrorLabel);
+		metaHeadPanel.add(languagePanel);
 		
 		HorizontalPanel loginContainer = new HorizontalPanel();
 		loginContainer.setStyleName("loginContainer");
@@ -73,6 +85,23 @@ public class LoginView extends Composite implements LoginPresenter.Display{
 		loginPanel.add(mainHeadPanel);
 		loginPanel.add(mmLogo);
     }
+	
+	public HasChangeHandlers getLanguagePickerOnChange() {
+		return languagePicker;		
+	}
+	
+	public String getLanguagePickerValue() {
+		return languagePicker.getValue(languagePicker.getSelectedIndex());
+	}
+	
+	
+	public HasKeyUpHandlers getUserNameOnKeyUp() {
+		return userNameTextBox;
+	}
+	
+	public HasKeyUpHandlers getPasswordOnKeyUp() {
+		return passwordTextBox;
+	}
     
    	public HasClickHandlers getLoginButton() {
 		return loginLabel;

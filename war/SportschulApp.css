@@ -202,9 +202,20 @@ h1 {
 .loginErrorLabel {
 	display: table;
 	margin: auto;
+	padding-left: 220px;
 	color: #ac2f2f;
 }
 
 .naviLogo {
 	padding-left: 25px;
+}
+
+.languagePanel {
+	display: table;
+	margin-right: 5px;
+	margin-left: auto;
+}
+
+.languagePanel .gwt-Label{
+	padding-right: 5px;
 }
