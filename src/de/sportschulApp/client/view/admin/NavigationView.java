@@ -4,6 +4,7 @@ package de.sportschulApp.client.view.admin;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -52,6 +53,20 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 		Label languageLabel = new Label(constants.language() + ": ");
 		languagePicker.addItem("Deutsch");
 		languagePicker.addItem("English");
+		
+		try {
+			if (!Cookies.getCookie("SportschuleLanguage").isEmpty()) {
+				if (Cookies.getCookie("SportschuleLanguage").equals("Deutsch")) {
+					languagePicker.setSelectedIndex(0);
+				}
+				if (Cookies.getCookie("SportschuleLanguage").equals("English")) {
+					languagePicker.setSelectedIndex(1);
+				}
+			}
+		} catch (NullPointerException e) {
+			languagePicker.setSelectedIndex(0);
+		}
+		
 		languagePanel.add(languageLabel);
 		languagePanel.add(languagePicker);
 		
