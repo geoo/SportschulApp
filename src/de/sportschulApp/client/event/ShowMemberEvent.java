@@ -6,14 +6,14 @@ import de.sportschulApp.shared.Member;
 
 public class ShowMemberEvent extends GwtEvent<ShowMemberEventHandler>{
 	public static Type<ShowMemberEventHandler> TYPE = new Type<ShowMemberEventHandler>();
-	private Member member;
-	
-	public ShowMemberEvent(Member member) {
-		this.member = member;
+	private int barcode;
+		
+	public ShowMemberEvent(int barcode) {
+		this.barcode = barcode;
 	}
 	
-	public Member getMember() {
-		return member;
+	public int getBarcode() {
+		return barcode;
 	}
 
 	@Override

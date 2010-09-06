@@ -88,7 +88,7 @@ public class MemberListView extends Composite implements MemberListPresenter.Dis
 		SelectionChangeHandler selectionHandler = new SelectionChangeHandler() {
 			public void onSelectionChange(SelectionChangeEvent event) {
 				Member member = selectionModel.getSelectedObject();
-				eventBus.fireEvent(new ShowMemberEvent(member));
+				eventBus.fireEvent(new ShowMemberEvent(member.getBarcodeID()));
 			}
 		};
 		selectionModel.addSelectionChangeHandler(selectionHandler);

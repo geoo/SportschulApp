@@ -34,7 +34,7 @@ public class LoginView extends Composite implements LoginPresenter.Display{
 		initWidget(loginPanel);
 		
 		HorizontalPanel metaHeadPanel = new HorizontalPanel();
-		metaHeadPanel.setStyleName("metaHeadPanel");
+		metaHeadPanel.setStyleName("loginMetaHeadPanel");
 		metaHeadPanel.setSize("100%", "28px");
 		
 		HorizontalPanel languagePanel = new HorizontalPanel();
@@ -72,7 +72,7 @@ public class LoginView extends Composite implements LoginPresenter.Display{
         loginContainer.add(loginLabel);
         
 		HorizontalPanel mainHeadPanel = new HorizontalPanel();
-		mainHeadPanel.setStyleName("mainHeadPanel");
+		mainHeadPanel.setStyleName("loginMainHeadPanel");
 		mainHeadPanel.setHeight("54px");
 		mainHeadPanel.setWidth("100%");
 		
