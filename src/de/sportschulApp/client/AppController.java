@@ -1,5 +1,7 @@
 package de.sportschulApp.client;
 
+import java.util.Locale;
+
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerManager;
@@ -54,7 +56,13 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		
 		eventBus.addHandler(LanguageChangeEvent.TYPE, new LanguageChangeHandler() {
 			public void onLanguageChange(LanguageChangeEvent event) {
-				Window.alert(event.getValue());	
+				if (event.getValue().equals("Deutsch")) {
+					Window.open("SportschulApp.html?gwt.codesvr=127.0.0.1:9997&locale=de#" + History.getToken(), "_self", null);						
+				}
+				if (event.getValue().equals("English")) {
+					Window.open("SportschulApp.html?gwt.codesvr=127.0.0.1:9997&locale=en#" + History.getToken(), "_self", null);					
+				}
+				CookieManager.setLanguageCookie(event.getValue());
 			}
 		});
 	}

@@ -7,7 +7,7 @@ import com.google.gwt.user.client.Cookies;
 public class CookieManager {
 	
 	/*
-	 * Erstellt den Cookie fŸr den User 
+	 * Erstellt den Cookie fï¿½r den User 
 	 * 
 	 * */
 	public static void setUserCookie(String username, String userRight){
@@ -18,6 +18,12 @@ public class CookieManager {
 		Cookies.removeCookie("SportschuleUserRight");
 		Cookies.setCookie("SportschuleUserName", username, expires);
 		Cookies.setCookie("SportschuleUserRight", userRight, expires);
+	}
+	
+	public static void setLanguageCookie(String language){
+		final long DURATION = 1000 * 60 * 60 * 24 * 360;
+		Date expires = new Date(System.currentTimeMillis() + DURATION);
+		Cookies.setCookie("SportschuleLanguage", language, expires);
 	}
 	
 	public static String getUsername() {

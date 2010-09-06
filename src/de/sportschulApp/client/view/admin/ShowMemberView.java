@@ -42,7 +42,6 @@ public class ShowMemberView extends Composite implements ShowMemberPresenter.Dis
 		memberPanel.add(cityLabel);
 		memberPanel.add(streetLabel);
 		memberPanel.add(phoneLabel);
-
 		
 		
 	}

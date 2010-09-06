@@ -3,6 +3,7 @@ package de.sportschulApp.client.view;
 import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.HasKeyUpHandlers;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -44,6 +45,19 @@ public class LoginView extends Composite implements LoginPresenter.Display{
 		languagePicker.addItem("English");
 		languagePanel.add(languageLabel);
 		languagePanel.add(languagePicker);
+		
+		try {
+			if (!Cookies.getCookie("SportschuleLanguage").isEmpty()) {
+				if (Cookies.getCookie("SportschuleLanguage").equals("Deutsch")) {
+					languagePicker.setSelectedIndex(0);
+				}
+				if (Cookies.getCookie("SportschuleLanguage").equals("English")) {
+					languagePicker.setSelectedIndex(1);
+				}
+			}
+		} catch (NullPointerException e) {
+			languagePicker.setSelectedIndex(0);
+		}
 		
 		loginErrorLabel.setStyleName("loginErrorLabel");
 		loginErrorLabel.setVisible(false);
