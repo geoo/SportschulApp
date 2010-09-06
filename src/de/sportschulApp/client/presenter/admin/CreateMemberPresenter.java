@@ -4,14 +4,11 @@ import gwtupload.client.IUploader;
 import gwtupload.client.MultiUploader;
 import gwtupload.client.PreloadedImage;
 import gwtupload.client.IUploadStatus.Status;
-import gwtupload.client.IUploader.Utils;
-import com.google.gwt.xml.client.Document;
-import com.google.gwt.xml.client.XMLParser;
+
 import gwtupload.client.PreloadedImage.OnLoadPreloadedImageHandler;
 
 import java.util.ArrayList;
-
-import org.apache.tools.ant.types.CommandlineJava.SysProperties;
+import java.util.HashMap;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -20,6 +17,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -125,11 +123,13 @@ public class CreateMemberPresenter implements Presenter {
 	private ArrayList<Integer> courses;
 	private ArrayList<Integer> grades;
 	private ArrayList<Integer> courseNumbers;
+	private LocalizationConstants constants;
 
 	public CreateMemberPresenter(AdminServiceAsync rpcService,
 			HandlerManager eventBus, Display display) {
 		this.display = display;
 		this.rpcService = rpcService;
+		this.constants = display.getConstants();
 		bind();
 		getCourseList();
 		setupValidation();
@@ -167,6 +167,8 @@ public class CreateMemberPresenter implements Presenter {
 				if (success) {
 					System.out.println("validation succes");
 					fillForm();
+					Window.alert(constants.memberCreated());
+					History.newItem("adminMembersShowMembers");
 				} else {
 					System.out.println("validation error");
 					Window.alert("Bitte überprüfen Sie ihre Eingaben");
@@ -313,7 +315,7 @@ public class CreateMemberPresenter implements Presenter {
 						System.out.println("result: " + result);
 						if (result.equals("barcode_id already used")) {
 							display.getBarcodeTextBox().setStyleName(
-									"validationFailedBorder");
+									"validationFailedBorderBarcode");
 							Window.alert(display.getConstants().barcodeUsed());
 						}
 					}
@@ -351,44 +353,60 @@ public class CreateMemberPresenter implements Presenter {
 	private PopupDescription popupDesc;
 
 	private void setupValidation() {
+		class CustomValidationMessages extends ValidationMessages {
+
+			public String getDescriptionMessage(String msgKey) {
+				HashMap<String, String> msgMap = new HashMap<String, String>();
+				msgMap.put("forename", constants.popupHelpForename());
+				msgMap.put("surname", constants.popupHelpSurname());
+				msgMap.put("barcode", constants.popupHelpBarcode());
+				msgMap.put("street", constants.popupHelpStreet());
+				msgMap.put("zipcode", constants.popupHelpZipcode());
+				msgMap.put("city", constants.popupHelpCity());
+				msgMap.put("phone", constants.popupHelpPhone());
+				msgMap.put("beltsize", constants.popupHelpBeltsize());
+				msgMap.put("trainingunits", constants.popupHelpTrainingunits());
+				msgMap.put("mobilephone", constants.popupHelpMobilephone());
+				msgMap.put("fax", constants.popupHelpFax());
+				msgMap.put("email", constants.popupHelpEmail());
+				msgMap.put("homepage", constants.popupHelpHomepage());
+				msgMap.put("diseases", constants.popupHelpDiseases());
+				msgMap.put("note", constants.popupHelpNote());
+
+				String temp = msgMap.get(msgKey.trim());
+				return temp;
+			}
+		}
+
 		this.validator = display.getValidator();
-		ValidationMessages messages = new ValidationMessages();
+		ValidationMessages messages = new CustomValidationMessages();
+
 		popupDesc = new PopupDescription(messages);
 
 		validator.addValidators("forename",
-				new StringLengthValidator(display.getForenameTextBox(), 3, 30)
+				new StringLengthValidator(display.getForenameTextBox(), 2, 30)
 						.addActionForFailure(new StyleAction(
-								"validationFailedBorder"))
-		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
-				);
+								"validationFailedBorder")));
 
 		validator.addValidators("surname",
-				new StringLengthValidator(display.getSurnameTextBox(), 3, 30)
+				new StringLengthValidator(display.getSurnameTextBox(), 2, 30)
 						.addActionForFailure(new StyleAction(
-								"validationFailedBorder"))
-		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
-				);
+								"validationFailedBorder")));
 
 		validator.addValidators("barcode",
 				new IntegerValidator(display.getBarcodeTextBox(), 0,
 						Integer.MAX_VALUE).addActionForFailure(new StyleAction(
-						"validationFailedBorder"))
-		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
-				);
+						"validationFailedBorder")));
 
 		validator.addValidators("street",
-				new StringLengthValidator(display.getStreetTextBox(), 3, 30)
+				new StringLengthValidator(display.getStreetTextBox(), 2, 30)
 						.addActionForFailure(new StyleAction(
-								"validationFailedBorder"))
-		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
-				);
+								"validationFailedBorder")));
 
 		validator.addValidators("zipcodeInt",
 				new IntegerValidator(display.getZipcodeTextBox(), 0,
 						Integer.MAX_VALUE).addActionForFailure(new StyleAction(
-						"validationFailedBorder"))
-		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
-				);
+						"validationFailedBorder")));
 
 		validator.addValidators("zipcodeLength", new StringLengthValidator(
 				display.getZipcodeTextBox(), 5, 5)
@@ -399,45 +417,38 @@ public class CreateMemberPresenter implements Presenter {
 		validator.addValidators("city",
 				new StringLengthValidator(display.getCityTextBox(), 2, 30)
 						.addActionForFailure(new StyleAction(
-								"validationFailedBorder"))
-		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
-				);
+								"validationFailedBorder")));
 
 		validator.addValidators("phone",
 				new StringLengthValidator(display.getPhoneTextBox(), 1, 30)
 						.addActionForFailure(new StyleAction(
-								"validationFailedBorder"))
-		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
-				);
-		/*
-		 * validator.addValidators("birthDay", new
-		 * IntegerValidator(display.getBirthTextBox1(), 1, 31)
-		 * .addActionForFailure(new StyleAction( "validationFailedBorder")) //
-		 * .addActionForFailure(new LabelTextAction(forenameErrorLabel)) );
-		 * validator.addValidators("birthMonth", new
-		 * IntegerValidator(display.getBirthTextBox2(), 1, 12)
-		 * .addActionForFailure(new StyleAction( "validationFailedBorder")) //
-		 * .addActionForFailure(new LabelTextAction(forenameErrorLabel)) );
-		 * validator.addValidators("birthYear", new
-		 * IntegerValidator(display.getBirthTextBox3(), 1900, 2030)
-		 * .addActionForFailure(new StyleAction( "validationFailedBorder")) //
-		 * .addActionForFailure(new LabelTextAction(forenameErrorLabel)) );
-		 */
+								"validationFailedBorder")));
 
 		validator.addValidators("beltsize",
 				new NotEmptyValidator(display.getBeltsizeTextBox())
 						.addActionForFailure(new StyleAction(
-								"validationFailedBorder"))
-		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
-				);
+								"validationFailedBorder")));
 
 		validator.addValidators("trainingunits",
 				new IntegerValidator(display.getTrainingunitsTextBox(), 1,
 						Integer.MAX_VALUE).addActionForFailure(new StyleAction(
-						"validationFailedBorder"))
-		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
-				);
+						"validationFailedBorder")));
+		popupDesc.addDescription("forename ", display.getForenameTextBox());
+		popupDesc.addDescription("surname ", display.getSurnameTextBox());
+		popupDesc.addDescription("barcode ", display.getBarcodeTextBox());
+		popupDesc.addDescription("street ", display.getStreetTextBox());
+		popupDesc.addDescription("zipcode ", display.getZipcodeTextBox());
+		popupDesc.addDescription("city ", display.getCityTextBox());
+		popupDesc.addDescription("phone ", display.getPhoneTextBox());
+		popupDesc.addDescription("beltsize ", display.getBeltsizeTextBox());
+		popupDesc.addDescription("trainingunits ",
+				display.getTrainingunitsTextBox());
+		popupDesc.addDescription("mobilephone ",
+				display.getmobilephoneTextBox());
+		popupDesc.addDescription("fax ", display.getFaxTextBox());
+		popupDesc.addDescription("email ", display.getEmailTextBox());
+		popupDesc.addDescription("homepage ", display.getDiseasesTextBox());
+		popupDesc.addDescription("note ", display.getNoteTextBox());
 
-		popupDesc.addDescription("forenameHelp", display.getForenameTextBox());
 	}
 }

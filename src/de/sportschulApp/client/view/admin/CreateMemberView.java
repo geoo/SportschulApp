@@ -171,7 +171,8 @@ public class CreateMemberView extends Composite implements
 		importantDisclosurePanel = new DisclosurePanel("Wichtige Informationen");
 		importantDisclosurePanel.setContent(createMemberPanel);
 		importantDisclosurePanel.setOpen(true);
-		unimportantDisclosurePanel = new DisclosurePanel("Zusätzliche Informationen");
+		unimportantDisclosurePanel = new DisclosurePanel(
+				"Zusätzliche Informationen");
 		unimportantDisclosurePanel.setContent(createMemberPanel2);
 		wrapper.add(importantDisclosurePanel);
 		wrapper.add(unimportantDisclosurePanel);
@@ -271,13 +272,26 @@ public class CreateMemberView extends Composite implements
 
 		birthTextBox1.addItem(constants.day());
 		for (Integer i = 1; i < 32; i++) {
-			birthTextBox1.addItem(i.toString());
+			if (i < 10) {
+				birthTextBox1.addItem("0" + i.toString() + ".");
+			} else {
+				birthTextBox1.addItem(i.toString() + ".");
+			}
 		}
 
 		birthTextBox2.addItem(constants.month());
-		for (Integer i = 1; i < 13; i++) {
-			birthTextBox2.addItem(i.toString());
-		}
+		birthTextBox2.addItem(constants.january());
+		birthTextBox2.addItem(constants.february());
+		birthTextBox2.addItem(constants.march());
+		birthTextBox2.addItem(constants.april());
+		birthTextBox2.addItem(constants.may());
+		birthTextBox2.addItem(constants.june());
+		birthTextBox2.addItem(constants.july());
+		birthTextBox2.addItem(constants.august());
+		birthTextBox2.addItem(constants.september());
+		birthTextBox2.addItem(constants.october());
+		birthTextBox2.addItem(constants.november());
+		birthTextBox2.addItem(constants.december());
 
 		birthTextBox3.addItem(constants.year());
 		for (Integer i = 2008; i > 1960; i--) {
@@ -377,7 +391,8 @@ public class CreateMemberView extends Composite implements
 	public void addNewCourseSelector() {
 		for (int i = 0; i < 10; i++) {
 			if (!courseList.get(i).getCourseSelector().isAttached()) {
-				createMemberPanel.insert(courseList.get(i).getCourseSelector(),createMemberPanel.getWidgetCount()-1);
+				createMemberPanel.insert(courseList.get(i).getCourseSelector(),
+						createMemberPanel.getWidgetCount() - 1);
 				break;
 			}
 		}

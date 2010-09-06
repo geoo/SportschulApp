@@ -118,6 +118,13 @@ h1 {
 	border-left: 0px !important;
 }
 
+.validationFailedBorderBarcode{
+	border: 2px solid red !important;
+	background-color: #ffffff !important;
+	width: 253px;
+	height: 18px !important;
+}
+
 .birthDayTextBox {
 	width: 70px !important;
 	margin-right: 12px !important;
