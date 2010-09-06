@@ -22,7 +22,7 @@ import java.util.Iterator;
 public class DualListBox extends AbsolutePanel {
 
 
-	private static final int LIST_SIZE = 15;
+	private static final int LIST_SIZE = 13;
 
 	private Button allLeft;
 

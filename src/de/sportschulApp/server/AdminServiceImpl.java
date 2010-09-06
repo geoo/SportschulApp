@@ -8,6 +8,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import de.sportschulApp.client.services.AdminService;
 import de.sportschulApp.server.databanker.DataBankerCourse;
 import de.sportschulApp.server.databanker.DataBankerMember;
+import de.sportschulApp.shared.Course;
 import de.sportschulApp.shared.Member;
 
 @SuppressWarnings("serial")
@@ -61,6 +62,10 @@ public class AdminServiceImpl extends RemoteServiceServlet implements
 
 		return dbm.createMember(member);
 	
+	}
+
+	public String createCourse(Course course) {
+		return dbc.createCourse(course);
 	}
 
 

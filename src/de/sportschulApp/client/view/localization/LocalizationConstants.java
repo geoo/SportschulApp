@@ -115,10 +115,54 @@ public interface LocalizationConstants extends Constants {
 	String popupHelpDiseases();
 
 	String popupHelpNote();
+	
+	String popupHelpCourseName();
+
+	String popupHelpTime();
+
+	String popupHelpInstructor();
+
+	String popupHelpLocation();
 
 	String memberCreated();
 	
 	String importantInformations();
 	
 	String additionalInformations();
+
+	String white();
+
+	String whiteYellow();
+
+	String orangeGreen();
+
+	String yellowOrange();
+
+	String green();
+
+	String blue();
+
+	String brown();
+
+	String black();
+
+	String red();
+
+	String courseName();
+
+	String time();
+
+	String instructor();
+
+	String location();
+
+	String belts();
+
+	String courseNameUsed();
+
+	String courseCreated();
+
+
+
+	
 }

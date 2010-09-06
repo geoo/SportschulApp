@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+import de.sportschulApp.shared.Course;
 import de.sportschulApp.shared.Member;
 
 
@@ -25,4 +26,6 @@ public interface AdminService extends RemoteService {
 	ArrayList<Integer> getCourseIDs(ArrayList<String> courseNames);
 
 	String saveMember(Member member);
+
+	String createCourse(Course course);
 }

@@ -132,7 +132,6 @@ public class CreateMemberView extends Composite implements
 	private ListBox birthTextBox1;
 	private ListBox birthTextBox2;
 	private ListBox birthTextBox3;
-
 	private Label birthLabel;
 	private TextArea diseasesTextBox;
 	private Widget diseasesLabel;
