@@ -20,9 +20,10 @@
     <!-- Load dinamically predefined styles in the library when the application starts -->
   <stylesheet src="Upload.css"/>
   
-   <inherits name="eu.maydu.gwt.validation.ValidationLibrary"/>
+  <inherits name="eu.maydu.gwt.validation.ValidationLibrary"/>
  
-  
+  <!-- Inherit gwt-dnd support                   -->
+  <inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
   
   <!-- Specify the app entry point class.                         -->
   <entry-point class='de.sportschulApp.client.SportschulApp'/>
