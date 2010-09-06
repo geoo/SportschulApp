@@ -20,19 +20,18 @@ public class ShowMemberPresenter implements Presenter{
 	private final AdminServiceAsync rpcService;
 	private final int memberID;
 	
-	public ShowMemberPresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display, int memberID) {
+	public ShowMemberPresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display, int barcodeID) {
 	    this.display = display;
 	    this.rpcService = rpcService;
-	    this.memberID = memberID;
+	    this.memberID = barcodeID;
 	    bind();
-	    fetchMemberData(memberID);
+	    fetchMemberData(barcodeID);
 	}
 	
-	public void fetchMemberData(int memberID) {
-		rpcService.getMemberByMemberID(memberID, new AsyncCallback<Member>() {
+	public void fetchMemberData(int barcodeID) {
+		rpcService.getMemberByBarcodeID(barcodeID, new AsyncCallback<Member>() {
 			public void onSuccess(Member result) {
 				buildShowMemberView(result);
-				System.out.println(result.getForename());
 			}
 			public void onFailure(Throwable caught) {
 			}

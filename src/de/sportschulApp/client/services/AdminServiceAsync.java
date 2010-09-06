@@ -22,4 +22,6 @@ public interface AdminServiceAsync {
 			AsyncCallback<ArrayList<Integer>> asyncCallback);
 
 	void saveMember(Member member, AsyncCallback<String> asyncCallback);
+
+	void getMemberByBarcodeID(int barcodeID, AsyncCallback<Member> callback);
 }

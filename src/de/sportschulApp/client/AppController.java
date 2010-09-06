@@ -66,7 +66,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 	private void doLogin() {
 		if (Cookies.getCookie("SportschuleUserRight").equals("admin")) {
-			History.newItem("adminHomeShowSummary");
+			History.newItem("adminMembersShowMembers");
 			History.fireCurrentHistoryState();
 		}
 		if (Cookies.getCookie("SportschuleUserRight").equals("trainer")) {

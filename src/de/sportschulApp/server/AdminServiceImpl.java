@@ -35,6 +35,10 @@ public class AdminServiceImpl extends RemoteServiceServlet implements
 		return dbm.getMemberWithMemberID(memberID);
 	}
 
+	public Member getMemberByBarcodeID(int barcodeID) {
+		return dbm.getMember(barcodeID);
+	}
+
 	public int getCourseID(String courseName) {
 		return dbc.getCourseID(courseName);
 	}
@@ -58,5 +62,6 @@ public class AdminServiceImpl extends RemoteServiceServlet implements
 		return dbm.createMember(member);
 	
 	}
+
 
 }
