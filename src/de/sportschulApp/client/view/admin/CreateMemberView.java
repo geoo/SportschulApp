@@ -9,8 +9,10 @@ import java.util.Iterator;
 
 import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.layout.client.Layout;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -132,9 +134,9 @@ public class CreateMemberView extends Composite implements
 	private TextBox emailTextBox;
 	private Label homepageLabel;
 	private TextBox homepageTextBox;
-	private TextBox birthTextBox1;
-	private TextBox birthTextBox2;
-	private TextBox birthTextBox3;
+	private ListBox birthTextBox1;
+	private ListBox birthTextBox2;
+	private ListBox birthTextBox3;
 
 	private Label birthLabel;
 	private TextArea diseasesTextBox;
@@ -146,6 +148,7 @@ public class CreateMemberView extends Composite implements
 	private Label trainingunitsLabel;
 	private TextBox trainingunitsTextBox;
 	private VerticalPanel createMemberPanel = new VerticalPanel();
+	private VerticalPanel createMemberPanel2 = new VerticalPanel();
 	private VerticalPanel wrapper = new VerticalPanel();
 	private Button sendButton = new Button();
 	private MultiUploader defaultUploader;
@@ -158,11 +161,19 @@ public class CreateMemberView extends Composite implements
 	private DefaultValidationProcessor validator;
 	private Object showcaseMessages;
 	private PopupDescription popupDesc;
+	private DisclosurePanel importantDisclosurePanel;
+	private DisclosurePanel unimportantDisclosurePanel;
 
 	public CreateMemberView(LocalizationConstants constants) {
 
 		this.constants = constants;
-		wrapper.add(createMemberPanel);
+		importantDisclosurePanel = new DisclosurePanel("Wichtige Informationen");
+		importantDisclosurePanel.setContent(createMemberPanel);
+		importantDisclosurePanel.setOpen(true);
+		unimportantDisclosurePanel = new DisclosurePanel("Zusätzliche Informationen");
+		unimportantDisclosurePanel.setContent(createMemberPanel2);
+		wrapper.add(importantDisclosurePanel);
+		wrapper.add(unimportantDisclosurePanel);
 		wrapper.addStyleName("memberCreateWrapper");
 		initWidget(wrapper);
 
@@ -176,7 +187,6 @@ public class CreateMemberView extends Composite implements
 		image = new PreloadedImage();
 		image.setWidth("75px");
 
-		wrapper.add(pictureUploadPanel);
 		wrapper.add(sendButton);
 
 		HorizontalPanel forenameInputPanel = new HorizontalPanel();
@@ -250,18 +260,29 @@ public class CreateMemberView extends Composite implements
 
 		HorizontalPanel birthInputPanel = new HorizontalPanel();
 		birthLabel = new Label(constants.birth() + ":* ");
-		birthTextBox1 = new TextBox();
-		birthTextBox2 = new TextBox();
-		birthTextBox3 = new TextBox();
-		
+		birthTextBox1 = new ListBox();
+		birthTextBox2 = new ListBox();
+		birthTextBox3 = new ListBox();
+
 		birthTextBox1.addStyleName("birthDayTextBox");
 		birthTextBox2.addStyleName("birthMonthTextBox");
 		birthTextBox3.addStyleName("birthYearTextBox");
-		
-		birthTextBox1.setText(constants.day());
-		birthTextBox2.setText(constants.month());
-		birthTextBox3.setText(constants.year());
-		
+
+		birthTextBox1.addItem(constants.day());
+		for (Integer i = 1; i < 32; i++) {
+			birthTextBox1.addItem(i.toString());
+		}
+
+		birthTextBox2.addItem(constants.month());
+		for (Integer i = 1; i < 13; i++) {
+			birthTextBox2.addItem(i.toString());
+		}
+
+		birthTextBox3.addItem(constants.year());
+		for (Integer i = 2008; i > 1960; i--) {
+			birthTextBox3.addItem(i.toString());
+		}
+
 		birthInputPanel.add(birthLabel);
 		birthInputPanel.add(birthTextBox1);
 		birthInputPanel.add(birthTextBox2);
@@ -303,17 +324,17 @@ public class CreateMemberView extends Composite implements
 		createMemberPanel.add(cityInputPanel);
 		createMemberPanel.add(birthInputPanel);
 		createMemberPanel.add(phoneInputPanel);
-		createMemberPanel.add(mobilephoneInputPanel);
-		createMemberPanel.add(faxInputPanel);
-		createMemberPanel.add(emailInputPanel);
-		createMemberPanel.add(homepageInputPanel);
-		createMemberPanel.add(homepageInputPanel);
+		createMemberPanel2.add(mobilephoneInputPanel);
+		createMemberPanel2.add(faxInputPanel);
+		createMemberPanel2.add(emailInputPanel);
+		createMemberPanel2.add(homepageInputPanel);
+		createMemberPanel2.add(homepageInputPanel);
 		createMemberPanel.add(beltsizeInputPanel);
 		createMemberPanel.add(trainingunitsInputPanel);
-		createMemberPanel.add(diseasesInputPanel);
-		createMemberPanel.add(noteInputPanel);
+		createMemberPanel2.add(diseasesInputPanel);
+		createMemberPanel2.add(noteInputPanel);
 		createMemberPanel.add(courseList.get(1).getCourseSelector());
-
+		createMemberPanel.add(pictureUploadPanel);
 
 	}
 
@@ -355,7 +376,7 @@ public class CreateMemberView extends Composite implements
 	public void addNewCourseSelector() {
 		for (int i = 0; i < 10; i++) {
 			if (!courseList.get(i).getCourseSelector().isAttached()) {
-				createMemberPanel.add(courseList.get(i).getCourseSelector());
+				createMemberPanel.insert(courseList.get(i).getCourseSelector(),createMemberPanel.getWidgetCount()-1);
 				break;
 			}
 		}
@@ -421,15 +442,15 @@ public class CreateMemberView extends Composite implements
 		return homepageTextBox;
 	}
 
-	public TextBox getBirthTextBox1() {
+	public ListBox getBirthTextBox1() {
 		return birthTextBox1;
 	}
-	
-	public TextBox getBirthTextBox2() {
+
+	public ListBox getBirthTextBox2() {
 		return birthTextBox2;
 	}
-	
-	public TextBox getBirthTextBox3() {
+
+	public ListBox getBirthTextBox3() {
 		return birthTextBox3;
 	}
 
