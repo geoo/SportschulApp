@@ -18,12 +18,10 @@ public class ShowMemberPresenter implements Presenter{
 	
 	private final Display display;
 	private final AdminServiceAsync rpcService;
-	private final int memberID;
 	
 	public ShowMemberPresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display, int barcodeID) {
 	    this.display = display;
 	    this.rpcService = rpcService;
-	    this.memberID = barcodeID;
 	    bind();
 	    fetchMemberData(barcodeID);
 	}

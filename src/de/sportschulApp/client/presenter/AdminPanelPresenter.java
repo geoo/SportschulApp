@@ -64,9 +64,9 @@ public class AdminPanelPresenter implements Presenter {
 		DialogBox memberPopup = new DialogBox(true);
 		memberPopup.setAnimationEnabled(true);
 		memberPopup.setGlassEnabled(true);
-		memberPopup.setText("test");
-		memberPopup.setStyleName("adminPopup");
-		ShowMemberPresenter showMemberPresenter =  new ShowMemberPresenter(rpcService, eventBus, new ShowMemberView(constants), barcodeID);
+		memberPopup.center();
+		Presenter showMemberPresenter = null;
+		showMemberPresenter =  new ShowMemberPresenter(rpcService, eventBus, new ShowMemberView(constants), barcodeID);
 		showMemberPresenter.go(memberPopup);
 		memberPopup.show();
 	}

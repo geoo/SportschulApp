@@ -2,6 +2,7 @@ package de.sportschulApp.client.view.admin;
 
 import java.util.ArrayList;
 
+import com.google.gwt.event.logical.shared.HasSelectionHandlers;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
@@ -105,5 +106,9 @@ public class MemberListView extends Composite implements MemberListPresenter.Dis
 	public Widget asWidget() {
 		return this;
 	}
+	
+//	public HasSelectionHandlers<Member> getMemberListSelection() {
+//		return 
+//	}
 
 }
