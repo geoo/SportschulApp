@@ -133,16 +133,17 @@ h1 {
 	border: 1px solid #a9adc3 !important;
 }
 
-.memberCreateWrapper .gwt-DisclosurePanel .header, .gwt-DisclosurePanel .header a, .gwt-DisclosurePanel .header td {
+.memberCreateWrapper .gwt-DisclosurePanel .header,.gwt-DisclosurePanel .header a,.gwt-DisclosurePanel .header td
+	{
 	font-size: 16px;
 	width: 300px;
 }
 
-.memberCreateWrapper .gwt-DisclosurePanel .content{
+.memberCreateWrapper .gwt-DisclosurePanel .content {
 	border-left: 0px !important;
 }
 
-.validationFailedBorderBarcode{
+.validationFailedBorderBarcode {
 	border: 2px solid red !important;
 	background-color: #ffffff !important;
 	width: 253px;
@@ -194,8 +195,6 @@ h1 {
 	margin-bottom: 20px;
 	width: 150px;
 }
-
-
 
 .validationFailedBorder {
 	border: 2px solid red !important;
@@ -259,7 +258,7 @@ h1 {
 	margin-left: auto;
 }
 
-.languagePanel .gwt-Label{
+.languagePanel .gwt-Label {
 	padding-right: 5px;
 }
 
@@ -270,3 +269,31 @@ h1 {
 	border: 2px solid #d4dced;
 	background-color: white;
 }
+
+.dualListBox {
+	background-color: #f5f7fa;
+}
+
+.dualListBox .gwt-Button {
+	width: 50px;
+}
+
+.dualListBox .gwt-Label:hover {
+	background-color: #d4dced;
+}
+
+.dualListBox .gwt-Label:click {
+	background-color: red;
+}
+
+.dualListBoxTable {
+	background-color: #ffffff;
+	border: 2px solid #d4dced;
+}
+
+.dragdrop-selected {
+	background-color: #d4dced !important;
+	opacity: 1 !important;
+}
+
+
