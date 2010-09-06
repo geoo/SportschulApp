@@ -122,7 +122,6 @@ public class CreateMemberPresenter implements Presenter {
 	private ValidationProcessor validator;
 	private ArrayList<Integer> courses;
 	private ArrayList<Integer> grades;
-	private ArrayList<Integer> courseNumbers;
 	private LocalizationConstants constants;
 
 	public CreateMemberPresenter(AdminServiceAsync rpcService,
@@ -264,8 +263,7 @@ public class CreateMemberPresenter implements Presenter {
 				new AsyncCallback<ArrayList<Integer>>() {
 
 					public void onSuccess(ArrayList<Integer> result) {
-						// courseNumbers = result;
-						// System.out.println("NUMBERS:" + result);
+
 						courses = result;
 
 					}
@@ -277,15 +275,11 @@ public class CreateMemberPresenter implements Presenter {
 		Timer timer = new Timer() {
 			public void run() {
 
-				// System.out.println("courses: " + courses);
-				// System.out.println("grades: " + grades);
-				int selected = display.getBirthTextBox1().getSelectedIndex();
-				String birthDay = display.getBirthTextBox1().getItemText(
-						selected);
+				Integer selected = display.getBirthTextBox1().getSelectedIndex();
+				String birthDay = selected.toString();
 
 				selected = display.getBirthTextBox2().getSelectedIndex();
-				String birthMonth = display.getBirthTextBox2().getItemText(
-						selected);
+				String birthMonth = selected.toString();
 
 				selected = display.getBirthTextBox3().getSelectedIndex();
 				String birthYear = display.getBirthTextBox3().getItemText(

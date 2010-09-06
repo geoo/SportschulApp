@@ -9,12 +9,10 @@ import java.util.Iterator;
 
 import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.layout.client.Layout;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextArea;
@@ -26,11 +24,7 @@ import de.sportschulApp.client.presenter.admin.CreateMemberPresenter;
 import de.sportschulApp.client.view.localization.LocalizationConstants;
 import eu.maydu.gwt.validation.client.DefaultValidationProcessor;
 import eu.maydu.gwt.validation.client.ValidationProcessor;
-import eu.maydu.gwt.validation.client.actions.LabelTextAction;
-import eu.maydu.gwt.validation.client.actions.StyleAction;
 import eu.maydu.gwt.validation.client.description.PopupDescription;
-import eu.maydu.gwt.validation.client.i18n.ValidationMessages;
-import eu.maydu.gwt.validation.client.validators.numeric.IntegerValidator;
 
 public class CreateMemberView extends Composite implements
 		CreateMemberPresenter.Display {
@@ -158,24 +152,22 @@ public class CreateMemberView extends Composite implements
 	private PreloadedImage image;
 	HorizontalPanel pictureUploadPanel;
 	private String imageUrl;
-	private Label forenameErrorLabel;
 	private DefaultValidationProcessor validator;
-	private Object showcaseMessages;
-	private PopupDescription popupDesc;
+
 	private DisclosurePanel importantDisclosurePanel;
-	private DisclosurePanel unimportantDisclosurePanel;
+	private DisclosurePanel additionalDisclosurePanel;
 
 	public CreateMemberView(LocalizationConstants constants) {
 
 		this.constants = constants;
-		importantDisclosurePanel = new DisclosurePanel("Wichtige Informationen");
+		importantDisclosurePanel = new DisclosurePanel(constants.importantInformations());
 		importantDisclosurePanel.setContent(createMemberPanel);
 		importantDisclosurePanel.setOpen(true);
-		unimportantDisclosurePanel = new DisclosurePanel(
-				"Zusätzliche Informationen");
-		unimportantDisclosurePanel.setContent(createMemberPanel2);
+		additionalDisclosurePanel = new DisclosurePanel(
+				constants.additionalInformations());
+		additionalDisclosurePanel.setContent(createMemberPanel2);
 		wrapper.add(importantDisclosurePanel);
-		wrapper.add(unimportantDisclosurePanel);
+		wrapper.add(additionalDisclosurePanel);
 		wrapper.addStyleName("memberCreateWrapper");
 		initWidget(wrapper);
 
@@ -194,7 +186,6 @@ public class CreateMemberView extends Composite implements
 		HorizontalPanel forenameInputPanel = new HorizontalPanel();
 		forenameLabel = new Label(constants.forename() + ":* ");
 		forenameTextBox = new TextBox();
-		forenameErrorLabel = new Label("lala");
 		forenameInputPanel.add(forenameLabel);
 		forenameInputPanel.add(forenameTextBox);
 

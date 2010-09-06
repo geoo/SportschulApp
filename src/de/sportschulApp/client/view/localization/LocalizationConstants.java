@@ -117,5 +117,8 @@ public interface LocalizationConstants extends Constants {
 	String popupHelpNote();
 
 	String memberCreated();
-
+	
+	String importantInformations();
+	
+	String additionalInformations();
 }
