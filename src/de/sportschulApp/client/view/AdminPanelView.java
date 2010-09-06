@@ -6,7 +6,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.sportschulApp.client.presenter.AdminPanelPresenter;
-import de.sportschulApp.client.view.localization.LocalizationConstants;
 
 public class AdminPanelView extends Composite implements AdminPanelPresenter.Display {
 	
@@ -29,8 +28,7 @@ public class AdminPanelView extends Composite implements AdminPanelPresenter.Dis
 		
 		adminPanelContainer.add(navigationContainer);
 		adminPanelContainer.add(contentContainer);
-		
-		
+			
 	}
 	
 	public HasWidgets getNavigationContainer() {

@@ -25,6 +25,7 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 	private Label menuMembersCreateMember;
 	private Label menuEventsShowEvents;
 	private Label menuEventsCreateEvent;
+	private Label menuCourseCreateCourse;
 	private ListBox languagePicker = new ListBox();
 	
 
@@ -119,6 +120,8 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 		} 
 		
 		if (navigationID == 2){
+			menuCourseCreateCourse = new Label("Kurs erstellen");
+			subNavPanel.add(menuCourseCreateCourse);
 		} 
 		
 		if (navigationID == 3){
@@ -149,6 +152,10 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 	
 	public HasClickHandlers getMenuEventsCreateEvent() {
 		return menuEventsCreateEvent;
+	}
+	
+	public HasClickHandlers getMenuCourseCreateCourse() {
+		return menuCourseCreateCourse;
 	}
 	
 	public HasClickHandlers getLogoutButton() {

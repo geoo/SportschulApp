@@ -1,6 +1,8 @@
 package de.sportschulApp.client.view.admin;
 
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -37,12 +39,17 @@ public class ShowMemberView extends Composite implements ShowMemberPresenter.Dis
 		VerticalPanel memberPanel = new VerticalPanel();
 		initWidget(memberPanel);
 		
-		memberPanel.add(forenameLabel);
-		memberPanel.add(surnameLabel);
-		memberPanel.add(cityLabel);
-		memberPanel.add(streetLabel);
-		memberPanel.add(phoneLabel);
+		HorizontalPanel mainDetailsPanel = new HorizontalPanel();
+		mainDetailsPanel.setHeight("200px");
+		mainDetailsPanel.add(memberPicture);
 		
+		FlexTable mainDetailsData = new FlexTable();
+//		mainDetailsData.set
+		memberPanel.add(forenameLabel);
+ memberPanel.add(surnameLabel);
+memberPanel.add(cityLabel);
+memberPanel.add(streetLabel);
+ memberPanel.add(phoneLabel);
 		
 	}
 	
