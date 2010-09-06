@@ -57,10 +57,10 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		eventBus.addHandler(LanguageChangeEvent.TYPE, new LanguageChangeHandler() {
 			public void onLanguageChange(LanguageChangeEvent event) {
 				if (event.getValue().equals("Deutsch")) {
-					Window.open("SportschulApp.html?gwt.codesvr=127.0.0.1:9997&locale=de#" + History.getToken(), null, null);						
+					Window.open("SportschulApp.html?gwt.codesvr=127.0.0.1:9997&locale=de#" + History.getToken(), "_self", null);						
 				}
 				if (event.getValue().equals("English")) {
-					Window.open("SportschulApp.html?gwt.codesvr=127.0.0.1:9997&locale=en#" + History.getToken(), null, null);					
+					Window.open("SportschulApp.html?gwt.codesvr=127.0.0.1:9997&locale=en#" + History.getToken(), "_self", null);					
 				}
 				CookieManager.setLanguageCookie(event.getValue());
 			}
