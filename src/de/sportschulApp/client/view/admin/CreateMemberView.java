@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextArea;
@@ -391,7 +392,6 @@ public class CreateMemberView extends Composite implements
 		pictureUploadPanel.remove(defaultUploader);
 		pictureUploadPanel.add(image);
 		this.imageUrl = imageUrl;
-		System.out.println("imageURL: " + this.imageUrl);
 	}
 
 	public ValidationProcessor getValidator() {

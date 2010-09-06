@@ -4,9 +4,14 @@ import gwtupload.client.IUploader;
 import gwtupload.client.MultiUploader;
 import gwtupload.client.PreloadedImage;
 import gwtupload.client.IUploadStatus.Status;
+import gwtupload.client.IUploader.Utils;
+import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.XMLParser;
 import gwtupload.client.PreloadedImage.OnLoadPreloadedImageHandler;
 
 import java.util.ArrayList;
+
+import org.apache.tools.ant.types.CommandlineJava.SysProperties;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -134,31 +139,31 @@ public class CreateMemberPresenter implements Presenter {
 		this.display.getSendButton().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				boolean success = display.getValidator().validate();
-				if (display.getBirthTextBox1().getSelectedIndex() == 0) 
-				{
-					display.getBirthTextBox1().setStyleName("validationFailedBorder");
-					success=false;
+				if (display.getBirthTextBox1().getSelectedIndex() == 0) {
+					display.getBirthTextBox1().setStyleName(
+							"validationFailedBorder");
+					success = false;
+				} else {
+					display.getBirthTextBox1().removeStyleName(
+							"validationFailedBorder");
 				}
-				else{
-					display.getBirthTextBox1().removeStyleName("validationFailedBorder");
+				if (display.getBirthTextBox2().getSelectedIndex() == 0) {
+					display.getBirthTextBox2().setStyleName(
+							"validationFailedBorder");
+					success = false;
+				} else {
+					display.getBirthTextBox2().removeStyleName(
+							"validationFailedBorder");
 				}
-				if (display.getBirthTextBox2().getSelectedIndex() == 0) 
-				{
-					display.getBirthTextBox2().setStyleName("validationFailedBorder");
-					success=false;
+				if (display.getBirthTextBox3().getSelectedIndex() == 0) {
+					display.getBirthTextBox3().setStyleName(
+							"validationFailedBorder");
+					success = false;
+				} else {
+					display.getBirthTextBox3().removeStyleName(
+							"validationFailedBorder");
 				}
-				else{
-					display.getBirthTextBox2().removeStyleName("validationFailedBorder");
-				}
-				if (display.getBirthTextBox3().getSelectedIndex() == 0) 
-				{
-					display.getBirthTextBox3().setStyleName("validationFailedBorder");
-					success=false;
-				}
-				else{
-					display.getBirthTextBox3().removeStyleName("validationFailedBorder");
-				}
-				
+
 				if (success) {
 					System.out.println("validation succes");
 					fillForm();
@@ -307,6 +312,8 @@ public class CreateMemberPresenter implements Presenter {
 					public void onSuccess(String result) {
 						System.out.println("result: " + result);
 						if (result.equals("barcode_id already used")) {
+							display.getBarcodeTextBox().setStyleName(
+									"validationFailedBorder");
 							Window.alert(display.getConstants().barcodeUsed());
 						}
 					}
@@ -327,9 +334,9 @@ public class CreateMemberPresenter implements Presenter {
 
 		public void onFinish(IUploader uploader) {
 			if (uploader.getStatus() == Status.SUCCESS) {
+				imageUrl = uploader.getServerResponse();
+				new PreloadedImage(imageUrl, showImage);
 
-				new PreloadedImage(uploader.fileUrl(), showImage);
-				imageUrl = uploader.getFileName();
 			}
 		}
 	};
@@ -338,7 +345,7 @@ public class CreateMemberPresenter implements Presenter {
 	private OnLoadPreloadedImageHandler showImage = new OnLoadPreloadedImageHandler() {
 		public void onLoad(PreloadedImage image) {
 			image.setWidth("100px");
-			display.setImage(image, "uploads/" + imageUrl);
+			display.setImage(image, imageUrl);
 		}
 	};
 	private PopupDescription popupDesc;
@@ -430,8 +437,6 @@ public class CreateMemberPresenter implements Presenter {
 						"validationFailedBorder"))
 		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
 				);
-
-		
 
 		popupDesc.addDescription("forenameHelp", display.getForenameTextBox());
 	}
