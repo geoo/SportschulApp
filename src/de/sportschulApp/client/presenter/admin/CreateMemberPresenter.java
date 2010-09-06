@@ -4,9 +4,14 @@ import gwtupload.client.IUploader;
 import gwtupload.client.MultiUploader;
 import gwtupload.client.PreloadedImage;
 import gwtupload.client.IUploadStatus.Status;
+import gwtupload.client.IUploader.Utils;
+import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.XMLParser;
 import gwtupload.client.PreloadedImage.OnLoadPreloadedImageHandler;
 
 import java.util.ArrayList;
+
+import org.apache.tools.ant.types.CommandlineJava.SysProperties;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -85,11 +90,11 @@ public class CreateMemberPresenter implements Presenter {
 
 		TextBox getHomepageTextBox();
 
-		TextBox getBirthTextBox1();
+		ListBox getBirthTextBox1();
 
-		TextBox getBirthTextBox2();
+		ListBox getBirthTextBox2();
 
-		TextBox getBirthTextBox3();
+		ListBox getBirthTextBox3();
 
 		TextArea getDiseasesTextBox();
 
@@ -134,11 +139,37 @@ public class CreateMemberPresenter implements Presenter {
 		this.display.getSendButton().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				boolean success = display.getValidator().validate();
+				if (display.getBirthTextBox1().getSelectedIndex() == 0) {
+					display.getBirthTextBox1().setStyleName(
+							"validationFailedBorder");
+					success = false;
+				} else {
+					display.getBirthTextBox1().removeStyleName(
+							"validationFailedBorder");
+				}
+				if (display.getBirthTextBox2().getSelectedIndex() == 0) {
+					display.getBirthTextBox2().setStyleName(
+							"validationFailedBorder");
+					success = false;
+				} else {
+					display.getBirthTextBox2().removeStyleName(
+							"validationFailedBorder");
+				}
+				if (display.getBirthTextBox3().getSelectedIndex() == 0) {
+					display.getBirthTextBox3().setStyleName(
+							"validationFailedBorder");
+					success = false;
+				} else {
+					display.getBirthTextBox3().removeStyleName(
+							"validationFailedBorder");
+				}
+
 				if (success) {
 					System.out.println("validation succes");
 					fillForm();
 				} else {
 					System.out.println("validation error");
+					Window.alert("Bitte überprüfen Sie ihre Eingaben");
 
 					// One (or more) validations failed. The actions will have
 					// been
@@ -246,28 +277,34 @@ public class CreateMemberPresenter implements Presenter {
 
 				// System.out.println("courses: " + courses);
 				// System.out.println("grades: " + grades);
+				int selected = display.getBirthTextBox1().getSelectedIndex();
+				String birthDay = display.getBirthTextBox1().getItemText(
+						selected);
 
-				Member member = new Member(
-						0,
-						new Integer(display.getBarcodeTextBox().getText()),
-						display.getForenameTextBox().getText(),
-						display.getSurnameTextBox().getText(),
-						new Integer(display.getZipcodeTextBox().getText()),
-						display.getCityTextBox().getText(),
-						display.getStreetTextBox().getText(),
-						display.getPhoneTextBox().getText(),
-						display.getmobilephoneTextBox().getText(),
-						display.getFaxTextBox().getText(),
-						display.getEmailTextBox().getText(),
-						display.getHomepageTextBox().getText(),
-						display.getBirthTextBox1().getText(),
-						display.getBirthTextBox2().getText(),
-						display.getBirthTextBox3().getText(),
-						display.getPictureUrl(),
-						display.getDiseasesTextBox().getText(),
-						display.getBeltsizeTextBox().getText(),
-						display.getNoteTextBox().getText(),
-						new Integer(display.getTrainingunitsTextBox().getText()),
+				selected = display.getBirthTextBox2().getSelectedIndex();
+				String birthMonth = display.getBirthTextBox2().getItemText(
+						selected);
+
+				selected = display.getBirthTextBox3().getSelectedIndex();
+				String birthYear = display.getBirthTextBox3().getItemText(
+						selected);
+
+				Member member = new Member(0, new Integer(display
+						.getBarcodeTextBox().getText()), display
+						.getForenameTextBox().getText(), display
+						.getSurnameTextBox().getText(), new Integer(display
+						.getZipcodeTextBox().getText()), display
+						.getCityTextBox().getText(), display.getStreetTextBox()
+						.getText(), display.getPhoneTextBox().getText(),
+						display.getmobilephoneTextBox().getText(), display
+								.getFaxTextBox().getText(), display
+								.getEmailTextBox().getText(), display
+								.getHomepageTextBox().getText(), birthDay,
+						birthMonth, birthYear, display.getPictureUrl(), display
+								.getDiseasesTextBox().getText(), display
+								.getBeltsizeTextBox().getText(), display
+								.getNoteTextBox().getText(), new Integer(
+								display.getTrainingunitsTextBox().getText()),
 						courses, grades);
 
 				rpcService.saveMember(member, new AsyncCallback<String>() {
@@ -275,6 +312,8 @@ public class CreateMemberPresenter implements Presenter {
 					public void onSuccess(String result) {
 						System.out.println("result: " + result);
 						if (result.equals("barcode_id already used")) {
+							display.getBarcodeTextBox().setStyleName(
+									"validationFailedBorder");
 							Window.alert(display.getConstants().barcodeUsed());
 						}
 					}
@@ -295,9 +334,9 @@ public class CreateMemberPresenter implements Presenter {
 
 		public void onFinish(IUploader uploader) {
 			if (uploader.getStatus() == Status.SUCCESS) {
+				imageUrl = uploader.getServerResponse();
+				new PreloadedImage(imageUrl, showImage);
 
-				new PreloadedImage(uploader.fileUrl(), showImage);
-				imageUrl = uploader.getFileName();
 			}
 		}
 	};
@@ -306,7 +345,7 @@ public class CreateMemberPresenter implements Presenter {
 	private OnLoadPreloadedImageHandler showImage = new OnLoadPreloadedImageHandler() {
 		public void onLoad(PreloadedImage image) {
 			image.setWidth("100px");
-			display.setImage(image, "uploads/" + imageUrl);
+			display.setImage(image, imageUrl);
 		}
 	};
 	private PopupDescription popupDesc;
@@ -370,25 +409,20 @@ public class CreateMemberPresenter implements Presenter {
 								"validationFailedBorder"))
 		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
 				);
-
-		validator.addValidators("birthDay",
-				new IntegerValidator(display.getBirthTextBox1(), 1, 31)
-						.addActionForFailure(new StyleAction(
-								"validationFailedBorder"))
-		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
-				);
-		validator.addValidators("birthMonth",
-				new IntegerValidator(display.getBirthTextBox2(), 1, 12)
-						.addActionForFailure(new StyleAction(
-								"validationFailedBorder"))
-		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
-				);
-		validator.addValidators("birthYear",
-				new IntegerValidator(display.getBirthTextBox3(), 1900, 2030)
-						.addActionForFailure(new StyleAction(
-								"validationFailedBorder"))
-		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
-				);
+		/*
+		 * validator.addValidators("birthDay", new
+		 * IntegerValidator(display.getBirthTextBox1(), 1, 31)
+		 * .addActionForFailure(new StyleAction( "validationFailedBorder")) //
+		 * .addActionForFailure(new LabelTextAction(forenameErrorLabel)) );
+		 * validator.addValidators("birthMonth", new
+		 * IntegerValidator(display.getBirthTextBox2(), 1, 12)
+		 * .addActionForFailure(new StyleAction( "validationFailedBorder")) //
+		 * .addActionForFailure(new LabelTextAction(forenameErrorLabel)) );
+		 * validator.addValidators("birthYear", new
+		 * IntegerValidator(display.getBirthTextBox3(), 1900, 2030)
+		 * .addActionForFailure(new StyleAction( "validationFailedBorder")) //
+		 * .addActionForFailure(new LabelTextAction(forenameErrorLabel)) );
+		 */
 
 		validator.addValidators("beltsize",
 				new NotEmptyValidator(display.getBeltsizeTextBox())

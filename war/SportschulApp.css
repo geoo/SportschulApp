@@ -124,13 +124,22 @@ h1 {
 }
 
 .memberCreateWrapper {
-	width: 480px;
+	width: 500px;
 	margin: 20px auto 0 auto;
 	padding-top: 20px;
 	padding-left: 20px;
 	background-color: #f5f7fa !important;
 	margin-bottom: 80px;
 	border: 1px solid #a9adc3 !important;
+}
+
+.memberCreateWrapper .gwt-DisclosurePanel .header, .gwt-DisclosurePanel .header a, .gwt-DisclosurePanel .header td {
+	font-size: 16px;
+	width: 300px;
+}
+
+.memberCreateWrapper .gwt-DisclosurePanel .content{
+	border-left: 0px !important;
 }
 
 .birthDayTextBox {
@@ -178,6 +187,8 @@ h1 {
 	margin-bottom: 20px;
 	width: 150px;
 }
+
+
 
 .validationFailedBorder {
 	border: 2px solid red !important;
