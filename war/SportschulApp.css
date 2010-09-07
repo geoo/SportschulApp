@@ -356,3 +356,36 @@ h1 {
 	height: 18px !important;
 }
 
+.createEventWrapper {
+	width: 500px;
+	margin: 20px auto 0 auto;
+	padding-top: 20px;
+	padding-left: 20px;
+	background-color: #f5f7fa !important;
+	margin-bottom: 80px;
+	border: 1px solid #a9adc3 !important;
+}
+
+.createEventWrapper td {
+	height: 50px;
+	width: 200px;
+}
+.createEventWrapper .gwt-DatePicker {
+	margin-bottom: 25px !important;
+}
+.createEventWrapper .gwt-DatePicker td{
+	height: 16px;
+}
+
+.createEventWrapper .gwt-TextBox {
+	border: 2px solid #d4dced;
+	background-color: #ffffff !important;
+	width: 250px;
+	height: 16px !important;
+}
+
+.createEventWrapper .gwt-Label {
+	width: 160px;
+	font-size: 16px;
+	padding-right: 7px;
+}

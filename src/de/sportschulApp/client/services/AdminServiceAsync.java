@@ -6,6 +6,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import de.sportschulApp.shared.Course;
 import de.sportschulApp.shared.Member;
+import de.sportschulApp.shared.User;
 
 public interface AdminServiceAsync {
 	void getMemberList(AsyncCallback<ArrayList<Member>> callback);
@@ -27,4 +28,6 @@ public interface AdminServiceAsync {
 	void getMemberByBarcodeID(int barcodeID, AsyncCallback<Member> callback);
 
 	void createCourse(Course course, AsyncCallback<String> asyncCallback);
+
+	void getInstructorList(AsyncCallback<ArrayList<User>> asyncCallback);
 }

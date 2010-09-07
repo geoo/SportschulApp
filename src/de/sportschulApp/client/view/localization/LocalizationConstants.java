@@ -162,6 +162,16 @@ public interface LocalizationConstants extends Constants {
 
 	String courseCreated();
 
+	String eventName();
+
+	String date();
+
+	String costs();
+
+	String hour();
+
+	String minutes();
+
 
 
 	

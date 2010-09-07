@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+
 import de.sportschulApp.server.BCrypt;
 import de.sportschulApp.shared.User;
 
@@ -65,7 +67,7 @@ public class DataBankerUser implements DataBankerUserInterface {
 	}
 
 	/**
-	 * Lšscht einen Benutzer
+	 * Lï¿½scht einen Benutzer
 	 * 
 	 * @param userID
 	 *            eines Benutzers
@@ -94,7 +96,7 @@ public class DataBankerUser implements DataBankerUserInterface {
 	}
 
 	/**
-	 * €ndert einen Benutzereintrag
+	 * ï¿½ndert einen Benutzereintrag
 	 * 
 	 * @param ein
 	 *            Objekt des Typs User
@@ -129,7 +131,7 @@ public class DataBankerUser implements DataBankerUserInterface {
 	}
 
 	/**
-	 * Ist fŸr den Login eines Benutzers verantwortlich
+	 * Ist fï¿½r den Login eines Benutzers verantwortlich
 	 * 
 	 * @param Benutzername
 	 *            und Passwort des Benutzers
@@ -178,9 +180,8 @@ public class DataBankerUser implements DataBankerUserInterface {
 		return "wrongPW";
 	}
 
-
 	/**
-	 * Liefert ein User Objekt zurŸck
+	 * Liefert ein User Objekt zurï¿½ck
 	 * 
 	 * @param userID
 	 * 
@@ -217,9 +218,48 @@ public class DataBankerUser implements DataBankerUserInterface {
 		return user;
 	}
 
-	
 	/**
-	 * Liefert ein User Objekt zurŸck
+	 * Liefert ein User Objekt zurï¿½ck
+	 * 
+	 * @param userID
+	 * 
+	 * @return Objekt des Typs User
+	 * 
+	 */
+	public ArrayList<User> getUserList() {
+		ArrayList<User> userList = new ArrayList<User>();
+		ResultSet rs = null;
+
+		DataBankerConnection dbc = new DataBankerConnection();
+		Statement stmt = dbc.getStatement();
+		String query = "SELECT * FROM User";
+		try {
+			rs = stmt.executeQuery(query);
+			if (rs.wasNull()) {
+			}
+			while (rs.next()) {
+				User user = new User();
+				user.setUserID(rs.getInt("User_id"));
+				user.setPermission(rs.getString("permission"));
+				user.setUsername(rs.getString("username"));
+				user.setForename(rs.getString("forename"));
+				user.setSurname(rs.getString("surname"));
+				user.setLastLogin(rs.getDate("lastlogin"));
+				userList.add(user);
+			}
+			rs.close();
+			dbc.close();
+			stmt.close();
+			dbc.closeStatement();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return userList;
+	}
+
+	/**
+	 * Liefert ein User Objekt zurï¿½ck
 	 * 
 	 * @param username
 	 * 
