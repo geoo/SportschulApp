@@ -53,12 +53,17 @@ public class AdminPanelPresenter implements Presenter {
 	
 
 	private void bind() {
-		eventBus.addHandler(ShowMemberEvent.TYPE, new ShowMemberEventHandler() {
-			public void onShowMember(ShowMemberEvent event) {
-				doShowMember(event.getBarcode());
-			}
-		});
+		if (!eventBus.isEventHandled(ShowMemberEvent.TYPE)) 
+		{
+			eventBus.addHandler(ShowMemberEvent.TYPE, new ShowMemberEventHandler() {
+				public void onShowMember(ShowMemberEvent event) {
+					doShowMember(event.getBarcode());	
+				}
+			});	
+		}
 	}
+		
+	
 	
 	public void doShowMember(int barcodeID) {
 		DialogBox memberPopup = new DialogBox(true);
@@ -82,7 +87,7 @@ public class AdminPanelPresenter implements Presenter {
 		
 		if (token.equals("adminMembersShowMembers")) {
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(0, constants));
-			contentPresenter =  new MemberListPresenter(rpcService, eventBus, new MemberListView(eventBus));
+			contentPresenter =  new MemberListPresenter(rpcService, eventBus, new MemberListView());
 		} else if (token.equals("adminMembersCreateMember")) {
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(0, constants));
 			contentPresenter =  new CreateMemberPresenter(rpcService, eventBus, new CreateMemberView(constants));
@@ -97,12 +102,11 @@ public class AdminPanelPresenter implements Presenter {
 			contentPresenter =  new CreateCoursePresenter(rpcService, eventBus, new CreateCourseView(constants));
 		} else {
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(0, constants));
-			contentPresenter =  new MemberListPresenter(rpcService, eventBus, new MemberListView(eventBus));
+			contentPresenter =  new MemberListPresenter(rpcService, eventBus, new MemberListView());
 			History.newItem("adminMembersShowMembers");
 		}
 		
 		navigationPresenter.go(display.getNavigationContainer());
 		contentPresenter.go(display.getContentContainer());
 	}
-
 }

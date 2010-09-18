@@ -31,6 +31,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	private final LoginServiceAsync rpcService;
 	private HasWidgets container;
 	private LocalizationConstants constants;
+	private Presenter presenter;
 
 	public AppController(LoginServiceAsync rpcService, HandlerManager eventBus, LocalizationConstants constants) {
 		this.eventBus = eventBus;
@@ -75,11 +76,9 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	private void doLogin() {
 		if (Cookies.getCookie("SportschuleUserRight").equals("admin")) {
 			History.newItem("adminMembersShowMembers");
-			History.fireCurrentHistoryState();
 		}
 		if (Cookies.getCookie("SportschuleUserRight").equals("trainer")) {
 			History.newItem("trainerPanel");
-			History.fireCurrentHistoryState();
 		}
 
 	}
@@ -112,7 +111,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		String token = event.getValue();
 
 		if (token != null) {
-			Presenter presenter = null;
+			presenter = null;
 
 			if (token.equals("login")) {
 				presenter = new LoginPresenter(rpcService, eventBus,

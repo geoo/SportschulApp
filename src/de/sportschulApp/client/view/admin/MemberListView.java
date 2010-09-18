@@ -2,8 +2,10 @@ package de.sportschulApp.client.view.admin;
 
 import java.util.ArrayList;
 
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.HasSelectionHandlers;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
@@ -32,7 +34,7 @@ public class MemberListView extends Composite implements MemberListPresenter.Dis
     VerticalPanel wrapper = new VerticalPanel();
     HandlerManager eventBus;
 	
-	public MemberListView(HandlerManager eventBus) {
+	public MemberListView() {
 		this.eventBus = eventBus;
 		wrapper.addStyleName("memberListWrapper");
 		initWidget(wrapper);
@@ -50,10 +52,10 @@ public class MemberListView extends Composite implements MemberListPresenter.Dis
 		
         lva.setList(memberList);
 
-        setSelectionModel(cellTable);
         cellTable.setPageSize(20);
         cellTable.setSize("700px", "500px");
-        
+		cellTable.setSelectionEnabled(true);
+		
         lva.addView(cellTable);
 
         
@@ -84,31 +86,20 @@ public class MemberListView extends Composite implements MemberListPresenter.Dis
         return tableWrapper;
 	}
 	
-	private void setSelectionModel(CellTable<Member> cellTable) {
-		final SingleSelectionModel<Member> selectionModel = new SingleSelectionModel<Member>();
-		SelectionChangeHandler selectionHandler = new SelectionChangeHandler() {
-			public void onSelectionChange(SelectionChangeEvent event) {
-				Member member = selectionModel.getSelectedObject();
-				eventBus.fireEvent(new ShowMemberEvent(member.getBarcodeID()));
-			}
-		};
-		selectionModel.addSelectionChangeHandler(selectionHandler);
-		cellTable.setSelectionEnabled(true);
-		cellTable.setSelectionModel(selectionModel);
-	}
 
 	public void setMemberList(ArrayList<Member> memberList) {
 		this.memberList = memberList;
 		cellTable.removeFromParent();
 		wrapper.add(createMemberListTable()); 
 	}
+	
+	public void setSelectionModel(SingleSelectionModel selectionModel) {
+		cellTable.setSelectionModel(selectionModel);
+	}
 
 	public Widget asWidget() {
 		return this;
 	}
 	
-//	public HasSelectionHandlers<Member> getMemberListSelection() {
-//		return 
-//	}
 
 }
