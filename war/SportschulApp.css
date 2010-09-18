@@ -150,6 +150,8 @@ h1 {
 	height: 18px !important;
 }
 
+
+
 .birthDayTextBox {
 	width: 70px !important;
 	margin-right: 12px !important;
@@ -272,23 +274,39 @@ h1 {
 
 .dualListBox {
 	background-color: #f5f7fa;
+	width: 260px;
+	padding-bottom: 60px;
 }
 
+.dualListBox td {
+	height: 16px !important;
+}
+ 
 .dualListBox .gwt-Button {
-	width: 50px;
+	width: 40px !important;
+	margin-left: 0px !important;
+	margin-top: 0px !important;
+	margin-bottom: 0px !important;
+}
+
+.dualListBox .gwt-Label {
+	font-size: 13px !important;
+	width: 100px !important;
+	padding-right: 0px !important;
 }
 
 .dualListBox .gwt-Label:hover {
 	background-color: #d4dced;
 }
 
-.dualListBox .gwt-Label:click {
-	background-color: red;
-}
+
 
 .dualListBoxTable {
-	background-color: #ffffff;
+	background-color: white !important;
 	border: 2px solid #d4dced;
+	width: 100px !important;
+	
+
 }
 
 .dragdrop-selected {
@@ -296,4 +314,78 @@ h1 {
 	opacity: 1 !important;
 }
 
+.createCourseWrapper {
+	width: 500px;
+	margin: 20px auto 0 auto;
+	padding-top: 20px;
+	padding-left: 20px;
+	padding-bottom: 20px;
+	background-color: #f5f7fa;
+	border: 1px solid #a9adc3 !important;
+}
 
+.createCourseWrapper td {
+	height: 50px;
+	width: 200px;
+}
+
+.createCourseWrapper .gwt-Label {
+	width: 160px;
+	font-size: 16px;
+	padding-right: 7px;
+}
+
+.createCourseWrapper .gwt-TextBox {
+	border: 2px solid #d4dced;
+	background-color: #ffffff !important;
+	width: 250px;
+	height: 16px !important;
+}
+
+.createCourseWrapper .gwt-Button {
+	margin-left: 167px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	width: 150px;
+}
+
+.validationFailedBorderCourseName {
+	border: 2px solid red !important;
+	background-color: #ffffff !important;
+	width: 253px;
+	height: 18px !important;
+}
+
+.createEventWrapper {
+	width: 500px;
+	margin: 20px auto 0 auto;
+	padding-top: 20px;
+	padding-left: 20px;
+	background-color: #f5f7fa !important;
+	margin-bottom: 80px;
+	border: 1px solid #a9adc3 !important;
+}
+
+.createEventWrapper td {
+	height: 50px;
+	width: 200px;
+}
+.createEventWrapper .gwt-DatePicker {
+	margin-bottom: 25px !important;
+}
+.createEventWrapper .gwt-DatePicker td{
+	height: 16px;
+}
+
+.createEventWrapper .gwt-TextBox {
+	border: 2px solid #d4dced;
+	background-color: #ffffff !important;
+	width: 250px;
+	height: 16px !important;
+}
+
+.createEventWrapper .gwt-Label {
+	width: 160px;
+	font-size: 16px;
+	padding-right: 7px;
+}

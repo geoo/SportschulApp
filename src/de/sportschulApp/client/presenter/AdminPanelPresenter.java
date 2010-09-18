@@ -96,7 +96,7 @@ public class AdminPanelPresenter implements Presenter {
 			contentPresenter =  new EventListPresenter(rpcService, eventBus, new EventListView());
 		} else if (token.equals("adminEventsCreateEvent")) {
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(1, constants));
-			contentPresenter =  new CreateEventPresenter(rpcService, eventBus, new CreateEventView());
+			contentPresenter =  new CreateEventPresenter(rpcService, eventBus, new CreateEventView(constants));
 		} else if (token.equals("adminCourseCreateCourse")) {
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(3, constants));
 			contentPresenter =  new CreateCoursePresenter(rpcService, eventBus, new CreateCourseView(constants));
