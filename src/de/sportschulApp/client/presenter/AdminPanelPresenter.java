@@ -106,7 +106,7 @@ public class AdminPanelPresenter implements Presenter {
 			contentPresenter =  new MemberListPresenter(rpcService, eventBus, new MemberListView());
 			History.newItem("adminMembersShowMembers");
 		}
-		
+		 
 		navigationPresenter.go(display.getNavigationContainer());
 		contentPresenter.go(display.getContentContainer());
 	}

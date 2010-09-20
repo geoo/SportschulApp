@@ -33,7 +33,8 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	private LocalizationConstants constants;
 	private Presenter presenter;
 
-	public AppController(LoginServiceAsync rpcService, HandlerManager eventBus, LocalizationConstants constants) {
+	public AppController(LoginServiceAsync rpcService, HandlerManager eventBus,
+			LocalizationConstants constants) {
 		this.eventBus = eventBus;
 		this.rpcService = rpcService;
 		this.constants = constants;
@@ -54,18 +55,23 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 				doLogout();
 			}
 		});
-		
-		eventBus.addHandler(LanguageChangeEvent.TYPE, new LanguageChangeHandler() {
-			public void onLanguageChange(LanguageChangeEvent event) {
-				if (event.getValue().equals("Deutsch")) {
-					Window.open("SportschulApp.html?gwt.codesvr=127.0.0.1:9997&locale=de#" + History.getToken(), "_self", null);						
-				}
-				if (event.getValue().equals("English")) {
-					Window.open("SportschulApp.html?gwt.codesvr=127.0.0.1:9997&locale=en#" + History.getToken(), "_self", null);					
-				}
-				CookieManager.setLanguageCookie(event.getValue());
-			}
-		});
+
+		eventBus.addHandler(LanguageChangeEvent.TYPE,
+				new LanguageChangeHandler() {
+					public void onLanguageChange(LanguageChangeEvent event) {
+						if (event.getValue().equals("Deutsch")) {
+							Window.open(
+									"SportschulApp.html?gwt.codesvr=127.0.0.1:9997&locale=de#"
+											+ History.getToken(), "_self", null);
+						}
+						if (event.getValue().equals("English")) {
+							Window.open(
+									"SportschulApp.html?gwt.codesvr=127.0.0.1:9997&locale=en#"
+											+ History.getToken(), "_self", null);
+						}
+						CookieManager.setLanguageCookie(event.getValue());
+					}
+				});
 	}
 
 	/*
@@ -130,7 +136,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 								"trainer")) {
 							if (token.substring(0, 7).equals("trainer")) {
 								presenter = new TrainerPanelPresenter(eventBus,
-										new TrainerPanelView());
+										new TrainerPanelView(), constants, token);
 							}
 						}
 					} else {

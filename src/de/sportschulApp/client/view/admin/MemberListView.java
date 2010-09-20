@@ -101,5 +101,6 @@ public class MemberListView extends Composite implements MemberListPresenter.Dis
 		return this;
 	}
 	
+	
 
 }

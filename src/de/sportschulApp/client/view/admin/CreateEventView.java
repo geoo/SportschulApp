@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DatePicker;
 
 import de.sportschulApp.client.presenter.admin.CreateEventPresenter;
+import de.sportschulApp.client.presenter.admin.CreateMemberPresenter;
 import de.sportschulApp.client.view.localization.LocalizationConstants;
 
 public class CreateEventView extends Composite implements
@@ -111,6 +112,7 @@ public class CreateEventView extends Composite implements
 		createEventPanel.add(costsInputPanel);
 		createEventPanel.add(addMemberButton);
 		addMemberToEventPanel.add(createEventButton);
+		
 	}
 
 	public Widget asWidget() {
@@ -135,6 +137,15 @@ public class CreateEventView extends Composite implements
 
 	public VerticalPanel getAddMemberPanel() {
 		return addMemberToEventPanel;
+	}
+
+	public void addMemberlist(MemberListView presenter) {
+		addMemberToEventPanel.add(presenter);
+
+	}
+
+	public LocalizationConstants getConstants() {
+		return constants;
 	}
 
 
