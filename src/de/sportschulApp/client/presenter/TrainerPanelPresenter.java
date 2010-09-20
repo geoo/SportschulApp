@@ -68,10 +68,10 @@ public class TrainerPanelPresenter implements Presenter {
 		Presenter contentPresenter = null;		
 		if (token.equals("trainerPanel")) {
 			navigationPresenter = new TrainerNavigationPresenter(eventBus, new TrainerNavigationView(0, constants));
-			contentPresenter =  new NewTrainingPresenter(rpcService, eventBus, new NewTrainingView());
+			contentPresenter =  new NewTrainingPresenter(rpcService, eventBus, new NewTrainingView(constants));
 		}else {
 			navigationPresenter = new TrainerNavigationPresenter(eventBus, new TrainerNavigationView(0, constants));
-			contentPresenter =  new NewTrainingPresenter(rpcService, eventBus, new NewTrainingView());
+			contentPresenter =  new NewTrainingPresenter(rpcService, eventBus, new NewTrainingView(constants));
 			History.newItem("trainerPanel");
 		}
 		 

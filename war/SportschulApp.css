@@ -150,8 +150,6 @@ h1 {
 	height: 18px !important;
 }
 
-
-
 .birthDayTextBox {
 	width: 70px !important;
 	margin-right: 12px !important;
@@ -281,7 +279,7 @@ h1 {
 .dualListBox td {
 	height: 16px !important;
 }
- 
+
 .dualListBox .gwt-Button {
 	width: 40px !important;
 	margin-left: 0px !important;
@@ -299,14 +297,10 @@ h1 {
 	background-color: #d4dced;
 }
 
-
-
 .dualListBoxTable {
 	background-color: white !important;
 	border: 2px solid #d4dced;
 	width: 100px !important;
-	
-
 }
 
 .dragdrop-selected {
@@ -371,10 +365,12 @@ h1 {
 	height: 50px;
 	width: 200px;
 }
+
 .createEventWrapper .gwt-DatePicker {
 	margin-bottom: 25px !important;
 }
-.createEventWrapper .gwt-DatePicker td{
+
+.createEventWrapper .gwt-DatePicker td {
 	height: 16px;
 }
 
@@ -389,4 +385,36 @@ h1 {
 	width: 160px;
 	font-size: 16px;
 	padding-right: 7px;
+}
+
+.newTrainingWrapper {
+	width: 500px;
+	margin: 20px auto 0 auto;
+	padding-top: 20px;
+	padding-left: 20px;
+	padding-right: 20px;
+	background-color: #f5f7fa !important;
+	margin-bottom: 80px;
+	border: 1px solid #a9adc3 !important;
+}
+
+.newTrainingWrapper td {
+	height: 50px;
+	width: 200px;
+}
+
+.newTrainingWrapper .gwt-TextBox {
+	border: 2px solid #d4dced;
+	background-color: #ffffff !important;
+	width: 250px;
+	height: 16px !important;
+}
+
+.newTrainingWrapper .gwt-Label {
+	width: 160px;
+	font-size: 16px;
+	padding-right: 7px;
+}
+
+.barcodePanel {
 }
