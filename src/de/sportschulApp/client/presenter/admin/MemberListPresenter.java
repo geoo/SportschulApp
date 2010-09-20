@@ -14,6 +14,7 @@ import com.google.gwt.view.client.SelectionModel.SelectionChangeHandler;
 import de.sportschulApp.client.event.ShowMemberEvent;
 import de.sportschulApp.client.presenter.Presenter;
 import de.sportschulApp.client.services.AdminServiceAsync;
+import de.sportschulApp.client.view.admin.MemberListView;
 import de.sportschulApp.shared.Member;
 
 public class MemberListPresenter implements Presenter{
@@ -67,5 +68,9 @@ public class MemberListPresenter implements Presenter{
 		selectionModel.addSelectionChangeHandler(selectionHandler);
 		this.display.setSelectionModel(selectionModel);
 	}
-
+	
+	public Display getDisplay(){
+		return display;
+	}
+	
 }

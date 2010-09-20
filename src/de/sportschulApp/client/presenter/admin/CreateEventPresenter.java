@@ -15,6 +15,9 @@ import com.google.gwt.user.client.ui.Widget;
 
 import de.sportschulApp.client.presenter.Presenter;
 import de.sportschulApp.client.services.AdminServiceAsync;
+import de.sportschulApp.client.view.admin.CreateMemberView;
+import de.sportschulApp.client.view.admin.MemberListView;
+import de.sportschulApp.client.view.localization.LocalizationConstants;
 import de.sportschulApp.shared.User;
 
 public class CreateEventPresenter implements Presenter {
@@ -31,16 +34,29 @@ public class CreateEventPresenter implements Presenter {
 		VerticalPanel getAddMemberPanel();
 
 		HasClickHandlers getCreateEventButtonHandler();
+		
+		void addMemberlist(MemberListView presenter);
+		
+		LocalizationConstants getConstants();
 	}
 
 	private final Display display;
 	private final AdminServiceAsync rpcService;
+	private final HandlerManager eventBus;
 
 	public CreateEventPresenter(AdminServiceAsync rpcService,
 			HandlerManager eventBus, Display display) {
 		this.display = display;
 		this.rpcService = rpcService;
+		this.eventBus = eventBus;
 		bind();
+		addMemberView();
+		
+	}
+
+	private void addMemberView() {
+		MemberListPresenter memberListPresenter = new MemberListPresenter(rpcService, eventBus, new MemberListView());
+		display.addMemberlist((MemberListView) memberListPresenter.getDisplay());		
 	}
 
 	private void bind() {
