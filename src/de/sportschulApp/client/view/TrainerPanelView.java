@@ -10,14 +10,14 @@ import de.sportschulApp.client.presenter.TrainerPanelPresenter;
 
 public class TrainerPanelView extends Composite implements TrainerPanelPresenter.Display {
 
-	VerticalPanel adminPanelContainer;
+	VerticalPanel trainerPanelContainer;
 	VerticalPanel navigationContainer;
 	VerticalPanel contentContainer;
 	
 	public TrainerPanelView() {
 		
-		adminPanelContainer = new VerticalPanel();
-		adminPanelContainer.setSize("100%", "100%");
+		trainerPanelContainer = new VerticalPanel();
+		trainerPanelContainer.setSize("100%", "100%");
 		
 		navigationContainer = new VerticalPanel();
 		navigationContainer.setWidth("100%");
@@ -25,10 +25,10 @@ public class TrainerPanelView extends Composite implements TrainerPanelPresenter
 		contentContainer = new VerticalPanel();
 		contentContainer.setSize("100%", "100%");
 		
-		initWidget(adminPanelContainer);
+		initWidget(trainerPanelContainer);
 		
-		adminPanelContainer.add(navigationContainer);
-		adminPanelContainer.add(contentContainer);
+		trainerPanelContainer.add(navigationContainer);
+		trainerPanelContainer.add(contentContainer);
 			
 	}
 	
