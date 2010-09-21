@@ -2,6 +2,8 @@ package de.sportschulApp.client.view.trainer;
 
 import java.util.*;
 
+import org.apache.tools.ant.types.CommandlineJava.SysProperties;
+
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -24,27 +26,35 @@ public class MemberTrainingEntryView extends Composite implements
 	private Label membernameLabel;
 	private Image picture;
 	private Image deleteButton;
+	private HorizontalPanel diseasesPanel;
+	private VerticalPanel memberTrainingEntryWrapper1;
 
 	public MemberTrainingEntryView(LocalizationConstants constants) {
 		this.constants = constants;
 
-		HorizontalPanel memberTrainingEntryWrapper = new HorizontalPanel();
-		memberTrainingEntryWrapper.setStyleName("memberTrainingEntryWrapper");
-		initWidget(memberTrainingEntryWrapper);
-		
+		memberTrainingEntryWrapper1 = new VerticalPanel();
+
+		HorizontalPanel memberTrainingEntryWrapper2 = new HorizontalPanel();
+		memberTrainingEntryWrapper2.setStyleName("memberTrainingEntryWrapper");
+		memberTrainingEntryWrapper1.add(memberTrainingEntryWrapper2);
+		initWidget(memberTrainingEntryWrapper1);
+
 		VerticalPanel memberDetailPanel = new VerticalPanel();
-		
+
 		deleteButton = new Image("imgs/closeButton.png");
 		deleteButton.setStyleName("deleteButton");
-		
+
 		membernameLabel = new Label();
 		picture = new Image();
 
 		memberDetailPanel.add(membernameLabel);
-		
-		memberTrainingEntryWrapper.add(picture);
-		memberTrainingEntryWrapper.add(memberDetailPanel);
-		memberTrainingEntryWrapper.add(deleteButton);
+
+		memberTrainingEntryWrapper2.add(picture);
+		memberTrainingEntryWrapper2.add(memberDetailPanel);
+		memberTrainingEntryWrapper2.add(deleteButton);
+
+		diseasesPanel = new HorizontalPanel();
+		diseasesPanel.setStyleName("diseasesPanel");
 
 	}
 
@@ -57,9 +67,12 @@ public class MemberTrainingEntryView extends Composite implements
 	}
 
 	public void fillEntry(Member member) {
-		membernameLabel.setText("Name: "+member.getForename() + " " + member.getSurname());
-		
-		
+
+		// member details
+		membernameLabel.setText("Name: " + member.getForename() + " "
+				+ member.getSurname());
+
+		// Image
 		try {
 			if (member.getPicture() == null) {
 				picture.setUrl("imgs/standartMember.jpg");
@@ -69,7 +82,23 @@ public class MemberTrainingEntryView extends Composite implements
 			}
 		} catch (NullPointerException e) {
 		}
-		
+
+		// krankheiten
+		try {
+			//TODO
+			if ((member.getDiseases() != null)
+					|| (!member.getDiseases().equals(""))) {
+				memberTrainingEntryWrapper1.add(diseasesPanel);
+				Label diseasesLabel = new Label("Beschwerden: "
+						+ member.getDiseases());
+				diseasesPanel.add(diseasesLabel);
+			} else {
+
+			}
+		} catch (NullPointerException e) {
+		}
+
+		// geburtstags erinnerung
 		Date today = new Date();
 		Date memberBirthDate = new Date();
 
