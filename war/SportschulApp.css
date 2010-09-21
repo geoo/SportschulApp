@@ -57,6 +57,7 @@ h1 {
 
 .primaryDetailsData {
 	padding-left: 15px;	
+	white-space:nowrap;;
 }
 
 .secondaryDetailsData {
