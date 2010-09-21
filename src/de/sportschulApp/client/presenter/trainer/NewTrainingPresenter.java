@@ -4,15 +4,18 @@ import com.google.gwt.app.client.IntegerBox;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.sportschulApp.client.presenter.Presenter;
 import de.sportschulApp.client.services.TrainerServiceAsync;
 
 import de.sportschulApp.client.view.localization.LocalizationConstants;
+import de.sportschulApp.client.view.trainer.MemberTrainingEntryView;
 import de.sportschulApp.shared.Member;
 
 public class NewTrainingPresenter implements Presenter {
@@ -23,6 +26,8 @@ public class NewTrainingPresenter implements Presenter {
 		LocalizationConstants getConstants();
 
 		TextBox getBarcodeTextBox();
+
+		VerticalPanel getWrapper();
 	}
 
 	private final Display display;
@@ -52,8 +57,27 @@ public class NewTrainingPresenter implements Presenter {
 								}
 
 								public void onSuccess(Member result) {
-									System.out.println(result.getForename());
-									display.getBarcodeTextBox().setSelectionRange(0, display.getBarcodeTextBox().getText().length());
+									try {
+										if (result.getForename() == null) {
+											System.out.println("Barcode nicht in DB!");
+										} else {
+											MemberTrainingEntryPresenter presenter = new MemberTrainingEntryPresenter(
+													result,
+													new MemberTrainingEntryView(
+															constants));
+											display.getWrapper()
+													.insert((MemberTrainingEntryView) presenter
+															.asWidget(), 1);
+
+										}
+										display.getBarcodeTextBox()
+												.setSelectionRange(
+														0,
+														display.getBarcodeTextBox()
+																.getText()
+																.length());
+									} catch (NullPointerException e) {
+									}
 								}
 							});
 				}
