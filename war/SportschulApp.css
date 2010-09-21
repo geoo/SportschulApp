@@ -416,5 +416,35 @@ h1 {
 	padding-right: 7px;
 }
 
+.memberTrainingEntryWrapper .gwt-Image {
+	border: 2px solid #d4dced;
+	width: 100px;
+	height: 100px !important;
+	margin-bottom: 0px !important;
+}
+
+.memberTrainingEntryWrapper {
+	background-color: #ffffff;
+	border: 2px solid #d4dced;
+	margin-bottom: 20px;
+}
+
+.memberTrainingEntryWrapper td {
+	height: 50px;
+	width: 140px;
+}
+
+.memberTrainingEntryWrapper .gwt-Label{
+	width: 312px;
+	margin-left: 10px;
+}
+
+.deleteButton {
+	border: 0px;
+	width: 20px;
+	height: 20px 
+}
+
 .barcodePanel {
+	
 }

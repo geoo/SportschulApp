@@ -1,6 +1,10 @@
 package de.sportschulApp.client.view.trainer;
 
+import java.util.*;
+
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -17,21 +21,30 @@ public class MemberTrainingEntryView extends Composite implements
 		MemberTrainingEntryPresenter.Display {
 
 	private LocalizationConstants constants;
-	private Label test;
+	private Label membernameLabel;
 	private Image picture;
+	private Image deleteButton;
 
 	public MemberTrainingEntryView(LocalizationConstants constants) {
 		this.constants = constants;
 
-		VerticalPanel memberTrainingEntryWrapper = new VerticalPanel();
+		HorizontalPanel memberTrainingEntryWrapper = new HorizontalPanel();
 		memberTrainingEntryWrapper.setStyleName("memberTrainingEntryWrapper");
 		initWidget(memberTrainingEntryWrapper);
-
-		test = new Label();
+		
+		VerticalPanel memberDetailPanel = new VerticalPanel();
+		
+		deleteButton = new Image("imgs/closeButton.png");
+		deleteButton.setStyleName("deleteButton");
+		
+		membernameLabel = new Label();
 		picture = new Image();
 
-		memberTrainingEntryWrapper.add(test);
+		memberDetailPanel.add(membernameLabel);
+		
 		memberTrainingEntryWrapper.add(picture);
+		memberTrainingEntryWrapper.add(memberDetailPanel);
+		memberTrainingEntryWrapper.add(deleteButton);
 
 	}
 
@@ -44,7 +57,9 @@ public class MemberTrainingEntryView extends Composite implements
 	}
 
 	public void fillEntry(Member member) {
-		test.setText(member.getForename() + " " + member.getSurname());
+		membernameLabel.setText("Name: "+member.getForename() + " " + member.getSurname());
+		
+		
 		try {
 			if (member.getPicture() == null) {
 				picture.setUrl("imgs/standartMember.jpg");
@@ -54,6 +69,33 @@ public class MemberTrainingEntryView extends Composite implements
 			}
 		} catch (NullPointerException e) {
 		}
+		
+		Date today = new Date();
+		Date memberBirthDate = new Date();
 
+		memberBirthDate
+				.setYear(Integer.parseInt((member.getBirthYear())) - 1900);
+		memberBirthDate.setMonth(Integer.parseInt(member.getBirthMonth()) - 1);
+		memberBirthDate.setDate(Integer.parseInt(member.getBirthDay()));
+
+		if (((memberBirthDate.getDate() == today.getDate()))
+				&& memberBirthDate.getMonth() == today.getMonth()) {
+			System.out.println("Member hat heute Geburtstag!");
+		} else if (((memberBirthDate.getDate() - today.getDate()) >= -7)
+				&& ((memberBirthDate.getDate() - today.getDate()) <= 0)
+				&& memberBirthDate.getMonth() == today.getMonth()) {
+			System.out.println("Member hatte am " + member.getBirthDay() + "."
+					+ member.getBirthMonth() + "." + member.getBirthYear()
+					+ " Geburtstag");
+		} else if (((today.getDate() - memberBirthDate.getDate()) <= -23)
+				&& memberBirthDate.getMonth() == today.getMonth() - 1) {
+			System.out.println("Member hatte am " + member.getBirthDay() + "."
+					+ member.getBirthMonth() + "." + member.getBirthYear()
+					+ " Geburtstag");
+		}
+	}
+
+	public Image getDeleteButton() {
+		return deleteButton;
 	}
 }
