@@ -445,33 +445,44 @@ h1 {
 	padding-right: 7px;
 }
 
-.newTrainingWrapper {
+.barcodePanel {
 	width: 500px;
 	margin: 20px auto 0 auto;
 	padding-top: 20px;
 	padding-left: 20px;
 	padding-right: 20px;
 	background-color: #f5f7fa !important;
-	margin-bottom: 80px;
+	margin-bottom: 25px;
 	border: 1px solid #a9adc3 !important;
 }
 
-.newTrainingWrapper td {
+.barcodePanel td {
 	height: 50px;
 	width: 200px;
 }
 
-.newTrainingWrapper .gwt-TextBox {
+.barcodePanel .gwt-TextBox {
 	border: 2px solid #d4dced;
 	background-color: #ffffff !important;
 	width: 250px;
 	height: 16px !important;
 }
 
-.newTrainingWrapper .gwt-Label {
+.barcodePanel .gwt-Label {
 	width: 160px;
 	font-size: 16px;
 	padding-right: 7px;
+}
+
+.memberEntryPanel {
+	width: 700px;
+	margin: 20px auto 0 auto;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-bottom: 20px;
+	background-color: #f5f7fa !important;
+	margin-bottom: 80px;
+	border: 1px solid #a9adc3 !important;
 }
 
 .memberTrainingEntryWrapper .gwt-Image {
@@ -484,25 +495,36 @@ h1 {
 .memberTrainingEntryWrapper {
 	background-color: #ffffff;
 	border: 2px solid #d4dced;
-	margin-bottom: 20px;
+	margin-top: 25px;
 }
 
 .memberTrainingEntryWrapper td {
-	height: 50px;
 	width: 140px;
 }
 
-.memberTrainingEntryWrapper .gwt-Label{
-	width: 312px;
+.memberTrainingEntryWrapper .gwt-Label {
+	width: 515px;
 	margin-left: 10px;
+	font-size: 18px
 }
 
 .deleteButton {
 	border: 0px;
 	width: 20px;
-	height: 20px 
+	height: 20px
 }
 
-.barcodePanel {
-	
+.newTrainingWrapper {
+	margin: 20px auto 0 auto;
+}
+
+.diseasesPanel {
+	margin-left: 110px !important;
+	border: 2px solid red !important;
+	width: 547px;
+	padding-left: 5px;
+}
+
+.diseasesPanel .gwt-Label {
+	font-size: 14px;
 }

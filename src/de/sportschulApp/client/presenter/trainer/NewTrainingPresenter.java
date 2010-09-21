@@ -67,7 +67,7 @@ public class NewTrainingPresenter implements Presenter {
 															constants));
 											display.getWrapper()
 													.insert((MemberTrainingEntryView) presenter
-															.asWidget(), 1);
+															.asWidget(), 0);
 
 										}
 										display.getBarcodeTextBox()
