@@ -17,11 +17,12 @@ public class NewTrainingView extends Composite implements
 	private LocalizationConstants constants;
 	private Label barcodeLabel;
 	private TextBox barcodeTextBox;
+	private VerticalPanel newTrainingWrapper;
 
 	public NewTrainingView(LocalizationConstants constants) {
 		this.constants = constants;
 		
-		VerticalPanel newTrainingWrapper = new VerticalPanel();
+		newTrainingWrapper = new VerticalPanel();
 		newTrainingWrapper.setStyleName("newTrainingWrapper");
 		initWidget(newTrainingWrapper);
 		
@@ -45,6 +46,10 @@ public class NewTrainingView extends Composite implements
 
 	public TextBox getBarcodeTextBox() {
 		return barcodeTextBox;
+	}
+
+	public VerticalPanel getWrapper() {
+		return newTrainingWrapper;
 	}
 
 }
