@@ -36,6 +36,63 @@ h1 {
 	width: 700px;
 }
 
+.gwt-DialogBox {
+	clip: auto !important;
+}
+
+.gwt-DialogBox .dialogContent {
+	padding:10px;
+	background-color: #f5f7fa;
+}
+
+.gwt-DialogBox .dialogMiddleCenter {
+	padding: 0px !important;
+}
+
+.showMember_Picture {
+	margin-top: 7px;
+	border: 2px solid #000000;	
+}
+
+
+.primaryDetailsData {
+	padding-left: 15px;	
+}
+
+.secondaryDetailsData {
+	width: 100%;
+}
+
+.primaryDetailsData .gwt-Label {
+	font-size: 15px;
+}
+
+.secondaryDetailsData .gwt-Label {
+	font-size: 15px;
+}
+
+.primaryDetailsData td:nth-child(1) {
+	color: #6d747f;
+	padding-right: 50px;
+}
+
+.primaryDetailsData td:nth-child(2) {
+	text-align: right;
+}
+
+.secondaryDetailsData td:nth-child(1) {
+	color: #6d747f;
+	padding-right: 50px;
+}
+
+.secondaryDetailsData td:nth-child(2) {
+	text-align: right;
+}
+
+.primaryDetailsData tr {
+	border-bottom: 1px solid black !important;
+}
+
 .navigationPanel {
 	margin-left: 20px;
 	margin-right: auto;

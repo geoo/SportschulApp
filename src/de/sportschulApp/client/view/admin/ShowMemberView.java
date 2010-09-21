@@ -1,5 +1,6 @@
 package de.sportschulApp.client.view.admin;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -25,60 +26,54 @@ public class ShowMemberView extends Composite implements ShowMemberPresenter.Dis
 	private Label faxLabel = new Label();
 	private Label emailLabel = new Label();
 	private Label homepageLabel = new Label();
-	private Label birthDayLabel = new Label();
-	private Label birthMonthLabel = new Label();
-	private Label birthYearLabel = new Label();
+	private Label birthContainer = new Label();
 	private Label beltSizeLabel = new Label();
 	private Label noteLabel = new Label();
-	private Image memberPicture = new Image();
+	private Image memberPicture = new Image("");
 	
 	public ShowMemberView(LocalizationConstants constants) {
 		VerticalPanel memberPanel = new VerticalPanel();
 		initWidget(memberPanel);
 		
-		HorizontalPanel birthContainer = new HorizontalPanel();
-		birthContainer.add(birthDayLabel);
-		birthContainer.add(new Label("."));
-		birthContainer.add(birthMonthLabel);
-		birthContainer.add(new Label("."));
-		birthContainer.add(birthYearLabel);
+		memberPicture.setHeight("200px");
+		memberPicture.setStyleName("showMember_Picture");
 		
 		HorizontalPanel primaryDetailsPanel = new HorizontalPanel();
 		primaryDetailsPanel.add(memberPicture);
 		
 		FlexTable primaryDetailsData = new FlexTable();
-		primaryDetailsData.setWidget(0, 0, new Label(constants.barcode()));
+		primaryDetailsData.setStyleName("primaryDetailsData");
+		primaryDetailsData.setWidget(0, 0, new Label(constants.barcode() + ":"));
 		primaryDetailsData.setWidget(0, 1, barcodeIDLabel);
-		primaryDetailsData.setWidget(1, 0, new Label(constants.surname()));
-		primaryDetailsData.setWidget(1, 1, surnameLabel);
-		primaryDetailsData.setWidget(2, 0, new Label(constants.forename()));
-		primaryDetailsData.setWidget(2, 1, forenameLabel);
-		primaryDetailsData.setWidget(3, 0, new Label(constants.phone()));
-		primaryDetailsData.setWidget(3, 1, phoneLabel);
-		primaryDetailsData.setWidget(4, 0, new Label(constants.birth()));
-		primaryDetailsData.setWidget(4, 1, birthContainer);
+		primaryDetailsData.setWidget(1, 0, new Label(constants.forename() + ":"));
+		primaryDetailsData.setWidget(1, 1, forenameLabel);
+		primaryDetailsData.setWidget(2, 0, new Label(constants.surname() + ":"));
+		primaryDetailsData.setWidget(2, 1, surnameLabel);
+		primaryDetailsData.setWidget(3, 0, new Label(constants.birth() + ":"));
+		primaryDetailsData.setWidget(3, 1, birthContainer);
+		primaryDetailsData.setWidget(4, 0, new Label(constants.city() + ":"));
+		primaryDetailsData.setWidget(4, 1, cityLabel);
+		primaryDetailsData.setWidget(5, 0, new Label(constants.street() + ":"));
+		primaryDetailsData.setWidget(5, 1, streetLabel);
+		primaryDetailsData.setWidget(6, 0, new Label(constants.phone() + ":"));
+		primaryDetailsData.setWidget(6, 1, phoneLabel);
 		
 		primaryDetailsPanel.add(primaryDetailsData);
 		
 		FlexTable secondaryDetailsData = new FlexTable();
-		secondaryDetailsData.setWidget(0, 0, new Label(constants.city()));
-		secondaryDetailsData.setWidget(0, 1, cityLabel);
-		secondaryDetailsData.setWidget(1, 0, new Label(constants.street()));
-		secondaryDetailsData.setWidget(1, 1, streetLabel);
-		secondaryDetailsData.setWidget(2, 0, new Label(constants.phone()));
-		secondaryDetailsData.setWidget(2, 1, phoneLabel);
-		secondaryDetailsData.setWidget(3, 0, new Label(constants.mobilephone()));
-		secondaryDetailsData.setWidget(3, 1, mobilePhoneLabel);
-		secondaryDetailsData.setWidget(4, 0, new Label(constants.fax()));
-		secondaryDetailsData.setWidget(4, 1, faxLabel);
-		secondaryDetailsData.setWidget(5, 0, new Label(constants.email()));
-		secondaryDetailsData.setWidget(5, 1, emailLabel);
-		secondaryDetailsData.setWidget(6, 0, new Label(constants.homepage()));
-		secondaryDetailsData.setWidget(6, 1, homepageLabel);
-		secondaryDetailsData.setWidget(7, 0, new Label(constants.beltsize()));
-		secondaryDetailsData.setWidget(7, 1, beltSizeLabel);
-		secondaryDetailsData.setWidget(8, 0, new Label(constants.note()));
-		secondaryDetailsData.setWidget(8, 1, noteLabel);
+		secondaryDetailsData.setStyleName("secondaryDetailsData");
+		secondaryDetailsData.setWidget(0, 0, new Label(constants.mobilephone() + ":"));
+		secondaryDetailsData.setWidget(0, 1, mobilePhoneLabel);
+		secondaryDetailsData.setWidget(1, 0, new Label(constants.fax() + ":"));
+		secondaryDetailsData.setWidget(1, 1, faxLabel);
+		secondaryDetailsData.setWidget(2, 0, new Label(constants.email() + ":"));
+		secondaryDetailsData.setWidget(2, 1, emailLabel);
+		secondaryDetailsData.setWidget(3, 0, new Label(constants.homepage() + ":"));
+		secondaryDetailsData.setWidget(3, 1, homepageLabel);
+		secondaryDetailsData.setWidget(4, 0, new Label(constants.beltsize() + ":"));
+		secondaryDetailsData.setWidget(4, 1, beltSizeLabel);
+		secondaryDetailsData.setWidget(5, 0, new Label(constants.note() + ":"));
+		secondaryDetailsData.setWidget(5, 1, noteLabel);
 		
 		memberPanel.add(primaryDetailsPanel);
 		memberPanel.add(secondaryDetailsData);
@@ -100,12 +95,17 @@ public class ShowMemberView extends Composite implements ShowMemberPresenter.Dis
 		this.faxLabel.setText(member.getFax());
 		this.emailLabel.setText(member.getEmail());
 		this.homepageLabel.setText(member.getHomepage());
-		this.birthDayLabel.setText(member.getBirthDay());
-		this.birthMonthLabel.setText(member.getBirthMonth());
-		this.birthYearLabel.setText(member.getBirthYear());
+		this.birthContainer.setText(member.getBirthDay() + "." + member.getBirthMonth() + "." + member.getBirthYear());
 		this.beltSizeLabel.setText(member.getBeltsize());
 		this.noteLabel.setText(member.getNote());
-		this.memberPicture.setUrl(member.getPicture());
+		
+		try {
+			if(!member.getPicture().equals(null)) {
+				this.memberPicture.setUrl(member.getPicture());
+			}
+		} catch (NullPointerException e) {
+			this.memberPicture.setUrl("imgs/standartMember.jpg");
+		}
 	}
 
 }
