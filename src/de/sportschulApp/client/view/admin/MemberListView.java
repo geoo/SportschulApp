@@ -52,12 +52,11 @@ public class MemberListView extends Composite implements MemberListPresenter.Dis
 		
         lva.setList(memberList);
 
-        cellTable.setPageSize(20);
+        cellTable.setPageSize(500);
         cellTable.setSize("700px", "500px");
 		cellTable.setSelectionEnabled(true);
 		
         lva.addView(cellTable);
-
         
         cellTable.addColumn(new TextColumn<Member>() {
             public String getValue(Member member) {
@@ -77,10 +76,6 @@ public class MemberListView extends Composite implements MemberListPresenter.Dis
             }
         }, "Stadt");
 
-        SimplePager<Member> pager = new SimplePager<Member>(cellTable, SimplePager.TextLocation.CENTER);
-        pager.setRangeLimited(true);
-		
-        tableWrapper.add(pager);
         tableWrapper.add(cellTable);
         
         return tableWrapper;

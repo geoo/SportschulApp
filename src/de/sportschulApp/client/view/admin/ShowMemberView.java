@@ -29,10 +29,13 @@ public class ShowMemberView extends Composite implements ShowMemberPresenter.Dis
 	private Label birthContainer = new Label();
 	private Label beltSizeLabel = new Label();
 	private Label noteLabel = new Label();
+	private Label trainingUnitsLabel = new Label();
+	private Label coursesLabel = new Label();
 	private Image memberPicture = new Image("");
 	
 	public ShowMemberView(LocalizationConstants constants) {
 		VerticalPanel memberPanel = new VerticalPanel();
+		memberPanel.setWidth("450px");
 		initWidget(memberPanel);
 		
 		memberPicture.setHeight("200px");
@@ -74,6 +77,8 @@ public class ShowMemberView extends Composite implements ShowMemberPresenter.Dis
 		secondaryDetailsData.setWidget(4, 1, beltSizeLabel);
 		secondaryDetailsData.setWidget(5, 0, new Label(constants.note() + ":"));
 		secondaryDetailsData.setWidget(5, 1, noteLabel);
+		secondaryDetailsData.setWidget(6, 0, new Label(constants.course() + ":"));
+		secondaryDetailsData.setWidget(6, 1, coursesLabel);
 		
 		memberPanel.add(primaryDetailsPanel);
 		memberPanel.add(secondaryDetailsData);
@@ -98,6 +103,7 @@ public class ShowMemberView extends Composite implements ShowMemberPresenter.Dis
 		this.birthContainer.setText(member.getBirthDay() + "." + member.getBirthMonth() + "." + member.getBirthYear());
 		this.beltSizeLabel.setText(member.getBeltsize());
 		this.noteLabel.setText(member.getNote());
+		this.trainingUnitsLabel.setText(member.getTrainingunits() + "");
 		
 		try {
 			if(!member.getPicture().equals(null)) {
@@ -106,6 +112,10 @@ public class ShowMemberView extends Composite implements ShowMemberPresenter.Dis
 		} catch (NullPointerException e) {
 			this.memberPicture.setUrl("imgs/standartMember.jpg");
 		}
+	}
+	
+	public void setMemberCourses(String courses) {
+		this.coursesLabel.setText(courses);
 	}
 
 }

@@ -30,4 +30,6 @@ public interface AdminServiceAsync {
 	void createCourse(Course course, AsyncCallback<String> asyncCallback);
 
 	void getInstructorList(AsyncCallback<ArrayList<User>> asyncCallback);
+
+	void getCourseName(int id, AsyncCallback<String> callback);
 }

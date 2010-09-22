@@ -76,5 +76,9 @@ public class AdminServiceImpl extends RemoteServiceServlet implements
 		return dbu.getUserList();
 	}
 
+	public String getCourseName(int id) {
+		return dbc.getCourseName(id);
+	}
+
 
 }

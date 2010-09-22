@@ -14,9 +14,6 @@ h1 {
 }
 
 /** Most GWT widgets already have a style name defined */
-.gwt-DialogBox {
-	width: 400px;
-}
 
 .dialogVPanel {
 	margin: 5px;
@@ -36,10 +33,6 @@ h1 {
 	width: 700px;
 }
 
-.gwt-DialogBox {
-	clip: auto !important;
-}
-
 .gwt-DialogBox .dialogContent {
 	padding: 10px;
 	background-color: #f5f7fa;
@@ -55,6 +48,7 @@ h1 {
 }
 
 .primaryDetailsData {
+	width: 300px;
 	padding-left: 15px;	
 	white-space:nowrap;
 }
