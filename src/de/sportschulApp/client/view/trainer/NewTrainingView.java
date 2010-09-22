@@ -1,6 +1,8 @@
 package de.sportschulApp.client.view.trainer;
 
 
+import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -19,6 +21,7 @@ public class NewTrainingView extends Composite implements
 	private TextBox barcodeTextBox;
 	private VerticalPanel newTrainingWrapper;
 	private VerticalPanel memberEntryPanel;
+	private Button scanButton;
 
 	public NewTrainingView(LocalizationConstants constants) {
 		this.constants = constants;
@@ -31,15 +34,15 @@ public class NewTrainingView extends Composite implements
 		barcodeInputPanel.setStyleName("barcodePanel");
 		barcodeLabel = new Label(constants.barcode() + ": ");
 		barcodeTextBox = new TextBox();
+		scanButton = new Button(constants.scan());
 		barcodeInputPanel.add(barcodeLabel);
 		barcodeInputPanel.add(barcodeTextBox);
+		barcodeInputPanel.add(scanButton);
 		
 		memberEntryPanel = new VerticalPanel();
-		memberEntryPanel.setStyleName("memberEntryPanel");
 		
 		newTrainingWrapper.add(barcodeInputPanel);
 		newTrainingWrapper.add(memberEntryPanel);
-
 	}
 
 	public Widget asWidget() {
@@ -56,6 +59,9 @@ public class NewTrainingView extends Composite implements
 
 	public VerticalPanel getWrapper() {
 		return memberEntryPanel;
+	}
+	public HasClickHandlers getScanButton(){
+		return scanButton;
 	}
 
 }
