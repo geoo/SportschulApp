@@ -295,6 +295,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 				courses.add(rs.getInt("course_08"));
 				courses.add(rs.getInt("course_09"));
 				courses.add(rs.getInt("course_10"));
+				member.setCourses(courses);
 
 				ArrayList<Integer> graduation = new ArrayList<Integer>();
 				graduation.add(rs.getInt("graduation_01"));
@@ -307,6 +308,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 				graduation.add(rs.getInt("graduation_08"));
 				graduation.add(rs.getInt("graduation_09"));
 				graduation.add(rs.getInt("graduation_10"));
+				member.setGraduations(graduation);
 			}
 			rs.close();
 			dbc.close();
