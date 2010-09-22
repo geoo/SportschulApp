@@ -345,7 +345,7 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 		ResultSet rs = null;
 		Statement stmt = dbc.getStatement();
 
-		String query = "SELECT name FROM Courses where course_id = '"
+		String query = "SELECT name FROM Courses where Courses_id = '"
 				+ courseID + "'";
 
 		try {
