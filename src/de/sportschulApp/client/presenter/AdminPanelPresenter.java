@@ -68,7 +68,8 @@ public class AdminPanelPresenter implements Presenter {
 		memberPopup.setText("Detailansicht");
 		memberPopup.setGlassEnabled(true);
 		memberPopup.center();
-		memberPopup.setPopupPosition(memberPopup.getAbsoluteLeft(), memberPopup.getAbsoluteTop() - 300);
+		memberPopup.setPopupPosition(memberPopup.getAbsoluteLeft(), 100);
+		memberPopup.setWidth("auto");
 		Presenter showMemberPresenter = null;
 		showMemberPresenter =  new ShowMemberPresenter(rpcService, eventBus, new ShowMemberView(constants), barcodeID);
 		showMemberPresenter.go(memberPopup);
