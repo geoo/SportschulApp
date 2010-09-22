@@ -1,6 +1,5 @@
 package de.sportschulApp.client.view.admin;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -30,9 +29,10 @@ public class ShowMemberView extends Composite implements ShowMemberPresenter.Dis
 	private Label beltSizeLabel = new Label();
 	private Label noteLabel = new Label();
 	private Label trainingUnitsLabel = new Label();
-	private Label coursesLabel = new Label();
+	private Label coursesLabel = new Label("lol");
 	private Image memberPicture = new Image("");
-	
+	FlexTable secondaryDetailsData = new FlexTable();
+
 	public ShowMemberView(LocalizationConstants constants) {
 		VerticalPanel memberPanel = new VerticalPanel();
 		memberPanel.setWidth("450px");
@@ -63,22 +63,23 @@ public class ShowMemberView extends Composite implements ShowMemberPresenter.Dis
 		
 		primaryDetailsPanel.add(primaryDetailsData);
 		
-		FlexTable secondaryDetailsData = new FlexTable();
 		secondaryDetailsData.setStyleName("secondaryDetailsData");
-		secondaryDetailsData.setWidget(0, 0, new Label(constants.mobilephone() + ":"));
-		secondaryDetailsData.setWidget(0, 1, mobilePhoneLabel);
-		secondaryDetailsData.setWidget(1, 0, new Label(constants.fax() + ":"));
-		secondaryDetailsData.setWidget(1, 1, faxLabel);
-		secondaryDetailsData.setWidget(2, 0, new Label(constants.email() + ":"));
-		secondaryDetailsData.setWidget(2, 1, emailLabel);
-		secondaryDetailsData.setWidget(3, 0, new Label(constants.homepage() + ":"));
-		secondaryDetailsData.setWidget(3, 1, homepageLabel);
-		secondaryDetailsData.setWidget(4, 0, new Label(constants.beltsize() + ":"));
-		secondaryDetailsData.setWidget(4, 1, beltSizeLabel);
-		secondaryDetailsData.setWidget(5, 0, new Label(constants.note() + ":"));
-		secondaryDetailsData.setWidget(5, 1, noteLabel);
-		secondaryDetailsData.setWidget(6, 0, new Label(constants.course() + ":"));
-		secondaryDetailsData.setWidget(6, 1, coursesLabel);
+		secondaryDetailsData.setWidget(0, 0, new Label(constants.course() + ":"));
+		secondaryDetailsData.setWidget(0, 1, coursesLabel);
+		secondaryDetailsData.setWidget(1, 0, new Label(constants.trainingunits() + ":"));
+		secondaryDetailsData.setWidget(1, 1, trainingUnitsLabel);
+		secondaryDetailsData.setWidget(2, 0, new Label(constants.mobilephone() + ":"));
+		secondaryDetailsData.setWidget(2, 1, mobilePhoneLabel);
+		secondaryDetailsData.setWidget(3, 0, new Label(constants.fax() + ":"));
+		secondaryDetailsData.setWidget(3, 1, faxLabel);
+		secondaryDetailsData.setWidget(4, 0, new Label(constants.email() + ":"));
+		secondaryDetailsData.setWidget(4, 1, emailLabel);
+		secondaryDetailsData.setWidget(5, 0, new Label(constants.homepage() + ":"));
+		secondaryDetailsData.setWidget(5, 1, homepageLabel);
+		secondaryDetailsData.setWidget(6, 0, new Label(constants.beltsize() + ":"));
+		secondaryDetailsData.setWidget(6, 1, beltSizeLabel);
+		secondaryDetailsData.setWidget(7, 0, new Label(constants.note() + ":"));
+		secondaryDetailsData.setWidget(7, 1, noteLabel);
 		
 		memberPanel.add(primaryDetailsPanel);
 		memberPanel.add(secondaryDetailsData);

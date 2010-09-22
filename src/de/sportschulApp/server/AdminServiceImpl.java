@@ -79,6 +79,11 @@ public class AdminServiceImpl extends RemoteServiceServlet implements
 	public String getCourseName(int id) {
 		return dbc.getCourseName(id);
 	}
+	
+	public String getCourseBeltPair(int courseID, int beltID) {
+		return dbc.getCourseBeltPair(courseID, beltID);
+	}
+
 
 
 }

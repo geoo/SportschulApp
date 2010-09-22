@@ -32,4 +32,7 @@ public interface AdminServiceAsync {
 	void getInstructorList(AsyncCallback<ArrayList<User>> asyncCallback);
 
 	void getCourseName(int id, AsyncCallback<String> callback);
+
+	void getCourseBeltPair(int courseID, int beltID,
+			AsyncCallback<String> callback);
 }

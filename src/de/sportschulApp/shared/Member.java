@@ -1,7 +1,6 @@
 package de.sportschulApp.shared;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
