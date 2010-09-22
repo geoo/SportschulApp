@@ -5,12 +5,16 @@ import java.util.*;
 import org.apache.tools.ant.types.CommandlineJava.SysProperties;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.rpc.client.RpcService;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DecoratedPopupPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -23,11 +27,16 @@ public class MemberTrainingEntryView extends Composite implements
 		MemberTrainingEntryPresenter.Display {
 
 	private LocalizationConstants constants;
-	private Label membernameLabel;
+	private Label membernameLabel1;
 	private Image picture;
 	private Image deleteButton;
 	private HorizontalPanel diseasesPanel;
 	private VerticalPanel memberTrainingEntryWrapper1;
+	private Image noteButton;
+	private Member member;
+	private Label trainingsPresenceLabel1;
+	private Label membernameLabel2;
+	private Label trainingsPresenceLabel2;
 
 	public MemberTrainingEntryView(LocalizationConstants constants) {
 		this.constants = constants;
@@ -39,18 +48,34 @@ public class MemberTrainingEntryView extends Composite implements
 		memberTrainingEntryWrapper1.add(memberTrainingEntryWrapper2);
 		initWidget(memberTrainingEntryWrapper1);
 
-		VerticalPanel memberDetailPanel = new VerticalPanel();
+		VerticalPanel memberDetailPanel1 = new VerticalPanel();
+		memberDetailPanel1.setStyleName("memberDetailPanel1");
+		VerticalPanel memberDetailPanel2 = new VerticalPanel();
+		memberDetailPanel2.setStyleName("memberDetailPanel2");
+
+		noteButton = new Image("imgs/note.png");
+		noteButton.setStyleName("noteButton");
 
 		deleteButton = new Image("imgs/closeButton.png");
 		deleteButton.setStyleName("deleteButton");
 
-		membernameLabel = new Label();
+		membernameLabel1 = new Label(constants.name() + ": ");
+		membernameLabel2 = new Label();
+		trainingsPresenceLabel1 = new Label();
+		trainingsPresenceLabel2 = new Label();
+
 		picture = new Image();
 
-		memberDetailPanel.add(membernameLabel);
+		memberDetailPanel1.add(membernameLabel1);
+		memberDetailPanel1.add(trainingsPresenceLabel1);
+
+		memberDetailPanel2.add(membernameLabel2);
+		memberDetailPanel2.add(trainingsPresenceLabel2);
 
 		memberTrainingEntryWrapper2.add(picture);
-		memberTrainingEntryWrapper2.add(memberDetailPanel);
+		memberTrainingEntryWrapper2.add(memberDetailPanel1);
+		memberTrainingEntryWrapper2.add(memberDetailPanel2);
+		memberTrainingEntryWrapper2.add(noteButton);
 		memberTrainingEntryWrapper2.add(deleteButton);
 
 		diseasesPanel = new HorizontalPanel();
@@ -66,11 +91,43 @@ public class MemberTrainingEntryView extends Composite implements
 		return constants;
 	}
 
-	public void fillEntry(Member member) {
+	public void fillEntry(Member member, Integer trainingspresence) {
+
+		this.member = member;
+		Date today = new Date();
+		HashMap<Integer, String> months = new HashMap<Integer, String>();
+		months.put(0, constants.january());
+		months.put(1, constants.february());
+		months.put(2, constants.march());
+		months.put(3, constants.april());
+		months.put(4, constants.may());
+		months.put(5, constants.june());
+		months.put(6, constants.july());
+		months.put(7, constants.august());
+		months.put(8, constants.september());
+		months.put(9, constants.october());
+		months.put(10, constants.november());
+		months.put(11, constants.december());
 
 		// member details
-		membernameLabel.setText("Name: " + member.getForename() + " "
+		membernameLabel2.setText(member.getForename() + " "
 				+ member.getSurname());
+		trainingsPresenceLabel1.setText(constants.presence() + " "
+				+ months.get(today.getMonth()) + ": ");
+		trainingsPresenceLabel2.setText(trainingspresence + " "
+				+ constants.from() + " " + member.getTrainingunits());
+		if (trainingspresence <= member.getTrainingunits()) {
+
+			// TODO
+			trainingsPresenceLabel2.setStyleName("trainingspresenceGreen");
+			// thumbs up
+		} else {
+			
+			// TODO
+			trainingsPresenceLabel2.setStyleName("trainingspresenceRed");
+
+			// thumbs down
+		}
 
 		// Image
 		try {
@@ -85,13 +142,13 @@ public class MemberTrainingEntryView extends Composite implements
 
 		// krankheiten
 		try {
-			//TODO
-			if ((member.getDiseases() != null)
-					|| (!member.getDiseases().equals(""))) {
-				memberTrainingEntryWrapper1.add(diseasesPanel);
-				Label diseasesLabel = new Label("Beschwerden: "
-						+ member.getDiseases());
-				diseasesPanel.add(diseasesLabel);
+			if (member.getDiseases() != null) {
+				if (member.getDiseases().length() > 0) {
+					memberTrainingEntryWrapper1.add(diseasesPanel);
+					Label diseasesLabel = new Label("Beschwerden: "
+							+ member.getDiseases());
+					diseasesPanel.add(diseasesLabel);
+				}
 			} else {
 
 			}
@@ -99,7 +156,6 @@ public class MemberTrainingEntryView extends Composite implements
 		}
 
 		// geburtstags erinnerung
-		Date today = new Date();
 		Date memberBirthDate = new Date();
 
 		memberBirthDate
@@ -126,5 +182,37 @@ public class MemberTrainingEntryView extends Composite implements
 
 	public Image getDeleteButton() {
 		return deleteButton;
+	}
+
+	public Image getNoteButton() {
+		return noteButton;
+	}
+
+	public void showPopup(MouseDownEvent event) {
+		DecoratedPopupPanel popup = new DecoratedPopupPanel(true);
+		popup.setStyleName("showNotePopup");
+
+		VerticalPanel popupVerticalPanel = new VerticalPanel();
+
+		TextArea popupTextBox = new TextArea();
+		popupTextBox.setText(member.getNote());
+		popupVerticalPanel.add(popupTextBox);
+
+		HorizontalPanel popupButtonPanel = new HorizontalPanel();
+		Button saveNoteButton = new Button(constants.save());
+		Button cancelButton = new Button(constants.cancel());
+		popupButtonPanel.add(saveNoteButton);
+		popupButtonPanel.add(cancelButton);
+
+		popupVerticalPanel.add(popupButtonPanel);
+
+		popup.setWidget(popupVerticalPanel);
+		Widget source = (Widget) event.getSource();
+		int left = source.getAbsoluteLeft() - 180;
+		int top = source.getAbsoluteTop() + 10;
+		popup.setPopupPosition(left, top);
+
+		popup.show();
+
 	}
 }

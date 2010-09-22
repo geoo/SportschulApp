@@ -282,6 +282,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 				member.setDiseases(rs.getString("diseases"));
 				member.setBeltsize(rs.getString("beltsize"));
 				member.setNote(rs.getString("note"));
+				member.setTrainingunits(rs.getInt("trainingunits"));
 
 				ArrayList<Integer> courses = new ArrayList<Integer>();
 				courses.add(rs.getInt("course_01"));
@@ -438,12 +439,12 @@ public class DataBankerMember implements DataBankerMemberInterface {
 	/**
 	 * speichert die Trainingsanwesenheit eines Mitglieds
 	 * 
-	 * @param memberId
+	 * @param barcodeId
 	 *            eines Mitglieds, int day, int month, int year
 	 * 
 	 * @return true bei erfolg, false bei fehler
 	 */
-	public boolean setTrainingsPresence(int memberID, int day, int month,
+	public boolean setTrainingsPresence(int barcodeID, int day, int month,
 			int year) {
 
 		DataBankerConnection dbc = new DataBankerConnection();
@@ -452,13 +453,13 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			ResultSet rs = null;
 			Statement stmt = dbc.getStatement();
 
-			String query = "SELECT COUNT(*), member_id, day, month, year FROM TrainingPresence WHERE day='"
+			String query = "SELECT COUNT(*), barcode_id, day, month, year FROM TrainingPresence WHERE day='"
 					+ day
 					+ "' AND month ='"
 					+ month
 					+ "' AND year = '"
 					+ year
-					+ "' AND member_id = '" + memberID + "'";
+					+ "' AND barcode_id = '" + barcodeID + "'";
 
 			rs = stmt.executeQuery(query);
 			rs.next();
@@ -467,8 +468,8 @@ public class DataBankerMember implements DataBankerMemberInterface {
 				// Datum f�r dieses Mitglied noch nicht eingetragen
 				Statement stmt2 = dbc.getStatement();
 
-				String query2 = "INSERT INTO TrainingPresence(member_id, day,month,year) VALUES ('"
-						+ memberID
+				String query2 = "INSERT INTO TrainingPresence(barcode_id, day,month,year) VALUES ('"
+						+ barcodeID
 						+ "', '"
 						+ day
 						+ "', '"
@@ -507,12 +508,12 @@ public class DataBankerMember implements DataBankerMemberInterface {
 	 * liefert die Trainingsteilnahme eines Mitglieds f�r einen speziellen Monat
 	 * und Jahr in einem 2 Dimensionalen int Array
 	 * 
-	 * @param memberId
+	 * @param barcodeId
 	 *            eines Mitglieds, gew�nschter Monat und Jahr
 	 * 
 	 * @return ArrayList<String> presence
 	 */
-	public ArrayList<int[]> getTrainingsPresence(int memberID, int month,
+	public ArrayList<int[]> getTrainingsPresence(int barcodeID, int month,
 			int year) {
 
 		ArrayList<int[]> presence = new ArrayList<int[]>();
@@ -525,10 +526,10 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			// "SELECT COUNT(*), day, month, year FROM test WHERE Member_id='"
 			// + memberID + "'";
 
-			String query = "SELECT member_id, day, month, year FROM TrainingPresence WHERE month ='"
+			String query = "SELECT barcode_id, day, month, year FROM TrainingPresence WHERE month ='"
 					+ month
-					+ "' AND member_id = '"
-					+ memberID
+					+ "' AND barcode_id = '"
+					+ barcodeID
 					+ "' AND year = '" + year + "'";
 
 			rs = stmt.executeQuery(query);
@@ -557,12 +558,12 @@ public class DataBankerMember implements DataBankerMemberInterface {
 	 * liefert die Anzahl der Trainingsteilnahmen eines Mitglieds f�r einen
 	 * speziellen Monat
 	 * 
-	 * @param memberId
+	 * @param barcodeId
 	 *            eines Mitglieds, gew�nschter Monat und Jahr
 	 * 
 	 * @return int
 	 */
-	public int getTrainingsPresenceInt(int memberID, int month, int year) {
+	public int getTrainingsPresenceInt(int barcodeID, int month, int year) {
 		DataBankerConnection dbc = new DataBankerConnection();
 		try {
 			ResultSet rs = null;
@@ -570,8 +571,8 @@ public class DataBankerMember implements DataBankerMemberInterface {
 
 			String query = "SELECT count(*) FROM TrainingPresence WHERE month ='"
 					+ month
-					+ "' AND member_id = '"
-					+ memberID
+					+ "' AND barcode_id = '"
+					+ barcodeID
 					+ "' AND year = '" + year + "'";
 
 			rs = stmt.executeQuery(query);
@@ -589,17 +590,17 @@ public class DataBankerMember implements DataBankerMemberInterface {
 	/**
 	 * l�scht die Trainingsanwesenheit an einen bestimmten Datum
 	 * 
-	 * @param memberId
+	 * @param barcodeId
 	 *            eines Mitglieds, gew�nschter Monat
 	 * 
 	 * @return true bei Erfolg, false bei Scheitern oder leerem Monat
 	 */
-	public boolean deleteTrainingsPresence(int memberID, int day, int month,
+	public boolean deleteTrainingsPresence(int barcodeID, int day, int month,
 			int year) {
 		DataBankerConnection dbc = new DataBankerConnection();
 
-		String delete = "DELETE FROM TrainingPresence WHERE Member_id='"
-				+ memberID + "' AND day = '" + day + "' AND month = '" + month
+		String delete = "DELETE FROM TrainingPresence WHERE barcode_id='"
+				+ barcodeID + "' AND day = '" + day + "' AND month = '" + month
 				+ "' AND year = '" + year + "'";
 
 		Statement stmt = dbc.getStatement();

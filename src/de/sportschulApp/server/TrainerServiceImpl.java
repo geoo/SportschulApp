@@ -1,5 +1,7 @@
 package de.sportschulApp.server;
 
+import java.util.ArrayList;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import de.sportschulApp.client.services.TrainerService;
@@ -14,6 +16,10 @@ public class TrainerServiceImpl extends RemoteServiceServlet implements
 
 	public Member getMemberByBarcodeID(int barcodeID) {
 		return dbm.getMember(barcodeID);
+	}
+
+	public int getTrainingspresence(int memberID, int month, int year) {
+		return dbm.getTrainingsPresenceInt(memberID, month, year);
 	}
 
 }

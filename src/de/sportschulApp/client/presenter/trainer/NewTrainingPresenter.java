@@ -1,6 +1,9 @@
 package de.sportschulApp.client.presenter.trainer;
 
 import com.google.gwt.app.client.IntegerBox;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.shared.HandlerManager;
@@ -28,6 +31,8 @@ public class NewTrainingPresenter implements Presenter {
 		TextBox getBarcodeTextBox();
 
 		VerticalPanel getWrapper();
+
+		HasClickHandlers getScanButton();
 	}
 
 	private final Display display;
@@ -44,12 +49,15 @@ public class NewTrainingPresenter implements Presenter {
 	}
 
 	private void bind() {
+		
 		this.display.getBarcodeTextBox().addKeyUpHandler(new KeyUpHandler() {
 			public void onKeyUp(KeyUpEvent event) {
 				if (event.getNativeKeyCode() == 13) {
 					rpcService.getMemberByBarcodeID(Integer.parseInt(display
 							.getBarcodeTextBox().getValue()),
 							new AsyncCallback<Member>() {
+
+								private MemberTrainingEntryPresenter presenter;
 
 								public void onFailure(Throwable caught) {
 									// TODO Auto-generated method stub
@@ -59,16 +67,34 @@ public class NewTrainingPresenter implements Presenter {
 								public void onSuccess(Member result) {
 									try {
 										if (result.getForename() == null) {
-											System.out.println("Barcode nicht in DB!");
+											System.out
+													.println("Barcode nicht in DB!");
 										} else {
-											MemberTrainingEntryPresenter presenter = new MemberTrainingEntryPresenter(
-													result,
-													new MemberTrainingEntryView(
-															constants));
-											display.getWrapper()
-													.insert((MemberTrainingEntryView) presenter
-															.asWidget(), 0);
+											if (display.getWrapper()
+													.getWidgetCount() == 0) {
+												display.getWrapper()
+														.setStyleName(
+																"memberEntryPanel");
 
+												presenter = new MemberTrainingEntryPresenter(
+														rpcService,
+														result,
+														new MemberTrainingEntryView(
+																constants));
+												display.getWrapper()
+														.insert((MemberTrainingEntryView) presenter
+																.asWidget(), 0);
+											} else {
+												presenter = new MemberTrainingEntryPresenter(
+														rpcService,
+														result,
+														new MemberTrainingEntryView(
+																constants));
+
+												display.getWrapper()
+														.insert((MemberTrainingEntryView) presenter
+																.asWidget(), 0);
+											}
 										}
 										display.getBarcodeTextBox()
 												.setSelectionRange(
@@ -83,6 +109,13 @@ public class NewTrainingPresenter implements Presenter {
 				}
 			}
 		});
+		display.getScanButton().addClickHandler(new ClickHandler() {
+			
+			public void onClick(ClickEvent event) {
+				display.getBarcodeTextBox().setFocus(true);
+			}
+		});
+
 	}
 
 	public void go(HasWidgets container) {
