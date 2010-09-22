@@ -316,7 +316,7 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 	}
 
 	public int getCourseID(String courseName) {
-		int courseID=0;
+		int courseID = 0;
 		DataBankerConnection dbc = new DataBankerConnection();
 		ResultSet rs = null;
 		Statement stmt = dbc.getStatement();
@@ -327,7 +327,7 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 		try {
 			rs = stmt.executeQuery(query);
 			while (rs.next()) {
-				courseID=rs.getInt(1);
+				courseID = rs.getInt(1);
 			}
 			rs.close();
 			dbc.close();
@@ -337,5 +337,29 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 			return 0;
 		}
 		return courseID;
+	}
+
+	public String getCourseName(int courseID) {
+		String courseName = null;
+		DataBankerConnection dbc = new DataBankerConnection();
+		ResultSet rs = null;
+		Statement stmt = dbc.getStatement();
+
+		String query = "SELECT name FROM Courses where course_id = '"
+				+ courseID + "'";
+
+		try {
+			rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				courseName = rs.getString(1);
+			}
+			rs.close();
+			dbc.close();
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+		return courseName;
 	}
 }
