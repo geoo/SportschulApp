@@ -1,8 +1,13 @@
 package de.sportschulApp.client.presenter.trainer;
 
-import com.google.gwt.app.client.IntegerBox;
+import java.util.HashMap;
+
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.FocusEvent;
+import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
@@ -10,6 +15,7 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -33,11 +39,14 @@ public class NewTrainingPresenter implements Presenter {
 		VerticalPanel getWrapper();
 
 		HasClickHandlers getScanButton();
+
+		Image getScanImage();
 	}
 
 	private final Display display;
 	private final TrainerServiceAsync rpcService;
 	private LocalizationConstants constants;
+	private HashMap<Integer, String> barcodeIDs = new HashMap<Integer, String>();
 
 	public NewTrainingPresenter(TrainerServiceAsync rpcService,
 			HandlerManager eventBus, Display display) {
@@ -49,7 +58,7 @@ public class NewTrainingPresenter implements Presenter {
 	}
 
 	private void bind() {
-		
+
 		this.display.getBarcodeTextBox().addKeyUpHandler(new KeyUpHandler() {
 			public void onKeyUp(KeyUpEvent event) {
 				if (event.getNativeKeyCode() == 13) {
@@ -70,30 +79,43 @@ public class NewTrainingPresenter implements Presenter {
 											System.out
 													.println("Barcode nicht in DB!");
 										} else {
-											if (display.getWrapper()
-													.getWidgetCount() == 0) {
-												display.getWrapper()
-														.setStyleName(
-																"memberEntryPanel");
-
-												presenter = new MemberTrainingEntryPresenter(
-														rpcService,
-														result,
-														new MemberTrainingEntryView(
-																constants));
-												display.getWrapper()
-														.insert((MemberTrainingEntryView) presenter
-																.asWidget(), 0);
+											if (barcodeIDs.containsKey(result
+													.getBarcodeID())) {
+												//TODO Member schon gescannt
+												System.out
+														.println("Member schon gescannt!");
 											} else {
-												presenter = new MemberTrainingEntryPresenter(
-														rpcService,
-														result,
-														new MemberTrainingEntryView(
-																constants));
 
-												display.getWrapper()
-														.insert((MemberTrainingEntryView) presenter
-																.asWidget(), 0);
+												barcodeIDs.put(
+														result.getBarcodeID(),
+														null);
+												if (display.getWrapper()
+														.getWidgetCount() == 0) {
+													display.getWrapper()
+															.setStyleName(
+																	"memberEntryPanel");
+
+													presenter = new MemberTrainingEntryPresenter(
+															rpcService,
+															result,
+															new MemberTrainingEntryView(
+																	constants));
+													display.getWrapper()
+															.insert((MemberTrainingEntryView) presenter
+																	.asWidget(),
+																	0);
+												} else {
+													presenter = new MemberTrainingEntryPresenter(
+															rpcService,
+															result,
+															new MemberTrainingEntryView(
+																	constants));
+
+													display.getWrapper()
+															.insert((MemberTrainingEntryView) presenter
+																	.asWidget(),
+																	0);
+												}
 											}
 										}
 										display.getBarcodeTextBox()
@@ -110,12 +132,32 @@ public class NewTrainingPresenter implements Presenter {
 			}
 		});
 		display.getScanButton().addClickHandler(new ClickHandler() {
-			
+
 			public void onClick(ClickEvent event) {
 				display.getBarcodeTextBox().setFocus(true);
 			}
 		});
 
+		display.getBarcodeTextBox().addFocusHandler(new FocusHandler() {
+
+			public void onFocus(FocusEvent event) {
+				display.getScanImage().setUrl("imgs/greenlight.png");
+			}
+		});
+		display.getBarcodeTextBox().addBlurHandler(new BlurHandler() {
+
+			public void onBlur(BlurEvent event) {
+				display.getScanImage().setUrl("imgs/redlight.png");
+
+			}
+		});
+		display.getBarcodeTextBox().addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				display.getBarcodeTextBox().setSelectionRange(0,
+						display.getBarcodeTextBox().getText().length());
+			}
+		});
 	}
 
 	public void go(HasWidgets container) {

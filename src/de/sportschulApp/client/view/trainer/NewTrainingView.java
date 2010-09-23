@@ -1,10 +1,10 @@
 package de.sportschulApp.client.view.trainer;
 
-
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -22,27 +22,31 @@ public class NewTrainingView extends Composite implements
 	private VerticalPanel newTrainingWrapper;
 	private VerticalPanel memberEntryPanel;
 	private Button scanButton;
+	private Image scanImage;
 
 	public NewTrainingView(LocalizationConstants constants) {
 		this.constants = constants;
-		
+
 		newTrainingWrapper = new VerticalPanel();
 		newTrainingWrapper.setStyleName("newTrainingWrapper");
 		initWidget(newTrainingWrapper);
-		
+
 		HorizontalPanel barcodeInputPanel = new HorizontalPanel();
 		barcodeInputPanel.setStyleName("barcodePanel");
 		barcodeLabel = new Label(constants.barcode() + ": ");
 		barcodeTextBox = new TextBox();
 		scanButton = new Button(constants.scan());
+		scanImage = new Image("imgs/redlight.png");
 		barcodeInputPanel.add(barcodeLabel);
 		barcodeInputPanel.add(barcodeTextBox);
 		barcodeInputPanel.add(scanButton);
-		
+		barcodeInputPanel.add(scanImage);
+
 		memberEntryPanel = new VerticalPanel();
-		
+
 		newTrainingWrapper.add(barcodeInputPanel);
 		newTrainingWrapper.add(memberEntryPanel);
+
 	}
 
 	public Widget asWidget() {
@@ -60,8 +64,13 @@ public class NewTrainingView extends Composite implements
 	public VerticalPanel getWrapper() {
 		return memberEntryPanel;
 	}
-	public HasClickHandlers getScanButton(){
+
+	public HasClickHandlers getScanButton() {
 		return scanButton;
+	}
+
+	public Image getScanImage() {
+		return scanImage;
 	}
 
 }
