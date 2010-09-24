@@ -8,20 +8,24 @@ import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListViewAdapter;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import de.sportschulApp.client.presenter.admin.MemberListPresenter;
+import de.sportschulApp.client.view.localization.LocalizationConstants;
 import de.sportschulApp.shared.Member;
 
 public class MemberListView extends Composite implements MemberListPresenter.Display {
 
-	ArrayList<Member> memberList = new ArrayList<Member>();
-    CellTable<Member> cellTable = new CellTable<Member>();
-    ListViewAdapter<Member> lva = new ListViewAdapter<Member>();
-    VerticalPanel wrapper = new VerticalPanel();
+	private ArrayList<Member> memberList = new ArrayList<Member>();
+	private CellTable<Member> cellTable = new CellTable<Member>();
+	private ListViewAdapter<Member> lva = new ListViewAdapter<Member>();
+	private VerticalPanel wrapper = new VerticalPanel();
+	private TextBox searchInputField;
+	private Label searchButton;
 	
 	public MemberListView() {
 		wrapper.addStyleName("memberListWrapper");
@@ -29,8 +33,13 @@ public class MemberListView extends Composite implements MemberListPresenter.Dis
 		HorizontalPanel searchPanel = new HorizontalPanel();
 		searchPanel.addStyleName("memberSearchPanel");
 		searchPanel.setSize("700px", "50px");
-		Label searchPanelLabel = new Label("SearchPanel");
+		Label searchPanelLabel = new Label("Suche: ");
+		searchInputField = new TextBox();
+		searchInputField.setWidth("200px");
+		searchButton = new Label("Suchen");
 		searchPanel.add(searchPanelLabel);
+		searchPanel.add(searchInputField);
+		searchPanel.add(searchButton);
 		wrapper.add(searchPanel);
 	}
 	
@@ -45,6 +54,7 @@ public class MemberListView extends Composite implements MemberListPresenter.Dis
 		cellTable.setSelectionEnabled(true);
 		
         lva.addView(cellTable);
+        
         
         cellTable.addColumn(new TextColumn<Member>() {
             public String getValue(Member member) {

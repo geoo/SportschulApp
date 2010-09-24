@@ -123,9 +123,11 @@ public class CreateMemberPresenter implements Presenter {
 	private ArrayList<Integer> courses;
 	private ArrayList<Integer> grades;
 	private LocalizationConstants constants;
+	private HandlerManager eventBus;
 
 	public CreateMemberPresenter(AdminServiceAsync rpcService,
 			HandlerManager eventBus, Display display) {
+		this.eventBus = eventBus;
 		this.display = display;
 		this.rpcService = rpcService;
 		this.constants = display.getConstants();
@@ -168,6 +170,7 @@ public class CreateMemberPresenter implements Presenter {
 					fillForm();
 					Window.alert(constants.memberCreated());
 					History.newItem("adminMembersShowMembers");
+					
 				} else {
 					System.out.println("validation error");
 					Window.alert("Bitte überprüfen Sie ihre Eingaben");
