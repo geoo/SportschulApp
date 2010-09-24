@@ -15,7 +15,7 @@ public interface AdminServiceAsync {
 
 	void getBeltList(String courseName,
 			AsyncCallback<ArrayList<String>> callback);
-	
+
 	void getMemberByMemberID(int memberID, AsyncCallback<Member> callback);
 
 	void getCourseID(String courseName, AsyncCallback<Integer> asyncCallback);
@@ -35,4 +35,7 @@ public interface AdminServiceAsync {
 
 	void getCourseBeltPair(int courseID, int beltID,
 			AsyncCallback<String> callback);
+
+	void searchMember(String searchQuery,
+			AsyncCallback<ArrayList<Member>> callback);
 }

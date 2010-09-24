@@ -2,7 +2,6 @@ package de.sportschulApp.client.view.trainer;
 
 import java.util.*;
 
-import org.apache.tools.ant.types.CommandlineJava.SysProperties;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.MouseDownEvent;
@@ -37,10 +36,18 @@ public class MemberTrainingEntryView extends Composite implements
 	private Label trainingsPresenceLabel1;
 	private Label membernameLabel2;
 	private Label trainingsPresenceLabel2;
+	private DecoratedPopupPanel popup;
+	private Button saveNoteButton;
+	private Button cancelButton;
+	private TextArea popupTextBox;
 
 	public MemberTrainingEntryView(LocalizationConstants constants) {
 		this.constants = constants;
-
+		
+		popup = new DecoratedPopupPanel(true);
+		saveNoteButton = new Button(constants.save());
+		cancelButton = new Button(constants.cancel());
+		
 		memberTrainingEntryWrapper1 = new VerticalPanel();
 
 		HorizontalPanel memberTrainingEntryWrapper2 = new HorizontalPanel();
@@ -122,7 +129,7 @@ public class MemberTrainingEntryView extends Composite implements
 			trainingsPresenceLabel2.setStyleName("trainingspresenceGreen");
 			// thumbs up
 		} else {
-			
+
 			// TODO
 			trainingsPresenceLabel2.setStyleName("trainingspresenceRed");
 
@@ -188,31 +195,46 @@ public class MemberTrainingEntryView extends Composite implements
 		return noteButton;
 	}
 
-	public void showPopup(MouseDownEvent event) {
-		DecoratedPopupPanel popup = new DecoratedPopupPanel(true);
+	public void buildPopup(){}
+	
+	public void showPopup(int left, int top, String note) {
+		
 		popup.setStyleName("showNotePopup");
 
 		VerticalPanel popupVerticalPanel = new VerticalPanel();
 
-		TextArea popupTextBox = new TextArea();
-		popupTextBox.setText(member.getNote());
+		popupTextBox = new TextArea();
+		popupTextBox.setText(note);
 		popupVerticalPanel.add(popupTextBox);
 
 		HorizontalPanel popupButtonPanel = new HorizontalPanel();
-		Button saveNoteButton = new Button(constants.save());
-		Button cancelButton = new Button(constants.cancel());
+		
 		popupButtonPanel.add(saveNoteButton);
 		popupButtonPanel.add(cancelButton);
 
 		popupVerticalPanel.add(popupButtonPanel);
 
 		popup.setWidget(popupVerticalPanel);
-		Widget source = (Widget) event.getSource();
-		int left = source.getAbsoluteLeft() - 180;
-		int top = source.getAbsoluteTop() + 10;
+		
 		popup.setPopupPosition(left, top);
 
 		popup.show();
 
+	}
+
+	public HasClickHandlers getPopupCancelButton() {
+		return cancelButton;
+	}
+
+	public HasClickHandlers getPopupSendButton() {
+		return saveNoteButton;
+	}
+
+	public void closePopup() {
+		popup.hide();
+	}
+
+	public String getPopupTextArea() {
+		return popupTextBox.getText();
 	}
 }

@@ -22,4 +22,19 @@ public class TrainerServiceImpl extends RemoteServiceServlet implements
 		return dbm.getTrainingsPresenceInt(memberID, month, year);
 	}
 
+	public String getNote(int barcodeID) {
+		return dbm.getNote(barcodeID);
+	}
+
+	public String setNote(int barcodeID, String note) {
+		dbm.setNote(barcodeID, note);
+		return null;
+	}
+
+	public String setTrainingsPresence(int barcodeID, int day, int month,
+			int year) {
+		dbm.setTrainingsPresence(barcodeID, day, month, year);
+		return null;
+	}
+
 }

@@ -35,4 +35,6 @@ public interface AdminService extends RemoteService {
 	String createCourse(Course course);
 
 	ArrayList<User> getInstructorList();
+	
+	ArrayList<Member>searchMember(String searchQuery);
 }

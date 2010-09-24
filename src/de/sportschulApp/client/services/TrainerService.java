@@ -17,4 +17,12 @@ public interface TrainerService extends RemoteService {
 	int getTrainingspresence(int memberID, int month, int year);
 
 
+	String getNote(int barcodeID);
+
+
+	String setNote(int barcodeID, String note);
+	
+	String setTrainingsPresence(int barcodeID, int day, int month, int year);
+
+
 }
