@@ -1,5 +1,6 @@
 package de.sportschulApp.client.presenter.trainer;
 
+import java.util.Date;
 import java.util.HashMap;
 
 import com.google.gwt.event.dom.client.BlurEvent;
@@ -47,6 +48,7 @@ public class NewTrainingPresenter implements Presenter {
 	private final TrainerServiceAsync rpcService;
 	private LocalizationConstants constants;
 	private HashMap<Integer, String> barcodeIDs = new HashMap<Integer, String>();
+	Date today = new Date();
 
 	public NewTrainingPresenter(TrainerServiceAsync rpcService,
 			HandlerManager eventBus, Display display) {
@@ -81,7 +83,7 @@ public class NewTrainingPresenter implements Presenter {
 										} else {
 											if (barcodeIDs.containsKey(result
 													.getBarcodeID())) {
-												//TODO Member schon gescannt
+												// TODO Member schon gescannt
 												System.out
 														.println("Member schon gescannt!");
 											} else {
@@ -95,6 +97,8 @@ public class NewTrainingPresenter implements Presenter {
 															.setStyleName(
 																	"memberEntryPanel");
 
+													addTrainingspresence(result
+															.getBarcodeID());
 													presenter = new MemberTrainingEntryPresenter(
 															rpcService,
 															result,
@@ -105,6 +109,8 @@ public class NewTrainingPresenter implements Presenter {
 																	.asWidget(),
 																	0);
 												} else {
+													addTrainingspresence(result
+															.getBarcodeID());
 													presenter = new MemberTrainingEntryPresenter(
 															rpcService,
 															result,
@@ -127,6 +133,7 @@ public class NewTrainingPresenter implements Presenter {
 									} catch (NullPointerException e) {
 									}
 								}
+
 							});
 				}
 			}
@@ -163,6 +170,21 @@ public class NewTrainingPresenter implements Presenter {
 	public void go(HasWidgets container) {
 		container.clear();
 		container.add(display.asWidget());
+	}
+
+	private void addTrainingspresence(int barcodeID) {
+		rpcService.setTrainingsPresence(barcodeID, today.getDate(),
+				today.getMonth(), today.getYear(), new AsyncCallback<String>() {
+
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+					}
+
+					public void onSuccess(String result) {
+						System.out.println("Trainingspresence added!");
+					}
+				});
 	}
 
 }

@@ -84,6 +84,8 @@ public class AdminServiceImpl extends RemoteServiceServlet implements
 		return dbc.getCourseBeltPair(courseID, beltID);
 	}
 
+	public ArrayList<Member> searchMember(String searchQuery){
+		return dbm.search(searchQuery);}
 
 
 }
