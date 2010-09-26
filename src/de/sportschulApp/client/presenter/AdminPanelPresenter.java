@@ -3,16 +3,14 @@ package de.sportschulApp.client.presenter;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.sportschulApp.client.event.ShowMemberEvent;
 import de.sportschulApp.client.event.ShowMemberEventHandler;
-import de.sportschulApp.client.presenter.admin.CreateEventPresenter;
 import de.sportschulApp.client.presenter.admin.CreateCoursePresenter;
+import de.sportschulApp.client.presenter.admin.CreateEventPresenter;
 import de.sportschulApp.client.presenter.admin.CreateMemberPresenter;
 import de.sportschulApp.client.presenter.admin.CreateUserPresenter;
 import de.sportschulApp.client.presenter.admin.EventListPresenter;
@@ -30,7 +28,6 @@ import de.sportschulApp.client.view.admin.MemberListView;
 import de.sportschulApp.client.view.admin.NavigationView;
 import de.sportschulApp.client.view.admin.ShowMemberView;
 import de.sportschulApp.client.view.localization.LocalizationConstants;
-import de.sportschulApp.shared.Member;
 
 public class AdminPanelPresenter implements Presenter {
 	public interface Display{
@@ -70,8 +67,11 @@ public class AdminPanelPresenter implements Presenter {
 	public void doShowMember(int barcodeID) {
 		DialogBox memberPopup = new DialogBox(true);
 		memberPopup.setAnimationEnabled(true);
+		memberPopup.setText("Detailansicht");
 		memberPopup.setGlassEnabled(true);
 		memberPopup.center();
+		memberPopup.setPopupPosition(memberPopup.getAbsoluteLeft() - 200, 100);
+		memberPopup.setWidth("auto");
 		Presenter showMemberPresenter = null;
 		showMemberPresenter =  new ShowMemberPresenter(rpcService, eventBus, new ShowMemberView(constants), barcodeID);
 		showMemberPresenter.go(memberPopup);
@@ -126,7 +126,7 @@ public class AdminPanelPresenter implements Presenter {
 			contentPresenter =  new MemberListPresenter(rpcService, eventBus, new MemberListView());
 			History.newItem("adminMembersShowMembers");
 		}
-		
+		 
 		navigationPresenter.go(display.getNavigationContainer());
 		contentPresenter.go(display.getContentContainer());
 	}

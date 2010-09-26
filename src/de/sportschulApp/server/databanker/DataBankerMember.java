@@ -1,6 +1,5 @@
 package de.sportschulApp.server.databanker;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -262,51 +261,54 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			rs = stmt.executeQuery(query);
 			if (rs.wasNull()) {
 			}
-			rs.next();
-			member.setMemberID(rs.getInt("Member_id"));
-			member.setBarcodeID(rs.getInt("barcode_id"));
-			member.setForename(rs.getString("forename"));
-			member.setSurname(rs.getString("surname"));
-			member.setZipcode(rs.getInt("zipcode"));
-			member.setCity(rs.getString("city"));
-			member.setStreet(rs.getString("street"));
-			member.setPhone(rs.getString("phone"));
-			member.setMobilephone(rs.getString("mobilephone"));
-			member.setFax(rs.getString("fax"));
-			member.setEmail(rs.getString("email"));
-			member.setHomepage(rs.getString("homepage"));
-			member.setBirthDay(rs.getString("birthDay"));
-			member.setBirthMonth(rs.getString("birthMonth"));
-			member.setBirthYear(rs.getString("birthYear"));
-			member.setPicture(rs.getString("picture"));
-			member.setDiseases(rs.getString("diseases"));
-			member.setBeltsize(rs.getString("beltsize"));
-			member.setNote(rs.getString("note"));
+			while (rs.next()) {
+				member.setMemberID(rs.getInt("Member_id"));
+				member.setBarcodeID(rs.getInt("barcode_id"));
+				member.setForename(rs.getString("forename"));
+				member.setSurname(rs.getString("surname"));
+				member.setZipcode(rs.getInt("zipcode"));
+				member.setCity(rs.getString("city"));
+				member.setStreet(rs.getString("street"));
+				member.setPhone(rs.getString("phone"));
+				member.setMobilephone(rs.getString("mobilephone"));
+				member.setFax(rs.getString("fax"));
+				member.setEmail(rs.getString("email"));
+				member.setHomepage(rs.getString("homepage"));
+				member.setBirthDay(rs.getString("birthDay"));
+				member.setBirthMonth(rs.getString("birthMonth"));
+				member.setBirthYear(rs.getString("birthYear"));
+				member.setPicture(rs.getString("picture"));
+				member.setDiseases(rs.getString("diseases"));
+				member.setBeltsize(rs.getString("beltsize"));
+				member.setNote(rs.getString("note"));
+				member.setTrainingunits(rs.getInt("trainingunits"));
 
-			ArrayList<Integer> courses = new ArrayList<Integer>();
-			courses.add(rs.getInt("course_01"));
-			courses.add(rs.getInt("course_02"));
-			courses.add(rs.getInt("course_03"));
-			courses.add(rs.getInt("course_04"));
-			courses.add(rs.getInt("course_05"));
-			courses.add(rs.getInt("course_06"));
-			courses.add(rs.getInt("course_07"));
-			courses.add(rs.getInt("course_08"));
-			courses.add(rs.getInt("course_09"));
-			courses.add(rs.getInt("course_10"));
+				ArrayList<Integer> courses = new ArrayList<Integer>();
+				courses.add(rs.getInt("course_01"));
+				courses.add(rs.getInt("course_02"));
+				courses.add(rs.getInt("course_03"));
+				courses.add(rs.getInt("course_04"));
+				courses.add(rs.getInt("course_05"));
+				courses.add(rs.getInt("course_06"));
+				courses.add(rs.getInt("course_07"));
+				courses.add(rs.getInt("course_08"));
+				courses.add(rs.getInt("course_09"));
+				courses.add(rs.getInt("course_10"));
+				member.setCourses(courses);
 
-			ArrayList<Integer> graduation = new ArrayList<Integer>();
-			graduation.add(rs.getInt("graduation_01"));
-			graduation.add(rs.getInt("graduation_02"));
-			graduation.add(rs.getInt("graduation_03"));
-			graduation.add(rs.getInt("graduation_04"));
-			graduation.add(rs.getInt("graduation_05"));
-			graduation.add(rs.getInt("graduation_06"));
-			graduation.add(rs.getInt("graduation_07"));
-			graduation.add(rs.getInt("graduation_08"));
-			graduation.add(rs.getInt("graduation_09"));
-			graduation.add(rs.getInt("graduation_10"));
-
+				ArrayList<Integer> graduation = new ArrayList<Integer>();
+				graduation.add(rs.getInt("graduation_01"));
+				graduation.add(rs.getInt("graduation_02"));
+				graduation.add(rs.getInt("graduation_03"));
+				graduation.add(rs.getInt("graduation_04"));
+				graduation.add(rs.getInt("graduation_05"));
+				graduation.add(rs.getInt("graduation_06"));
+				graduation.add(rs.getInt("graduation_07"));
+				graduation.add(rs.getInt("graduation_08"));
+				graduation.add(rs.getInt("graduation_09"));
+				graduation.add(rs.getInt("graduation_10"));
+				member.setGraduations(graduation);
+			}
 			rs.close();
 			dbc.close();
 			stmt.close();
@@ -438,12 +440,12 @@ public class DataBankerMember implements DataBankerMemberInterface {
 	/**
 	 * speichert die Trainingsanwesenheit eines Mitglieds
 	 * 
-	 * @param memberId
+	 * @param barcodeId
 	 *            eines Mitglieds, int day, int month, int year
 	 * 
 	 * @return true bei erfolg, false bei fehler
 	 */
-	public boolean setTrainingsPresence(int memberID, int day, int month,
+	public boolean setTrainingsPresence(int barcodeID, int day, int month,
 			int year) {
 
 		DataBankerConnection dbc = new DataBankerConnection();
@@ -452,13 +454,13 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			ResultSet rs = null;
 			Statement stmt = dbc.getStatement();
 
-			String query = "SELECT COUNT(*), member_id, day, month, year FROM TrainingPresence WHERE day='"
+			String query = "SELECT COUNT(*), barcode_id, day, month, year FROM TrainingPresence WHERE day='"
 					+ day
 					+ "' AND month ='"
 					+ month
 					+ "' AND year = '"
 					+ year
-					+ "' AND member_id = '" + memberID + "'";
+					+ "' AND barcode_id = '" + barcodeID + "'";
 
 			rs = stmt.executeQuery(query);
 			rs.next();
@@ -467,8 +469,8 @@ public class DataBankerMember implements DataBankerMemberInterface {
 				// Datum f�r dieses Mitglied noch nicht eingetragen
 				Statement stmt2 = dbc.getStatement();
 
-				String query2 = "INSERT INTO TrainingPresence(member_id, day,month,year) VALUES ('"
-						+ memberID
+				String query2 = "INSERT INTO TrainingPresence(barcode_id, day,month,year) VALUES ('"
+						+ barcodeID
 						+ "', '"
 						+ day
 						+ "', '"
@@ -507,12 +509,12 @@ public class DataBankerMember implements DataBankerMemberInterface {
 	 * liefert die Trainingsteilnahme eines Mitglieds f�r einen speziellen Monat
 	 * und Jahr in einem 2 Dimensionalen int Array
 	 * 
-	 * @param memberId
+	 * @param barcodeId
 	 *            eines Mitglieds, gew�nschter Monat und Jahr
 	 * 
 	 * @return ArrayList<String> presence
 	 */
-	public ArrayList<int[]> getTrainingsPresence(int memberID, int month,
+	public ArrayList<int[]> getTrainingsPresence(int barcodeID, int month,
 			int year) {
 
 		ArrayList<int[]> presence = new ArrayList<int[]>();
@@ -525,10 +527,10 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			// "SELECT COUNT(*), day, month, year FROM test WHERE Member_id='"
 			// + memberID + "'";
 
-			String query = "SELECT member_id, day, month, year FROM TrainingPresence WHERE month ='"
+			String query = "SELECT barcode_id, day, month, year FROM TrainingPresence WHERE month ='"
 					+ month
-					+ "' AND member_id = '"
-					+ memberID
+					+ "' AND barcode_id = '"
+					+ barcodeID
 					+ "' AND year = '" + year + "'";
 
 			rs = stmt.executeQuery(query);
@@ -557,12 +559,12 @@ public class DataBankerMember implements DataBankerMemberInterface {
 	 * liefert die Anzahl der Trainingsteilnahmen eines Mitglieds f�r einen
 	 * speziellen Monat
 	 * 
-	 * @param memberId
+	 * @param barcodeId
 	 *            eines Mitglieds, gew�nschter Monat und Jahr
 	 * 
 	 * @return int
 	 */
-	public int getTrainingsPresenceInt(int memberID, int month, int year) {
+	public int getTrainingsPresenceInt(int barcodeID, int month, int year) {
 		DataBankerConnection dbc = new DataBankerConnection();
 		try {
 			ResultSet rs = null;
@@ -570,8 +572,8 @@ public class DataBankerMember implements DataBankerMemberInterface {
 
 			String query = "SELECT count(*) FROM TrainingPresence WHERE month ='"
 					+ month
-					+ "' AND member_id = '"
-					+ memberID
+					+ "' AND barcode_id = '"
+					+ barcodeID
 					+ "' AND year = '" + year + "'";
 
 			rs = stmt.executeQuery(query);
@@ -589,17 +591,17 @@ public class DataBankerMember implements DataBankerMemberInterface {
 	/**
 	 * l�scht die Trainingsanwesenheit an einen bestimmten Datum
 	 * 
-	 * @param memberId
+	 * @param barcodeId
 	 *            eines Mitglieds, gew�nschter Monat
 	 * 
 	 * @return true bei Erfolg, false bei Scheitern oder leerem Monat
 	 */
-	public boolean deleteTrainingsPresence(int memberID, int day, int month,
+	public boolean deleteTrainingsPresence(int barcodeID, int day, int month,
 			int year) {
 		DataBankerConnection dbc = new DataBankerConnection();
 
-		String delete = "DELETE FROM TrainingPresence WHERE Member_id='"
-				+ memberID + "' AND day = '" + day + "' AND month = '" + month
+		String delete = "DELETE FROM TrainingPresence WHERE barcode_id='"
+				+ barcodeID + "' AND day = '" + day + "' AND month = '" + month
 				+ "' AND year = '" + year + "'";
 
 		Statement stmt = dbc.getStatement();
@@ -611,5 +613,136 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			return false;
 		}
 		return true;
+	}
+
+	public boolean setNote(int barcodeID, String note) {
+
+		DataBankerConnection dbc = new DataBankerConnection();
+		Statement stmt = dbc.getStatement();
+
+		String query = "UPDATE Member SET note ='" + note
+				+ "' where barcode_id = '" + barcodeID + "'";
+
+		try {
+			stmt.executeUpdate(query);
+			dbc.close();
+			stmt.close();
+			dbc.closeStatement();
+
+		} catch (SQLException e) {
+			System.out.println(e);
+			return false;
+		}
+		return true;
+	}
+
+	public String getNote(int barcodeID) {
+		DataBankerConnection dbc = new DataBankerConnection();
+		try {
+			ResultSet rs = null;
+			Statement stmt = dbc.getStatement();
+
+			String query = "SELECT note FROM Member WHERE barcode_id ='"
+					+ barcodeID + "'";
+
+			rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				return rs.getString(1);
+			}
+
+		} catch (SQLException e) {
+			System.out.println(e);
+			return null;
+		}
+		return null;
+	}
+
+	public ArrayList<Member> search(String searchQuery) {
+
+		ArrayList<Member> memberList = new ArrayList<Member>();
+
+		ResultSet rs = null;
+
+		DataBankerConnection dbc = new DataBankerConnection();
+		Statement stmt = dbc.getStatement();
+		String query = "SELECT * FROM Member where forename LIKE '"
+				+ searchQuery + "%' or surname LIKE '" + searchQuery
+				+ "%' or zipcode LIKE '" + searchQuery + "%' or city LIKE '"
+				+ searchQuery + "%' or street LIKE '" + searchQuery
+				+ "%' or phone LIKE '" + searchQuery
+				+ "%' or mobilephone LIKE '" + searchQuery + "%' or fax LIKE '"
+				+ searchQuery + "%' or email LIKE '" + searchQuery
+				+ "%' or homepage LIKE '" + searchQuery
+				+ "%' or birthDay LIKE '" + searchQuery
+				+ "%' or birthMonth LIKE '" + searchQuery
+				+ "%' or birthYear LIKE '" + searchQuery
+				+ "%' or diseases LIKE '" + searchQuery
+				+ "%' or beltsize LIKE '" + searchQuery + "%' or note LIKE '"
+				+ searchQuery + "%' or trainingunits LIKE '" + searchQuery
+				+ "%'";
+
+		try {
+			rs = stmt.executeQuery(query);
+			if (rs.wasNull()) {
+			}
+			while (rs.next()) {
+				Member member = new Member();
+				member.setMemberID(rs.getInt("Member_id"));
+				member.setBarcodeID(rs.getInt("barcode_id"));
+				member.setForename(rs.getString("forename"));
+				member.setSurname(rs.getString("surname"));
+				member.setZipcode(rs.getInt("zipcode"));
+				member.setCity(rs.getString("city"));
+				member.setStreet(rs.getString("street"));
+				member.setPhone(rs.getString("phone"));
+				member.setMobilephone(rs.getString("mobilephone"));
+				member.setFax(rs.getString("fax"));
+				member.setEmail(rs.getString("email"));
+				member.setHomepage(rs.getString("homepage"));
+				member.setBirthDay(rs.getString("birthDay"));
+				member.setBirthMonth(rs.getString("birthMonth"));
+				member.setBirthYear(rs.getString("birthYear"));
+				member.setPicture(rs.getString("picture"));
+				member.setDiseases(rs.getString("diseases"));
+				member.setBeltsize(rs.getString("beltsize"));
+				member.setNote(rs.getString("note"));
+
+				ArrayList<Integer> courses = new ArrayList<Integer>();
+				courses.add(rs.getInt("course_01"));
+				courses.add(rs.getInt("course_02"));
+				courses.add(rs.getInt("course_03"));
+				courses.add(rs.getInt("course_04"));
+				courses.add(rs.getInt("course_05"));
+				courses.add(rs.getInt("course_06"));
+				courses.add(rs.getInt("course_07"));
+				courses.add(rs.getInt("course_08"));
+				courses.add(rs.getInt("course_09"));
+				courses.add(rs.getInt("course_10"));
+
+				ArrayList<Integer> graduation = new ArrayList<Integer>();
+				graduation.add(rs.getInt("graduation_01"));
+				graduation.add(rs.getInt("graduation_02"));
+				graduation.add(rs.getInt("graduation_03"));
+				graduation.add(rs.getInt("graduation_04"));
+				graduation.add(rs.getInt("graduation_05"));
+				graduation.add(rs.getInt("graduation_06"));
+				graduation.add(rs.getInt("graduation_07"));
+				graduation.add(rs.getInt("graduation_08"));
+				graduation.add(rs.getInt("graduation_09"));
+				graduation.add(rs.getInt("graduation_10"));
+
+				memberList.add(member);
+			}
+			rs.close();
+			dbc.close();
+			stmt.close();
+			dbc.closeStatement();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return memberList;
+
 	}
 }

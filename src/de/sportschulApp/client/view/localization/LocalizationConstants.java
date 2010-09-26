@@ -173,6 +173,15 @@ public interface LocalizationConstants extends Constants {
 	String minutes();
 
 	String save();
+	
+	String cancel();
 
+	String scan();
+
+	String name();
+
+	String presence();
+
+	String from();
 	
 }

@@ -2,27 +2,17 @@ package de.sportschulApp.client.view.admin;
 
 import java.util.ArrayList;
 
-import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.logical.shared.HasSelectionHandlers;
 import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListViewAdapter;
 import com.google.gwt.view.client.SingleSelectionModel;
-import com.google.gwt.view.client.SelectionModel.SelectionChangeEvent;
-import com.google.gwt.view.client.SelectionModel.SelectionChangeHandler;
 
-import de.sportschulApp.client.event.ShowMemberEvent;
 import de.sportschulApp.client.presenter.admin.MemberListPresenter;
 import de.sportschulApp.shared.Member;
 
@@ -32,10 +22,8 @@ public class MemberListView extends Composite implements MemberListPresenter.Dis
     CellTable<Member> cellTable = new CellTable<Member>();
     ListViewAdapter<Member> lva = new ListViewAdapter<Member>();
     VerticalPanel wrapper = new VerticalPanel();
-    HandlerManager eventBus;
 	
 	public MemberListView() {
-		this.eventBus = eventBus;
 		wrapper.addStyleName("memberListWrapper");
 		initWidget(wrapper);
 		HorizontalPanel searchPanel = new HorizontalPanel();
@@ -52,12 +40,11 @@ public class MemberListView extends Composite implements MemberListPresenter.Dis
 		
         lva.setList(memberList);
 
-        cellTable.setPageSize(20);
+        cellTable.setPageSize(500);
         cellTable.setSize("700px", "500px");
 		cellTable.setSelectionEnabled(true);
 		
         lva.addView(cellTable);
-
         
         cellTable.addColumn(new TextColumn<Member>() {
             public String getValue(Member member) {
@@ -77,10 +64,6 @@ public class MemberListView extends Composite implements MemberListPresenter.Dis
             }
         }, "Stadt");
 
-        SimplePager<Member> pager = new SimplePager<Member>(cellTable, SimplePager.TextLocation.CENTER);
-        pager.setRangeLimited(true);
-		
-        tableWrapper.add(pager);
         tableWrapper.add(cellTable);
         
         return tableWrapper;

@@ -1,7 +1,6 @@
 package de.sportschulApp.client.presenter.admin;
 
 import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
@@ -13,11 +12,13 @@ import de.sportschulApp.shared.Member;
 public class ShowMemberPresenter implements Presenter{
 	public interface Display{
 		void setMemberData(Member member);
+		void setMemberCourses(String courses);
 		Widget asWidget();
 	}
 	
 	private final Display display;
 	private final AdminServiceAsync rpcService;
+	private String courseData = new String();
 	
 	public ShowMemberPresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display, int barcodeID) {
 	    this.display = display;
@@ -36,8 +37,28 @@ public class ShowMemberPresenter implements Presenter{
 		});
 	}
 	
+	public void fetchCourseData(Member member) {
+		for (int i = 0; i < member.getCourses().size(); i++) {
+			if(member.getCourses().get(i) != 0) {
+				rpcService.getCourseBeltPair(member.getCourses().get(i), member.getGraduations().get(i), new AsyncCallback<String>() {
+					public void onSuccess(String result) {
+						courseData = courseData + result;
+						buildMemberCourses();
+					}
+					public void onFailure(Throwable caught) {
+					}
+				});
+			}
+		}
+	}
+	
 	public void buildShowMemberView(Member member) {
 		this.display.setMemberData(member);
+		fetchCourseData(member);
+	}
+	
+	public void buildMemberCourses() {
+		this.display.setMemberCourses(courseData);
 	}
 
 	private void bind() {

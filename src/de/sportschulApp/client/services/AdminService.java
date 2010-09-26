@@ -15,6 +15,10 @@ public interface AdminService extends RemoteService {
 	ArrayList<Member> getMemberList();
 
 	ArrayList<String> getCourseList();
+	
+	String getCourseName(int id);
+	
+	String getCourseBeltPair(int courseID, int beltID);
 
 	ArrayList<String> getBeltList(String courseName);
 	
@@ -31,4 +35,6 @@ public interface AdminService extends RemoteService {
 	String createCourse(Course course);
 
 	ArrayList<User> getInstructorList();
+	
+	ArrayList<Member>searchMember(String searchQuery);
 }

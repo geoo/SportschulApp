@@ -123,6 +123,7 @@ public class CreateMemberPresenter implements Presenter {
 	private ArrayList<Integer> courses;
 	private ArrayList<Integer> grades;
 	private LocalizationConstants constants;
+	private boolean error = false;
 
 	public CreateMemberPresenter(AdminServiceAsync rpcService,
 			HandlerManager eventBus, Display display) {
@@ -166,8 +167,10 @@ public class CreateMemberPresenter implements Presenter {
 				if (success) {
 					System.out.println("validation success");
 					fillForm();
-					Window.alert(constants.memberCreated());
-					History.newItem("adminMembersShowMembers");
+					if (error == false) {
+						Window.alert(constants.memberCreated());
+						History.newItem("adminMembersShowMembers");
+					}
 				} else {
 					System.out.println("validation error");
 					Window.alert("Bitte überprüfen Sie ihre Eingaben");
@@ -235,6 +238,7 @@ public class CreateMemberPresenter implements Presenter {
 	}
 
 	public void fillForm() {
+		error = false;
 		courses = new ArrayList<Integer>();
 		grades = new ArrayList<Integer>();
 
@@ -252,76 +256,81 @@ public class CreateMemberPresenter implements Presenter {
 							.getSelectedCourseName());
 					grades.add(display.getSelectedBeltNr(index));
 				} else {
+					error = true;
 					Window.alert("Sie haben einen Kurs ohne Gürtelfarbe angegeben");
 				}
 			}
 		}
+		if (error == false) {
 
-		System.out.println("courseNames: " + courseNames);
+			System.out.println("courseNames: " + courseNames);
 
-		rpcService.getCourseIDs(courseNames,
-				new AsyncCallback<ArrayList<Integer>>() {
+			rpcService.getCourseIDs(courseNames,
+					new AsyncCallback<ArrayList<Integer>>() {
 
-					public void onSuccess(ArrayList<Integer> result) {
+						public void onSuccess(ArrayList<Integer> result) {
 
-						courses = result;
+							courses = result;
 
-					}
-
-					public void onFailure(Throwable caught) {
-						System.out.println("rpc errror");
-					}
-				});
-		Timer timer = new Timer() {
-			public void run() {
-
-				Integer selected = display.getBirthTextBox1().getSelectedIndex();
-				String birthDay = selected.toString();
-
-				selected = display.getBirthTextBox2().getSelectedIndex();
-				String birthMonth = selected.toString();
-
-				selected = display.getBirthTextBox3().getSelectedIndex();
-				String birthYear = display.getBirthTextBox3().getItemText(
-						selected);
-
-				Member member = new Member(0, new Integer(display
-						.getBarcodeTextBox().getText()), display
-						.getForenameTextBox().getText(), display
-						.getSurnameTextBox().getText(), new Integer(display
-						.getZipcodeTextBox().getText()), display
-						.getCityTextBox().getText(), display.getStreetTextBox()
-						.getText(), display.getPhoneTextBox().getText(),
-						display.getmobilephoneTextBox().getText(), display
-								.getFaxTextBox().getText(), display
-								.getEmailTextBox().getText(), display
-								.getHomepageTextBox().getText(), birthDay,
-						birthMonth, birthYear, display.getPictureUrl(), display
-								.getDiseasesTextBox().getText(), display
-								.getBeltsizeTextBox().getText(), display
-								.getNoteTextBox().getText(), new Integer(
-								display.getTrainingunitsTextBox().getText()),
-						courses, grades);
-
-				rpcService.saveMember(member, new AsyncCallback<String>() {
-
-					public void onSuccess(String result) {
-						System.out.println("result: " + result);
-						if (result.equals("barcode_id already used")) {
-							display.getBarcodeTextBox().setStyleName(
-									"validationFailedBorderBarcode");
-							Window.alert(display.getConstants().barcodeUsed());
 						}
-					}
 
-					public void onFailure(Throwable caught) {
-						System.out.println("rpc errror");
-					}
-				});
-			}
-		};
-		timer.schedule(2000);
+						public void onFailure(Throwable caught) {
+							System.out.println("rpc errror");
+						}
+					});
+			Timer timer = new Timer() {
+				public void run() {
 
+					Integer selected = display.getBirthTextBox1()
+							.getSelectedIndex();
+					String birthDay = selected.toString();
+
+					selected = display.getBirthTextBox2().getSelectedIndex();
+					String birthMonth = selected.toString();
+
+					selected = display.getBirthTextBox3().getSelectedIndex();
+					String birthYear = display.getBirthTextBox3().getItemText(
+							selected);
+					Member member = new Member(0, new Integer(display
+							.getBarcodeTextBox().getText()), display
+							.getForenameTextBox().getText(), display
+							.getSurnameTextBox().getText(), new Integer(display
+							.getZipcodeTextBox().getText()), display
+							.getCityTextBox().getText(), display
+							.getStreetTextBox().getText(), display
+							.getPhoneTextBox().getText(), display
+							.getmobilephoneTextBox().getText(), display
+							.getFaxTextBox().getText(), display
+							.getEmailTextBox().getText(), display
+							.getHomepageTextBox().getText(), birthDay,
+							birthMonth, birthYear, display.getPictureUrl(),
+							display.getDiseasesTextBox().getText(), display
+									.getBeltsizeTextBox().getText(), display
+									.getNoteTextBox().getText(),
+							new Integer(display.getTrainingunitsTextBox()
+									.getText()), courses, grades);
+
+					rpcService.saveMember(member, new AsyncCallback<String>() {
+
+						public void onSuccess(String result) {
+							System.out.println("result: " + result);
+							if (result.equals("barcode_id already used")) {
+								display.getBarcodeTextBox().setStyleName(
+										"validationFailedBorderBarcode");
+								Window.alert(display.getConstants()
+										.barcodeUsed());
+							}
+						}
+
+						public void onFailure(Throwable caught) {
+							System.out.println("rpc errror");
+						}
+					});
+
+				}
+			};
+			timer.schedule(2000);
+		}
 	}
 
 	// Load the image in the document and in the case of success attach it to

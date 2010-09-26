@@ -14,10 +14,6 @@ h1 {
 }
 
 /** Most GWT widgets already have a style name defined */
-.gwt-DialogBox {
-	width: 400px;
-}
-
 .dialogVPanel {
 	margin: 5px;
 }
@@ -34,6 +30,118 @@ h1 {
 .gwt-TabLayoutPanel {
 	height: 50px;
 	width: 700px;
+}
+
+.gwt-DialogBox .dialogContent {
+	padding: 10px;
+	background-color: #f5f7fa;
+}
+
+.gwt-DialogBox .dialogMiddleCenter {
+	padding: 0px !important;
+}
+
+.showMember_Picture {
+	margin-top: 7px;
+	border: 2px solid #000000;
+}
+
+.primaryDetailsData {
+	width: 300px;
+	padding-left: 15px;
+	white-space: nowrap;
+}
+
+.secondaryDetailsData {
+	width: 100%;
+}
+
+.primaryDetailsData .gwt-Label {
+	font-size: 15px;
+}
+
+.secondaryDetailsData .gwt-Label {
+	font-size: 15px;
+}
+
+.primaryDetailsData
+ 
+td
+:nth-child
+ 
+(1)
+{
+color
+:
+ 
+#6d747f
+;
+
+	
+padding-right
+:
+ 
+50
+px
+;
+
+
+}
+.primaryDetailsData
+ 
+td
+:nth-child
+ 
+(2)
+{
+text-align
+:
+ 
+right
+;
+
+
+}
+.secondaryDetailsData
+ 
+td
+:nth-child
+ 
+(1)
+{
+color
+:
+ 
+#6d747f
+;
+
+	
+padding-right
+:
+ 
+50
+px
+;
+
+
+}
+.secondaryDetailsData
+ 
+td
+:nth-child
+ 
+(2)
+{
+text-align
+:
+ 
+right
+;
+
+
+}
+.primaryDetailsData tr {
+	border-bottom: 1px solid black !important;
 }
 
 .navigationPanel {
@@ -149,8 +257,6 @@ h1 {
 	width: 253px;
 	height: 18px !important;
 }
-
-
 
 .birthDayTextBox {
 	width: 70px !important;
@@ -275,13 +381,13 @@ h1 {
 .dualListBox {
 	background-color: #f5f7fa;
 	width: 260px;
-	padding-bottom: 60px;
+	padding-bottom: 30px;
 }
 
 .dualListBox td {
 	height: 16px !important;
 }
- 
+
 .dualListBox .gwt-Button {
 	width: 40px !important;
 	margin-left: 0px !important;
@@ -299,14 +405,10 @@ h1 {
 	background-color: #d4dced;
 }
 
-
-
 .dualListBoxTable {
 	background-color: white !important;
 	border: 2px solid #d4dced;
 	width: 100px !important;
-	
-
 }
 
 .dragdrop-selected {
@@ -319,7 +421,7 @@ h1 {
 	margin: 20px auto 0 auto;
 	padding-top: 20px;
 	padding-left: 20px;
-	padding-bottom: 20px;
+	margin-bottom: 40px;
 	background-color: #f5f7fa;
 	border: 1px solid #a9adc3 !important;
 }
@@ -345,7 +447,7 @@ h1 {
 .createCourseWrapper .gwt-Button {
 	margin-left: 167px;
 	margin-top: 20px;
-	margin-bottom: 20px;
+	margin-bottom: 25px;
 	width: 150px;
 }
 
@@ -371,10 +473,12 @@ h1 {
 	height: 50px;
 	width: 200px;
 }
+
 .createEventWrapper .gwt-DatePicker {
 	margin-bottom: 25px !important;
 }
-.createEventWrapper .gwt-DatePicker td{
+
+.createEventWrapper .gwt-DatePicker td {
 	height: 16px;
 }
 
@@ -389,4 +493,135 @@ h1 {
 	width: 160px;
 	font-size: 16px;
 	padding-right: 7px;
+}
+
+.barcodePanel {
+	width: 500px;
+	margin: 20px auto 0 auto;
+	padding-top: 20px;
+	padding-left: 20px;
+	padding-right: 20px;
+	background-color: #f5f7fa !important;
+	margin-bottom: 25px;
+	border: 1px solid #a9adc3 !important;
+}
+
+.barcodePanel td {
+	height: 50px;
+	width: 200px;
+}
+
+.barcodePanel .gwt-TextBox {
+	border: 2px solid #d4dced;
+	background-color: #ffffff !important;
+	width: 250px;
+	height: 16px !important;
+}
+
+.barcodePanel .gwt-Label {
+	width: 160px;
+	font-size: 16px;
+	padding-right: 7px;
+}
+
+.barcodePanel .gwt-Button {
+	margin-left: 7px;
+	height: 24px !important;
+}
+
+.barcodePanel .gwt-Image {
+	width: 22px;
+	height: 22px;
+	margin-left: 5px;
+	margin-top: 2px;
+}
+
+.memberEntryPanel {
+	width: 700px !important;
+	margin: 20px auto 0 auto;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-bottom: 20px;
+	background-color: #f5f7fa !important;
+	margin-bottom: 80px;
+	border: 1px solid #a9adc3 !important;
+}
+
+.memberTrainingEntryWrapper .gwt-Image {
+	border: 2px solid #d4dced;
+	height: 100px;
+	max-width: 100px !important;
+	margin-bottom: 0px !important;
+}
+
+.memberTrainingEntryWrapper {
+	background-color: #ffffff;
+	border: 2px solid #d4dced;
+	margin-top: 25px;
+}
+
+.memberTrainingEntryWrapper td {
+	
+}
+
+.memberTrainingEntryWrapper .gwt-Label {
+	width: 200px;
+	margin-left: 10px;
+	font-size: 18px;
+}
+
+.memberDetailPanel1 .gwt-Label {
+	width: 230px !important;
+}
+
+.memberDetailPanel2 .gwt-Label {
+	width: 340px !important;
+}
+
+.trainingspresenceGreen {
+	color: green;
+	margin-left: 10px;
+	font-size: 18px;
+}
+
+.trainingspresenceRed {
+	color: red;
+	margin-left: 10px;
+	font-size: 18px;
+}
+
+.deleteButton {
+	border: 0px;
+	width: 20px;
+	height: 20px;
+}
+
+.noteButton {
+	border: 0px;
+	width: 20px;
+	height: 20px;
+}
+
+.newTrainingWrapper {
+	margin: 20px auto 0 auto;
+}
+
+.diseasesPanel {
+	margin-left: 100px !important;
+	border: 2px solid red !important;
+	width: 611px;
+	padding-left: 5px;
+}
+
+.diseasesPanel .gwt-Label {
+	font-size: 14px;
+}
+
+.showNotePopup {
+	background-color: #f5f7fa;
+	border: 2px solid #d4dced !important;
+}
+
+.showNotePopup .gwt-Button {
+	margin-left: 5px;
 }

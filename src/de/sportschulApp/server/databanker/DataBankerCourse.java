@@ -316,7 +316,7 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 	}
 
 	public int getCourseID(String courseName) {
-		int courseID=0;
+		int courseID = 0;
 		DataBankerConnection dbc = new DataBankerConnection();
 		ResultSet rs = null;
 		Statement stmt = dbc.getStatement();
@@ -327,7 +327,7 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 		try {
 			rs = stmt.executeQuery(query);
 			while (rs.next()) {
-				courseID=rs.getInt(1);
+				courseID = rs.getInt(1);
 			}
 			rs.close();
 			dbc.close();
@@ -337,5 +337,71 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 			return 0;
 		}
 		return courseID;
+	}
+
+	public String getCourseName(int courseID) {
+		String courseName = null;
+		DataBankerConnection dbc = new DataBankerConnection();
+		ResultSet rs = null;
+		Statement stmt = dbc.getStatement();
+
+		String query = "SELECT name FROM Courses where Courses_id = '"
+				+ courseID + "'";
+
+		try {
+			rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				courseName = rs.getString(1);
+			}
+			rs.close();
+			dbc.close();
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+		return courseName;
+	}
+	
+	public String getCourseBeltPair(int courseID, int beltID) {
+		String beltName = null;
+		String courseName = null;
+		DataBankerConnection dbc = new DataBankerConnection();
+		ResultSet rs1 = null;
+		ResultSet rs2 = null;
+		Statement stmt1 = dbc.getStatement();
+		Statement stmt2 = dbc.getStatement();
+
+		String query1 = "SELECT name FROM Courses where Courses_id = '"
+			+ courseID + "'";
+		
+		String query2 = "SELECT grade" + beltID + " FROM Belts where Course_id = '"
+				+ courseID + "'";
+
+		try {
+			rs1 = stmt1.executeQuery(query1);
+			while (rs1.next()) {
+				courseName = rs1.getString(1);
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+		
+		try {
+			rs2 = stmt2.executeQuery(query2);
+			while (rs2.next()) {
+				beltName = rs2.getString(1);
+			}
+			rs1.close();
+			rs2.close();
+			dbc.close();
+			stmt1.close();
+			stmt2.close();
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+		return courseName + "(" + beltName +") ";
 	}
 }
