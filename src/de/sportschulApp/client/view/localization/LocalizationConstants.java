@@ -172,7 +172,7 @@ public interface LocalizationConstants extends Constants {
 
 	String minutes();
 
-
+	String save();
 
 	
 }

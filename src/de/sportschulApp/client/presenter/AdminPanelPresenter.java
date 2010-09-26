@@ -14,6 +14,7 @@ import de.sportschulApp.client.event.ShowMemberEventHandler;
 import de.sportschulApp.client.presenter.admin.CreateEventPresenter;
 import de.sportschulApp.client.presenter.admin.CreateCoursePresenter;
 import de.sportschulApp.client.presenter.admin.CreateMemberPresenter;
+import de.sportschulApp.client.presenter.admin.CreateUserPresenter;
 import de.sportschulApp.client.presenter.admin.EventListPresenter;
 import de.sportschulApp.client.presenter.admin.MemberListPresenter;
 import de.sportschulApp.client.presenter.admin.NavigationPresenter;
@@ -23,6 +24,7 @@ import de.sportschulApp.client.services.AdminServiceAsync;
 import de.sportschulApp.client.view.admin.CreateCourseView;
 import de.sportschulApp.client.view.admin.CreateEventView;
 import de.sportschulApp.client.view.admin.CreateMemberView;
+import de.sportschulApp.client.view.admin.CreateUserView;
 import de.sportschulApp.client.view.admin.EventListView;
 import de.sportschulApp.client.view.admin.MemberListView;
 import de.sportschulApp.client.view.admin.NavigationView;
@@ -98,9 +100,28 @@ public class AdminPanelPresenter implements Presenter {
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(1, constants));
 			contentPresenter =  new CreateEventPresenter(rpcService, eventBus, new CreateEventView(constants));
 		} else if (token.equals("adminCourseCreateCourse")) {
-			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(3, constants));
+			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(2, constants));
 			contentPresenter =  new CreateCoursePresenter(rpcService, eventBus, new CreateCourseView(constants));
-		} else {
+		}
+		/*
+		//muss noch implementiert werden - klasse ShowCoursePresenter noch nicht vorhanden
+		else if (token.equals("adminCourseShowCourses")) {
+			//navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(3, constants));
+			//contentPresenter = new ShowCoursePresenter(rpcService, eventBus, new ShowCourseView(constants)); 
+		}
+		*/
+		else if (token.equals("adminSystemCreateUser")){
+			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(4, constants));
+			contentPresenter = new CreateUserPresenter(rpcService, eventBus, new CreateUserView(constants));
+		}
+		/*
+		//noch nicht implementiert klasse ShowUsersView nicht vorhanden
+		else if (token.equals("adminSystemShowUsers")){
+			//navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(4, constants));
+			//contentPresenter = new ShowUsersPresenter(rpcService, eventBus, new ShowUsersView(constants));
+		}
+		*/
+		else {
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(0, constants));
 			contentPresenter =  new MemberListPresenter(rpcService, eventBus, new MemberListView());
 			History.newItem("adminMembersShowMembers");

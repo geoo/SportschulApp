@@ -26,9 +26,16 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 	private Label menuEventsShowEvents;
 	private Label menuEventsCreateEvent;
 	private Label menuCourseCreateCourse;
+	private Label menuCourseShowCourses;
+	private Label menuSystemCreateUser;
+	private Label menuSystemShowUsers;
 	private ListBox languagePicker = new ListBox();
 	
-
+	/**
+	 * Konstruktor
+	 * @param tabIndex
+	 * @param constants
+	 */
 	public NavigationView(int tabIndex, LocalizationConstants constants) {
 		VerticalPanel adminHeadPanel = new VerticalPanel();
 		adminHeadPanel.setWidth("100%");
@@ -73,7 +80,6 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 		
 		metaHeadPanel.add(metaHeadLoginDetailsPanel);
 		metaHeadPanel.add(languagePanel);
-
 		
 		Image naviLogo = new Image("imgs/mm-logo-navi.png");
 		naviLogo.addStyleName("naviLogo");
@@ -94,37 +100,44 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 		mainHeadPanel.add(naviLogo);
 		mainHeadPanel.add(navigationPanel);
 
-
 		adminHeadPanel.add(metaHeadPanel);
 		adminHeadPanel.add(mainHeadPanel);
-		
 	}
 	
 	public HorizontalPanel getSubNavigationElements(int navigationID) {
 		HorizontalPanel subNavPanel = new HorizontalPanel();
 		subNavPanel.addStyleName("subNavigationPanel");
 
-		
+		// Mitgliederverwaltung gewählt
 		if (navigationID == 0){
 			menuMembersShowMembers = new Label("Mitglieder anzeigen");
 			menuMembersCreateMember = new Label("Mitglied aufnehmen");
 			subNavPanel.add(menuMembersShowMembers);
 			subNavPanel.add(menuMembersCreateMember);
 		} 
-		
-		if (navigationID == 1){
+		//Eventverwaltung gewählt
+		else if (navigationID == 1){
 			menuEventsShowEvents = new Label("Events anzeigen");
 			menuEventsCreateEvent = new Label("Event erstellen");
 			subNavPanel.add(menuEventsShowEvents);
 			subNavPanel.add(menuEventsCreateEvent);
 		} 
-		
-		if (navigationID == 2){
+		// Kursverwaltung gewählt
+		else if (navigationID == 2){
 			menuCourseCreateCourse = new Label("Kurs erstellen");
+			menuCourseShowCourses = (new Label("Kurse anzeigen"));
 			subNavPanel.add(menuCourseCreateCourse);
+			subNavPanel.add(menuCourseShowCourses);
 		} 
-		
-		if (navigationID == 3){
+		// Frei
+		else if (navigationID == 3){
+		}
+		// Systemverwaltung gewählt
+		else if (navigationID == 4){
+			menuSystemCreateUser = new Label("Nutzer anlegen");
+			menuSystemShowUsers = new Label("Nutzer anzeigen");
+			subNavPanel.add(menuSystemCreateUser);
+			subNavPanel.add(menuSystemShowUsers);
 		}
 		
 		return subNavPanel;
@@ -133,6 +146,8 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 	public HasChangeHandlers getLanguagePickerOnChange() {
 		return languagePicker;		
 	}
+	
+	//hier noch eine neue machen - in interface packen
 	
 	public String getLanguagePickerValue() {
 		return languagePicker.getValue(languagePicker.getSelectedIndex());
@@ -145,7 +160,7 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 	public HasClickHandlers getMenuMembersCreateMember() {
 		return menuMembersCreateMember;
 	}
-
+	
 	public HasClickHandlers getMenuEventsShowEvents() {
 		return menuEventsShowEvents;
 	}
@@ -157,9 +172,20 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 	public HasClickHandlers getMenuCourseCreateCourse() {
 		return menuCourseCreateCourse;
 	}
+	public Label getMenuCourseShowCourses() {
+		return menuCourseShowCourses;
+	}
 	
 	public HasClickHandlers getLogoutButton() {
 		return logOutLabel;
+	}
+	
+	public Label getMenuSystemCreateUser() {
+		return menuSystemCreateUser;
+	}
+	
+	public Label getMenuSystemShowUsers() {
+		return menuSystemShowUsers;
 	}
 	
 	public Widget asWidget() {

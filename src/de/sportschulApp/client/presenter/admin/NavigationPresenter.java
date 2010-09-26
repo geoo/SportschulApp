@@ -24,6 +24,9 @@ public class NavigationPresenter implements Presenter{
 		HasClickHandlers getMenuEventsShowEvents();
 		HasClickHandlers getMenuEventsCreateEvent();
 		HasClickHandlers getMenuCourseCreateCourse();
+		HasClickHandlers getMenuCourseShowCourses();
+		HasClickHandlers getMenuSystemCreateUser();
+		HasClickHandlers getMenuSystemShowUsers();
 		HasClickHandlers getLogoutButton();
 		Widget asWidget();
 	}
@@ -77,6 +80,24 @@ public class NavigationPresenter implements Presenter{
 		this.display.getMenuCourseCreateCourse().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				History.newItem("adminCourseCreateCourse");
+			}
+		});
+		
+		this.display.getMenuCourseShowCourses().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				History.newItem("adminCourseShowCourses");	
+			}
+		});
+		
+		this.display.getMenuSystemCreateUser().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				History.newItem("adminSystemCreateUser");
+			}
+		});
+		
+		this.display.getMenuSystemShowUsers().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				History.newItem("adminSystemShowUsers");
 			}
 		});
 		
