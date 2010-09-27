@@ -19,6 +19,7 @@ import java.util.Iterator;
 /**
  * Example of two lists side by side for {@link DualListExample}.
  */
+@SuppressWarnings("unchecked")
 public class DualListBox extends AbsolutePanel {
 
 

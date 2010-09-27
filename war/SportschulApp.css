@@ -64,82 +64,21 @@ h1 {
 	font-size: 15px;
 }
 
-.primaryDetailsData
- 
-td
-:nth-child
- 
-(1)
-{
-color
-:
- 
-#6d747f
-;
-
-	
-padding-right
-:
- 
-50
-px
-;
-
-
+.primaryDetailsData td:nth-child(1) {
+	color: #6d747f;
+	padding-right: 50px;
 }
-.primaryDetailsData
- 
-td
-:nth-child
- 
-(2)
-{
-text-align
-:
- 
-right
-;
-
-
+.primaryDetailsData td:nth-child(2) {
+	text-align:right;
 }
-.secondaryDetailsData
- 
-td
-:nth-child
- 
-(1)
-{
-color
-:
- 
-#6d747f
-;
-
-	
-padding-right
-:
- 
-50
-px
-;
-
-
+.secondaryDetailsData td:nth-child(1) {
+	color:#6d747f;
+	padding-right:50px;
 }
-.secondaryDetailsData
- 
-td
-:nth-child
- 
-(2)
-{
-text-align
-:
- 
-right
-;
-
-
+.secondaryDetailsData td:nth-child(2) {
+	text-align:right;
 }
+
 .primaryDetailsData tr {
 	border-bottom: 1px solid black !important;
 }
@@ -357,13 +296,15 @@ right
 	height: 40px;
 	width: 700px;
 	padding-top: 6px;
-	padding-left: 80px;
-	padding-right: 100px;
+	padding-left: 50px;
 	border: 1px solid #d4dced;
+	display: block;
 }
 
 .searchInput {
 	border: 3px solid #d4dced;
+	margin-left: 5px;
+	margin-top:1px;
 	background-color: #ffffff;
 	height: 16px;	
 	width: 300px !important;
@@ -371,13 +312,11 @@ right
 
 .searchContainer .gwt-Label {
 	font-size: 16px;
-	padding-left: 30px;
-	padding-right: 7px;
+	padding-left: 10px;
+	padding-right: 10px;
 }
 
 .searchLabel {
-	margin-left: 10px;
-	margin-right: auto;
 	cursor: pointer;
 	font-size: 16px;
 	color: #346492;

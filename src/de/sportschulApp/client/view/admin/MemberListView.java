@@ -2,8 +2,8 @@ package de.sportschulApp.client.view.admin;
 
 import java.util.ArrayList;
 
-import com.google.gwt.cell.client.ImageCell;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.HasKeyUpHandlers;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Composite;
@@ -20,12 +20,9 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import de.sportschulApp.client.presenter.admin.MemberListPresenter;
 import de.sportschulApp.shared.Member;
 
+@SuppressWarnings("unchecked")
 public class MemberListView extends Composite implements MemberListPresenter.Display {
 	
-//	private static interface GetValue<Type> {
-//	    Type getValue(Member member);
-//	  }
-
 
 	private ArrayList<Member> memberList = new ArrayList<Member>();
 	private CellTable<Member> cellTable = new CellTable<Member>();
@@ -48,6 +45,7 @@ public class MemberListView extends Composite implements MemberListPresenter.Dis
 		searchPanel.setStyleName("searchContainer");
 		
 		showAllButton = new Label("Alle anzeigen");
+		showAllButton.addStyleName("searchLabel");
 		
 		Label searchPanelLabel = new Label("Suche: ");
 		
@@ -67,7 +65,6 @@ public class MemberListView extends Composite implements MemberListPresenter.Dis
 	
 	
 	public VerticalPanel createMemberListTable() {
-		cellTable = null;
 		cellTable = new CellTable<Member>();
 
 		lva = null;
@@ -82,13 +79,7 @@ public class MemberListView extends Composite implements MemberListPresenter.Dis
         cellTable.setSelectionModel(selectionModel);
 		
         lva.addDataDisplay(cellTable);
-        
-//        cellTable.addColumn(new ImageCell(), "Foto", new GetValue<String>() {
-//			public String getValue(Member member) {
-//				return member.getPicture();
-//			}
-//		});
-        
+                
         cellTable.addColumn(new TextColumn<Member>() {
             public String getValue(Member member) {
                 return member.getForename();
@@ -116,11 +107,9 @@ public class MemberListView extends Composite implements MemberListPresenter.Dis
 	public void setMemberList(ArrayList<Member> memberList) {
 		this.memberList = memberList;
 		cellTable.removeFromParent();
-		wrapper.add(createMemberListTable()); 
-		System.out.println("2");
+		wrapper.add(createMemberListTable());
 	}
 	
-//	@SuppressWarnings("unchecked")
 	public void setSelectionModel(SingleSelectionModel selectionModel) {
 		this.selectionModel = selectionModel;
 	}
@@ -131,6 +120,10 @@ public class MemberListView extends Composite implements MemberListPresenter.Dis
 	
 	public HasClickHandlers getShowAllButton() {
 		return this.showAllButton;
+	}
+	
+	public HasKeyUpHandlers getSearchInput() {
+		return this.searchInputField;
 	}
 	
 	public HasValue<String> getSearchQuery() {

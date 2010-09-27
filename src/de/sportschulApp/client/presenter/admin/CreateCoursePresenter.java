@@ -24,6 +24,7 @@ import eu.maydu.gwt.validation.client.description.PopupDescription;
 import eu.maydu.gwt.validation.client.i18n.ValidationMessages;
 import eu.maydu.gwt.validation.client.validators.strings.StringLengthValidator;
 
+@SuppressWarnings("unchecked")
 public class CreateCoursePresenter implements Presenter {
 	public interface Display {
 		Widget asWidget();
@@ -51,8 +52,7 @@ public class CreateCoursePresenter implements Presenter {
 	private LocalizationConstants constants;
 	private ValidationProcessor validator;
 	private PopupDescription popupDesc;
-	private boolean succ = true;
-
+	
 	public CreateCoursePresenter(AdminServiceAsync rpcService,
 			HandlerManager eventBus, Display display) {
 		this.display = display;
@@ -136,6 +136,7 @@ public class CreateCoursePresenter implements Presenter {
 		container.add(display.asWidget());
 	}
 
+	
 	public void setupValidation() {
 		class CustomValidationMessages extends ValidationMessages {
 

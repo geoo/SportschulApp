@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.HasKeyUpHandlers;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -20,13 +22,14 @@ import de.sportschulApp.client.presenter.Presenter;
 import de.sportschulApp.client.services.AdminServiceAsync;
 import de.sportschulApp.shared.Member;
 
-//@SuppressWarnings("unchecked")
+@SuppressWarnings("unchecked")
 public class MemberListPresenter implements Presenter{
 	public interface Display{
 		void setMemberList(ArrayList<Member> memberList);
 		void setSelectionModel(SingleSelectionModel selectionModel);
 		HasClickHandlers getSearchButton();
 		HasClickHandlers getShowAllButton();
+		HasKeyUpHandlers getSearchInput();
 		HasValue<String> getSearchQuery();
 		Widget asWidget();
 	}
@@ -48,14 +51,15 @@ public class MemberListPresenter implements Presenter{
 		
 		this.display.getSearchButton().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				String searchQuery = new String(display.getSearchQuery().getValue());
-				rpcService.searchMember(searchQuery, new AsyncCallback<ArrayList<Member>>() {
-					public void onSuccess(ArrayList<Member> result) {
-						display.setMemberList(result);
-					}
-					public void onFailure(Throwable caught) {
-					}
-				});
+				executeSearch();
+			}
+		});
+		
+		this.display.getSearchInput().addKeyUpHandler(new KeyUpHandler() {
+			public void onKeyUp(KeyUpEvent event) {
+				if (event.getNativeKeyCode() == 13) {
+					executeSearch();
+				}	
 			}
 		});
 		
@@ -69,6 +73,17 @@ public class MemberListPresenter implements Presenter{
 	public void go(HasWidgets container) {
 		container.clear();
 	    container.add(display.asWidget());
+	}
+	
+	public void executeSearch() {
+		String searchQuery = new String(display.getSearchQuery().getValue());
+		rpcService.searchMember(searchQuery, new AsyncCallback<ArrayList<Member>>() {
+			public void onSuccess(ArrayList<Member> result) {
+				display.setMemberList(result);
+			}
+			public void onFailure(Throwable caught) {
+			}
+		});
 	}
 	
 	public void getMemberList() {

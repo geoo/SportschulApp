@@ -24,6 +24,7 @@ public class ShowUsersView extends Composite implements ShowUsersPresenter.Displ
 		
 		//...
 		mainPanel = new VerticalPanel();
+		initWidget(mainPanel);
 		dummy = new Label("hier soll eine Anzeige für alle User hin wie bei Member");
 		mainPanel.add(dummy);
 	}
