@@ -133,6 +133,7 @@ public class CreateMemberPresenter implements Presenter {
 		bind();
 		getCourseList();
 		setupValidation();
+		
 	}
 
 	private void bind() {
