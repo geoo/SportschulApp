@@ -123,10 +123,12 @@ public class CreateMemberPresenter implements Presenter {
 	private ArrayList<Integer> courses;
 	private ArrayList<Integer> grades;
 	private LocalizationConstants constants;
+	private HandlerManager eventBus;
 	private boolean error = false;
 
 	public CreateMemberPresenter(AdminServiceAsync rpcService,
 			HandlerManager eventBus, Display display) {
+		this.eventBus = eventBus;
 		this.display = display;
 		this.rpcService = rpcService;
 		this.constants = display.getConstants();

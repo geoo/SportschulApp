@@ -1,10 +1,5 @@
 package de.sportschulApp.client.view.admin;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -17,7 +12,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DatePicker;
 
 import de.sportschulApp.client.presenter.admin.CreateEventPresenter;
-import de.sportschulApp.client.presenter.admin.CreateMemberPresenter;
 import de.sportschulApp.client.view.localization.LocalizationConstants;
 
 public class CreateEventView extends Composite implements

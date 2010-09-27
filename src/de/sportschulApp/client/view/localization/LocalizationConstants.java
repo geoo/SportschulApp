@@ -183,5 +183,7 @@ public interface LocalizationConstants extends Constants {
 	String presence();
 
 	String from();
+
+	String search();
 	
 }
