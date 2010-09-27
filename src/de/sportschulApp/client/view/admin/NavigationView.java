@@ -26,6 +26,8 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 	private Label menuEventsShowEvents;
 	private Label menuEventsCreateEvent;
 	private Label menuCourseCreateCourse;
+	private Label menuSystemCreateUser;
+	private Label menuSystemShowUsers;
 	private ListBox languagePicker = new ListBox();
 	
 
@@ -83,7 +85,7 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 		navigationPanel.add(getSubNavigationElements(0), "Mitgliedsverwaltung");
 		navigationPanel.add(getSubNavigationElements(1), "Eventverwaltung");
 		navigationPanel.add(getSubNavigationElements(2), "Kursverwaltung");
-		navigationPanel.add(getSubNavigationElements(4), "Systemverwaltung");
+		navigationPanel.add(getSubNavigationElements(3), "Systemverwaltung");
 		navigationPanel.selectTab(tabIndex);
 		
 		HorizontalPanel mainHeadPanel = new HorizontalPanel();
@@ -94,16 +96,13 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 		mainHeadPanel.add(naviLogo);
 		mainHeadPanel.add(navigationPanel);
 
-
 		adminHeadPanel.add(metaHeadPanel);
 		adminHeadPanel.add(mainHeadPanel);
-		
 	}
 	
 	public HorizontalPanel getSubNavigationElements(int navigationID) {
 		HorizontalPanel subNavPanel = new HorizontalPanel();
 		subNavPanel.addStyleName("subNavigationPanel");
-
 		
 		if (navigationID == 0){
 			menuMembersShowMembers = new Label("Mitglieder anzeigen");
@@ -125,6 +124,10 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 		} 
 		
 		if (navigationID == 3){
+			menuSystemCreateUser = new Label("Nutzer erstellen");
+			menuSystemShowUsers = new Label("Nutzer anzeigen");
+			subNavPanel.add(menuSystemCreateUser);
+			subNavPanel.add(menuSystemShowUsers);
 		}
 		
 		return subNavPanel;
@@ -164,5 +167,20 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 	
 	public Widget asWidget() {
 		return this;
+	}
+
+	/*
+	public HasClickHandlers getMenuCourseShowCourses() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	*/
+
+	public HasClickHandlers getMenuSystemCreateUser() {
+		return menuSystemCreateUser;
+	}
+
+	public HasClickHandlers getMenuSystemShowUsers() {
+		return menuSystemShowUsers;
 	}
 }
