@@ -59,9 +59,7 @@ public class AdminPanelPresenter implements Presenter {
 			});	
 		}
 	}
-		
-	
-	
+		 
 	public void doShowMember(int barcodeID) {
 		DialogBox memberPopup = new DialogBox(true);
 		memberPopup.setAnimationEnabled(true);

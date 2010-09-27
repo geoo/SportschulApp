@@ -223,9 +223,6 @@ right
 	color: #4d4d4d !important;
 }
 
-.memberSearchPanel {
-	background-color: #f5f7fa;
-}
 
 .memberListWrapper {
 	margin: 20px auto 0 auto;
@@ -353,6 +350,41 @@ right
 	margin: auto;
 	padding-left: 220px;
 	color: #ac2f2f;
+}
+
+.searchContainer {
+	background-color: #f5f7fa;
+	height: 40px;
+	width: 700px;
+	padding-top: 6px;
+	padding-left: 80px;
+	padding-right: 100px;
+	border: 1px solid #d4dced;
+}
+
+.searchInput {
+	border: 3px solid #d4dced;
+	background-color: #ffffff;
+	height: 16px;	
+	width: 300px !important;
+}
+
+.searchContainer .gwt-Label {
+	font-size: 16px;
+	padding-left: 30px;
+	padding-right: 7px;
+}
+
+.searchLabel {
+	margin-left: 10px;
+	margin-right: auto;
+	cursor: pointer;
+	font-size: 16px;
+	color: #346492;
+}
+
+.searchLabel:hover {
+	text-decoration: underline;
 }
 
 .naviLogo {
