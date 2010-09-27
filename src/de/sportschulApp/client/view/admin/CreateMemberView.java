@@ -24,7 +24,6 @@ import de.sportschulApp.client.presenter.admin.CreateMemberPresenter;
 import de.sportschulApp.client.view.localization.LocalizationConstants;
 import eu.maydu.gwt.validation.client.DefaultValidationProcessor;
 import eu.maydu.gwt.validation.client.ValidationProcessor;
-import eu.maydu.gwt.validation.client.description.PopupDescription;
 
 public class CreateMemberView extends Composite implements
 		CreateMemberPresenter.Display {

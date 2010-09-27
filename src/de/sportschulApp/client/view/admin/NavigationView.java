@@ -26,16 +26,11 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 	private Label menuEventsShowEvents;
 	private Label menuEventsCreateEvent;
 	private Label menuCourseCreateCourse;
-	private Label menuCourseShowCourses;
 	private Label menuSystemCreateUser;
 	private Label menuSystemShowUsers;
 	private ListBox languagePicker = new ListBox();
 	
-	/**
-	 * Konstruktor
-	 * @param tabIndex
-	 * @param constants
-	 */
+
 	public NavigationView(int tabIndex, LocalizationConstants constants) {
 		VerticalPanel adminHeadPanel = new VerticalPanel();
 		adminHeadPanel.setWidth("100%");
@@ -80,6 +75,7 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 		
 		metaHeadPanel.add(metaHeadLoginDetailsPanel);
 		metaHeadPanel.add(languagePanel);
+
 		
 		Image naviLogo = new Image("imgs/mm-logo-navi.png");
 		naviLogo.addStyleName("naviLogo");
@@ -89,7 +85,7 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 		navigationPanel.add(getSubNavigationElements(0), "Mitgliedsverwaltung");
 		navigationPanel.add(getSubNavigationElements(1), "Eventverwaltung");
 		navigationPanel.add(getSubNavigationElements(2), "Kursverwaltung");
-		navigationPanel.add(getSubNavigationElements(4), "Systemverwaltung");
+		navigationPanel.add(getSubNavigationElements(3), "Systemverwaltung");
 		navigationPanel.selectTab(tabIndex);
 		
 		HorizontalPanel mainHeadPanel = new HorizontalPanel();
@@ -107,34 +103,28 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 	public HorizontalPanel getSubNavigationElements(int navigationID) {
 		HorizontalPanel subNavPanel = new HorizontalPanel();
 		subNavPanel.addStyleName("subNavigationPanel");
-
-		// Mitgliederverwaltung gewählt
+		
 		if (navigationID == 0){
 			menuMembersShowMembers = new Label("Mitglieder anzeigen");
 			menuMembersCreateMember = new Label("Mitglied aufnehmen");
 			subNavPanel.add(menuMembersShowMembers);
 			subNavPanel.add(menuMembersCreateMember);
 		} 
-		//Eventverwaltung gewählt
-		else if (navigationID == 1){
+		
+		if (navigationID == 1){
 			menuEventsShowEvents = new Label("Events anzeigen");
 			menuEventsCreateEvent = new Label("Event erstellen");
 			subNavPanel.add(menuEventsShowEvents);
 			subNavPanel.add(menuEventsCreateEvent);
 		} 
-		// Kursverwaltung gewählt
-		else if (navigationID == 2){
+		
+		if (navigationID == 2){
 			menuCourseCreateCourse = new Label("Kurs erstellen");
-			menuCourseShowCourses = (new Label("Kurse anzeigen"));
 			subNavPanel.add(menuCourseCreateCourse);
-			subNavPanel.add(menuCourseShowCourses);
 		} 
-		// Frei
-		else if (navigationID == 3){
-		}
-		// Systemverwaltung gewählt
-		else if (navigationID == 4){
-			menuSystemCreateUser = new Label("Nutzer anlegen");
+		
+		if (navigationID == 3){
+			menuSystemCreateUser = new Label("Nutzer erstellen");
 			menuSystemShowUsers = new Label("Nutzer anzeigen");
 			subNavPanel.add(menuSystemCreateUser);
 			subNavPanel.add(menuSystemShowUsers);
@@ -147,8 +137,6 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 		return languagePicker;		
 	}
 	
-	//hier noch eine neue machen - in interface packen
-	
 	public String getLanguagePickerValue() {
 		return languagePicker.getValue(languagePicker.getSelectedIndex());
 	}
@@ -160,7 +148,7 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 	public HasClickHandlers getMenuMembersCreateMember() {
 		return menuMembersCreateMember;
 	}
-	
+
 	public HasClickHandlers getMenuEventsShowEvents() {
 		return menuEventsShowEvents;
 	}
@@ -172,23 +160,27 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 	public HasClickHandlers getMenuCourseCreateCourse() {
 		return menuCourseCreateCourse;
 	}
-	public Label getMenuCourseShowCourses() {
-		return menuCourseShowCourses;
-	}
 	
 	public HasClickHandlers getLogoutButton() {
 		return logOutLabel;
 	}
 	
-	public Label getMenuSystemCreateUser() {
-		return menuSystemCreateUser;
-	}
-	
-	public Label getMenuSystemShowUsers() {
-		return menuSystemShowUsers;
-	}
-	
 	public Widget asWidget() {
 		return this;
+	}
+
+	/*
+	public HasClickHandlers getMenuCourseShowCourses() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	*/
+
+	public HasClickHandlers getMenuSystemCreateUser() {
+		return menuSystemCreateUser;
+	}
+
+	public HasClickHandlers getMenuSystemShowUsers() {
+		return menuSystemShowUsers;
 	}
 }
