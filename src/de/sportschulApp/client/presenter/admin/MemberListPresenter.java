@@ -30,7 +30,7 @@ public class MemberListPresenter implements Presenter{
 		void setSelectionModel(SingleSelectionModel selectionModel);
 		HasClickHandlers getSearchButton();
 		HasClickHandlers getShowAllButton();
-		HasKeyUpHandlers getSearchInput();
+		TextBox getSearchInput();
 		HasValue<String> getSearchQuery();
 		Widget asWidget();
 	}
@@ -67,6 +67,7 @@ public class MemberListPresenter implements Presenter{
 		this.display.getShowAllButton().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				getMemberList();
+				display.getSearchInput().setText("");
 			}
 		});
 	}

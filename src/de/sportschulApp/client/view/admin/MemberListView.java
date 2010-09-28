@@ -123,7 +123,7 @@ public class MemberListView extends Composite implements MemberListPresenter.Dis
 		return this.showAllButton;
 	}
 	
-	public HasKeyUpHandlers getSearchInput() {
+	public TextBox getSearchInput() {
 		return this.searchInputField;
 	}
 	
