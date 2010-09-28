@@ -665,40 +665,41 @@ public class DataBankerMember implements DataBankerMemberInterface {
 
 		DataBankerConnection dbc = new DataBankerConnection();
 		Statement stmt = dbc.getStatement();
-		String query = "SELECT * FROM Member where forename LIKE '"
-				+ searchQuery + "%' or surname LIKE '" + searchQuery
-				+ "%' or zipcode LIKE '" + searchQuery + "%' or city LIKE '"
-				+ searchQuery + "%' or street LIKE '" + searchQuery
-				+ "%' or phone LIKE '" + searchQuery
-				+ "%' or mobilephone LIKE '" + searchQuery + "%' or fax LIKE '"
-				+ searchQuery + "%' or email LIKE '" + searchQuery
-				+ "%' or homepage LIKE '" + searchQuery
-				+ "%' or birthDay LIKE '" + searchQuery
-				+ "%' or birthMonth LIKE '" + searchQuery
-				+ "%' or birthYear LIKE '" + searchQuery
-				+ "%' or diseases LIKE '" + searchQuery
-				+ "%' or beltsize LIKE '" + searchQuery + "%' or note LIKE '"
-				+ searchQuery + "%' or trainingunits LIKE '" + searchQuery
-				+ "%' or course_01 LIKE '" + searchQuery
-				+ "%' or course_02 LIKE '" + searchQuery
-				+ "%' or course_03 LIKE '" + searchQuery
-				+ "%' or course_04 LIKE '" + searchQuery
-				+ "%' or course_05 LIKE '" + searchQuery
-				+ "%' or course_06 LIKE '" + searchQuery
-				+ "%' or course_07 LIKE '" + searchQuery
-				+ "%' or course_08 LIKE '" + searchQuery
-				+ "%' or course_09 LIKE '" + searchQuery
-				+ "%' or course_10 LIKE '" + searchQuery
-				+ "%' or graduation_01 LIKE '" + searchQuery
-				+ "%' or graduation_02 LIKE '" + searchQuery
-				+ "%' or graduation_03 LIKE '" + searchQuery
-				+ "%' or graduation_04 LIKE '" + searchQuery
-				+ "%' or graduation_05 LIKE '" + searchQuery
-				+ "%' or graduation_06 LIKE '" + searchQuery
-				+ "%' or graduation_07 LIKE '" + searchQuery
-				+ "%' or graduation_08 LIKE '" + searchQuery
-				+ "%' or graduation_09 LIKE '" + searchQuery
-				+ "%' or graduation_10 LIKE '" + searchQuery + "%'";
+		String query = "SELECT * FROM Member m INNER JOIN Courses c on m.course_01= c.Courses_id or m.course_02=c.Courses_id or m.course_03=c.Courses_id or m.course_04=c.Courses_id or m.course_05=c.Courses_id or m.course_06=c.Courses_id or m.course_07=c.Courses_id or m.course_08=c.Courses_id or m.course_09=c.Courses_id or m.course_10=c.Courses_id where m.forename LIKE '"
+				+ searchQuery
+				+ "%' or m.surname LIKE '"
+				+ searchQuery
+				+ "%' or m.zipcode LIKE '"
+				+ searchQuery
+				+ "%' or m.city LIKE '"
+				+ searchQuery
+				+ "%' or m.street LIKE '"
+				+ searchQuery
+				+ "%' or m.phone LIKE '"
+				+ searchQuery
+				+ "%' or m.mobilephone LIKE '"
+				+ searchQuery
+				+ "%' or m.fax LIKE '"
+				+ searchQuery
+				+ "%' or m.email LIKE '"
+				+ searchQuery
+				+ "%' or m.homepage LIKE '"
+				+ searchQuery
+				+ "%' or m.birthDay LIKE '"
+				+ searchQuery
+				+ "%' or m.birthMonth LIKE '"
+				+ searchQuery
+				+ "%' or m.birthYear LIKE '"
+				+ searchQuery
+				+ "%' or m.diseases LIKE '"
+				+ searchQuery
+				+ "%' or m.beltsize LIKE '"
+				+ searchQuery
+				+ "%' or m.note LIKE '"
+				+ searchQuery
+				+ "%' or m.trainingunits LIKE '"
+				+ searchQuery
+				+ "%' or c.name LIKE '" + searchQuery + "%'";
 
 		try {
 			rs = stmt.executeQuery(query);
