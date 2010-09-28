@@ -679,7 +679,26 @@ public class DataBankerMember implements DataBankerMemberInterface {
 				+ "%' or diseases LIKE '" + searchQuery
 				+ "%' or beltsize LIKE '" + searchQuery + "%' or note LIKE '"
 				+ searchQuery + "%' or trainingunits LIKE '" + searchQuery
-				+ "%'";
+				+ "%' or course_01 LIKE '" + searchQuery
+				+ "%' or course_02 LIKE '" + searchQuery
+				+ "%' or course_03 LIKE '" + searchQuery
+				+ "%' or course_04 LIKE '" + searchQuery
+				+ "%' or course_05 LIKE '" + searchQuery
+				+ "%' or course_06 LIKE '" + searchQuery
+				+ "%' or course_07 LIKE '" + searchQuery
+				+ "%' or course_08 LIKE '" + searchQuery
+				+ "%' or course_09 LIKE '" + searchQuery
+				+ "%' or course_10 LIKE '" + searchQuery
+				+ "%' or graduation_01 LIKE '" + searchQuery
+				+ "%' or graduation_02 LIKE '" + searchQuery
+				+ "%' or graduation_03 LIKE '" + searchQuery
+				+ "%' or graduation_04 LIKE '" + searchQuery
+				+ "%' or graduation_05 LIKE '" + searchQuery
+				+ "%' or graduation_06 LIKE '" + searchQuery
+				+ "%' or graduation_07 LIKE '" + searchQuery
+				+ "%' or graduation_08 LIKE '" + searchQuery
+				+ "%' or graduation_09 LIKE '" + searchQuery
+				+ "%' or graduation_10 LIKE '" + searchQuery + "%'";
 
 		try {
 			rs = stmt.executeQuery(query);
