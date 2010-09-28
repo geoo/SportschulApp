@@ -108,6 +108,7 @@ public class MemberListView extends Composite implements MemberListPresenter.Dis
 		this.memberList = memberList;
 		cellTable.removeFromParent();
 		wrapper.add(createMemberListTable());
+		this.searchInputField.setFocus(true);
 	}
 	
 	public void setSelectionModel(SingleSelectionModel selectionModel) {
