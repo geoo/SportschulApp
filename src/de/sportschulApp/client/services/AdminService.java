@@ -16,6 +16,8 @@ public interface AdminService extends RemoteService {
 
 	ArrayList<String> getCourseList();
 	
+	ArrayList<Course> getCompleteCourseList();
+	
 	String getCourseName(int id);
 	
 	String getCourseBeltPair(int courseID, int beltID);

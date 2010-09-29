@@ -38,4 +38,6 @@ public interface AdminServiceAsync {
 
 	void searchMember(String searchQuery,
 			AsyncCallback<ArrayList<Member>> callback);
+
+	void getCompleteCourseList(AsyncCallback<ArrayList<Course>> callback);
 }

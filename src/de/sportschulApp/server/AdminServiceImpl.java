@@ -29,6 +29,10 @@ public class AdminServiceImpl extends RemoteServiceServlet implements
 	public ArrayList<String> getCourseList() {
 		return dbc.getCourseNames();
 	}
+	
+	public ArrayList<Course> getCompleteCourseList() {
+		return dbc.getCourses();
+	}
 
 	public ArrayList<String> getBeltList(String courseName) {
 		int courseID = dbc.getCourseID(courseName);
