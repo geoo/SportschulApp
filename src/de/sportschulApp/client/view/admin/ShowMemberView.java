@@ -43,6 +43,7 @@ public class ShowMemberView extends Composite implements ShowMemberPresenter.Dis
 		initWidget(memberPanel);
 		
 		editMemberLabel = new Label("Mitglied bearbeiten");
+		editMemberLabel.addStyleName("editButton");
 		memberPanel.add(editMemberLabel);
 		
 		memberPicture.setHeight("200px");

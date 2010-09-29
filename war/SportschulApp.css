@@ -41,6 +41,18 @@ h1 {
 	padding: 0px !important;
 }
 
+.editButton {
+	padding-left: 3px;
+	cursor: pointer;
+	font-size: 16px;
+	color: #346492;
+	display: inline;
+}
+
+.editButton:hover{
+	text-decoration: underline;
+}
+
 .showMember_Picture {
 	margin-top: 7px;
 	border: 2px solid #000000;
@@ -50,6 +62,18 @@ h1 {
 	width: 300px;
 	padding-left: 15px;
 	white-space: nowrap;
+}
+
+.courseDetailsPanel {
+	width: 500px;
+}
+
+.courseDetailsPanel td:nth-child(1) {
+	color: #6d747f;
+	padding-right: 50px;
+}
+.courseDetailsPanel td:nth-child(2) {
+	text-align:right;
 }
 
 .secondaryDetailsData {

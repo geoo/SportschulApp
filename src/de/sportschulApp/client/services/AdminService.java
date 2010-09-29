@@ -35,6 +35,8 @@ public interface AdminService extends RemoteService {
 	String saveMember(Member member);
 
 	String createCourse(Course course);
+	
+	Course getCourseByID(int courseID);
 
 	ArrayList<User> getInstructorList();
 	

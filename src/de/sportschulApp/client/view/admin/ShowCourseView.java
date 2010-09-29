@@ -1,5 +1,7 @@
 package de.sportschulApp.client.view.admin;
 
+import org.apache.tools.ant.types.CommandlineJava.SysProperties;
+
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -13,125 +15,72 @@ import com.google.gwt.user.client.ui.Widget;
 
 import de.sportschulApp.client.presenter.admin.ShowCoursePresenter;
 import de.sportschulApp.client.view.localization.LocalizationConstants;
+import de.sportschulApp.shared.Course;
 import de.sportschulApp.shared.Member;
 
 public class ShowCourseView extends Composite implements ShowCoursePresenter.Display {
 	
-	private Label barcodeIDLabel = new Label();
-	private Label forenameLabel = new Label();
-	private Label surnameLabel = new Label();
-	private Label zipcodeLabel = new Label();
-	private Label cityLabel = new Label();
-	private Label streetLabel = new Label();
-	private Label phoneLabel = new Label();
-	private Label mobilePhoneLabel = new Label();
-	private Label faxLabel = new Label();
-	private Label emailLabel = new Label();
-	private Label homepageLabel = new Label();
-	private Label birthContainer = new Label();
-	private Label beltSizeLabel = new Label();
-	private Label noteLabel = new Label();
-	private Label trainingUnitsLabel = new Label();
-	private Label coursesLabel = new Label();
-	private Label editMemberLabel;
-	private Image memberPicture = new Image("");
-	FlexTable secondaryDetailsData = new FlexTable();
+	private Label courseIDLabel = new Label();
+	private Label courseNameLabel = new Label();
+	private Label courseDateLabel = new Label();
+	private Label courseInsructorLabel = new Label();
+	private Label courseLocationLabel = new Label();
+	private Label courseBeltsLabel = new Label();
+	private Label editCourseLabel;
 
 	public ShowCourseView(LocalizationConstants constants) {
 		VerticalPanel memberPanel = new VerticalPanel();
 		memberPanel.setWidth("450px");
 		initWidget(memberPanel);
 		
-		editMemberLabel = new Label("Mitglied bearbeiten");
-		memberPanel.add(editMemberLabel);
+		editCourseLabel = new Label("Kurs bearbeiten");
+		editCourseLabel.addStyleName("editButton");
+		memberPanel.add(editCourseLabel);
+
+		FlexTable courseDetailsPanel = new FlexTable();
+		courseDetailsPanel.setStyleName("courseDetailsPanel");
+		courseDetailsPanel.setWidget(0, 0, new Label("ID: "));
+		courseDetailsPanel.setWidget(0, 1, courseIDLabel);
+		courseDetailsPanel.setWidget(1, 0, new Label(constants.courseName() + ":"));
+		courseDetailsPanel.setWidget(1, 1, courseNameLabel);
+		courseDetailsPanel.setWidget(2, 0, new Label(constants.time() + ":"));
+		courseDetailsPanel.setWidget(2, 1, courseDateLabel);
+		courseDetailsPanel.setWidget(3, 0, new Label(constants.instructor() + ":"));
+		courseDetailsPanel.setWidget(3, 1, courseInsructorLabel);
+		courseDetailsPanel.setWidget(4, 0, new Label(constants.location() + ":"));
+		courseDetailsPanel.setWidget(4, 1, courseLocationLabel);
+		courseDetailsPanel.setWidget(5, 0, new Label(constants.belts() + ":"));
+		courseDetailsPanel.setWidget(5, 1, courseBeltsLabel);
 		
-		memberPicture.setHeight("200px");
-		memberPicture.setStyleName("showMember_Picture");
-		
-		HorizontalPanel primaryDetailsPanel = new HorizontalPanel();
-		primaryDetailsPanel.add(memberPicture);
-		
-		FlexTable primaryDetailsData = new FlexTable();
-		primaryDetailsData.setStyleName("primaryDetailsData");
-		primaryDetailsData.setWidget(0, 0, new Label(constants.barcode() + ":"));
-		primaryDetailsData.setWidget(0, 1, barcodeIDLabel);
-		primaryDetailsData.setWidget(1, 0, new Label(constants.forename() + ":"));
-		primaryDetailsData.setWidget(1, 1, forenameLabel);
-		primaryDetailsData.setWidget(2, 0, new Label(constants.surname() + ":"));
-		primaryDetailsData.setWidget(2, 1, surnameLabel);
-		primaryDetailsData.setWidget(3, 0, new Label(constants.birth() + ":"));
-		primaryDetailsData.setWidget(3, 1, birthContainer);
-		primaryDetailsData.setWidget(4, 0, new Label(constants.city() + ":"));
-		primaryDetailsData.setWidget(4, 1, cityLabel);
-		primaryDetailsData.setWidget(5, 0, new Label(constants.street() + ":"));
-		primaryDetailsData.setWidget(5, 1, streetLabel);
-		primaryDetailsData.setWidget(6, 0, new Label(constants.phone() + ":"));
-		primaryDetailsData.setWidget(6, 1, phoneLabel);
-		
-		primaryDetailsPanel.add(primaryDetailsData);
-		
-		secondaryDetailsData.setStyleName("secondaryDetailsData");
-		secondaryDetailsData.setWidget(0, 0, new Label(constants.course() + ":"));
-		secondaryDetailsData.setWidget(0, 1, coursesLabel);
-		secondaryDetailsData.setWidget(1, 0, new Label(constants.trainingunits() + ":"));
-		secondaryDetailsData.setWidget(1, 1, trainingUnitsLabel);
-		secondaryDetailsData.setWidget(2, 0, new Label(constants.mobilephone() + ":"));
-		secondaryDetailsData.setWidget(2, 1, mobilePhoneLabel);
-		secondaryDetailsData.setWidget(3, 0, new Label(constants.fax() + ":"));
-		secondaryDetailsData.setWidget(3, 1, faxLabel);
-		secondaryDetailsData.setWidget(4, 0, new Label(constants.email() + ":"));
-		secondaryDetailsData.setWidget(4, 1, emailLabel);
-		secondaryDetailsData.setWidget(5, 0, new Label(constants.homepage() + ":"));
-		secondaryDetailsData.setWidget(5, 1, homepageLabel);
-		secondaryDetailsData.setWidget(6, 0, new Label(constants.beltsize() + ":"));
-		secondaryDetailsData.setWidget(6, 1, beltSizeLabel);
-		secondaryDetailsData.setWidget(7, 0, new Label(constants.note() + ":"));
-		secondaryDetailsData.setWidget(7, 1, noteLabel);
-		
-		memberPanel.add(primaryDetailsPanel);
-		memberPanel.add(secondaryDetailsData);
+		memberPanel.add(courseDetailsPanel);
 	}
 	
 	public Widget asWidget() {
 		return this;
 	}
 
-	public void setMemberData(Member member) {
-		this.barcodeIDLabel.setText(member.getBarcodeID() + "");
-		this.forenameLabel.setText(member.getForename());
-		this.surnameLabel.setText(member.getSurname());
-		this.zipcodeLabel.setText(member.getZipcode() + "");
-		this.cityLabel.setText(member.getCity());
-		this.streetLabel.setText(member.getStreet());
-		this.phoneLabel.setText(member.getPhone());
-		this.mobilePhoneLabel.setText(member.getMobilephone());
-		this.faxLabel.setText(member.getFax());
-		this.emailLabel.setText(member.getEmail());
-		this.homepageLabel.setText(member.getHomepage());
-		this.birthContainer.setText(member.getBirthDay() + "." + member.getBirthMonth() + "." + member.getBirthYear());
-		this.beltSizeLabel.setText(member.getBeltsize());
-		this.noteLabel.setText(member.getNote());
-		this.trainingUnitsLabel.setText(member.getTrainingunits() + "");
+	public void setCourseData(Course course) {
+		this.courseIDLabel.setText(course.getCourseID() + "");
+		this.courseNameLabel.setText(course.getName());
+		this.courseDateLabel.setText(course.getTime());
+		this.courseInsructorLabel.setText(course.getInstructor());
+		this.courseLocationLabel.setText(course.getLocation());
 		
-		try {
-			if(!member.getPicture().equals(null)) {
-				this.memberPicture.setUrl(member.getPicture());
-			}
-		} catch (NullPointerException e) {
-			this.memberPicture.setUrl("imgs/standartMember.jpg");
+		String beltColors = new String();
+		for (int i = 0; i < course.getBeltColours().size(); i++) {
+			beltColors = beltColors + (course.getBeltColours().get(i) + "   ");
 		}
+		System.out.println(beltColors);
+		
+		this.courseBeltsLabel.setText(beltColors);
 	}
 	
-	public HasClickHandlers getEditMemberLabel() {
-		return this.editMemberLabel;
+	public HasClickHandlers getEditCourseLabel() {
+		return this.editCourseLabel;
 	}
 	
-	public String getBarcodeID() {
-		return this.barcodeIDLabel.getText().trim();
+	public String getCourseID() {
+		return this.courseIDLabel.getText().trim();
 	}
 	
-	public void setMemberCourses(String courses) {
-		this.coursesLabel.setText(courses);
-	}
-
 }

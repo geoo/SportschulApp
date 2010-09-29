@@ -5,6 +5,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
@@ -12,14 +13,14 @@ import com.google.gwt.user.client.ui.Widget;
 import de.sportschulApp.client.presenter.Presenter;
 import de.sportschulApp.client.services.AdminServiceAsync;
 import de.sportschulApp.client.view.admin.ShowCourseView;
+import de.sportschulApp.shared.Course;
 import de.sportschulApp.shared.Member;
 
 public class ShowCoursePresenter implements Presenter{
 	public interface Display{
-		void setMemberData(Member member);
-		void setMemberCourses(String courses);
-		HasClickHandlers getEditMemberLabel();
-		String getBarcodeID();
+		void setCourseData(Course course);
+		HasClickHandlers getEditCourseLabel();
+		String getCourseID();
 		Widget asWidget();
 	}
 	
@@ -34,44 +35,23 @@ public class ShowCoursePresenter implements Presenter{
 	    fetchCourseData(courseID);
 	}
 
-	public void fetchCourseData(int barcodeID) {
-//		rpcService.getC(barcodeID, new AsyncCallback<Member>() {
-//			public void onSuccess(Member result) {
-//				buildShowMemberView(result);
-//			}
-//			public void onFailure(Throwable caught) {
-//			}
-//		});
-	}
-	
-	public void fetchCourseData(Member member) {
-		for (int i = 0; i < member.getCourses().size(); i++) {
-			if(member.getCourses().get(i) != 0) {
-				rpcService.getCourseBeltPair(member.getCourses().get(i), member.getGraduations().get(i), new AsyncCallback<String>() {
-					public void onSuccess(String result) {
-						courseData = courseData + result;
-						buildMemberCourses();
-					}
-					public void onFailure(Throwable caught) {
-					}
-				});
+	public void fetchCourseData(int courseID) {
+		rpcService.getCourseByID(courseID, new AsyncCallback<Course>() {
+			public void onSuccess(Course result) {
+				display.setCourseData(result);
 			}
-		}
+
+			public void onFailure(Throwable caught) {
+				Window.alert("Fehler beim laden der Kursdaten");
+			}
+		});
 	}
 	
-	public void buildShowMemberView(Member member) {
-		this.display.setMemberData(member);
-		fetchCourseData(member);
-	}
-	
-	public void buildMemberCourses() {
-		this.display.setMemberCourses(courseData);
-	}
 
 	private void bind() {
-		this.display.getEditMemberLabel().addClickHandler(new ClickHandler() {
+		this.display.getEditCourseLabel().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				History.newItem("adminMembersEditMember:" + display.getBarcodeID());
+				History.newItem("adminCourseEditCourse:" + display.getCourseID());
 			}
 		});
 	}

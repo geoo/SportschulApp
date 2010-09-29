@@ -40,4 +40,6 @@ public interface AdminServiceAsync {
 			AsyncCallback<ArrayList<Member>> callback);
 
 	void getCompleteCourseList(AsyncCallback<ArrayList<Course>> callback);
+
+	void getCourseByID(int courseID, AsyncCallback<Course> callback);
 }
