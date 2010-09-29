@@ -127,10 +127,10 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 		} 
 		
 		if (navigationID == 3){
-			menuSystemCreateUser = new Label("Nutzer erstellen");
 			menuSystemShowUsers = new Label("Nutzer anzeigen");
-			subNavPanel.add(menuSystemCreateUser);
+			menuSystemCreateUser = new Label("Nutzer erstellen");
 			subNavPanel.add(menuSystemShowUsers);
+			subNavPanel.add(menuSystemCreateUser);
 		}
 		
 		return subNavPanel;
