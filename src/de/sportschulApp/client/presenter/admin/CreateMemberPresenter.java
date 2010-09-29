@@ -114,6 +114,8 @@ public class CreateMemberPresenter implements Presenter {
 
 		LocalizationConstants getConstants();
 
+		void fillForm(Member result);
+
 	}
 
 	private String imageUrl;
@@ -135,16 +137,17 @@ public class CreateMemberPresenter implements Presenter {
 		bind();
 		getCourseList();
 		setupValidation();
-		
+
 	}
-	
+
 	/**
 	 * Konstruktor für den EditView
 	 * 
 	 * @param rpcService
 	 * @param eventBus
 	 * @param display
-	 * @param barcodeID (Aus HistroyToken von ShowMember)
+	 * @param barcodeID
+	 *            (Aus HistroyToken von ShowMember)
 	 */
 	public CreateMemberPresenter(AdminServiceAsync rpcService,
 			HandlerManager eventBus, Display display, String barcodeID) {
@@ -152,13 +155,28 @@ public class CreateMemberPresenter implements Presenter {
 		this.display = display;
 		this.rpcService = rpcService;
 		this.constants = display.getConstants();
+		getMember(barcodeID);
 		bind();
 		getCourseList();
 		setupValidation();
 		System.out.println(barcodeID);
-		
+
 	}
-	
+
+	private void getMember(String barcodeID) {
+		rpcService.getMemberByBarcodeID(Integer.parseInt(barcodeID),
+				new AsyncCallback<Member>() {
+
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+					}
+
+					public void onSuccess(Member result) {
+						display.fillForm(result);
+					}
+				});
+	}
 
 	private void bind() {
 		this.display.getSendButton().addClickHandler(new ClickHandler() {
