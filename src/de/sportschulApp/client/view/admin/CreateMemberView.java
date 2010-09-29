@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextArea;
@@ -22,6 +23,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import de.sportschulApp.client.presenter.admin.CreateMemberPresenter;
 import de.sportschulApp.client.view.localization.LocalizationConstants;
+import de.sportschulApp.shared.Member;
 import eu.maydu.gwt.validation.client.DefaultValidationProcessor;
 import eu.maydu.gwt.validation.client.ValidationProcessor;
 
@@ -154,11 +156,13 @@ public class CreateMemberView extends Composite implements
 
 	private DisclosurePanel importantDisclosurePanel;
 	private DisclosurePanel additionalDisclosurePanel;
+	private HorizontalPanel barcodeInputPanel;
 
 	public CreateMemberView(LocalizationConstants constants) {
 
 		this.constants = constants;
-		importantDisclosurePanel = new DisclosurePanel(constants.importantInformations());
+		importantDisclosurePanel = new DisclosurePanel(
+				constants.importantInformations());
 		importantDisclosurePanel.setContent(createMemberPanel);
 		importantDisclosurePanel.setOpen(true);
 		additionalDisclosurePanel = new DisclosurePanel(
@@ -195,7 +199,7 @@ public class CreateMemberView extends Composite implements
 		surnameInputPanel.add(surnameLabel);
 		surnameInputPanel.add(surnameTextBox);
 
-		HorizontalPanel barcodeInputPanel = new HorizontalPanel();
+		barcodeInputPanel = new HorizontalPanel();
 		barcodeLabel = new Label(constants.barcode() + ":* ");
 		barcodeTextBox = new TextBox();
 		barcodeInputPanel.add(barcodeLabel);
@@ -496,6 +500,34 @@ public class CreateMemberView extends Composite implements
 
 	public LocalizationConstants getConstants() {
 		return constants;
+	}
+
+	public void fillForm(Member member) {
+		importantDisclosurePanel.setOpen(true);
+		additionalDisclosurePanel.setOpen(true);
+		forenameTextBox.setText(member.getForename());
+		surnameTextBox.setText(member.getSurname());
+		barcodeTextBox.setText("" + member.getBarcodeID());
+		createMemberPanel.remove(barcodeInputPanel);
+		streetTextBox.setText(member.getStreet());
+		zipcodeTextBox.setText("" + member.getZipcode());
+		cityTextBox.setText(member.getCity());
+		birthTextBox1.setSelectedIndex(Integer.parseInt(""
+				+ member.getBirthDay()));
+		birthTextBox2.setSelectedIndex(Integer.parseInt(""
+				+ member.getBirthMonth()));
+		int temp = Integer.parseInt("" + (member.getBirthYear())) - 2009;
+		birthTextBox3.setSelectedIndex(-temp);
+		phoneTextBox.setText(member.getPhone());
+		beltsizeTextBox.setText(member.getBeltsize());
+		trainingunitsTextBox.setText("" + member.getTrainingunits());
+		mobilephoneTextBox.setText(member.getMobilephone());
+		faxTextBox.setText(member.getFax());
+		emailTextBox.setText(member.getEmail());
+		homepageTextBox.setText(member.getHomepage());
+		diseasesTextBox.setText(member.getDiseases());
+		noteTextBox.setText(member.getNote());
+		
 	}
 
 }

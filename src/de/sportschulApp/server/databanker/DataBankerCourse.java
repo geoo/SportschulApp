@@ -362,7 +362,7 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 		}
 		return courseName;
 	}
-	
+
 	public String getCourseBeltPair(int courseID, int beltID) {
 		String beltName = null;
 		String courseName = null;
@@ -373,10 +373,10 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 		Statement stmt2 = dbc.getStatement();
 
 		String query1 = "SELECT name FROM Courses where Courses_id = '"
-			+ courseID + "'";
-		
-		String query2 = "SELECT grade" + beltID + " FROM Belts where Course_id = '"
 				+ courseID + "'";
+
+		String query2 = "SELECT grade" + beltID
+				+ " FROM Belts where Course_id = '" + courseID + "'";
 
 		try {
 			rs1 = stmt1.executeQuery(query1);
@@ -387,7 +387,7 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 			System.out.println(e);
 			return null;
 		}
-		
+
 		try {
 			rs2 = stmt2.executeQuery(query2);
 			while (rs2.next()) {
@@ -402,6 +402,36 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 			System.out.println(e);
 			return null;
 		}
-		return courseName + "(" + beltName +") ";
+		return courseName + "(" + beltName + ") ";
 	}
+
+	public Course getCourseByID(int courseID) {
+		Course course = new Course();
+		DataBankerConnection dbc = new DataBankerConnection();
+		ResultSet rs = null;
+		Statement stmt = dbc.getStatement();
+
+		String query = "SELECT * FROM Courses where  Courses_id = '" + courseID
+				+ "'";
+
+		try {
+			rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				course.setCourseID(rs.getInt(1));
+				course.setName(rs.getString(2));
+				course.setTime(rs.getString(3));
+				course.setInstructor(rs.getString(4));
+				course.setLocation(rs.getString(5));
+				course.setBeltColours(getBelts(rs.getInt(1)));
+			}
+			rs.close();
+			dbc.close();
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+		return course;
+	}
+
 }

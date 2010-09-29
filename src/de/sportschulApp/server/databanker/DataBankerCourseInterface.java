@@ -16,6 +16,8 @@ public interface DataBankerCourseInterface {
 	
 	public ArrayList<String> getCourseNames();
 	
+	public Course getCourseByID(int courseID);
+	
 	public String getCourseName(int courseID);
 	
 	public int getCourseID(String courseName);
