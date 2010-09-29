@@ -34,7 +34,7 @@ public class MemberListView extends Composite implements MemberListPresenter.Dis
 	private Label showAllButton;
 	
 	public MemberListView() {
-		wrapper.addStyleName("memberListWrapper");
+		wrapper.addStyleName("listWrapper");
 		initWidget(wrapper);
 	
 		wrapper.add(createSearchPanel());

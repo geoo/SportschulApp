@@ -25,6 +25,7 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 	private Label menuMembersCreateMember;
 	private Label menuEventsShowEvents;
 	private Label menuEventsCreateEvent;
+	private Label menuCourseShowCourses;
 	private Label menuCourseCreateCourse;
 	private Label menuSystemCreateUser;
 	private Label menuSystemShowUsers;
@@ -119,7 +120,9 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 		} 
 		
 		if (navigationID == 2){
+			menuCourseShowCourses = new Label("Kurse anzeigen");
 			menuCourseCreateCourse = new Label("Kurs erstellen");
+			subNavPanel.add(menuCourseShowCourses);
 			subNavPanel.add(menuCourseCreateCourse);
 		} 
 		
@@ -169,12 +172,10 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 		return this;
 	}
 
-	/*
+	
 	public HasClickHandlers getMenuCourseShowCourses() {
-		// TODO Auto-generated method stub
-		return null;
+		return menuCourseShowCourses;
 	}
-	*/
 
 	public HasClickHandlers getMenuSystemCreateUser() {
 		return menuSystemCreateUser;
