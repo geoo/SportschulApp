@@ -127,7 +127,7 @@ public class ShowMemberView extends Composite implements ShowMemberPresenter.Dis
 	}
 	
 	public String getBarcodeID() {
-		return this.barcodeIDLabel.getText();
+		return this.barcodeIDLabel.getText().trim();
 	}
 	
 	public void setMemberCourses(String courses) {
