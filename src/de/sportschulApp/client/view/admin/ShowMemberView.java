@@ -1,10 +1,13 @@
 package de.sportschulApp.client.view.admin;
 
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -29,7 +32,8 @@ public class ShowMemberView extends Composite implements ShowMemberPresenter.Dis
 	private Label beltSizeLabel = new Label();
 	private Label noteLabel = new Label();
 	private Label trainingUnitsLabel = new Label();
-	private Label coursesLabel = new Label("lol");
+	private Label coursesLabel = new Label();
+	private Label editMemberLabel;
 	private Image memberPicture = new Image("");
 	FlexTable secondaryDetailsData = new FlexTable();
 
@@ -37,6 +41,9 @@ public class ShowMemberView extends Composite implements ShowMemberPresenter.Dis
 		VerticalPanel memberPanel = new VerticalPanel();
 		memberPanel.setWidth("450px");
 		initWidget(memberPanel);
+		
+		editMemberLabel = new Label("Mitglied bearbeiten");
+		memberPanel.add(editMemberLabel);
 		
 		memberPicture.setHeight("200px");
 		memberPicture.setStyleName("showMember_Picture");
@@ -113,6 +120,14 @@ public class ShowMemberView extends Composite implements ShowMemberPresenter.Dis
 		} catch (NullPointerException e) {
 			this.memberPicture.setUrl("imgs/standartMember.jpg");
 		}
+	}
+	
+	public HasClickHandlers getEditMemberLabel() {
+		return this.editMemberLabel;
+	}
+	
+	public String getBarcodeID() {
+		return this.barcodeIDLabel.getText();
 	}
 	
 	public void setMemberCourses(String courses) {

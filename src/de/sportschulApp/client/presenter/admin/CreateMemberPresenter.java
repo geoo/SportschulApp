@@ -137,6 +137,28 @@ public class CreateMemberPresenter implements Presenter {
 		setupValidation();
 		
 	}
+	
+	/**
+	 * Konstruktor für den EditView
+	 * 
+	 * @param rpcService
+	 * @param eventBus
+	 * @param display
+	 * @param barcodeID (Aus HistroyToken von ShowMember)
+	 */
+	public CreateMemberPresenter(AdminServiceAsync rpcService,
+			HandlerManager eventBus, Display display, String barcodeID) {
+		this.eventBus = eventBus;
+		this.display = display;
+		this.rpcService = rpcService;
+		this.constants = display.getConstants();
+		bind();
+		getCourseList();
+		setupValidation();
+		System.out.println(barcodeID);
+		
+	}
+	
 
 	private void bind() {
 		this.display.getSendButton().addClickHandler(new ClickHandler() {

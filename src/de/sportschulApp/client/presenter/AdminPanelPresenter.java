@@ -93,6 +93,10 @@ public class AdminPanelPresenter implements Presenter {
 		} else if (token.equals("adminMembersCreateMember")) {
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(0, constants));
 			contentPresenter =  new CreateMemberPresenter(rpcService, eventBus, new CreateMemberView(constants));
+		} else if (token.substring(0, 22).equals("adminMembersEditMember")) {
+			String barcodeID = token.substring(23);
+			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(0, constants));
+			contentPresenter =  new CreateMemberPresenter(rpcService, eventBus, new CreateMemberView(constants), barcodeID);
 		} else if (token.equals("adminEventsShowEvents")) {
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(1, constants));
 			contentPresenter =  new EventListPresenter(rpcService, eventBus, new EventListView());
