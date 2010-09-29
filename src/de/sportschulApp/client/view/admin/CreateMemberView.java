@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextArea;
@@ -502,8 +503,11 @@ public class CreateMemberView extends Composite implements
 	}
 
 	public void fillForm(Member member) {
+		importantDisclosurePanel.setOpen(true);
+		additionalDisclosurePanel.setOpen(true);
 		forenameTextBox.setText(member.getForename());
 		surnameTextBox.setText(member.getSurname());
+		barcodeTextBox.setText("" + member.getBarcodeID());
 		createMemberPanel.remove(barcodeInputPanel);
 		streetTextBox.setText(member.getStreet());
 		zipcodeTextBox.setText("" + member.getZipcode());
@@ -517,8 +521,13 @@ public class CreateMemberView extends Composite implements
 		phoneTextBox.setText(member.getPhone());
 		beltsizeTextBox.setText(member.getBeltsize());
 		trainingunitsTextBox.setText("" + member.getTrainingunits());
+		mobilephoneTextBox.setText(member.getMobilephone());
+		faxTextBox.setText(member.getFax());
+		emailTextBox.setText(member.getEmail());
+		homepageTextBox.setText(member.getHomepage());
+		diseasesTextBox.setText(member.getDiseases());
+		noteTextBox.setText(member.getNote());
 		
-
 	}
 
 }

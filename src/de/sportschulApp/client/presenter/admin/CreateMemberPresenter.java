@@ -210,10 +210,7 @@ public class CreateMemberPresenter implements Presenter {
 				if (success) {
 					System.out.println("validation success");
 					fillForm();
-					if (error == false) {
-						Window.alert(constants.memberCreated());
-						History.newItem("adminMembersShowMembers");
-					}
+
 				} else {
 					System.out.println("validation error");
 					Window.alert("Bitte überprüfen Sie ihre Eingaben");
@@ -282,7 +279,7 @@ public class CreateMemberPresenter implements Presenter {
 
 	public void fillForm() {
 		error = false;
-		courses = new ArrayList<Integer>();
+		// courses = new ArrayList<Integer>();
 		grades = new ArrayList<Integer>();
 
 		ArrayList<CourseSelectorWidget> courseListWidget = display
@@ -313,7 +310,66 @@ public class CreateMemberPresenter implements Presenter {
 
 						public void onSuccess(ArrayList<Integer> result) {
 
-							courses = result;
+							// courses = result;
+							Integer selected = display.getBirthTextBox1()
+									.getSelectedIndex();
+							String birthDay = selected.toString();
+
+							selected = display.getBirthTextBox2()
+									.getSelectedIndex();
+							String birthMonth = selected.toString();
+
+							selected = display.getBirthTextBox3()
+									.getSelectedIndex();
+							String birthYear = display.getBirthTextBox3()
+									.getItemText(selected);
+							Member member = new Member(0, new Integer(display
+									.getBarcodeTextBox().getText()), display
+									.getForenameTextBox().getText(), display
+									.getSurnameTextBox().getText(),
+									new Integer(display.getZipcodeTextBox()
+											.getText()), display
+											.getCityTextBox().getText(),
+									display.getStreetTextBox().getText(),
+									display.getPhoneTextBox().getText(),
+									display.getmobilephoneTextBox().getText(),
+									display.getFaxTextBox().getText(), display
+											.getEmailTextBox().getText(),
+									display.getHomepageTextBox().getText(),
+									birthDay, birthMonth, birthYear, display
+											.getPictureUrl(), display
+											.getDiseasesTextBox().getText(),
+									display.getBeltsizeTextBox().getText(),
+									display.getNoteTextBox().getText(),
+									new Integer(display
+											.getTrainingunitsTextBox()
+											.getText()), result, grades);
+
+							rpcService.saveMember(member,
+									new AsyncCallback<String>() {
+
+										public void onSuccess(String result) {
+											System.out.println("result: "
+													+ result);
+											if (result
+													.equals("barcode_id already used")) {
+												display.getBarcodeTextBox()
+														.setStyleName(
+																"validationFailedBorderBarcode");
+												Window.alert(display
+														.getConstants()
+														.barcodeUsed());
+											} else {
+												Window.alert(constants
+														.memberCreated());
+												History.newItem("adminMembersShowMembers");
+											}
+										}
+
+										public void onFailure(Throwable caught) {
+											System.out.println("rpc errror");
+										}
+									});
 
 						}
 
@@ -321,58 +377,6 @@ public class CreateMemberPresenter implements Presenter {
 							System.out.println("rpc errror");
 						}
 					});
-			Timer timer = new Timer() {
-				public void run() {
-
-					Integer selected = display.getBirthTextBox1()
-							.getSelectedIndex();
-					String birthDay = selected.toString();
-
-					selected = display.getBirthTextBox2().getSelectedIndex();
-					String birthMonth = selected.toString();
-
-					selected = display.getBirthTextBox3().getSelectedIndex();
-					String birthYear = display.getBirthTextBox3().getItemText(
-							selected);
-					Member member = new Member(0, new Integer(display
-							.getBarcodeTextBox().getText()), display
-							.getForenameTextBox().getText(), display
-							.getSurnameTextBox().getText(), new Integer(display
-							.getZipcodeTextBox().getText()), display
-							.getCityTextBox().getText(), display
-							.getStreetTextBox().getText(), display
-							.getPhoneTextBox().getText(), display
-							.getmobilephoneTextBox().getText(), display
-							.getFaxTextBox().getText(), display
-							.getEmailTextBox().getText(), display
-							.getHomepageTextBox().getText(), birthDay,
-							birthMonth, birthYear, display.getPictureUrl(),
-							display.getDiseasesTextBox().getText(), display
-									.getBeltsizeTextBox().getText(), display
-									.getNoteTextBox().getText(),
-							new Integer(display.getTrainingunitsTextBox()
-									.getText()), courses, grades);
-
-					rpcService.saveMember(member, new AsyncCallback<String>() {
-
-						public void onSuccess(String result) {
-							System.out.println("result: " + result);
-							if (result.equals("barcode_id already used")) {
-								display.getBarcodeTextBox().setStyleName(
-										"validationFailedBorderBarcode");
-								Window.alert(display.getConstants()
-										.barcodeUsed());
-							}
-						}
-
-						public void onFailure(Throwable caught) {
-							System.out.println("rpc errror");
-						}
-					});
-
-				}
-			};
-			timer.schedule(2000);
 		}
 	}
 

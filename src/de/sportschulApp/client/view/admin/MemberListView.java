@@ -74,7 +74,7 @@ public class MemberListView extends Composite implements MemberListPresenter.Dis
         lva.setList(memberList);
         lva.refresh();
 
-        cellTable.setPageSize(10);
+        cellTable.setPageSize(1000);
         cellTable.setSize("700px", "500px");
         cellTable.setSelectionModel(selectionModel);
 		
