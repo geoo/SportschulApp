@@ -5,6 +5,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
@@ -17,14 +18,15 @@ public class ShowMemberPresenter implements Presenter{
 	public interface Display{
 		void setMemberData(Member member);
 		void setMemberCourses(String courses);
-		HasClickHandlers getEditMemberLabel();
-		String getBarcodeID();
+		HasClickHandlers getEditLabel();
+		HasClickHandlers getDeleteLabel();
 		Widget asWidget();
 	}
 	
 	private final Display display;
 	private final AdminServiceAsync rpcService;
 	private String courseData = new String();
+	private Member member = new Member();
 	
 	public ShowMemberPresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display, int barcodeID) {
 	    this.display = display;
@@ -36,6 +38,7 @@ public class ShowMemberPresenter implements Presenter{
 	public void fetchMemberData(int barcodeID) {
 		rpcService.getMemberByBarcodeID(barcodeID, new AsyncCallback<Member>() {
 			public void onSuccess(Member result) {
+				member = result;
 				buildShowMemberView(result);
 			}
 			public void onFailure(Throwable caught) {
@@ -68,9 +71,24 @@ public class ShowMemberPresenter implements Presenter{
 	}
 
 	private void bind() {
-		this.display.getEditMemberLabel().addClickHandler(new ClickHandler() {
+		this.display.getEditLabel().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				History.newItem("adminMembersEditMember:" + display.getBarcodeID());
+				History.newItem("adminMembersEditMember:" + member.getBarcodeID());
+			}
+		});
+		
+		this.display.getDeleteLabel().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				if(Window.confirm("Bestätigen sie mit OK wenn das Mitglied wirklich gelöscht werden soll.")) {
+					rpcService.deleteMemberByMemberID(member.getMemberID(), new AsyncCallback<Void>() {
+						public void onSuccess(Void result) {
+							History.fireCurrentHistoryState();
+						}
+						public void onFailure(Throwable caught) {
+							Window.alert("Das löschen des Mitglieds ist Fehlgeschlagen");	
+						}
+					});
+				}
 			}
 		});
 	}

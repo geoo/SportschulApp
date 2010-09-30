@@ -12,21 +12,19 @@ import com.google.gwt.user.client.ui.Widget;
 
 import de.sportschulApp.client.presenter.Presenter;
 import de.sportschulApp.client.services.AdminServiceAsync;
-import de.sportschulApp.client.view.admin.ShowCourseView;
 import de.sportschulApp.shared.Course;
-import de.sportschulApp.shared.Member;
 
 public class ShowCoursePresenter implements Presenter{
 	public interface Display{
 		void setCourseData(Course course);
-		HasClickHandlers getEditCourseLabel();
-		String getCourseID();
+		HasClickHandlers getEditLabel();
+		HasClickHandlers getDeleteLabel();
 		Widget asWidget();
 	}
 	
 	private final Display display;
 	private final AdminServiceAsync rpcService;
-	private String courseData = new String();
+	private Course course = new Course();
 	
 	public ShowCoursePresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display, int courseID) {
 	    this.display = display;
@@ -38,6 +36,7 @@ public class ShowCoursePresenter implements Presenter{
 	public void fetchCourseData(int courseID) {
 		rpcService.getCourseByID(courseID, new AsyncCallback<Course>() {
 			public void onSuccess(Course result) {
+				course = result;
 				display.setCourseData(result);
 			}
 
@@ -49,9 +48,24 @@ public class ShowCoursePresenter implements Presenter{
 	
 
 	private void bind() {
-		this.display.getEditCourseLabel().addClickHandler(new ClickHandler() {
+		this.display.getEditLabel().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				History.newItem("adminCourseEditCourse:" + display.getCourseID());
+				History.newItem("adminCourseEditCourse:" + course.getCourseID());
+			}
+		});
+		
+		this.display.getDeleteLabel().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				if(Window.confirm("Bestätigen sie mit OK wenn der Kurs wirklich gelöscht werden soll.")) {
+					rpcService.deleteCourseByID(course.getCourseID(), new AsyncCallback<Void>() {
+						public void onSuccess(Void result) {
+							History.fireCurrentHistoryState();
+						}
+						public void onFailure(Throwable caught) {
+							Window.alert("Das löschen des Kurses ist Fehlgeschlagen");	
+						}
+					});
+				}
 			}
 		});
 	}

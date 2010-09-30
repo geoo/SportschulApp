@@ -62,6 +62,24 @@ public class CreateCoursePresenter implements Presenter {
 		fillDualListBox();
 		setupValidation();
 	}
+	
+	/**
+	 * Konstruktor für den EditCourseView
+	 * 
+	 * @param rpcService
+	 * @param eventBus
+	 * @param display
+	 * @param courseID
+	 */
+	public CreateCoursePresenter(AdminServiceAsync rpcService,
+			HandlerManager eventBus, Display display, String courseID) {
+		this.display = display;
+		this.rpcService = rpcService;
+		this.constants = display.getConstants();
+		bind();
+		fillDualListBox();
+		setupValidation();
+	}
 
 	private void fillDualListBox() {
 		display.getDualListBox().addLeft(constants.white());

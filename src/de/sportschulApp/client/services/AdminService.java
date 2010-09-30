@@ -26,6 +26,8 @@ public interface AdminService extends RemoteService {
 	
 	Member getMemberByMemberID(int memberID);
 	
+	void deleteMemberByMemberID(int memberID);
+	
 	Member getMemberByBarcodeID(int barcodeID);
 
 	int getCourseID(String courseName);
@@ -37,6 +39,8 @@ public interface AdminService extends RemoteService {
 	String createCourse(Course course);
 	
 	Course getCourseByID(int courseID);
+	
+	void deleteCourseByID(int courseID);
 
 	ArrayList<User> getInstructorList();
 	

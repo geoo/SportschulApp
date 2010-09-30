@@ -139,11 +139,14 @@ public class AdminPanelPresenter implements Presenter {
 		} else if (token.equals("adminCourseShowCourses")) {
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(2, constants));
 			contentPresenter = new CourseListPresenter(rpcService, eventBus, new CourseListView()); 
+		} else if ((token.length() >= "adminCourseEditCourse".length()) && (token.subSequence(0, 21).equals("adminCourseEditCourse"))) {
+			String courseID = token.substring(22);
+			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(2, constants));
+			contentPresenter =  new CreateCoursePresenter(rpcService, eventBus, new CreateCourseView(constants), courseID);	
 		} else if (token.equals("adminSystemCreateUser")){
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(3, constants));
 			contentPresenter = new CreateUserPresenter(rpcService, eventBus, new CreateUserView(constants));
-		} 
-		else if (token.equals("adminSystemShowUsers")){
+		} else if (token.equals("adminSystemShowUsers")){
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(3, constants));
 			//hier wird die exception erzeugt - vielleicht ein import fehler oder fehler bei der einbindung...
 			contentPresenter = new ShowUsersPresenter(rpcService, eventBus, new ShowUsersView(constants));

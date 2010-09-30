@@ -1,66 +1,60 @@
 package de.sportschulApp.client.view.admin;
 
-import org.apache.tools.ant.types.CommandlineJava.SysProperties;
-
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.sportschulApp.client.presenter.admin.ShowCoursePresenter;
 import de.sportschulApp.client.view.localization.LocalizationConstants;
 import de.sportschulApp.shared.Course;
-import de.sportschulApp.shared.Member;
 
 public class ShowCourseView extends Composite implements ShowCoursePresenter.Display {
 	
-	private Label courseIDLabel = new Label();
 	private Label courseNameLabel = new Label();
 	private Label courseDateLabel = new Label();
 	private Label courseInsructorLabel = new Label();
 	private Label courseLocationLabel = new Label();
 	private Label courseBeltsLabel = new Label();
-	private Label editCourseLabel;
+	private Label editLabel;
+	private Label deleteLabel;
 
 	public ShowCourseView(LocalizationConstants constants) {
-		VerticalPanel memberPanel = new VerticalPanel();
-		memberPanel.setWidth("450px");
-		initWidget(memberPanel);
+		VerticalPanel detailsPanel = new VerticalPanel();
+		detailsPanel.setWidth("450px");
+		initWidget(detailsPanel);
 		
-		editCourseLabel = new Label("Kurs bearbeiten");
-		editCourseLabel.addStyleName("editButton");
-		memberPanel.add(editCourseLabel);
+		HorizontalPanel metaPanel = new HorizontalPanel();
+		metaPanel.addStyleName("metaPanel");
+		
+		editLabel = new Label("Kurs bearbeiten");
+		deleteLabel = new Label("Kurs löschen");
+		
+		metaPanel.add(editLabel);
+		metaPanel.add(deleteLabel);
+		
+		detailsPanel.add(metaPanel);
 
 		FlexTable courseDetailsPanel = new FlexTable();
 		courseDetailsPanel.setStyleName("courseDetailsPanel");
-		courseDetailsPanel.setWidget(0, 0, new Label("ID: "));
-		courseDetailsPanel.setWidget(0, 1, courseIDLabel);
-		courseDetailsPanel.setWidget(1, 0, new Label(constants.courseName() + ":"));
-		courseDetailsPanel.setWidget(1, 1, courseNameLabel);
-		courseDetailsPanel.setWidget(2, 0, new Label(constants.time() + ":"));
-		courseDetailsPanel.setWidget(2, 1, courseDateLabel);
-		courseDetailsPanel.setWidget(3, 0, new Label(constants.instructor() + ":"));
-		courseDetailsPanel.setWidget(3, 1, courseInsructorLabel);
-		courseDetailsPanel.setWidget(4, 0, new Label(constants.location() + ":"));
-		courseDetailsPanel.setWidget(4, 1, courseLocationLabel);
-		courseDetailsPanel.setWidget(5, 0, new Label(constants.belts() + ":"));
-		courseDetailsPanel.setWidget(5, 1, courseBeltsLabel);
+		courseDetailsPanel.setWidget(0, 0, new Label(constants.courseName() + ":"));
+		courseDetailsPanel.setWidget(0, 1, courseNameLabel);
+		courseDetailsPanel.setWidget(1, 0, new Label(constants.time() + ":"));
+		courseDetailsPanel.setWidget(1, 1, courseDateLabel);
+		courseDetailsPanel.setWidget(2, 0, new Label(constants.instructor() + ":"));
+		courseDetailsPanel.setWidget(2, 1, courseInsructorLabel);
+		courseDetailsPanel.setWidget(3, 0, new Label(constants.location() + ":"));
+		courseDetailsPanel.setWidget(3, 1, courseLocationLabel);
+		courseDetailsPanel.setWidget(4, 0, new Label(constants.belts() + ":"));
+		courseDetailsPanel.setWidget(4, 1, courseBeltsLabel);
 		
-		memberPanel.add(courseDetailsPanel);
+		detailsPanel.add(courseDetailsPanel);
 	}
 	
-	public Widget asWidget() {
-		return this;
-	}
-
 	public void setCourseData(Course course) {
-		this.courseIDLabel.setText(course.getCourseID() + "");
 		this.courseNameLabel.setText(course.getName());
 		this.courseDateLabel.setText(course.getTime());
 		this.courseInsructorLabel.setText(course.getInstructor());
@@ -68,19 +62,21 @@ public class ShowCourseView extends Composite implements ShowCoursePresenter.Dis
 		
 		String beltColors = new String();
 		for (int i = 0; i < course.getBeltColours().size(); i++) {
-			beltColors = beltColors + (course.getBeltColours().get(i) + "   ");
+			beltColors = beltColors + (course.getBeltColours().get(i) + ", ");
 		}
-		System.out.println(beltColors);
 		
-		this.courseBeltsLabel.setText(beltColors);
+		this.courseBeltsLabel.setText(beltColors.substring(0, beltColors.length() - 2));
 	}
 	
-	public HasClickHandlers getEditCourseLabel() {
-		return this.editCourseLabel;
+	public HasClickHandlers getEditLabel() {
+		return this.editLabel;
 	}
 	
-	public String getCourseID() {
-		return this.courseIDLabel.getText().trim();
+	public HasClickHandlers getDeleteLabel() {
+		return this.deleteLabel;
 	}
 	
+	public Widget asWidget() {
+		return this;
+	}
 }

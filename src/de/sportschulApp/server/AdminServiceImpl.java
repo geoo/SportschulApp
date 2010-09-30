@@ -37,6 +37,10 @@ public class AdminServiceImpl extends RemoteServiceServlet implements
 	public Course getCourseByID(int courseID) {
 		return dbc.getCourseByID(courseID);
 	}
+	
+	public void deleteCourseByID(int courseID) {
+		dbc.deleteCourse(courseID);
+	}
 
 	public ArrayList<String> getBeltList(String courseName) {
 		int courseID = dbc.getCourseID(courseName);
@@ -49,6 +53,10 @@ public class AdminServiceImpl extends RemoteServiceServlet implements
 
 	public Member getMemberByBarcodeID(int barcodeID) {
 		return dbm.getMember(barcodeID);
+	}
+	
+	public void deleteMemberByMemberID(int memberID) {
+		dbm.deleteMember(memberID);
 	}
 
 	public int getCourseID(String courseName) {

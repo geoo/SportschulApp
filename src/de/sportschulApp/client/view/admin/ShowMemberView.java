@@ -33,7 +33,8 @@ public class ShowMemberView extends Composite implements ShowMemberPresenter.Dis
 	private Label noteLabel = new Label();
 	private Label trainingUnitsLabel = new Label();
 	private Label coursesLabel = new Label();
-	private Label editMemberLabel;
+	private Label editLabel;
+	private Label deleteLabel;
 	private Image memberPicture = new Image("");
 	FlexTable secondaryDetailsData = new FlexTable();
 
@@ -42,9 +43,16 @@ public class ShowMemberView extends Composite implements ShowMemberPresenter.Dis
 		memberPanel.setWidth("450px");
 		initWidget(memberPanel);
 		
-		editMemberLabel = new Label("Mitglied bearbeiten");
-		editMemberLabel.addStyleName("editButton");
-		memberPanel.add(editMemberLabel);
+		HorizontalPanel metaPanel = new HorizontalPanel();
+		metaPanel.addStyleName("metaPanel");
+		
+		editLabel = new Label("Mitglied bearbeiten");
+		deleteLabel = new Label("Mitglied löschen");
+		
+		metaPanel.add(editLabel);
+		metaPanel.add(deleteLabel);
+		
+		memberPanel.add(metaPanel);
 		
 		memberPicture.setHeight("200px");
 		memberPicture.setStyleName("showMember_Picture");
@@ -123,16 +131,15 @@ public class ShowMemberView extends Composite implements ShowMemberPresenter.Dis
 		}
 	}
 	
-	public HasClickHandlers getEditMemberLabel() {
-		return this.editMemberLabel;
+	public HasClickHandlers getEditLabel() {
+		return this.editLabel;
 	}
 	
-	public String getBarcodeID() {
-		return this.barcodeIDLabel.getText().trim();
+	public HasClickHandlers getDeleteLabel() {
+		return this.deleteLabel;
 	}
-	
+		
 	public void setMemberCourses(String courses) {
 		this.coursesLabel.setText(courses);
 	}
-
 }

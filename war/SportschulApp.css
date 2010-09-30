@@ -41,15 +41,20 @@ h1 {
 	padding: 0px !important;
 }
 
-.editButton {
+.metaPanel {
+	padding-bottom: 10px;	
+}
+
+.metaPanel .gwt-Label {
 	padding-left: 3px;
+	padding-right: 10px;
 	cursor: pointer;
-	font-size: 16px;
+	font-size: 15px;
 	color: #346492;
 	display: inline;
 }
 
-.editButton:hover{
+.metaPanel .gwt-Label:hover{
 	text-decoration: underline;
 }
 

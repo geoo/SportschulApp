@@ -42,4 +42,8 @@ public interface AdminServiceAsync {
 	void getCompleteCourseList(AsyncCallback<ArrayList<Course>> callback);
 
 	void getCourseByID(int courseID, AsyncCallback<Course> callback);
+
+	void deleteCourseByID(int courseID, AsyncCallback<Void> callback);
+
+	void deleteMemberByMemberID(int memberID, AsyncCallback<Void> callback);
 }
