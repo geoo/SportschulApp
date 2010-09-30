@@ -12,29 +12,33 @@ import de.sportschulApp.client.event.ShowCourseEvent;
 import de.sportschulApp.client.event.ShowCourseEventHandler;
 import de.sportschulApp.client.event.ShowMemberEvent;
 import de.sportschulApp.client.event.ShowMemberEventHandler;
+import de.sportschulApp.client.event.ShowUserEvent;
+import de.sportschulApp.client.event.ShowUserEventHandler;
 import de.sportschulApp.client.presenter.admin.CreateCoursePresenter;
 import de.sportschulApp.client.presenter.admin.CreateEventPresenter;
 import de.sportschulApp.client.presenter.admin.CreateMemberPresenter;
 import de.sportschulApp.client.presenter.admin.CreateUserPresenter;
-import de.sportschulApp.client.presenter.admin.EventListPresenter;
-import de.sportschulApp.client.presenter.admin.CourseListPresenter;
-import de.sportschulApp.client.presenter.admin.MemberListPresenter;
+import de.sportschulApp.client.presenter.admin.ListEventPresenter;
+import de.sportschulApp.client.presenter.admin.ListCoursePresenter;
+import de.sportschulApp.client.presenter.admin.ListMemberPresenter;
 import de.sportschulApp.client.presenter.admin.NavigationPresenter;
 import de.sportschulApp.client.presenter.admin.ShowMemberPresenter;
+import de.sportschulApp.client.presenter.admin.ShowUserPresenter;
 import de.sportschulApp.client.presenter.admin.ShowCoursePresenter;
-import de.sportschulApp.client.presenter.admin.ShowUsersPresenter;
+import de.sportschulApp.client.presenter.admin.ListUserPresenter;
 import de.sportschulApp.client.services.AdminService;
 import de.sportschulApp.client.services.AdminServiceAsync;
-import de.sportschulApp.client.view.admin.CourseListView;
+import de.sportschulApp.client.view.admin.ListCourseView;
 import de.sportschulApp.client.view.admin.CreateCourseView;
 import de.sportschulApp.client.view.admin.CreateEventView;
 import de.sportschulApp.client.view.admin.CreateMemberView;
 import de.sportschulApp.client.view.admin.CreateUserView;
-import de.sportschulApp.client.view.admin.EventListView;
-import de.sportschulApp.client.view.admin.MemberListView;
+import de.sportschulApp.client.view.admin.ListEventView;
+import de.sportschulApp.client.view.admin.ListMemberView;
 import de.sportschulApp.client.view.admin.NavigationView;
 import de.sportschulApp.client.view.admin.ShowMemberView;
-import de.sportschulApp.client.view.admin.ShowUsersView;
+import de.sportschulApp.client.view.admin.ShowUserView;
+import de.sportschulApp.client.view.admin.ListUserView;
 import de.sportschulApp.client.view.admin.ShowCourseView;
 import de.sportschulApp.client.view.localization.LocalizationConstants;
 
@@ -74,7 +78,16 @@ public class AdminPanelPresenter implements Presenter {
 		{
 			eventBus.addHandler(ShowCourseEvent.TYPE, new ShowCourseEventHandler() {
 				public void onShowCourse(ShowCourseEvent event) {
-					doShowCourse(event.getID());	
+					doShowCourse(event.getCourseID());	
+				}
+			});	
+		}
+		
+		if (!eventBus.isEventHandled(ShowUserEvent.TYPE)) 
+		{
+			eventBus.addHandler(ShowUserEvent.TYPE, new ShowUserEventHandler() {
+				public void onShowUser(ShowUserEvent event) {
+					doShowUser(event.getUserID());	
 				}
 			});	
 		}
@@ -108,6 +121,20 @@ public class AdminPanelPresenter implements Presenter {
 		coursePopup.show();
 	}
 	
+	public void doShowUser(int userID) {
+		DialogBox userPopup = new DialogBox(true);
+		userPopup.setAnimationEnabled(true);
+		userPopup.setText("Detailansicht");
+		userPopup.setGlassEnabled(true);
+		userPopup.center();
+		userPopup.setPopupPosition(userPopup.getAbsoluteLeft() - 200, 100);
+		userPopup.setWidth("auto");
+		Presenter showUserPresenter = null;
+		showUserPresenter =  new ShowUserPresenter(rpcService, eventBus, new ShowUserView(constants), userID);
+		showUserPresenter.go(userPopup);
+		userPopup.show();
+	}
+	
 	public void go(HasWidgets container) {
 		container.clear();
 		container.add(display.asWidget());
@@ -119,7 +146,7 @@ public class AdminPanelPresenter implements Presenter {
 		
 		if (token.equals("adminMembersShowMembers")) {
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(0, constants));
-			contentPresenter =  new MemberListPresenter(rpcService, eventBus, new MemberListView());
+			contentPresenter =  new ListMemberPresenter(rpcService, eventBus, new ListMemberView());
 		} else if (token.equals("adminMembersCreateMember")) {
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(0, constants));
 			contentPresenter =  new CreateMemberPresenter(rpcService, eventBus, new CreateMemberView(constants));
@@ -129,7 +156,7 @@ public class AdminPanelPresenter implements Presenter {
 			contentPresenter =  new CreateMemberPresenter(rpcService, eventBus, new CreateMemberView(constants), barcodeID);	
 		} else if (token.equals("adminEventsShowEvents")) {
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(1, constants));
-			contentPresenter =  new EventListPresenter(rpcService, eventBus, new EventListView());
+			contentPresenter =  new ListEventPresenter(rpcService, eventBus, new ListEventView());
 		} else if (token.equals("adminEventsCreateEvent")) {
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(1, constants));
 			contentPresenter =  new CreateEventPresenter(rpcService, eventBus, new CreateEventView(constants));
@@ -138,7 +165,7 @@ public class AdminPanelPresenter implements Presenter {
 			contentPresenter =  new CreateCoursePresenter(rpcService, eventBus, new CreateCourseView(constants));
 		} else if (token.equals("adminCourseShowCourses")) {
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(2, constants));
-			contentPresenter = new CourseListPresenter(rpcService, eventBus, new CourseListView()); 
+			contentPresenter = new ListCoursePresenter(rpcService, eventBus, new ListCourseView()); 
 		} else if ((token.length() >= "adminCourseEditCourse".length()) && (token.subSequence(0, 21).equals("adminCourseEditCourse"))) {
 			String courseID = token.substring(22);
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(2, constants));
@@ -149,12 +176,16 @@ public class AdminPanelPresenter implements Presenter {
 		} else if (token.equals("adminSystemShowUsers")){
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(3, constants));
 			//hier wird die exception erzeugt - vielleicht ein import fehler oder fehler bei der einbindung...
-			contentPresenter = new ShowUsersPresenter(rpcService, eventBus, new ShowUsersView(constants));
+			contentPresenter = new ListUserPresenter(rpcService, eventBus, new ListUserView());
+		} else if ((token.length() >= "adminSystemEditUser".length()) && (token.subSequence(0, 19).equals("adminSystemEditUser"))) {
+			String courseID = token.substring(20);
+			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(3, constants));
+			contentPresenter =  new CreateUserPresenter(rpcService, eventBus, new CreateUserView(constants), courseID);	
 		}
 		
 		else {
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(0, constants));
-			contentPresenter =  new MemberListPresenter(rpcService, eventBus, new MemberListView());
+			contentPresenter =  new ListMemberPresenter(rpcService, eventBus, new ListMemberView());
 			History.newItem("adminMembersShowMembers");
 		}
 		 

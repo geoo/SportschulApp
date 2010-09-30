@@ -5,11 +5,11 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import de.sportschulApp.client.presenter.admin.EventListPresenter;
+import de.sportschulApp.client.presenter.admin.ListEventPresenter;
 
-public class EventListView extends Composite implements EventListPresenter.Display {
+public class ListEventView extends Composite implements ListEventPresenter.Display {
 
-	public EventListView() {
+	public ListEventView() {
 		VerticalPanel dummyPanel = new VerticalPanel();
 		initWidget(dummyPanel);
 		

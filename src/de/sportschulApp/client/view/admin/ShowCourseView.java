@@ -39,7 +39,7 @@ public class ShowCourseView extends Composite implements ShowCoursePresenter.Dis
 		detailsPanel.add(metaPanel);
 
 		FlexTable courseDetailsPanel = new FlexTable();
-		courseDetailsPanel.setStyleName("courseDetailsPanel");
+		courseDetailsPanel.setStyleName("detailsDataPanel");
 		courseDetailsPanel.setWidget(0, 0, new Label(constants.courseName() + ":"));
 		courseDetailsPanel.setWidget(0, 1, courseNameLabel);
 		courseDetailsPanel.setWidget(1, 0, new Label(constants.time() + ":"));
@@ -54,7 +54,7 @@ public class ShowCourseView extends Composite implements ShowCoursePresenter.Dis
 		detailsPanel.add(courseDetailsPanel);
 	}
 	
-	public void setCourseData(Course course) {
+	public void setData(Course course) {
 		this.courseNameLabel.setText(course.getName());
 		this.courseDateLabel.setText(course.getTime());
 		this.courseInsructorLabel.setText(course.getInstructor());

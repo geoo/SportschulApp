@@ -51,6 +51,22 @@ public class CreateUserPresenter implements Presenter {
 	}
 	
 	/**
+	 * Konstruktor für den EditUserView
+	 * 
+	 * @param rpcService
+	 * @param eventBus
+	 * @param display
+	 * @param userID
+	 */
+	public CreateUserPresenter(AdminServiceAsync rpcService, 
+			HandlerManager eventBus, Display display, String userID) {
+		this.display = display;
+	    this.rpcService = rpcService;
+	    this.eventBus = eventBus;
+	    bind();
+	}
+	
+	/**
 	 * versieht die relevanten view komponenten mit handlern 
 	 * und gibt der view somit funktionalität
 	 */

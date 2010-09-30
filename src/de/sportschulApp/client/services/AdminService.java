@@ -44,5 +44,11 @@ public interface AdminService extends RemoteService {
 
 	ArrayList<User> getInstructorList();
 	
-	ArrayList<Member>searchMember(String searchQuery);
+	ArrayList<Member> searchMember(String searchQuery);
+	
+	ArrayList<User> getUserList();
+	
+	User getUserByUserID(int userID);
+	
+	void deleteUserByUserID(int userID);
 }

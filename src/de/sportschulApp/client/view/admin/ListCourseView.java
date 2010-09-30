@@ -11,20 +11,20 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-import de.sportschulApp.client.presenter.admin.CourseListPresenter;
+import de.sportschulApp.client.presenter.admin.ListCoursePresenter;
 import de.sportschulApp.shared.Course;
 
 @SuppressWarnings("unchecked")
-public class CourseListView extends Composite implements CourseListPresenter.Display {
+public class ListCourseView extends Composite implements ListCoursePresenter.Display {
 	
 
-	private ArrayList<Course> courseList = new ArrayList<Course>();
+	private ArrayList<Course> listData = new ArrayList<Course>();
 	private CellTable<Course> cellTable = new CellTable<Course>();
-	private ListDataProvider<Course> lva;
+	private ListDataProvider<Course> ldp;
 	private SelectionModel selectionModel;
 	private VerticalPanel wrapper = new VerticalPanel();
 	
-	public CourseListView() {
+	public ListCourseView() {
 		wrapper.addStyleName("listWrapper");
 		initWidget(wrapper);
 	}
@@ -33,18 +33,17 @@ public class CourseListView extends Composite implements CourseListPresenter.Dis
 	public VerticalPanel createMemberListTable() {
 		cellTable = new CellTable<Course>();
 
-		lva = null;
-		lva = new ListDataProvider<Course>();
+		ldp = new ListDataProvider<Course>();
 		
 		VerticalPanel tableWrapper = new VerticalPanel();
-        lva.setList(courseList);
-        lva.refresh();
+        ldp.setList(listData);
+        ldp.refresh();
 
         cellTable.setPageSize(10);
-        cellTable.setSize("700px", "500px");
+        cellTable.setWidth("700px");
         cellTable.setSelectionModel(selectionModel);
 		
-        lva.addDataDisplay(cellTable);
+        ldp.addDataDisplay(cellTable);
 
         cellTable.addColumn(new TextColumn<Course>() {
             public String getValue(Course course) {
@@ -77,7 +76,7 @@ public class CourseListView extends Composite implements CourseListPresenter.Dis
 	
 
 	public void setCourseList(ArrayList<Course> courseList) {
-		this.courseList = courseList;
+		this.listData = courseList;
 		cellTable.removeFromParent();
 		wrapper.add(createMemberListTable());
 	}

@@ -7,7 +7,7 @@ import com.google.gwt.user.client.ui.Widget;
 import de.sportschulApp.client.presenter.Presenter;
 import de.sportschulApp.client.services.AdminServiceAsync;
 
-public class EventListPresenter implements Presenter{
+public class ListEventPresenter implements Presenter{
 	public interface Display{
 		Widget asWidget();
 	}
@@ -15,7 +15,7 @@ public class EventListPresenter implements Presenter{
 	private final Display display;
 	private final AdminServiceAsync rpcService;
 	
-	public EventListPresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display) {
+	public ListEventPresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display) {
 	    this.display = display;
 	    this.rpcService = rpcService;
 	    bind();

@@ -2,8 +2,6 @@ package de.sportschulApp.client.event;
 
 import com.google.gwt.event.shared.GwtEvent;
 
-import de.sportschulApp.shared.Member;
-
 public class ShowMemberEvent extends GwtEvent<ShowMemberEventHandler>{
 	public static Type<ShowMemberEventHandler> TYPE = new Type<ShowMemberEventHandler>();
 	private int barcode;

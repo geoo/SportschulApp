@@ -45,6 +45,17 @@ h1 {
 	padding-bottom: 10px;	
 }
 
+
+/** CSS für CellTable */
+
+.GNFTSKMEB tbody tr {
+	height: 60px;
+}
+
+.GNFTSKMEB thead tr {
+	height: 40px;
+}
+
 .metaPanel .gwt-Label {
 	padding-left: 3px;
 	padding-right: 10px;
@@ -69,15 +80,15 @@ h1 {
 	white-space: nowrap;
 }
 
-.courseDetailsPanel {
+.detailsDataPanel {
 	width: 500px;
 }
 
-.courseDetailsPanel td:nth-child(1) {
+.detailsDataPanel td:nth-child(1) {
 	color: #6d747f;
 	padding-right: 50px;
 }
-.courseDetailsPanel td:nth-child(2) {
+.detailsDataPanel td:nth-child(2) {
 	text-align:right;
 }
 

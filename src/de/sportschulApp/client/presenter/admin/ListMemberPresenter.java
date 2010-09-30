@@ -8,6 +8,7 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -23,7 +24,7 @@ import de.sportschulApp.client.services.AdminServiceAsync;
 import de.sportschulApp.shared.Member;
 
 @SuppressWarnings("unchecked")
-public class MemberListPresenter implements Presenter{
+public class ListMemberPresenter implements Presenter{
 	public interface Display{
 		void setMemberList(ArrayList<Member> memberList);
 		void setSelectionModel(SingleSelectionModel selectionModel);
@@ -38,12 +39,12 @@ public class MemberListPresenter implements Presenter{
 	private final AdminServiceAsync rpcService;
 	private final HandlerManager eventBus;
 	
-	public MemberListPresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display) {
+	public ListMemberPresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display) {
 	    this.display = display;
 	    this.rpcService = rpcService;
 	    this.eventBus = eventBus;
 	    bind();
-	    getMemberList();
+	    fetchListData();
 	  }
 
 	private void bind() {
@@ -65,7 +66,7 @@ public class MemberListPresenter implements Presenter{
 		
 		this.display.getShowAllButton().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				getMemberList();
+				fetchListData();
 				display.getSearchInput().setText("");
 			}
 		});
@@ -87,13 +88,13 @@ public class MemberListPresenter implements Presenter{
 		});
 	}
 	
-	public void getMemberList() {
+	public void fetchListData() {
 		rpcService.getMemberList(new AsyncCallback<ArrayList<Member>>() {
 			public void onSuccess(ArrayList<Member> result) {
 				display.setMemberList(result);
 			}
 			public void onFailure(Throwable caught) {
-				
+				Window.alert("Abrufen der Mitgliedsdaten fehlgeschlagen.");
 			}
 		});
 		

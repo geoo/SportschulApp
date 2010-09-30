@@ -186,4 +186,6 @@ public interface LocalizationConstants extends Constants {
 
 	String search();
 	
+	String type();
+	
 }

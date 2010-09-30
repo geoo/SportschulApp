@@ -3,6 +3,7 @@ package de.sportschulApp.client.presenter.admin;
 import java.util.ArrayList;
 
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
@@ -16,7 +17,7 @@ import de.sportschulApp.client.services.AdminServiceAsync;
 import de.sportschulApp.shared.Course;
 
 @SuppressWarnings("unchecked")
-public class CourseListPresenter implements Presenter{
+public class ListCoursePresenter implements Presenter{
 	public interface Display{
 		void setCourseList(ArrayList<Course> memberList);
 		void setSelectionModel(SingleSelectionModel selectionModel);
@@ -27,12 +28,12 @@ public class CourseListPresenter implements Presenter{
 	private final AdminServiceAsync rpcService;
 	private final HandlerManager eventBus;
 	
-	public CourseListPresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display) {
+	public ListCoursePresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display) {
 	    this.display = display;
 	    this.rpcService = rpcService;
 	    this.eventBus = eventBus;
 	    bind();
-	    getCourseList();
+	    fetchCourseList();
 	  }
 
 	private void bind() {
@@ -45,13 +46,13 @@ public class CourseListPresenter implements Presenter{
 	}
 
 	
-	public void getCourseList() {
+	public void fetchCourseList() {
 		rpcService.getCompleteCourseList(new AsyncCallback<ArrayList<Course>>() {
 			public void onSuccess(ArrayList<Course> result) {
 				display.setCourseList(result);
 			}
 			public void onFailure(Throwable caught) {
-				
+				Window.alert("Abrufen der Kursdaten fehlgeschlagen.");
 			}
 		});
 		

@@ -133,7 +133,7 @@ public class CreateEventView extends Composite implements
 		return addMemberToEventPanel;
 	}
 
-	public void addMemberlist(MemberListView presenter) {
+	public void addMemberlist(ListMemberView presenter) {
 		addMemberToEventPanel.add(presenter);
 
 	}

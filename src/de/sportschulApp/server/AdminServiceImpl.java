@@ -103,5 +103,15 @@ public class AdminServiceImpl extends RemoteServiceServlet implements
 	public ArrayList<Member> searchMember(String searchQuery){
 		return dbm.search(searchQuery);}
 
+	public ArrayList<User> getUserList() {
+		return dbu.getUserList();
+	}
+	
+	public User getUserByUserID(int userID) {
+		return dbu.getUser(userID);
+	}
 
+	public void deleteUserByUserID(int userID) {
+		dbu.deleteUser(userID);
+	}
 }

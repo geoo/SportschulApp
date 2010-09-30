@@ -1,5 +1,7 @@
 package de.sportschulApp.server.databanker;
 
+import java.util.ArrayList;
+
 import de.sportschulApp.shared.User;
 
 public interface DataBankerUserInterface {
@@ -16,6 +18,6 @@ public interface DataBankerUserInterface {
 	
 	public User getUser(String username);
 	
-	
+	public ArrayList<User> getUserList();
 
 }

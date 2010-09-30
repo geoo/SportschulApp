@@ -16,23 +16,23 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-import de.sportschulApp.client.presenter.admin.MemberListPresenter;
+import de.sportschulApp.client.presenter.admin.ListMemberPresenter;
 import de.sportschulApp.shared.Member;
 
 @SuppressWarnings("unchecked")
-public class MemberListView extends Composite implements MemberListPresenter.Display {
+public class ListMemberView extends Composite implements ListMemberPresenter.Display {
 	
 
-	private ArrayList<Member> memberList = new ArrayList<Member>();
+	private ArrayList<Member> listData = new ArrayList<Member>();
 	private CellTable<Member> cellTable = new CellTable<Member>();
-	private ListDataProvider<Member> lva;
+	private ListDataProvider<Member> ldp;
 	private SelectionModel selectionModel;
 	private VerticalPanel wrapper = new VerticalPanel();
 	private TextBox searchInputField;
 	private Label searchButton;
 	private Label showAllButton;
 	
-	public MemberListView() {
+	public ListMemberView() {
 		wrapper.addStyleName("listWrapper");
 		initWidget(wrapper);
 	
@@ -66,18 +66,17 @@ public class MemberListView extends Composite implements MemberListPresenter.Dis
 	public VerticalPanel createMemberListTable() {
 		cellTable = new CellTable<Member>();
 
-		lva = null;
-		lva = new ListDataProvider<Member>();
+		ldp = new ListDataProvider<Member>();
 		
 		VerticalPanel tableWrapper = new VerticalPanel();
-        lva.setList(memberList);
-        lva.refresh();
+        ldp.setList(listData);
+        ldp.refresh();
 
         cellTable.setPageSize(1000);
-        cellTable.setSize("700px", "500px");
+        cellTable.setWidth("700px");
         cellTable.setSelectionModel(selectionModel);
 		
-        lva.addDataDisplay(cellTable);
+        ldp.addDataDisplay(cellTable);
                 
         cellTable.addColumn(new TextColumn<Member>() {
             public String getValue(Member member) {
@@ -104,7 +103,7 @@ public class MemberListView extends Composite implements MemberListPresenter.Dis
 	
 
 	public void setMemberList(ArrayList<Member> memberList) {
-		this.memberList = memberList;
+		this.listData = memberList;
 		cellTable.removeFromParent();
 		wrapper.add(createMemberListTable());
 		this.searchInputField.setFocus(true);

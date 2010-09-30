@@ -16,7 +16,7 @@ import de.sportschulApp.shared.Course;
 
 public class ShowCoursePresenter implements Presenter{
 	public interface Display{
-		void setCourseData(Course course);
+		void setData(Course course);
 		HasClickHandlers getEditLabel();
 		HasClickHandlers getDeleteLabel();
 		Widget asWidget();
@@ -37,7 +37,7 @@ public class ShowCoursePresenter implements Presenter{
 		rpcService.getCourseByID(courseID, new AsyncCallback<Course>() {
 			public void onSuccess(Course result) {
 				course = result;
-				display.setCourseData(result);
+				display.setData(result);
 			}
 
 			public void onFailure(Throwable caught) {
