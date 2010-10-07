@@ -2,7 +2,6 @@ package de.sportschulApp.client.view.trainer;
 
 import java.util.*;
 
-
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.rpc.client.RpcService;
@@ -43,11 +42,11 @@ public class MemberTrainingEntryView extends Composite implements
 
 	public MemberTrainingEntryView(LocalizationConstants constants) {
 		this.constants = constants;
-		
+
 		popup = new DecoratedPopupPanel(true);
 		saveNoteButton = new Button(constants.save());
 		cancelButton = new Button(constants.cancel());
-		
+
 		memberTrainingEntryWrapper1 = new VerticalPanel();
 
 		HorizontalPanel memberTrainingEntryWrapper2 = new HorizontalPanel();
@@ -137,15 +136,8 @@ public class MemberTrainingEntryView extends Composite implements
 		}
 
 		// Image
-		try {
-			if (member.getPicture() == null) {
-				picture.setUrl("imgs/standartMember.jpg");
-			} else {
-				picture.setUrl(member.getPicture());
 
-			}
-		} catch (NullPointerException e) {
-		}
+		picture.setUrl(member.getPicture());
 
 		// krankheiten
 		try {
@@ -195,10 +187,11 @@ public class MemberTrainingEntryView extends Composite implements
 		return noteButton;
 	}
 
-	public void buildPopup(){}
-	
+	public void buildPopup() {
+	}
+
 	public void showPopup(int left, int top, String note) {
-		
+
 		popup.setStyleName("showNotePopup");
 
 		VerticalPanel popupVerticalPanel = new VerticalPanel();
@@ -208,14 +201,14 @@ public class MemberTrainingEntryView extends Composite implements
 		popupVerticalPanel.add(popupTextBox);
 
 		HorizontalPanel popupButtonPanel = new HorizontalPanel();
-		
+
 		popupButtonPanel.add(saveNoteButton);
 		popupButtonPanel.add(cancelButton);
 
 		popupVerticalPanel.add(popupButtonPanel);
 
 		popup.setWidget(popupVerticalPanel);
-		
+
 		popup.setPopupPosition(left, top);
 
 		popup.show();
