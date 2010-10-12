@@ -4,6 +4,7 @@ package de.sportschulApp.shared;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 
 @SuppressWarnings("serial")
 public class Event implements Serializable {
@@ -14,14 +15,10 @@ public class Event implements Serializable {
 	private Date date;
 	private Time time;
 	private String location;
-	private String examiner1;
-	private String examiner2;
-	private String examiner3;
-	private String examiner4;
-	private String examiner5;
+	private ArrayList<String> examiners;
 
 	
-	public Event(int eventID, int courseID, String name, String costs, Date date, Time time, String location, String examiner1, String examiner2, String examiner3, String examiner4, String examiner5) {
+	public Event(int eventID, int courseID, String name, String costs, Date date, Time time, String location, ArrayList<String> examiners) {
 	this.eventID = eventID;
 	this.courseID = courseID;
 	this.name = name;
@@ -29,11 +26,7 @@ public class Event implements Serializable {
 	this.date = date;
 	this.time = time;
 	this.location = location;
-	this.examiner1 = examiner1;
-	this.examiner2 = examiner2;
-	this.examiner3 = examiner3;
-	this.examiner4 = examiner4;
-	this.examiner5 = examiner5;
+	this.examiners = examiners;
 	
 	}
 
@@ -140,72 +133,17 @@ public class Event implements Serializable {
 	}
 
 	/**
-	 * @param examiner1 the examiner1 to set
+	 * @param examiner the examiner to set
 	 */
-	public void setExaminer1(String examiner1) {
-		this.examiner1 = examiner1;
+	public void setExaminers(ArrayList<String> examiner) {
+		this.examiners = examiner;
 	}
 
 	/**
-	 * @return the examiner1
+	 * @return the examiner
 	 */
-	public String getExaminer1() {
-		return examiner1;
+	public ArrayList<String> getExaminers() {
+		return examiners;
 	}
 
-	/**
-	 * @param examiner2 the examiner2 to set
-	 */
-	public void setExaminer2(String examiner2) {
-		this.examiner2 = examiner2;
-	}
-
-	/**
-	 * @return the examiner2
-	 */
-	public String getExaminer2() {
-		return examiner2;
-	}
-
-	/**
-	 * @param examiner3 the examiner3 to set
-	 */
-	public void setExaminer3(String examiner3) {
-		this.examiner3 = examiner3;
-	}
-
-	/**
-	 * @return the examiner3
-	 */
-	public String getExaminer3() {
-		return examiner3;
-	}
-
-	/**
-	 * @param examiner4 the examiner4 to set
-	 */
-	public void setExaminer4(String examiner4) {
-		this.examiner4 = examiner4;
-	}
-
-	/**
-	 * @return the examiner4
-	 */
-	public String getExaminer4() {
-		return examiner4;
-	}
-
-	/**
-	 * @param examiner5 the examiner5 to set
-	 */
-	public void setExaminer5(String examiner5) {
-		this.examiner5 = examiner5;
-	}
-
-	/**
-	 * @return the examiner5
-	 */
-	public String getExaminer5() {
-		return examiner5;
-	}
 }

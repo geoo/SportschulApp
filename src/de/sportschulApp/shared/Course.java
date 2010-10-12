@@ -9,21 +9,27 @@ public class Course implements Serializable{
 
 	private int courseID;
 	private String name;
-	private String time;
 	private String instructor;
 	private String location;
+	private ArrayList<String> weekDays;
+	private ArrayList<String> times;
+	private ArrayList<String> tariffNames;
+	private ArrayList<String> tariffCosts;
 	private ArrayList<String> beltColours;
 
 	public Course() {
 	}
 
-	public Course(int courseID, String name, String time, String instructor,
-			String location, ArrayList<String> beltColours) {
+	public Course(int courseID, String name, String instructor,
+			String location, ArrayList<String> weekDays, ArrayList<String> times, ArrayList<String> tariffNames, ArrayList<String> tariffCosts, ArrayList<String> beltColours) {
 		this.courseID = courseID;
 		this.name = name;
-		this.time = time;
 		this.instructor = instructor;
 		this.location = location;
+		this.weekDays = weekDays;
+		this.times = times;
+		this.tariffNames = tariffNames;
+		this.tariffCosts = tariffCosts;
 		this.beltColours = beltColours;
 
 	}
@@ -56,21 +62,6 @@ public class Course implements Serializable{
 	 */
 	public String getName() {
 		return name;
-	}
-
-	/**
-	 * @param time
-	 *            the time to set
-	 */
-	public void setTime(String time) {
-		this.time = time;
-	}
-
-	/**
-	 * @return the time
-	 */
-	public String getTime() {
-		return time;
 	}
 
 	/**
@@ -115,5 +106,61 @@ public class Course implements Serializable{
 	 */
 	public ArrayList<String> getBeltColours() {
 		return beltColours;
+	}
+
+	/**
+	 * @param weekDays the weekDays to set
+	 */
+	public void setWeekDays(ArrayList<String> weekDays) {
+		this.weekDays = weekDays;
+	}
+
+	/**
+	 * @return the weekDays
+	 */
+	public ArrayList<String> getWeekDays() {
+		return weekDays;
+	}
+
+	/**
+	 * @param times the times to set
+	 */
+	public void setTimes(ArrayList<String> times) {
+		this.times = times;
+	}
+
+	/**
+	 * @return the times
+	 */
+	public ArrayList<String> getTimes() {
+		return times;
+	}
+
+	/**
+	 * @param tariffNames the tariffNames to set
+	 */
+	public void setTariffNames(ArrayList<String> tariffNames) {
+		this.tariffNames = tariffNames;
+	}
+
+	/**
+	 * @return the tariffNames
+	 */
+	public ArrayList<String> getTariffNames() {
+		return tariffNames;
+	}
+
+	/**
+	 * @param tariffCosts the tariffCosts to set
+	 */
+	public void setTariffCosts(ArrayList<String> tariffCosts) {
+		this.tariffCosts = tariffCosts;
+	}
+
+	/**
+	 * @return the tariffCosts
+	 */
+	public ArrayList<String> getTariffCosts() {
+		return tariffCosts;
 	}
 }

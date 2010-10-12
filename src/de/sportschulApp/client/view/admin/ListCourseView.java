@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -39,7 +40,7 @@ public class ListCourseView extends Composite implements ListCoursePresenter.Dis
         ldp.setList(listData);
         ldp.refresh();
 
-        cellTable.setPageSize(10);
+        cellTable.setPageSize(1000);
         cellTable.setWidth("700px");
         cellTable.setSelectionModel(selectionModel);
 		
@@ -50,12 +51,17 @@ public class ListCourseView extends Composite implements ListCoursePresenter.Dis
                 return course.getName();
             }
         }, "Kursname");
-    
+        
         cellTable.addColumn(new TextColumn<Course>() {
             public String getValue(Course course) {
-                return course.getTime();
+            	String dates = new String();
+            	for (int i = 0; i < course.getWeekDays().size(); i++) {
+            		dates = dates + course.getWeekDays().get(i) + " " + course.getTimes().get(i) + ", ";
+            	}
+                return dates.substring(0, dates.length() - 2);
             }
-        }, "Zeitpunkt");
+        }, "Termine");
+    
         
         cellTable.addColumn(new TextColumn<Course>() {
             public String getValue(Course course) {
@@ -73,7 +79,6 @@ public class ListCourseView extends Composite implements ListCoursePresenter.Dis
         
         return tableWrapper;
 	}
-	
 
 	public void setCourseList(ArrayList<Course> courseList) {
 		this.listData = courseList;

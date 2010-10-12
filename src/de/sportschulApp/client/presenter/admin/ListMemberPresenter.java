@@ -104,8 +104,9 @@ public class ListMemberPresenter implements Presenter{
 		final SingleSelectionModel<Member> selectionModel = new SingleSelectionModel<Member>();
 		Handler selectionHandler = new SelectionChangeEvent.Handler() {
 			public void onSelectionChange(SelectionChangeEvent event) {
-				Member member = selectionModel.getSelectedObject();
-				eventBus.fireEvent(new ShowMemberEvent(member.getBarcodeID()));
+				Member selection = selectionModel.getSelectedObject();
+				eventBus.fireEvent(new ShowMemberEvent(selection.getBarcodeID()));
+				selectionModel.setSelected(selection, false);
 			}
 		};
 		selectionModel.addSelectionChangeHandler(selectionHandler);

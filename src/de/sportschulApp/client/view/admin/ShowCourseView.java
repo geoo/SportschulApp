@@ -56,7 +56,6 @@ public class ShowCourseView extends Composite implements ShowCoursePresenter.Dis
 	
 	public void setData(Course course) {
 		this.courseNameLabel.setText(course.getName());
-		this.courseDateLabel.setText(course.getTime());
 		this.courseInsructorLabel.setText(course.getInstructor());
 		this.courseLocationLabel.setText(course.getLocation());
 		

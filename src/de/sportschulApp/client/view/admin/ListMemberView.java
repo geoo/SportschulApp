@@ -2,8 +2,14 @@ package de.sportschulApp.client.view.admin;
 
 import java.util.ArrayList;
 
+import com.google.gwt.cell.client.AbstractEditableCell;
+import com.google.gwt.cell.client.Cell;
+import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.ImageCell;
+import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasValue;
@@ -31,6 +37,11 @@ public class ListMemberView extends Composite implements ListMemberPresenter.Dis
 	private TextBox searchInputField;
 	private Label searchButton;
 	private Label showAllButton;
+	
+	private static interface GetValue<C> {
+	    C getValue(Member member);
+	  }
+
 	
 	public ListMemberView() {
 		wrapper.addStyleName("listWrapper");
@@ -77,29 +88,61 @@ public class ListMemberView extends Composite implements ListMemberPresenter.Dis
         cellTable.setSelectionModel(selectionModel);
 		
         ldp.addDataDisplay(cellTable);
-                
-        cellTable.addColumn(new TextColumn<Member>() {
-            public String getValue(Member member) {
-                return member.getForename();
-            }
-        }, "Vorname");
 
-        cellTable.addColumn(new TextColumn<Member>() {
+        addColumn(new ImageCell(), "Bild", new GetValue<String>() {
+        	public String getValue(Member member) {
+        		return member.getPicture();
+        	}
+        }, null);
+                
+        addColumn(new TextCell(), "Vorname", new GetValue<String>() {
             public String getValue(Member member) {
-                return member.getSurname();
+              return member.getForename();
             }
-        }, "Nachname");
+          }, null);
+
+
+        addColumn(new TextCell(), "Nachname", new GetValue<String>() {
+            public String getValue(Member member) {
+              return member.getSurname();
+            }
+          }, null);
     
-        cellTable.addColumn(new TextColumn<Member>() {
+        addColumn(new TextCell(), "Stadt", new GetValue<String>() {
             public String getValue(Member member) {
-                return member.getCity();
+              return member.getCity();
             }
-        }, "Stadt");
+          }, null);
+        
 
         tableWrapper.add(cellTable);
         
         return tableWrapper;
 	}
+	
+	/**
+	   * Add a column with a header.
+	   *
+	   * @param <C> the cell type
+	   * @param cell the cell used to render the column
+	   * @param headerText the header string
+	   * @param getter the value getter for the cell
+	   */
+	  private <C> void addColumn(Cell<C> cell, String headerText,
+	      final GetValue<C> getter, FieldUpdater<Member, C> fieldUpdater) {
+	    Column<Member, C> column = new Column<Member, C>(cell) {
+	      @Override
+	      public C getValue(Member object) {
+	        return getter.getValue(object);
+	      }
+	    };
+	    column.setFieldUpdater(fieldUpdater);
+	    if (cell instanceof AbstractEditableCell<?, ?>) {
+//	      editableCells.add((AbstractEditableCell<?, ?>) cell);
+	    }
+	    cellTable.addColumn(column, headerText);
+	  }
+
 	
 
 	public void setMemberList(ArrayList<Member> memberList) {

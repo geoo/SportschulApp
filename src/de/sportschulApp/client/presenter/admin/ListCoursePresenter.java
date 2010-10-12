@@ -6,6 +6,8 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -62,8 +64,9 @@ public class ListCoursePresenter implements Presenter{
 		final SingleSelectionModel<Course> selectionModel = new SingleSelectionModel<Course>();
 		Handler selectionHandler = new SelectionChangeEvent.Handler() {
 			public void onSelectionChange(SelectionChangeEvent event) {
-				Course course = selectionModel.getSelectedObject();
-				eventBus.fireEvent(new ShowCourseEvent(course.getCourseID()));
+				Course selection = selectionModel.getSelectedObject();
+				eventBus.fireEvent(new ShowCourseEvent(selection.getCourseID()));
+				selectionModel.setSelected(selection, false);
 			}
 		};
 		selectionModel.addSelectionChangeHandler(selectionHandler);

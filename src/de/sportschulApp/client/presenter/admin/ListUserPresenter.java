@@ -62,8 +62,9 @@ public class ListUserPresenter implements Presenter{
 		final SingleSelectionModel<User> selectionModel = new SingleSelectionModel<User>();
 		Handler selectionHandler = new SelectionChangeEvent.Handler() {
 			public void onSelectionChange(SelectionChangeEvent event) {
-				User user = selectionModel.getSelectedObject();
-				eventBus.fireEvent(new ShowUserEvent(user.getUserID()));
+				User selection = selectionModel.getSelectedObject();
+				eventBus.fireEvent(new ShowUserEvent(selection.getUserID()));
+				selectionModel.setSelected(selection, false);
 			}
 		};
 		selectionModel.addSelectionChangeHandler(selectionHandler);

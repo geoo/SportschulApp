@@ -188,4 +188,27 @@ public interface LocalizationConstants extends Constants {
 	
 	String type();
 	
+	String monday();
+	
+	String tuesday();
+	
+	String wednesday();
+	
+	String thursday();
+	
+	String friday();
+	
+	String saturday();
+	
+	String sunday();
+	
+	String trainingTime();
+	
+	String delete();
+	
+	String weekday();
+	
+	String clock();
+	
+	String tariffs();
 }

@@ -1,5 +1,6 @@
 package de.sportschulApp.client.presenter.admin;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -39,11 +40,19 @@ public class CreateCoursePresenter implements Presenter {
 
 		TextBox getCourseNameTextBox();
 
-		TextBox getTimeTextBox();
-
 		TextBox getInstructorTextBox();
 
 		TextBox getLocationTextBox();
+		
+		ArrayList<String> getWeekDays();
+		
+		ArrayList<String> getTimes();
+		
+		ArrayList<String> getTariffNames();
+		
+		ArrayList<String> getTariffCosts();
+		
+		void fillForm(Course course);
 
 	}
 
@@ -52,6 +61,8 @@ public class CreateCoursePresenter implements Presenter {
 	private LocalizationConstants constants;
 	private ValidationProcessor validator;
 	private PopupDescription popupDesc;
+	private Boolean editItem = false;
+	private String courseID;
 	
 	public CreateCoursePresenter(AdminServiceAsync rpcService,
 			HandlerManager eventBus, Display display) {
@@ -76,9 +87,12 @@ public class CreateCoursePresenter implements Presenter {
 		this.display = display;
 		this.rpcService = rpcService;
 		this.constants = display.getConstants();
+		this.editItem = true;
+		this.courseID = courseID;
 		bind();
 		fillDualListBox();
 		setupValidation();
+		getCourseDetails(courseID);
 	}
 
 	private void fillDualListBox() {
@@ -121,32 +135,64 @@ public class CreateCoursePresenter implements Presenter {
 	}
 
 	private void fillForm() {
-		Course course = new Course(0, display.getCourseNameTextBox().getText(),
-				display.getTimeTextBox().getText(), display
+		Course course = new Course(0, display.getCourseNameTextBox().getText(), display
 						.getInstructorTextBox().getText(), display
-						.getLocationTextBox().getText(), display
+						.getLocationTextBox().getText(), filterNullItems(this.display
+						.getWeekDays()), filterNullItems(this.display
+						.getTimes()), filterNullItems(this.display
+						.getTariffNames()), filterNullItems(this.display.getTariffCosts()), display
 						.getDualListBox().getWidgetListRight());
-
-		rpcService.createCourse(course, new AsyncCallback<String>() {
-
-			public void onSuccess(String result) {
-				System.out.println("result: " + result);
-
-				if (result.equals("name alrady used")) {
-					display.getCourseNameTextBox().setStyleName(
-							"validationFailedBorderCourseName");
-					Window.alert(display.getConstants().courseNameUsed());
-
-				} else {
-					Window.alert(constants.courseCreated());
-					History.newItem("adminMembersShowMembers");
+		
+		if (!(this.editItem)) {
+			rpcService.createCourse(course, new AsyncCallback<String>() {
+				public void onSuccess(String result) {
+					System.out.println("result: " + result);
+	
+					if (result.equals("name alrady used")) {
+						display.getCourseNameTextBox().setStyleName(
+								"validationFailedBorderCourseName");
+						Window.alert(display.getConstants().courseNameUsed());
+	
+					} else {
+						Window.alert(constants.courseCreated());
+						History.newItem("adminCourseShowCourses");
+					}
 				}
+	
+				public void onFailure(Throwable caught) {
+					System.out.println("rpc errror");
+				}
+			});
+		} else {
+			course.setCourseID(Integer.valueOf(this.courseID));
+			rpcService.updateCourse(course, new AsyncCallback<Void>() {
+				public void onSuccess(Void result) {
+					Window.alert("Editieren des Kurses erfolgreich");
+					History.newItem("adminCourseShowCourses");
+				}
+				public void onFailure(Throwable caught) {
+					Window.alert("Editieren des Kurses fehlgeschlagen.");
+					
+				}
+			});
+		}
+	}
+	
+	/**
+	 * Hilfsmethode um 'null' felder zu filtern
+	 * 
+	 * @return WeekDay ArrayList ohne null felder
+	 */
+	public ArrayList<String> filterNullItems(ArrayList<String> inputArray){
+		ArrayList<String> temp = inputArray;
+		ArrayList<String> filteredItems = new ArrayList<String>();
+		
+		for ( int i = 0; i < temp.size(); i++) {
+			if (temp.get(i) != null) {
+				filteredItems.add(temp.get(i));
 			}
-
-			public void onFailure(Throwable caught) {
-				System.out.println("rpc errror");
-			}
-		});
+		}
+		return filteredItems;
 	}
 
 	public void go(HasWidgets container) {
@@ -161,7 +207,6 @@ public class CreateCoursePresenter implements Presenter {
 			public String getDescriptionMessage(String msgKey) {
 				HashMap<String, String> msgMap = new HashMap<String, String>();
 				msgMap.put("courseName", constants.popupHelpCourseName());
-				msgMap.put("time", constants.popupHelpTime());
 				msgMap.put("instructor", constants.popupHelpInstructor());
 				msgMap.put("location", constants.popupHelpLocation());
 
@@ -184,8 +229,18 @@ public class CreateCoursePresenter implements Presenter {
 										"validationFailedBorder")));
 
 		popupDesc.addDescription("courseName", display.getCourseNameTextBox());
-		popupDesc.addDescription("time", display.getTimeTextBox());
 		popupDesc.addDescription("instructor", display.getInstructorTextBox());
 		popupDesc.addDescription("location", display.getLocationTextBox());
+	}
+	
+	public void getCourseDetails(String courseID) {
+		rpcService.getCourseByID(Integer.valueOf(courseID), new AsyncCallback<Course>() {
+			public void onFailure(Throwable caught) {
+				Window.alert("Fehler beim abfragen der Kursdaten.");
+			}
+			public void onSuccess(Course result) {
+				display.fillForm(result);
+			}
+		});
 	}
 }

@@ -7,9 +7,11 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import de.sportschulApp.client.services.AdminService;
 import de.sportschulApp.server.databanker.DataBankerCourse;
+import de.sportschulApp.server.databanker.DataBankerEvent;
 import de.sportschulApp.server.databanker.DataBankerMember;
 import de.sportschulApp.server.databanker.DataBankerUser;
 import de.sportschulApp.shared.Course;
+import de.sportschulApp.shared.Event;
 import de.sportschulApp.shared.Member;
 import de.sportschulApp.shared.User;
 
@@ -20,6 +22,7 @@ public class AdminServiceImpl extends RemoteServiceServlet implements
 	DataBankerMember dbm = new DataBankerMember();
 	DataBankerCourse dbc = new DataBankerCourse();
 	DataBankerUser dbu = new DataBankerUser();
+	DataBankerEvent dbe = new DataBankerEvent();
 
 	public ArrayList<Member> getMemberList() {
 		ArrayList<Member> memberList = dbm.getMemberList();
@@ -113,5 +116,25 @@ public class AdminServiceImpl extends RemoteServiceServlet implements
 
 	public void deleteUserByUserID(int userID) {
 		dbu.deleteUser(userID);
+	}
+	
+	public ArrayList<Event> getEventList() {
+		return dbe.getEventList();
+	}
+	
+	public Event getEventByEventID(int eventID) {
+		return dbe.getEvent(eventID);
+	}
+	
+	public void deleteEventByEventID(int eventID) {
+		dbe.deleteEvent(eventID);
+	}
+	
+	public void createEvent(Event event) {
+		dbe.createEvent(event);
+	}
+	
+	public void updateCourse(Course course) {
+		dbc.updateCourse(course);
 	}
 }

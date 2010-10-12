@@ -39,7 +39,7 @@ public class ListUserView extends Composite implements ListUserPresenter.Display
         ldp.setList(listData);
         ldp.refresh();
 
-        cellTable.setPageSize(10);
+        cellTable.setPageSize(1000);
         cellTable.setWidth("700px");
         cellTable.setSelectionModel(selectionModel);
 		

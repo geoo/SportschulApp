@@ -10,6 +10,8 @@ import com.google.gwt.user.client.ui.Widget;
 
 import de.sportschulApp.client.event.ShowCourseEvent;
 import de.sportschulApp.client.event.ShowCourseEventHandler;
+import de.sportschulApp.client.event.ShowEventEvent;
+import de.sportschulApp.client.event.ShowEventEventHandler;
 import de.sportschulApp.client.event.ShowMemberEvent;
 import de.sportschulApp.client.event.ShowMemberEventHandler;
 import de.sportschulApp.client.event.ShowUserEvent;
@@ -25,6 +27,7 @@ import de.sportschulApp.client.presenter.admin.NavigationPresenter;
 import de.sportschulApp.client.presenter.admin.ShowMemberPresenter;
 import de.sportschulApp.client.presenter.admin.ShowUserPresenter;
 import de.sportschulApp.client.presenter.admin.ShowCoursePresenter;
+import de.sportschulApp.client.presenter.admin.ShowEventPresenter;
 import de.sportschulApp.client.presenter.admin.ListUserPresenter;
 import de.sportschulApp.client.services.AdminService;
 import de.sportschulApp.client.services.AdminServiceAsync;
@@ -38,6 +41,7 @@ import de.sportschulApp.client.view.admin.ListMemberView;
 import de.sportschulApp.client.view.admin.NavigationView;
 import de.sportschulApp.client.view.admin.ShowMemberView;
 import de.sportschulApp.client.view.admin.ShowUserView;
+import de.sportschulApp.client.view.admin.ShowEventView;
 import de.sportschulApp.client.view.admin.ListUserView;
 import de.sportschulApp.client.view.admin.ShowCourseView;
 import de.sportschulApp.client.view.localization.LocalizationConstants;
@@ -91,6 +95,15 @@ public class AdminPanelPresenter implements Presenter {
 				}
 			});	
 		}
+		
+		if (!eventBus.isEventHandled(ShowEventEvent.TYPE)) 
+		{
+			eventBus.addHandler(ShowEventEvent.TYPE, new ShowEventEventHandler() {
+				public void onShowEvent(ShowEventEvent event) {
+					doShowEvent(event.getEventID());	
+				}
+			});	
+		}
 	}
 	
 	public void doShowMember(int barcodeID) {
@@ -135,6 +148,20 @@ public class AdminPanelPresenter implements Presenter {
 		userPopup.show();
 	}
 	
+	public void doShowEvent(int eventID) {
+		DialogBox eventPopup = new DialogBox(true);
+		eventPopup.setAnimationEnabled(true);
+		eventPopup.setText("Detailansicht");
+		eventPopup.setGlassEnabled(true);
+		eventPopup.center();
+		eventPopup.setPopupPosition(eventPopup.getAbsoluteLeft() - 200, 100);
+		eventPopup.setWidth("auto");
+		Presenter showEventPresenter = null;
+		showEventPresenter =  new ShowEventPresenter(rpcService, eventBus, new ShowEventView(constants), eventID);
+		showEventPresenter.go(eventPopup);
+		eventPopup.show();
+	}
+	
 	public void go(HasWidgets container) {
 		container.clear();
 		container.add(display.asWidget());
@@ -162,14 +189,14 @@ public class AdminPanelPresenter implements Presenter {
 			contentPresenter =  new CreateEventPresenter(rpcService, eventBus, new CreateEventView(constants));
 		} else if (token.equals("adminCourseCreateCourse")) {
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(2, constants));
-			contentPresenter =  new CreateCoursePresenter(rpcService, eventBus, new CreateCourseView(constants));
+			contentPresenter =  new CreateCoursePresenter(rpcService, eventBus, new CreateCourseView(constants, true));
 		} else if (token.equals("adminCourseShowCourses")) {
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(2, constants));
 			contentPresenter = new ListCoursePresenter(rpcService, eventBus, new ListCourseView()); 
 		} else if ((token.length() >= "adminCourseEditCourse".length()) && (token.subSequence(0, 21).equals("adminCourseEditCourse"))) {
 			String courseID = token.substring(22);
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(2, constants));
-			contentPresenter =  new CreateCoursePresenter(rpcService, eventBus, new CreateCourseView(constants), courseID);	
+			contentPresenter =  new CreateCoursePresenter(rpcService, eventBus, new CreateCourseView(constants, false), courseID);	
 		} else if (token.equals("adminSystemCreateUser")){
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(3, constants));
 			contentPresenter = new CreateUserPresenter(rpcService, eventBus, new CreateUserView(constants));

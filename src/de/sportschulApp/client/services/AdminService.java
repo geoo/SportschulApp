@@ -6,6 +6,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import de.sportschulApp.shared.Course;
+import de.sportschulApp.shared.Event;
 import de.sportschulApp.shared.Member;
 import de.sportschulApp.shared.User;
 
@@ -51,4 +52,14 @@ public interface AdminService extends RemoteService {
 	User getUserByUserID(int userID);
 	
 	void deleteUserByUserID(int userID);
+	
+	ArrayList<Event> getEventList();
+	
+	Event getEventByEventID(int eventID);
+	
+	void deleteEventByEventID(int eventID);
+	
+	void createEvent(Event event);
+	
+	void updateCourse(Course course);
 }

@@ -50,10 +50,32 @@ h1 {
 
 .GNFTSKMEB tbody tr {
 	height: 60px;
+	cursor: pointer;
+}
+
+.GNFTSKMEB img {
+	height: 50px;
+	border: 1px solid #c9c9c9;
 }
 
 .GNFTSKMEB thead tr {
 	height: 40px;
+}
+
+.clickable {
+	cursor: pointer;	
+}
+
+.clickableLabel {
+	cursor: pointer;
+	font-size: 14px !important;
+	white-space: nowrap !important;
+	color: #346492;
+	
+}
+
+.clickableLabel:hover {
+	text-decoration: underline;
 }
 
 .metaPanel .gwt-Label {
@@ -71,7 +93,7 @@ h1 {
 
 .showMember_Picture {
 	margin-top: 7px;
-	border: 2px solid #000000;
+	border: 1px solid #c9c9c9;
 }
 
 .primaryDetailsData {
@@ -428,7 +450,7 @@ h1 {
 }
 
 .createCourseWrapper {
-	width: 500px;
+	width: 470px;
 	margin: 20px auto 0 auto;
 	padding-top: 20px;
 	padding-left: 20px;
@@ -438,7 +460,7 @@ h1 {
 }
 
 .createCourseWrapper td {
-	height: 50px;
+	height: 35px;
 	width: 200px;
 }
 
@@ -462,6 +484,33 @@ h1 {
 	width: 150px;
 }
 
+.dateInputFieldsTable {
+	padding-bottom: 20px;
+
+}
+
+.dateInputFieldWrapper {
+	width: 96%;
+	padding-top: 10px;
+	margin-bottom: 10px;
+	border-top: 2px dashed #D4DCED;
+	border-bottom: 2px dashed #D4DCED;
+}
+
+.dateInputFieldsTable .gwt-Label{
+	padding-right: 10px;
+}
+
+.dateInputFieldsTable .gwt-ListBox{
+	margin-right: 10px;
+}
+
+.dateInputFieldsTable tr{
+	
+}
+.dateInputFieldsTable td{
+	
+}
 .validationFailedBorderCourseName {
 	border: 2px solid red !important;
 	background-color: #ffffff !important;

@@ -17,4 +17,6 @@ public interface DataBankerEventInterface {
 	public Event getEvent(int eventID);
 	
 	public ArrayList<Integer> getEventParticipants(int eventID);
+	
+	public ArrayList<Event> getEventList();
 }
