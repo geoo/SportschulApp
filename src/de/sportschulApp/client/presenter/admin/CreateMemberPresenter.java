@@ -345,6 +345,12 @@ public class CreateMemberPresenter implements Presenter {
 											.getTrainingunitsTextBox()
 											.getText()), result, grades);
 
+							try {
+								if (member.getPicture() == null) {
+									member.setPicture("imgs/standartMember.jpg");
+								}
+							} catch (NullPointerException e) {
+							}
 							rpcService.saveMember(member,
 									new AsyncCallback<String>() {
 
