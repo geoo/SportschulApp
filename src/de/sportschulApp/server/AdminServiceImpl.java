@@ -137,4 +137,12 @@ public class AdminServiceImpl extends RemoteServiceServlet implements
 	public void updateCourse(Course course) {
 		dbc.updateCourse(course);
 	}
+
+	public String saveUser(User user) {
+		return dbu.createUser(user);
+	}
+
+	public String changeUser(User user) {
+		return dbu.updateUser(user);
+	}
 }

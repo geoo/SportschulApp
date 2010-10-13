@@ -63,4 +63,8 @@ public interface AdminServiceAsync {
 	void createEvent(Event event, AsyncCallback<Void> callback);
 
 	void updateCourse(Course course, AsyncCallback<Void> callback);
+
+	void saveUser(User user,  AsyncCallback<String> callback);
+
+	void changeUser(User user, AsyncCallback<String> asyncCallback);
 }

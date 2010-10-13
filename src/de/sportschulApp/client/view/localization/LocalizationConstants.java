@@ -211,4 +211,26 @@ public interface LocalizationConstants extends Constants {
 	String clock();
 	
 	String tariffs();
+
+	String passwordConfirm();
+
+	String permission();
+
+	String admin();
+	
+	String trainer();
+
+	String popupHelpUserForename();
+
+	String popupHelpUserSurname();
+
+	String popupHelpUserPassword();
+
+	String popupHelpUserPasswordConfirm();
+
+	String selectPermission();
+
+	String popupHelpUsername();
+
+	String usernameAlreadyTaken();
 }
