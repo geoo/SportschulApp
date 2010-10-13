@@ -10,7 +10,7 @@ public interface DataBankerUserInterface {
 	
 	public boolean deleteUser(int userID);
 	
-	public boolean updateUser(User user);
+	public String updateUser(User user);
 	
 	public String userLogin(String username, String password);
 	

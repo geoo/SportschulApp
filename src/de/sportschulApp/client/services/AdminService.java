@@ -62,4 +62,8 @@ public interface AdminService extends RemoteService {
 	void createEvent(Event event);
 	
 	void updateCourse(Course course);
+
+	String saveUser(User user);
+
+	String changeUser(User user);
 }

@@ -77,6 +77,7 @@ public class DataBankerUser implements DataBankerUserInterface {
 	public boolean deleteUser(int userID) {
 
 		DataBankerConnection dbc = new DataBankerConnection();
+
 		Statement stmt = dbc.getStatement();
 
 		String query = "DELETE FROM User WHERE User_id='" + userID + "'";
@@ -103,20 +104,40 @@ public class DataBankerUser implements DataBankerUserInterface {
 	 * 
 	 * @return true bei erfolg, false bei scheitern
 	 */
-	public boolean updateUser(User user) {
+	public String updateUser(User user) {
 
 		DataBankerConnection dbc = new DataBankerConnection();
-		Statement stmt = dbc.getStatement();
 
-		String password = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
-
-		String query = "UPDATE User SET permission ='" + user.getPermission()
-				+ "', username ='" + user.getUsername() + "', password ='"
-				+ password + "', forename ='" + user.getForename()
-				+ "', surname ='" + user.getSurname() + "' where User_id = '"
-				+ user.getUserID() + "'";
-
+		ResultSet rs = null;
+		Statement stmt2 = dbc.getStatement();
+		String query2 = "SELECT User_id, username FROM User WHERE username='"
+				+ user.getUsername() + "'";
 		try {
+
+			rs = stmt2.executeQuery(query2);
+			while (rs.next()) {
+				if (rs.getInt(1) > 0) {
+					if (rs.getString(2).equals(user.getUsername())) {	
+					} else {
+						return "Benutzername schon vorhanden";
+					}
+				}
+			}
+			rs.close();
+			stmt2.close();
+
+			Statement stmt = dbc.getStatement();
+
+			String password = BCrypt.hashpw(user.getPassword(),
+					BCrypt.gensalt());
+
+			String query = "UPDATE User SET permission ='"
+					+ user.getPermission() + "', username ='"
+					+ user.getUsername() + "', password ='" + password
+					+ "', forename ='" + user.getForename() + "', surname ='"
+					+ user.getSurname() + "' where User_id = '"
+					+ user.getUserID() + "'";
+
 			stmt.executeUpdate(query);
 			dbc.close();
 			stmt.close();
@@ -124,9 +145,9 @@ public class DataBankerUser implements DataBankerUserInterface {
 
 		} catch (SQLException e) {
 			System.out.println(e);
-			return false;
+			return "Fehler beim ändern";
 		}
-		return true;
+		return "Benutzer geändert";
 
 	}
 
@@ -206,7 +227,6 @@ public class DataBankerUser implements DataBankerUserInterface {
 			user.setUsername(rs.getString("username"));
 			user.setForename(rs.getString("forename"));
 			user.setSurname(rs.getString("surname"));
-			user.setLastLogin(rs.getDate("lastlogin"));
 			rs.close();
 			dbc.close();
 			stmt.close();
@@ -244,7 +264,6 @@ public class DataBankerUser implements DataBankerUserInterface {
 				user.setUsername(rs.getString("username"));
 				user.setForename(rs.getString("forename"));
 				user.setSurname(rs.getString("surname"));
-				user.setLastLogin(rs.getDate("lastlogin"));
 				userList.add(user);
 			}
 			rs.close();
@@ -284,7 +303,6 @@ public class DataBankerUser implements DataBankerUserInterface {
 			user.setUsername(rs.getString("username"));
 			user.setForename(rs.getString("forename"));
 			user.setSurname(rs.getString("surname"));
-			user.setLastLogin(rs.getDate("lastlogin"));
 			rs.close();
 			dbc.close();
 			stmt.close();

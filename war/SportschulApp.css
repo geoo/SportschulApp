@@ -42,12 +42,10 @@ h1 {
 }
 
 .metaPanel {
-	padding-bottom: 10px;	
+	padding-bottom: 10px;
 }
 
-
 /** CSS für CellTable */
-
 .GNFTSKMEB tbody tr {
 	height: 60px;
 	cursor: pointer;
@@ -63,7 +61,7 @@ h1 {
 }
 
 .clickable {
-	cursor: pointer;	
+	cursor: pointer;
 }
 
 .clickableLabel {
@@ -71,7 +69,6 @@ h1 {
 	font-size: 14px !important;
 	white-space: nowrap !important;
 	color: #346492;
-	
 }
 
 .clickableLabel:hover {
@@ -87,7 +84,7 @@ h1 {
 	display: inline;
 }
 
-.metaPanel .gwt-Label:hover{
+.metaPanel .gwt-Label:hover {
 	text-decoration: underline;
 }
 
@@ -106,12 +103,13 @@ h1 {
 	width: 500px;
 }
 
-.detailsDataPanel td:nth-child(1) {
+.detailsDataPanel td:nth-child (1) {
 	color: #6d747f;
 	padding-right: 50px;
 }
-.detailsDataPanel td:nth-child(2) {
-	text-align:right;
+
+.detailsDataPanel td:nth-child (2) {
+	text-align: right;
 }
 
 .secondaryDetailsData {
@@ -126,19 +124,22 @@ h1 {
 	font-size: 15px;
 }
 
-.primaryDetailsData td:nth-child(1) {
+.primaryDetailsData td:nth-child (1) {
 	color: #6d747f;
 	padding-right: 50px;
 }
-.primaryDetailsData td:nth-child(2) {
-	text-align:right;
+
+.primaryDetailsData td:nth-child (2) {
+	text-align: right;
 }
-.secondaryDetailsData td:nth-child(1) {
-	color:#6d747f;
-	padding-right:50px;
+
+.secondaryDetailsData td:nth-child (1) {
+	color: #6d747f;
+	padding-right: 50px;
 }
-.secondaryDetailsData td:nth-child(2) {
-	text-align:right;
+
+.secondaryDetailsData td:nth-child (2) {
+	text-align: right;
 }
 
 .primaryDetailsData tr {
@@ -223,7 +224,6 @@ h1 {
 .subNavigationPanel .gwt-Label:hover {
 	color: #4d4d4d !important;
 }
-
 
 .listWrapper {
 	margin: 20px auto 0 auto;
@@ -366,9 +366,9 @@ h1 {
 .searchInput {
 	border: 3px solid #d4dced;
 	margin-left: 5px;
-	margin-top:1px;
+	margin-top: 1px;
 	background-color: #ffffff;
-	height: 16px;	
+	height: 16px;
 	width: 300px !important;
 }
 
@@ -486,7 +486,6 @@ h1 {
 
 .dateInputFieldsTable {
 	padding-bottom: 20px;
-
 }
 
 .dateInputFieldWrapper {
@@ -497,20 +496,22 @@ h1 {
 	border-bottom: 2px dashed #D4DCED;
 }
 
-.dateInputFieldsTable .gwt-Label{
+.dateInputFieldsTable .gwt-Label {
 	padding-right: 10px;
 }
 
-.dateInputFieldsTable .gwt-ListBox{
+.dateInputFieldsTable .gwt-ListBox {
 	margin-right: 10px;
 }
 
-.dateInputFieldsTable tr{
+.dateInputFieldsTable tr {
 	
 }
-.dateInputFieldsTable td{
+
+.dateInputFieldsTable td {
 	
 }
+
 .validationFailedBorderCourseName {
 	border: 2px solid red !important;
 	background-color: #ffffff !important;
@@ -684,4 +685,54 @@ h1 {
 
 .showNotePopup .gwt-Button {
 	margin-left: 5px;
+}
+
+.createUserWrapper {
+	width: 500px;
+	margin: 20px auto 0 auto;
+	padding-top: 20px;
+	padding-left: 20px;
+	padding-right: 20px;
+	background-color: #f5f7fa !important;
+	margin-bottom: 80px;
+	border: 1px solid #a9adc3 !important;
+}
+
+.createUserWrapper td {
+	height: 50px;
+	width: 200px;
+}
+
+.createUserWrapper .gwt-TextBox {
+	border: 2px solid #d4dced;
+	background-color: #ffffff !important;
+	width: 250px;
+	height: 16px !important;
+}
+
+.createUserWrapper .gwt-PasswordTextBox {
+	border: 2px solid #d4dced;
+	background-color: #ffffff !important;
+	width: 250px;
+	height: 16px !important;
+}
+
+.createUserWrapper .gwt-Label {
+	width: 170px;
+	font-size: 16px;
+	padding-right: 7px;
+}
+
+.userValidationFailedBorder {
+	border: 2px solid red;
+	background-color: #ffffff !important;
+	width: 250px;
+	height: 16px !important;
+}
+
+.userValidationPassedBorder {
+	border: 2px solid #d4dced;
+	background-color: #ffffff !important;
+	width: 250px;
+	height: 16px !important;
 }

@@ -39,6 +39,7 @@ public class MemberTrainingEntryView extends Composite implements
 	private Button saveNoteButton;
 	private Button cancelButton;
 	private TextArea popupTextBox;
+	private Label birthdayLabel;
 
 	public MemberTrainingEntryView(LocalizationConstants constants) {
 		this.constants = constants;
@@ -69,11 +70,13 @@ public class MemberTrainingEntryView extends Composite implements
 		membernameLabel2 = new Label();
 		trainingsPresenceLabel1 = new Label();
 		trainingsPresenceLabel2 = new Label();
+		birthdayLabel = new Label();
 
 		picture = new Image();
 
 		memberDetailPanel1.add(membernameLabel1);
 		memberDetailPanel1.add(trainingsPresenceLabel1);
+		memberDetailPanel1.add(birthdayLabel);
 
 		memberDetailPanel2.add(membernameLabel2);
 		memberDetailPanel2.add(trainingsPresenceLabel2);
@@ -162,18 +165,34 @@ public class MemberTrainingEntryView extends Composite implements
 		memberBirthDate.setMonth(Integer.parseInt(member.getBirthMonth()) - 1);
 		memberBirthDate.setDate(Integer.parseInt(member.getBirthDay()));
 
+		// TODO
 		if (((memberBirthDate.getDate() == today.getDate()))
 				&& memberBirthDate.getMonth() == today.getMonth()) {
 			System.out.println("Member hat heute Geburtstag!");
+			showBirthdayLabel(0);
 		} else if (((memberBirthDate.getDate() - today.getDate()) >= -7)
 				&& ((memberBirthDate.getDate() - today.getDate()) <= 0)
 				&& memberBirthDate.getMonth() == today.getMonth()) {
+			showBirthdayLabel(1);
 			System.out.println("Member hatte am " + member.getBirthDay() + "."
 					+ member.getBirthMonth() + "." + member.getBirthYear()
 					+ " Geburtstag");
 		} else if (((today.getDate() - memberBirthDate.getDate()) <= -23)
 				&& memberBirthDate.getMonth() == today.getMonth() - 1) {
+			showBirthdayLabel(1);
 			System.out.println("Member hatte am " + member.getBirthDay() + "."
+					+ member.getBirthMonth() + "." + member.getBirthYear()
+					+ " Geburtstag");
+		} else if (((memberBirthDate.getDate() - today.getDate()) <= 7)
+				&& memberBirthDate.getMonth() == today.getMonth()) {
+			showBirthdayLabel(2);
+			System.out.println("Member hat am " + member.getBirthDay() + "."
+					+ member.getBirthMonth() + "." + member.getBirthYear()
+					+ " Geburtstag");
+		} else if (((memberBirthDate.getDate() - today.getDate()) <= -24)
+				&& memberBirthDate.getMonth() == today.getMonth() + 1) {
+			showBirthdayLabel(2);
+			System.out.println("Member hat am " + member.getBirthDay() + "."
 					+ member.getBirthMonth() + "." + member.getBirthYear()
 					+ " Geburtstag");
 		}
@@ -229,5 +248,20 @@ public class MemberTrainingEntryView extends Composite implements
 
 	public String getPopupTextArea() {
 		return popupTextBox.getText();
+	}
+
+	public void showBirthdayLabel(int index) {
+		if (index == 0) {
+			birthdayLabel.setText(member.getForename()
+					+ " hat heute Geburtstag");
+		} else if (index == 1) {
+			birthdayLabel.setText(member.getForename() + " hatte am "
+					+ member.getBirthDay() + "." + member.getBirthMonth()
+					+ ". Geburtstag");
+		} else if (index == 2) {
+			birthdayLabel.setText(member.getForename() + " hat am "
+					+ member.getBirthDay() + "." + member.getBirthMonth()
+					+ ". Geburtstag");
+		}
 	}
 }
