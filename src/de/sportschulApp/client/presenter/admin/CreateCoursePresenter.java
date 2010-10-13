@@ -19,6 +19,8 @@ import de.sportschulApp.client.services.AdminServiceAsync;
 import de.sportschulApp.client.view.admin.dualListBox.DualListBox;
 import de.sportschulApp.client.view.localization.LocalizationConstants;
 import de.sportschulApp.shared.Course;
+import de.sportschulApp.shared.CourseDate;
+import de.sportschulApp.shared.CourseTariff;
 import eu.maydu.gwt.validation.client.ValidationProcessor;
 import eu.maydu.gwt.validation.client.actions.StyleAction;
 import eu.maydu.gwt.validation.client.description.PopupDescription;
@@ -44,13 +46,9 @@ public class CreateCoursePresenter implements Presenter {
 
 		TextBox getLocationTextBox();
 		
-		ArrayList<String> getWeekDays();
+		ArrayList<CourseDate> getCourseDates();
 		
-		ArrayList<String> getTimes();
-		
-		ArrayList<String> getTariffNames();
-		
-		ArrayList<String> getTariffCosts();
+		ArrayList<CourseTariff> getCourseTariffs();
 		
 		void fillForm(Course course);
 
@@ -137,10 +135,7 @@ public class CreateCoursePresenter implements Presenter {
 	private void fillForm() {
 		Course course = new Course(0, display.getCourseNameTextBox().getText(), display
 						.getInstructorTextBox().getText(), display
-						.getLocationTextBox().getText(), filterNullItems(this.display
-						.getWeekDays()), filterNullItems(this.display
-						.getTimes()), filterNullItems(this.display
-						.getTariffNames()), filterNullItems(this.display.getTariffCosts()), display
+						.getLocationTextBox().getText(), this.display.getCourseDates(), this.display.getCourseTariffs(), display
 						.getDualListBox().getWidgetListRight());
 		
 		if (!(this.editItem)) {
@@ -176,23 +171,6 @@ public class CreateCoursePresenter implements Presenter {
 				}
 			});
 		}
-	}
-	
-	/**
-	 * Hilfsmethode um 'null' felder zu filtern
-	 * 
-	 * @return WeekDay ArrayList ohne null felder
-	 */
-	public ArrayList<String> filterNullItems(ArrayList<String> inputArray){
-		ArrayList<String> temp = inputArray;
-		ArrayList<String> filteredItems = new ArrayList<String>();
-		
-		for ( int i = 0; i < temp.size(); i++) {
-			if (temp.get(i) != null) {
-				filteredItems.add(temp.get(i));
-			}
-		}
-		return filteredItems;
 	}
 
 	public void go(HasWidgets container) {

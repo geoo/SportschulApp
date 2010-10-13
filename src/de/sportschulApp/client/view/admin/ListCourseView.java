@@ -55,8 +55,8 @@ public class ListCourseView extends Composite implements ListCoursePresenter.Dis
         cellTable.addColumn(new TextColumn<Course>() {
             public String getValue(Course course) {
             	String dates = new String();
-            	for (int i = 0; i < course.getWeekDays().size(); i++) {
-            		dates = dates + course.getWeekDays().get(i) + " " + course.getTimes().get(i) + ", ";
+            	for (int i = 0; i < course.getCourseDates().size(); i++) {
+            		dates = dates + course.getCourseDates().get(i).getWeekDay() + " " + course.getCourseDates().get(i).getTime() + ", ";
             	}
                 return dates.substring(0, dates.length() - 2);
             }
