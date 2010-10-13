@@ -332,7 +332,7 @@ public class CreateMemberView extends Composite implements
 		createMemberPanel.add(cityInputPanel);
 		createMemberPanel.add(birthInputPanel);
 		createMemberPanel.add(phoneInputPanel);
-		createMemberPanel2.add(mobilephoneInputPanel);
+		createMemberPanel.add(mobilephoneInputPanel);
 		createMemberPanel2.add(faxInputPanel);
 		createMemberPanel2.add(emailInputPanel);
 		createMemberPanel2.add(homepageInputPanel);

@@ -257,17 +257,17 @@ h1 {
 }
 
 .birthDayTextBox {
-	width: 70px !important;
+	width: 60px !important;
 	margin-right: 12px !important;
 }
 
 .birthMonthTextBox {
-	width: 70px !important;
+	width: 100px !important;
 	margin-right: 12px !important;
 }
 
 .birthYearTextBox {
-	width: 70px !important;
+	width: 65px !important;
 }
 
 .memberCreateWrapper .gwt-TextBox {
