@@ -41,7 +41,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 
 					.getConnection()
 					.prepareStatement(
-							"INSERT INTO Member(barcode_id, forename, surname, zipcode, city, street, phone, mobilephone, fax, email, homepage, birthDay, birthMonth, birthYear, picture, diseases, beltsize, note, trainingunits, course_01, course_02, course_03, course_04, course_05, course_06, course_07, course_08, course_09, course_10, graduation_01, graduation_02, graduation_03, graduation_04, graduation_05, graduation_06, graduation_07, graduation_08, graduation_09, graduation_10) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+							"INSERT INTO Member(barcode_id, forename, surname, zipcode, city, street, phone, mobilephone, fax, email, homepage, birthDay, birthMonth, birthYear, picture, diseases, beltsize, note, trainingunits, course_01, course_02, course_03, course_04, course_05, course_06, course_07, course_08, course_09, course_10, graduation_01, graduation_02, graduation_03, graduation_04, graduation_05, graduation_06, graduation_07, graduation_08, graduation_09, graduation_10, accountForename, accountSurname, accountNumber, bankName, bankNumber) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			stmt.setInt(1, member.getBarcodeID());
 			stmt.setString(2, member.getForename());
 			stmt.setString(3, member.getSurname());
@@ -61,6 +61,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			stmt.setString(17, member.getBeltsize());
 			stmt.setString(18, member.getNote());
 			stmt.setInt(19, member.getTrainingunits());
+			
 
 			// Hinzuf�gen der ArrayList Courses
 			int size = member.getCourses().size();
@@ -95,6 +96,14 @@ public class DataBankerMember implements DataBankerMemberInterface {
 					stmt.setInt(i, 0);
 				}
 			}
+			stmt.setString(40, member.getAccountForename());
+			stmt.setString(41, member.getAccountSurname());
+			stmt.setString(42, member.getAccountNumber());
+			stmt.setString(43, member.getBankName());
+			stmt.setString(44, member.getBankNumber());
+
+
+
 			stmt.executeUpdate();
 
 			dbc.close();
@@ -172,7 +181,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 
 					.getConnection()
 					.prepareStatement(
-							"INSERT INTO Member(Member_id, barcode_id, forename, surname, zipcode, city, street, phone, mobilephone, fax, email, homepage, birthDay, birthMonth, birthYear, picture, diseases, beltsize, note, trainingunits, course_01, course_02, course_03, course_04, course_05, course_06, course_07, course_08, course_09, course_10, graduation_01, graduation_02, graduation_03, graduation_04, graduation_05, graduation_06, graduation_07, graduation_08, graduation_09, graduation_10) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+							"INSERT INTO Member(Member_id, barcode_id, forename, surname, zipcode, city, street, phone, mobilephone, fax, email, homepage, birthDay, birthMonth, birthYear, picture, diseases, beltsize, note, trainingunits, course_01, course_02, course_03, course_04, course_05, course_06, course_07, course_08, course_09, course_10, graduation_01, graduation_02, graduation_03, graduation_04, graduation_05, graduation_06, graduation_07, graduation_08, graduation_09, graduation_10, accountForename, accountSurname, accountNumber, bankName, bankNumber) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			stmt.setInt(1, id);
 			stmt.setInt(2, member.getBarcodeID());
 			stmt.setString(3, member.getForename());
@@ -227,6 +236,12 @@ public class DataBankerMember implements DataBankerMemberInterface {
 					stmt.setInt(i, 0);
 				}
 			}
+			stmt.setString(41, member.getAccountForename());
+			stmt.setString(42, member.getAccountSurname());
+			stmt.setString(43, member.getAccountNumber());
+			stmt.setString(44, member.getBankName());
+			stmt.setString(45, member.getBankNumber());
+			
 			stmt.executeUpdate();
 
 			dbc.close();
@@ -282,6 +297,11 @@ public class DataBankerMember implements DataBankerMemberInterface {
 				member.setBeltsize(rs.getString("beltsize"));
 				member.setNote(rs.getString("note"));
 				member.setTrainingunits(rs.getInt("trainingunits"));
+				member.setAccountForename(rs.getString("accountForename"));
+				member.setAccountSurname(rs.getString("accountSurname"));
+				member.setAccountNumber(rs.getString("accountNumber"));
+				member.setBankName(rs.getString("bankName"));
+				member.setBankNumber(rs.getString("bankNumber"));
 
 				ArrayList<Integer> courses = new ArrayList<Integer>();
 				courses.add(rs.getInt("course_01"));
@@ -363,6 +383,11 @@ public class DataBankerMember implements DataBankerMemberInterface {
 				member.setDiseases(rs.getString("diseases"));
 				member.setBeltsize(rs.getString("beltsize"));
 				member.setNote(rs.getString("note"));
+				member.setAccountForename(rs.getString("accountForename"));
+				member.setAccountSurname(rs.getString("accountSurname"));
+				member.setAccountNumber(rs.getString("accountNumber"));
+				member.setBankName(rs.getString("bankName"));
+				member.setBankNumber(rs.getString("bankNumber"));
 
 				ArrayList<Integer> courses = new ArrayList<Integer>();
 				courses.add(rs.getInt("course_01"));
@@ -726,6 +751,11 @@ public class DataBankerMember implements DataBankerMemberInterface {
 				member.setDiseases(rs.getString("diseases"));
 				member.setBeltsize(rs.getString("beltsize"));
 				member.setNote(rs.getString("note"));
+				member.setAccountForename(rs.getString("accountForename"));
+				member.setAccountSurname(rs.getString("accountSurname"));
+				member.setAccountNumber(rs.getString("accountNumber"));
+				member.setBankName(rs.getString("bankName"));
+				member.setBankNumber(rs.getString("bankNumber"));
 
 				ArrayList<Integer> courses = new ArrayList<Integer>();
 				courses.add(rs.getInt("course_01"));

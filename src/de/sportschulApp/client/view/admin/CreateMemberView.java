@@ -10,14 +10,15 @@ import java.util.Iterator;
 import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.TextBoxBase;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -144,6 +145,7 @@ public class CreateMemberView extends Composite implements
 	private TextBox trainingunitsTextBox;
 	private VerticalPanel createMemberPanel = new VerticalPanel();
 	private VerticalPanel createMemberPanel2 = new VerticalPanel();
+	private VerticalPanel bankAccountPanel = new VerticalPanel();
 	private VerticalPanel wrapper = new VerticalPanel();
 	private Button sendButton = new Button();
 	private MultiUploader defaultUploader;
@@ -156,7 +158,20 @@ public class CreateMemberView extends Composite implements
 
 	private DisclosurePanel importantDisclosurePanel;
 	private DisclosurePanel additionalDisclosurePanel;
+	private DisclosurePanel bankAccountDisclosurePanel;
 	private HorizontalPanel barcodeInputPanel;
+	private Label accountOwnerForenameLabel;
+	private TextBox accountOwnerForenameTextBox;
+	private Label accountOwnerSurnameLabel;
+	private TextBox accountOwnerSurnameTextBox;
+	private Label accountNumberLabel;
+	private TextBox accountNumberTextBox;
+	private Label bankNumberLabel;
+	private TextBox bankNumberTextBox;
+	private Label bankNameLabel;
+	private TextBox bankNameTextBox;
+	private CheckBox likeAbove;
+	private CheckBox likeAbove2;
 
 	public CreateMemberView(LocalizationConstants constants) {
 
@@ -165,10 +180,18 @@ public class CreateMemberView extends Composite implements
 				constants.importantInformations());
 		importantDisclosurePanel.setContent(createMemberPanel);
 		importantDisclosurePanel.setOpen(true);
+		importantDisclosurePanel.setStyleName("disclosurePanel");
+		bankAccountDisclosurePanel = new DisclosurePanel(
+				constants.accountInformations());
+		bankAccountDisclosurePanel.setContent(bankAccountPanel);
+		bankAccountDisclosurePanel.setOpen(true);
+		bankAccountDisclosurePanel.setStyleName("disclosurePanel");
 		additionalDisclosurePanel = new DisclosurePanel(
 				constants.additionalInformations());
 		additionalDisclosurePanel.setContent(createMemberPanel2);
+		additionalDisclosurePanel.setStyleName("AdditionalisclosurePanel");
 		wrapper.add(importantDisclosurePanel);
+		wrapper.add(bankAccountDisclosurePanel);
 		wrapper.add(additionalDisclosurePanel);
 		wrapper.addStyleName("memberCreateWrapper");
 		initWidget(wrapper);
@@ -234,6 +257,40 @@ public class CreateMemberView extends Composite implements
 		mobilephoneTextBox = new TextBox();
 		mobilephoneInputPanel.add(mobilephoneLabel);
 		mobilephoneInputPanel.add(mobilephoneTextBox);
+
+		HorizontalPanel accountOwnerForenameInputPanel = new HorizontalPanel();
+		accountOwnerForenameLabel = new Label(constants.forename() + ":* ");
+		accountOwnerForenameTextBox = new TextBox();
+		likeAbove = new CheckBox(constants.likeAbove());
+		accountOwnerForenameInputPanel.add(accountOwnerForenameLabel);
+		accountOwnerForenameInputPanel.add(accountOwnerForenameTextBox);
+		accountOwnerForenameInputPanel.add(likeAbove);
+
+		HorizontalPanel accountOwnerSurnameInputPanel = new HorizontalPanel();
+		accountOwnerSurnameLabel = new Label(constants.surname() + ":* ");
+		accountOwnerSurnameTextBox = new TextBox();
+		likeAbove2 = new CheckBox(constants.likeAbove());
+		accountOwnerSurnameInputPanel.add(accountOwnerSurnameLabel);
+		accountOwnerSurnameInputPanel.add(accountOwnerSurnameTextBox);
+		accountOwnerSurnameInputPanel.add(likeAbove2);
+
+		HorizontalPanel accountNumberInputPanel = new HorizontalPanel();
+		accountNumberLabel = new Label(constants.accountNumber() + ":* ");
+		accountNumberTextBox = new TextBox();
+		accountNumberInputPanel.add(accountNumberLabel);
+		accountNumberInputPanel.add(accountNumberTextBox);
+
+		HorizontalPanel bankNumberInputPanel = new HorizontalPanel();
+		bankNumberLabel = new Label(constants.bankNumber() + ":* ");
+		bankNumberTextBox = new TextBox();
+		bankNumberInputPanel.add(bankNumberLabel);
+		bankNumberInputPanel.add(bankNumberTextBox);
+
+		HorizontalPanel bankNameInputPanel = new HorizontalPanel();
+		bankNameLabel = new Label(constants.bankName() + ":* ");
+		bankNameTextBox = new TextBox();
+		bankNameInputPanel.add(bankNameLabel);
+		bankNameInputPanel.add(bankNameTextBox);
 
 		HorizontalPanel faxInputPanel = new HorizontalPanel();
 		faxLabel = new Label(constants.fax() + ": ");
@@ -333,6 +390,13 @@ public class CreateMemberView extends Composite implements
 		createMemberPanel.add(birthInputPanel);
 		createMemberPanel.add(phoneInputPanel);
 		createMemberPanel.add(mobilephoneInputPanel);
+
+		bankAccountPanel.add(accountOwnerForenameInputPanel);
+		bankAccountPanel.add(accountOwnerSurnameInputPanel);
+		bankAccountPanel.add(accountNumberInputPanel);
+		bankAccountPanel.add(bankNameInputPanel);
+		bankAccountPanel.add(bankNumberInputPanel);
+
 		createMemberPanel2.add(faxInputPanel);
 		createMemberPanel2.add(emailInputPanel);
 		createMemberPanel2.add(homepageInputPanel);
@@ -502,6 +566,14 @@ public class CreateMemberView extends Composite implements
 		return constants;
 	}
 
+	public CheckBox getForenameCheckBox() {
+		return likeAbove;
+	}
+
+	public CheckBox getSurnameCheckBox() {
+		return likeAbove2;
+	}
+
 	public void fillForm(Member member) {
 		importantDisclosurePanel.setOpen(true);
 		additionalDisclosurePanel.setOpen(true);
@@ -527,7 +599,55 @@ public class CreateMemberView extends Composite implements
 		homepageTextBox.setText(member.getHomepage());
 		diseasesTextBox.setText(member.getDiseases());
 		noteTextBox.setText(member.getNote());
-		
+
+		if (member.getAccountForename().equals(member.getForename())) {
+			accountOwnerForenameTextBox.setText(constants.likeAbove());
+			accountOwnerForenameTextBox.setReadOnly(true);
+			likeAbove.setValue(true);
+		} else {
+			accountOwnerForenameTextBox.setText(member.getAccountForename());
+		}
+
+		if (member.getAccountSurname().equals(member.getSurname())) {
+			accountOwnerSurnameTextBox.setText(constants.likeAbove());
+			accountOwnerSurnameTextBox.setReadOnly(true);
+			likeAbove2.setValue(true);
+		} else {
+			accountOwnerSurnameTextBox.setText(member.getAccountSurname());
+		}
+
+		accountNumberTextBox.setText(member.getAccountNumber());
+		bankNameTextBox.setText(member.getBankName());
+		bankNumberTextBox.setText(member.getBankNumber());
+
+	}
+
+	public TextBox getAccoutForenameTextbox() {
+		return accountOwnerForenameTextBox;
+	}
+
+	public TextBox getAccoutSurnameTextbox() {
+		return accountOwnerSurnameTextBox;
+	}
+
+	public TextBoxBase getAccountForenameTextBox() {
+		return accountOwnerForenameTextBox;
+	}
+
+	public TextBoxBase getAccountSurnameTextBox() {
+		return accountOwnerSurnameTextBox;
+	}
+
+	public TextBoxBase getAccountNumberTextBox() {
+		return accountNumberTextBox;
+	}
+
+	public TextBoxBase getBankNumberTextBox() {
+		return bankNumberTextBox;
+	}
+
+	public TextBoxBase getBankNameTextBox() {
+		return bankNameTextBox;
 	}
 
 }

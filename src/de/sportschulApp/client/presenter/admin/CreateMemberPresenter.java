@@ -21,10 +21,12 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.TextBoxBase;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.sportschulApp.client.presenter.Presenter;
@@ -116,6 +118,24 @@ public class CreateMemberPresenter implements Presenter {
 
 		void fillForm(Member result);
 
+		CheckBox getForenameCheckBox();
+
+		CheckBox getSurnameCheckBox();
+
+		TextBox getAccoutForenameTextbox();
+
+		TextBox getAccoutSurnameTextbox();
+
+		TextBoxBase getAccountForenameTextBox();
+
+		TextBoxBase getAccountSurnameTextBox();
+
+		TextBoxBase getAccountNumberTextBox();
+
+		TextBoxBase getBankNumberTextBox();
+
+		TextBoxBase getBankNameTextBox();
+
 	}
 
 	private String imageUrl;
@@ -168,7 +188,6 @@ public class CreateMemberPresenter implements Presenter {
 				new AsyncCallback<Member>() {
 
 					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
 
 					}
 
@@ -242,6 +261,38 @@ public class CreateMemberPresenter implements Presenter {
 						}
 					});
 		}
+
+		display.getForenameCheckBox().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				if (display.getForenameCheckBox().getValue()) {
+					// TODO haken setzen
+					display.getAccoutForenameTextbox().setText(
+							constants.likeAbove());
+					display.getAccoutForenameTextbox().setReadOnly(true);
+				} else {
+					// TODO haken entfernen
+					display.getAccoutForenameTextbox().setText("");
+					display.getAccoutForenameTextbox().setReadOnly(false);
+					display.getAccoutForenameTextbox().setFocus(true);
+				}
+			}
+		});
+
+		display.getSurnameCheckBox().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				if (display.getSurnameCheckBox().getValue()) {
+					// TODO haken setzen
+					display.getAccoutSurnameTextbox().setText(
+							constants.likeAbove());
+					display.getAccoutSurnameTextbox().setReadOnly(true);
+				} else {
+					// TODO haken entfernen
+					display.getAccoutSurnameTextbox().setText("");
+					display.getAccoutSurnameTextbox().setReadOnly(false);
+					display.getAccoutSurnameTextbox().setFocus(true);
+				}
+			}
+		});
 	}
 
 	public void go(HasWidgets container) {
@@ -308,7 +359,28 @@ public class CreateMemberPresenter implements Presenter {
 			rpcService.getCourseIDs(courseNames,
 					new AsyncCallback<ArrayList<Integer>>() {
 
+						private String accountForename;
+						private String accountSurname;
+
 						public void onSuccess(ArrayList<Integer> result) {
+
+							// prüfen ob "wie oben" bei Vorname gesetzt
+							if (display.getForenameCheckBox().getValue()) {
+								accountForename = display.getForenameTextBox()
+										.getText();
+							} else {
+								accountForename = display
+										.getAccountForenameTextBox().getText();
+							}
+
+							// prüfen ob "wie oben" bei Nachname gesetzt
+							if (display.getSurnameCheckBox().getValue()) {
+								accountSurname = display.getSurnameTextBox()
+										.getText();
+							} else {
+								accountSurname = display
+										.getAccountSurnameTextBox().getText();
+							}
 
 							// courses = result;
 							Integer selected = display.getBirthTextBox1()
@@ -343,7 +415,13 @@ public class CreateMemberPresenter implements Presenter {
 									display.getNoteTextBox().getText(),
 									new Integer(display
 											.getTrainingunitsTextBox()
-											.getText()), result, grades);
+											.getText()), accountForename,
+									accountSurname, display
+											.getAccountNumberTextBox()
+											.getText(), display
+											.getBankNameTextBox().getText(),
+									display.getBankNumberTextBox().getText(),
+									result, grades);
 
 							try {
 								if (member.getPicture() == null) {
@@ -428,6 +506,14 @@ public class CreateMemberPresenter implements Presenter {
 				msgMap.put("homepage", constants.popupHelpHomepage());
 				msgMap.put("diseases", constants.popupHelpDiseases());
 				msgMap.put("note", constants.popupHelpNote());
+				msgMap.put("accountForename",
+						constants.popupHelpAccountForename());
+				msgMap.put("accountSurname",
+						constants.popupHelpAccountSurename());
+				msgMap.put("accountBankname", constants.popupHelpBankname());
+				msgMap.put("accountBanknumber", constants.popupHelpBanknumber());
+				msgMap.put("accountAccountNumber",
+						constants.popupHelpAccountNumber());
 
 				String temp = msgMap.get(msgKey.trim());
 				return temp;
@@ -489,6 +575,34 @@ public class CreateMemberPresenter implements Presenter {
 				new IntegerValidator(display.getTrainingunitsTextBox(), 1,
 						Integer.MAX_VALUE).addActionForFailure(new StyleAction(
 						"validationFailedBorder")));
+
+		validator
+				.addValidators("accountForename", new StringLengthValidator(
+						display.getAccountForenameTextBox(), 2, 30)
+						.addActionForFailure(new StyleAction(
+								"validationFailedBorder")));
+
+		validator
+				.addValidators("accountSurname", new StringLengthValidator(
+						display.getAccountSurnameTextBox(), 2, 30)
+						.addActionForFailure(new StyleAction(
+								"validationFailedBorder")));
+
+		validator.addValidators("Bankname",
+				new StringLengthValidator(display.getBankNameTextBox(), 2, 30)
+						.addActionForFailure(new StyleAction(
+								"validationFailedBorder")));
+
+		validator.addValidators("accountNumber",
+				new IntegerValidator(display.getAccountNumberTextBox(), 0,
+						Integer.MAX_VALUE).addActionForFailure(new StyleAction(
+						"validationFailedBorder")));
+
+		validator.addValidators("Banknumber",
+				new IntegerValidator(display.getBankNumberTextBox(), 0,
+						Integer.MAX_VALUE).addActionForFailure(new StyleAction(
+						"validationFailedBorder")));
+
 		popupDesc.addDescription("forename ", display.getForenameTextBox());
 		popupDesc.addDescription("surname ", display.getSurnameTextBox());
 		popupDesc.addDescription("barcode ", display.getBarcodeTextBox());
@@ -505,6 +619,16 @@ public class CreateMemberPresenter implements Presenter {
 		popupDesc.addDescription("email ", display.getEmailTextBox());
 		popupDesc.addDescription("homepage ", display.getDiseasesTextBox());
 		popupDesc.addDescription("note ", display.getNoteTextBox());
+		popupDesc.addDescription("accountForename ",
+				display.getAccountForenameTextBox());
+		popupDesc.addDescription("accountSurname ",
+				display.getAccountSurnameTextBox());
+		popupDesc.addDescription("accountAccountNumber ",
+				display.getAccountNumberTextBox());
+		popupDesc.addDescription("accountBanknumber ",
+				display.getBankNumberTextBox());
+		popupDesc.addDescription("accountBankname ",
+				display.getBankNameTextBox());
 
 	}
 }
