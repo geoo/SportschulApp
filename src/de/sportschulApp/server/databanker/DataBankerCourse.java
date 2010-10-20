@@ -7,6 +7,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import de.sportschulApp.shared.Course;
+import de.sportschulApp.shared.CourseDate;
+import de.sportschulApp.shared.CourseTariff;
 
 public class DataBankerCourse implements DataBankerCourseInterface {
 
@@ -56,8 +58,8 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 			ResultSet generatedKeys = stmt.getGeneratedKeys();
 			
 			while(generatedKeys.next()) {
-				setDatesForCourse(generatedKeys.getInt(1), course.getWeekDays(), course.getTimes());
-				setTariffsForCourse(generatedKeys.getInt(1), course.getTariffNames(), course.getTariffCosts());
+				setDatesForCourse(generatedKeys.getInt(1), course.getCourseDates());
+				setTariffsForCourse(generatedKeys.getInt(1), course.getCourseTariffs());
 			}
 
 			ResultSet rs2 = null;
@@ -88,15 +90,15 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 		}
 	}
 
-	public void setDatesForCourse(int courseID, ArrayList<String> weekDays, ArrayList<String> times) {
+	public void setDatesForCourse(int courseID, ArrayList<CourseDate> courseDates) {
 		DataBankerConnection dbc = new DataBankerConnection();
-		for (int i = 0; i < weekDays.size(); i++) {
+		for (int i = 0; i < courseDates.size(); i++) {
 			try {
 				PreparedStatement stmt = dbc.getConnection().prepareStatement(
 								"INSERT INTO Course_has_date(Course_id, weekDay, time) VALUES(?,?,?)");
 				stmt.setInt(1, courseID);
-				stmt.setString(2, weekDays.get(i));
-				stmt.setString(3, times.get(i));
+				stmt.setString(2, courseDates.get(i).getWeekDay());
+				stmt.setString(3, courseDates.get(i).getTime());
 	
 				stmt.executeUpdate();
 	
@@ -110,15 +112,15 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 		}
 	}
 	
-	public void setTariffsForCourse(int courseID, ArrayList<String> tariffNames, ArrayList<String> tariffCosts) {
+	public void setTariffsForCourse(int courseID, ArrayList<CourseTariff> courseTariffs) {
 		DataBankerConnection dbc = new DataBankerConnection();
-		for (int i = 0; i < tariffNames.size(); i++) {
+		for (int i = 0; i < courseTariffs.size(); i++) {
 			try {
 				PreparedStatement stmt = dbc.getConnection().prepareStatement(
 								"INSERT INTO Course_has_tariff(Course_id, name, costs) VALUES(?,?,?)");
 				stmt.setInt(1, courseID);
-				stmt.setString(2, tariffNames.get(i));
-				stmt.setString(3, tariffCosts.get(i));
+				stmt.setString(2, courseTariffs.get(i).getName());
+				stmt.setString(3, courseTariffs.get(i).getCosts());
 	
 				stmt.executeUpdate();
 	
@@ -132,19 +134,19 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 		}
 	}
 	
-	public ArrayList<String> getWeekDaysForCourse(int courseId) {
-		ArrayList<String> weekDays = new ArrayList<String>();
+	public ArrayList<CourseDate> getCourseDatesForCourse(int courseId) {
+		ArrayList<CourseDate> courseDates = new ArrayList<CourseDate>();
 		
 		
 		DataBankerConnection dbc = new DataBankerConnection();
 		ResultSet rs = null;
 		Statement stmt = dbc.getStatement();
-		String query = "SELECT weekDay FROM Course_has_date WHERE Course_ID='" + courseId + "'";
+		String query = "SELECT weekDay,time FROM Course_has_date WHERE Course_ID='" + courseId + "'";
 		
 		try {
 			rs = stmt.executeQuery(query);
 			while (rs.next()) {
-				weekDays.add(rs.getString(1));
+				courseDates.add(new CourseDate(rs.getString(1), rs.getString(2)));
 			}
 			rs.close();
 			dbc.close();
@@ -153,31 +155,7 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 			System.out.println(e);
 			return null;
 		}
-		return weekDays;
-	}
-	
-	public ArrayList<String> getTimesForCourse(int courseId) {
-		ArrayList<String> times = new ArrayList<String>();
-		
-		
-		DataBankerConnection dbc = new DataBankerConnection();
-		ResultSet rs = null;
-		Statement stmt = dbc.getStatement();
-		String query = "SELECT time FROM Course_has_date WHERE Course_ID='" + courseId + "'";
-		
-		try {
-			rs = stmt.executeQuery(query);
-			while (rs.next()) {
-				times.add(rs.getString(1));
-			}
-			rs.close();
-			dbc.close();
-			stmt.close();
-		} catch (Exception e) {
-			System.out.println(e);
-			return null;
-		}
-		return times;
+		return courseDates;
 	}
 	
 	public void deleteDatesFromCourse(int courseID) {
@@ -250,8 +228,7 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 				newCourse.setName(rs.getString(2));
 				newCourse.setInstructor(rs.getString(3));
 				newCourse.setLocation(rs.getString(4));
-				newCourse.setWeekDays(getWeekDaysForCourse(rs.getInt(1)));
-				newCourse.setTimes(getTimesForCourse(rs.getInt(1)));
+				newCourse.setCourseDates(getCourseDatesForCourse(rs.getInt(1)));
 				newCourse.setBeltColours(getBelts(rs.getInt(1)));
 				courses.add(newCourse);
 			}
@@ -538,8 +515,7 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 				course.setName(rs.getString(2));
 				course.setInstructor(rs.getString(3));
 				course.setLocation(rs.getString(4));
-				course.setWeekDays(getWeekDaysForCourse(rs.getInt(1)));
-				course.setTimes(getTimesForCourse(rs.getInt(1)));
+				course.setCourseDates(getCourseDatesForCourse(rs.getInt(1)));
 				course.setBeltColours(getBelts(rs.getInt(1)));
 			}
 			rs.close();

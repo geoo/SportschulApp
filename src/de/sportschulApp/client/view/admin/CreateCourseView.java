@@ -27,6 +27,8 @@ import de.sportschulApp.client.presenter.admin.CreateCoursePresenter;
 import de.sportschulApp.client.view.admin.dualListBox.DualListBox;
 import de.sportschulApp.client.view.localization.LocalizationConstants;
 import de.sportschulApp.shared.Course;
+import de.sportschulApp.shared.CourseDate;
+import de.sportschulApp.shared.CourseTariff;
 import eu.maydu.gwt.validation.client.DefaultValidationProcessor;
 import eu.maydu.gwt.validation.client.ValidationProcessor;
 
@@ -44,13 +46,11 @@ public class CreateCourseView extends Composite implements
 	private Label beltLabel;
 	private Button sendButton = new Button();
 	private DefaultValidationProcessor validator = new DefaultValidationProcessor();
-	private ArrayList<String> weekDays = new ArrayList<String>();
-	private ArrayList<String> times = new ArrayList<String>();
-	private ArrayList<String> tariffNames = new ArrayList<String>();
-	private ArrayList<String> tariffCosts = new ArrayList<String>();
+	private ArrayList<CourseDate> courseDates = new ArrayList<CourseDate>();
+	private ArrayList<CourseTariff> courseTariffs = new ArrayList<CourseTariff>();
 	private VerticalPanel createCourseWrapper = new VerticalPanel();
 	private FlexTable dateInputFieldsTable = new FlexTable();
-
+	private FlexTable tariffInputFieldsTable = new FlexTable();
 
 	public CreateCourseView(LocalizationConstants constants, Boolean newItem) {
 		this.constants = constants;
@@ -78,6 +78,49 @@ public class CreateCourseView extends Composite implements
 		courseNameInputPanel.add(courseNameLabel);
 		courseNameInputPanel.add(courseNameTextBox);
 		
+		VerticalPanel dateInputFieldWrapper = new VerticalPanel();
+		dateInputFieldWrapper.addStyleName("dateInputFieldWrapper");
+		
+		dateInputFieldsTable.setCellPadding(0);
+		dateInputFieldsTable.setCellSpacing(0);
+		dateInputFieldsTable.addStyleName("dateInputFieldsTable");
+		
+		Label addDateFieldLabel = new Label("Weiteren Termin hinzufügen");
+		addDateFieldLabel.addStyleName("clickableLabel");
+		
+		addDateFieldLabel.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				addDateInpuRow(dateInputFieldsTable, false);
+			}
+		});
+
+		refreshDateInputTable();
+		
+		dateInputFieldWrapper.add(dateInputFieldsTable);
+		dateInputFieldWrapper.add(addDateFieldLabel);
+		
+		VerticalPanel tariffInputFieldWrapper = new VerticalPanel();
+		tariffInputFieldWrapper.addStyleName("tariffInputFieldWrapper");
+		
+		tariffInputFieldsTable.setCellPadding(0);
+		tariffInputFieldsTable.setCellSpacing(0);
+		tariffInputFieldsTable.addStyleName("tariffInputFieldsTable");
+		
+		Label addTariffFieldLabel = new Label("Weiteren Tarif hinzufügen");
+		addTariffFieldLabel.addStyleName("clickableLabel");
+		
+		addTariffFieldLabel.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				addTariffInpuRow(tariffInputFieldsTable, false);
+			}
+		});
+		
+		refreshTariffInputTable();
+		
+		tariffInputFieldWrapper.add(tariffInputFieldsTable);
+		tariffInputFieldWrapper.add(addTariffFieldLabel);
+
+		
 		HorizontalPanel instructorInputPanel = new HorizontalPanel();
 		instructorLabel = new Label(constants.instructor() + ": ");
 		instructorInputPanel.add(instructorLabel);
@@ -94,8 +137,8 @@ public class CreateCourseView extends Composite implements
 		beltInputPanel.add(dualListBox);
 		
 		courseForm.add(courseNameInputPanel);
-		courseForm.add(initDateInputArea());
-		courseForm.add(initTariffInputArea());
+		courseForm.add(dateInputFieldWrapper);
+		courseForm.add(tariffInputFieldWrapper);
 		courseForm.add(instructorInputPanel);
 		courseForm.add(locationInputPanel);
 		courseForm.add(beltInputPanel);
@@ -103,41 +146,28 @@ public class CreateCourseView extends Composite implements
 		sendButton.setText(constants.send());
 		courseForm.add(sendButton);
 		
+		
 		return courseForm;
 	}
 	
-	/**
-	 * Erstellt den Eingabebereich für Termine.
-	 * 
-	 * @return Den DateInputfield Wrapper.
-	 */
-	private VerticalPanel initDateInputArea() {
-		VerticalPanel dateInputFieldWrapper = new VerticalPanel();
-		dateInputFieldWrapper.addStyleName("dateInputFieldWrapper");
-		
-		dateInputFieldsTable.setCellPadding(0);
-		dateInputFieldsTable.setCellSpacing(0);
-		dateInputFieldsTable.addStyleName("dateInputFieldsTable");
+	private void refreshDateInputTable() {
+		dateInputFieldsTable.removeAllRows();
 		
 		addDateInpuRow(dateInputFieldsTable, true);
 
-		for (int i = 1; i < weekDays.size(); i++) {
+		for (int i = 1; i < courseDates.size(); i++) {
 			addDateInpuRow(dateInputFieldsTable, false);
 		}
+	}
+	
+	private void refreshTariffInputTable() {
+		tariffInputFieldsTable.removeAllRows();
 		
-		Label addDateFieldLabel = new Label("Weiteren Termin hinzufügen");
-		addDateFieldLabel.addStyleName("clickableLabel");
-		
-		addDateFieldLabel.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				addDateInpuRow(dateInputFieldsTable, false);
-			}
-		});
-		
-		dateInputFieldWrapper.add(dateInputFieldsTable);
-		dateInputFieldWrapper.add(addDateFieldLabel);
-		
-		return dateInputFieldWrapper;
+		addTariffInpuRow(tariffInputFieldsTable, true);
+
+		for (int i = 1; i < courseTariffs.size(); i++) {
+			addTariffInpuRow(tariffInputFieldsTable, false);
+		}
 	}
 	
 	/**
@@ -158,23 +188,7 @@ public class CreateCourseView extends Composite implements
 		weekDayListBox.addItem(constants.friday());
 		weekDayListBox.addItem(constants.saturday());
 		weekDayListBox.addItem(constants.sunday());
-		
-		if ((numRow < this.weekDays.size()) && !(this.weekDays.isEmpty())) {
-			for (int i = 0; i < weekDayListBox.getItemCount(); i++) {
-				if (weekDayListBox.getValue(i).equals(this.weekDays.get(numRow))) {
-					weekDayListBox.setSelectedIndex(i);
-				}
-			}
-		} else {
-			this.weekDays.add(numRow, weekDayListBox.getValue(weekDayListBox.getSelectedIndex()));
-		}
-				
-		weekDayListBox.addChangeHandler(new ChangeHandler() {
-			public void onChange(ChangeEvent event) {
-				weekDays.set(numRow, weekDayListBox.getValue(weekDayListBox.getSelectedIndex()));
-			}
-		});
-		
+
 		final ListBox timeListBox = new ListBox();
 		for(int i = 0; i < 24; i++) {
 			timeListBox.addItem(i + ":00 " + constants.clock());
@@ -183,19 +197,33 @@ public class CreateCourseView extends Composite implements
 			timeListBox.addItem(i + ":45 " + constants.clock());
 		}
 		
-		if ((numRow < this.times.size()) && !(this.times.isEmpty())) {
+		if ((numRow < this.courseDates.size()) && !(this.courseDates.isEmpty())) {
+			for (int i = 0; i < weekDayListBox.getItemCount(); i++) {
+				if (weekDayListBox.getValue(i).equals(this.courseDates.get(numRow).getWeekDay())) {
+					weekDayListBox.setSelectedIndex(i);
+				}
+			}
 			for (int i = 0; i < timeListBox.getItemCount(); i++) {
-				if (timeListBox.getValue(i).equals(this.times.get(numRow))) {
+				if (timeListBox.getValue(i).equals(this.courseDates.get(numRow).getTime())) {
 					timeListBox.setSelectedIndex(i);
 				}
 			}
 		} else {
-			this.times.add(numRow, timeListBox.getValue(timeListBox.getSelectedIndex()));
+			this.courseDates.add(numRow, new CourseDate(weekDayListBox.getValue(weekDayListBox.getSelectedIndex()), 
+					timeListBox.getValue(timeListBox.getSelectedIndex())));
 		}
+		
+		weekDayListBox.addChangeHandler(new ChangeHandler() {
+			public void onChange(ChangeEvent event) {
+				courseDates.set(numRow, new CourseDate(weekDayListBox.getValue(weekDayListBox.getSelectedIndex()), 
+						timeListBox.getValue(timeListBox.getSelectedIndex())));
+			}
+		});
 
 		timeListBox.addChangeHandler(new ChangeHandler() {
 			public void onChange(ChangeEvent event) {
-				times.set(numRow, timeListBox.getValue(timeListBox.getSelectedIndex()));
+				courseDates.set(numRow, new CourseDate(weekDayListBox.getValue(weekDayListBox.getSelectedIndex()), 
+						timeListBox.getValue(timeListBox.getSelectedIndex())));
 			}
 		});
 		
@@ -207,15 +235,13 @@ public class CreateCourseView extends Composite implements
 		dateInputFieldsTable.setWidget(numRow, 2, timeListBox);
 		
 		if (!firstField) {
-			Image deleteButton = new Image("/imgs/Symbol_Delete.png");
+			final Image deleteButton = new Image("/imgs/Symbol_Delete.png");
 			deleteButton.setStyleName("clickable");
 			
 			deleteButton.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
-					dateInputFieldsTable.removeCells(numRow, 0,4);
-					
-					weekDays.set(numRow, null);
-					times.set(numRow, null);
+					courseDates.remove(numRow);
+					refreshDateInputTable();
 				}
 			});
 
@@ -225,41 +251,6 @@ public class CreateCourseView extends Composite implements
 			placeholderPanel.setWidth("16px");
 			dateInputFieldsTable.setWidget(numRow, 3, placeholderPanel);
 		}
-	}
-	
-	/**
-	 * Erstellt den Eingabebereich für Tarife.
-	 * 
-	 * @return Den TarifInputfield Wrapper.
-	 */
-	private VerticalPanel initTariffInputArea() {
-		VerticalPanel tariffInputFieldWrapper = new VerticalPanel();
-		tariffInputFieldWrapper.addStyleName("tariffInputFieldWrapper");
-		
-		final FlexTable tariffInputFieldsTable = new FlexTable();
-		tariffInputFieldsTable.setCellPadding(0);
-		tariffInputFieldsTable.setCellSpacing(0);
-		tariffInputFieldsTable.addStyleName("tariffInputFieldsTable");
-		
-		addTariffInpuRow(tariffInputFieldsTable, true);
-
-		for (int i = 1; i < tariffNames.size(); i++) {
-			addTariffInpuRow(tariffInputFieldsTable, false);
-		}
-		
-		Label addDateFieldLabel = new Label("Weiteren Termin hinzufügen");
-		addDateFieldLabel.addStyleName("clickableLabel");
-		
-		addDateFieldLabel.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				addTariffInpuRow(tariffInputFieldsTable, false);
-			}
-		});
-		
-		tariffInputFieldWrapper.add(tariffInputFieldsTable);
-		tariffInputFieldWrapper.add(addDateFieldLabel);
-		
-		return tariffInputFieldWrapper;
 	}
 	
 	/**
@@ -275,25 +266,38 @@ public class CreateCourseView extends Composite implements
 		Label euroLabel = new Label("€");
 		euroLabel.setWidth("10px");
 		
-		final TextBox tariffNameTextBox = new TextBox();
-		tariffNameTextBox.setWidth("150px");
-		
 		final TextBox tariffCostsTextBox = new TextBox();
+		tariffCostsTextBox.setValue("0");
 		tariffCostsTextBox.setWidth("50px");
 		
-		tariffNameTextBox.addBlurHandler(new BlurHandler() {
-			public void onBlur(BlurEvent event) {
-				if (tariffNameTextBox.getValue().length() > 0) {
-					tariffNames.add(numRow, tariffNameTextBox.getValue());
+		final ListBox tariffPresenceListBox = new ListBox();
+		for (int i = 1; i <= 20; i++) {
+			tariffPresenceListBox.addItem(i + " mal / Monat");
+		}
+		
+		if ((numRow < this.courseTariffs.size()) && !(this.courseTariffs.isEmpty())) {
+			for (int i = 0; i < tariffPresenceListBox.getItemCount(); i++) {
+				if (tariffPresenceListBox.getValue(i).equals(this.courseTariffs.get(numRow).getName())) {
+					tariffPresenceListBox.setSelectedIndex(i);
 				}
+			}
+			tariffCostsTextBox.setValue(this.courseTariffs.get(numRow).getCosts());
+		} else {
+			this.courseTariffs.add(numRow, new CourseTariff(tariffPresenceListBox.getValue(tariffPresenceListBox.getSelectedIndex()), 
+					tariffCostsTextBox.getValue()));
+		}
+		
+		tariffPresenceListBox.addChangeHandler(new ChangeHandler() {
+			public void onChange(ChangeEvent event) {
+				courseTariffs.set(numRow, new CourseTariff(tariffPresenceListBox.getValue(tariffPresenceListBox.getSelectedIndex()), 
+						tariffCostsTextBox.getValue()));
 			}
 		});
 		
 		tariffCostsTextBox.addBlurHandler(new BlurHandler() {
 			public void onBlur(BlurEvent event) {
-				if (tariffCostsTextBox.getValue().length() > 0) {
-					tariffCosts.add(numRow, tariffNameTextBox.getValue());
-				}
+				courseTariffs.set(numRow, new CourseTariff(tariffPresenceListBox.getValue(tariffPresenceListBox.getSelectedIndex()), 
+						tariffCostsTextBox.getValue()));
 			}
 		});
 		
@@ -301,7 +305,7 @@ public class CreateCourseView extends Composite implements
 			tariffInputFieldsTable.setWidget(numRow, 0, new Label(constants.tariffs() + ": "));
 		}
 			
-		tariffInputFieldsTable.setWidget(numRow, 1, tariffNameTextBox);
+		tariffInputFieldsTable.setWidget(numRow, 1, tariffPresenceListBox);
 		tariffInputFieldsTable.setWidget(numRow, 2, tariffCostsTextBox);
 		tariffInputFieldsTable.setWidget(numRow, 3, euroLabel);
 		
@@ -311,10 +315,8 @@ public class CreateCourseView extends Composite implements
 			
 			deleteButton.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
-					tariffInputFieldsTable.removeCells(numRow, 0,4);
-					
-					tariffNames.set(numRow, null);
-					tariffCosts.set(numRow, null);
+					courseTariffs.remove(numRow);
+					refreshTariffInputTable();
 				}
 			});
 			tariffInputFieldsTable.setWidget(numRow, 4, deleteButton);
@@ -358,28 +360,20 @@ public class CreateCourseView extends Composite implements
 	}
 	
 	
-	public ArrayList<String> getWeekDays() {
-		return this.weekDays;
+	public ArrayList<CourseDate> getCourseDates() {
+		return this.courseDates;
 	}
 	
-	public ArrayList<String> getTimes() {
-		return this.times;
-	}
-	
-	public ArrayList<String> getTariffNames() {
-		return this.tariffNames;
-	}
-	
-	public ArrayList<String> getTariffCosts() {
-		return this.tariffCosts;
+	public ArrayList<CourseTariff> getCourseTariffs() {
+		return this.courseTariffs;
 	}
 	
 	public void fillForm(Course course) {
 		this.courseNameTextBox.setText(course.getName());
 		this.instructorTextBox.setText(course.getInstructor());
 		this.locationTextBox.setText(course.getLocation());
-		this.weekDays = course.getWeekDays();
-		this.times = course.getTimes();
+		this.courseDates = course.getCourseDates();
+		this.courseTariffs = course.getCourseTariffs();
 		
 		
 		this.createCourseWrapper.add(buildForm());

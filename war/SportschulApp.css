@@ -46,17 +46,19 @@ h1 {
 }
 
 /** CSS für CellTable */
-.GNFTSKMEB tbody tr {
-	height: 60px;
+<<<<<<< HEAD
+
+.GE1C3V1DE tbody tr {
+	height: 60px !important;
 	cursor: pointer;
 }
 
-.GNFTSKMEB img {
+.GE1C3V1DE img {
 	height: 50px;
 	border: 1px solid #c9c9c9;
 }
 
-.GNFTSKMEB thead tr {
+.GE1C3V1DE thead tr {
 	height: 40px;
 }
 

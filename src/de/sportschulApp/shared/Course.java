@@ -11,25 +11,21 @@ public class Course implements Serializable{
 	private String name;
 	private String instructor;
 	private String location;
-	private ArrayList<String> weekDays;
-	private ArrayList<String> times;
-	private ArrayList<String> tariffNames;
-	private ArrayList<String> tariffCosts;
+	private ArrayList<CourseDate> courseDates;
+	private ArrayList<CourseTariff> courseTariffs;
 	private ArrayList<String> beltColours;
 
 	public Course() {
 	}
 
 	public Course(int courseID, String name, String instructor,
-			String location, ArrayList<String> weekDays, ArrayList<String> times, ArrayList<String> tariffNames, ArrayList<String> tariffCosts, ArrayList<String> beltColours) {
+			String location, ArrayList<CourseDate> courseDates, ArrayList<CourseTariff> courseTariffs, ArrayList<String> beltColours) {
 		this.courseID = courseID;
 		this.name = name;
 		this.instructor = instructor;
 		this.location = location;
-		this.weekDays = weekDays;
-		this.times = times;
-		this.tariffNames = tariffNames;
-		this.tariffCosts = tariffCosts;
+		this.setCourseDates(courseDates);
+		this.setCourseTariffs(courseTariffs);
 		this.beltColours = beltColours;
 
 	}
@@ -109,58 +105,30 @@ public class Course implements Serializable{
 	}
 
 	/**
-	 * @param weekDays the weekDays to set
+	 * @param courseDates the courseDates to set
 	 */
-	public void setWeekDays(ArrayList<String> weekDays) {
-		this.weekDays = weekDays;
+	public void setCourseDates(ArrayList<CourseDate> courseDates) {
+		this.courseDates = courseDates;
 	}
 
 	/**
-	 * @return the weekDays
+	 * @return the courseDates
 	 */
-	public ArrayList<String> getWeekDays() {
-		return weekDays;
+	public ArrayList<CourseDate> getCourseDates() {
+		return courseDates;
 	}
 
 	/**
-	 * @param times the times to set
+	 * @param courseTariffs the courseTariffs to set
 	 */
-	public void setTimes(ArrayList<String> times) {
-		this.times = times;
+	public void setCourseTariffs(ArrayList<CourseTariff> courseTariffs) {
+		this.courseTariffs = courseTariffs;
 	}
 
 	/**
-	 * @return the times
+	 * @return the courseTariffs
 	 */
-	public ArrayList<String> getTimes() {
-		return times;
-	}
-
-	/**
-	 * @param tariffNames the tariffNames to set
-	 */
-	public void setTariffNames(ArrayList<String> tariffNames) {
-		this.tariffNames = tariffNames;
-	}
-
-	/**
-	 * @return the tariffNames
-	 */
-	public ArrayList<String> getTariffNames() {
-		return tariffNames;
-	}
-
-	/**
-	 * @param tariffCosts the tariffCosts to set
-	 */
-	public void setTariffCosts(ArrayList<String> tariffCosts) {
-		this.tariffCosts = tariffCosts;
-	}
-
-	/**
-	 * @return the tariffCosts
-	 */
-	public ArrayList<String> getTariffCosts() {
-		return tariffCosts;
+	public ArrayList<CourseTariff> getCourseTariffs() {
+		return courseTariffs;
 	}
 }

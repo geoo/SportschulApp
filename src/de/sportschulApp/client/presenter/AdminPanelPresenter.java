@@ -112,7 +112,7 @@ public class AdminPanelPresenter implements Presenter {
 		memberPopup.setText("Detailansicht");
 		memberPopup.setGlassEnabled(true);
 		memberPopup.center();
-		memberPopup.setPopupPosition(memberPopup.getAbsoluteLeft() - 200, 100);
+		memberPopup.setPopupPosition(memberPopup.getAbsoluteLeft() - 200, memberPopup.getAbsoluteTop() - 150);
 		memberPopup.setWidth("auto");
 		Presenter showMemberPresenter = null;
 		showMemberPresenter =  new ShowMemberPresenter(rpcService, eventBus, new ShowMemberView(constants), barcodeID);
@@ -126,7 +126,7 @@ public class AdminPanelPresenter implements Presenter {
 		coursePopup.setText("Detailansicht");
 		coursePopup.setGlassEnabled(true);
 		coursePopup.center();
-		coursePopup.setPopupPosition(coursePopup.getAbsoluteLeft() - 200, 100);
+		coursePopup.setPopupPosition(coursePopup.getAbsoluteLeft() - 200, coursePopup.getAbsoluteTop() - 150);
 		coursePopup.setWidth("auto");
 		Presenter showCoursePresenter = null;
 		showCoursePresenter =  new ShowCoursePresenter(rpcService, eventBus, new ShowCourseView(constants), courseID);
@@ -140,7 +140,7 @@ public class AdminPanelPresenter implements Presenter {
 		userPopup.setText("Detailansicht");
 		userPopup.setGlassEnabled(true);
 		userPopup.center();
-		userPopup.setPopupPosition(userPopup.getAbsoluteLeft() - 200, 100);
+		userPopup.setPopupPosition(userPopup.getAbsoluteLeft() - 200, userPopup.getAbsoluteTop() - 150);
 		userPopup.setWidth("auto");
 		Presenter showUserPresenter = null;
 		showUserPresenter =  new ShowUserPresenter(rpcService, eventBus, new ShowUserView(constants), userID);
@@ -154,7 +154,7 @@ public class AdminPanelPresenter implements Presenter {
 		eventPopup.setText("Detailansicht");
 		eventPopup.setGlassEnabled(true);
 		eventPopup.center();
-		eventPopup.setPopupPosition(eventPopup.getAbsoluteLeft() - 200, 100);
+		eventPopup.setPopupPosition(eventPopup.getAbsoluteLeft() - 200, eventPopup.getAbsoluteTop() - 150);
 		eventPopup.setWidth("auto");
 		Presenter showEventPresenter = null;
 		showEventPresenter =  new ShowEventPresenter(rpcService, eventBus, new ShowEventView(constants), eventID);
