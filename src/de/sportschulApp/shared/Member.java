@@ -25,6 +25,11 @@ public class Member implements Serializable {
 	private String beltsize;
 	private String note;
 	private int trainingunits;
+	private String accountForename;
+	private String accountSurname;
+	private String accountNumber;
+	private String bankName;
+	private String bankNumber;
 	private ArrayList<Integer> courses;
 	private ArrayList<Integer> graduations;
 
@@ -33,8 +38,9 @@ public class Member implements Serializable {
 			String mobilephone, String fax, String email, String homepage,
 			String birthDay, String birthMonth, String birthYear,
 			String picture, String diseases, String beltsize, String note,
-			int trainingunits, ArrayList<Integer> courses,
-			ArrayList<Integer> graduations) {
+			int trainingunits, String accountForename, String accountSurname,
+			String accountNumber, String bankName, String bankNumber,
+			ArrayList<Integer> courses, ArrayList<Integer> graduations) {
 
 		this.setMemberID(memberID);
 		this.setBarcodeID(barcodeID);
@@ -58,6 +64,11 @@ public class Member implements Serializable {
 		this.setTrainingunits(trainingunits);
 		this.setCourses(courses);
 		this.setGraduations(graduations);
+		this.setAccountForename(accountForename);
+		this.setAccountSurname(accountSurname);
+		this.setAccountNumber(accountNumber);
+		this.setBankName(bankName);
+		this.setBankNumber(bankNumber);
 
 	}
 
@@ -392,5 +403,80 @@ public class Member implements Serializable {
 	 */
 	public String getBirthYear() {
 		return birthYear;
+	}
+
+	/**
+	 * @return the accountForename
+	 */
+	public String getAccountForename() {
+		return accountForename;
+	}
+
+	/**
+	 * @param accountForename
+	 *            the accountForename to set
+	 */
+	public void setAccountForename(String accountForename) {
+		this.accountForename = accountForename;
+	}
+
+	/**
+	 * @return the accountSurname
+	 */
+	public String getAccountSurname() {
+		return accountSurname;
+	}
+
+	/**
+	 * @param accountSurname
+	 *            the accountSurname to set
+	 */
+	public void setAccountSurname(String accountSurname) {
+		this.accountSurname = accountSurname;
+	}
+
+	/**
+	 * @return the accountNumber
+	 */
+	public String getAccountNumber() {
+		return accountNumber;
+	}
+
+	/**
+	 * @param accountNumber
+	 *            the accountNumber to set
+	 */
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
+	}
+
+	/**
+	 * @return the bankName
+	 */
+	public String getBankName() {
+		return bankName;
+	}
+
+	/**
+	 * @param bankName
+	 *            the bankName to set
+	 */
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
+
+	/**
+	 * @return the bankNumber
+	 */
+	public String getBankNumber() {
+		return bankNumber;
+	}
+
+	/**
+	 * @param bankNumber
+	 *            the bankNumber to set
+	 */
+	public void setBankNumber(String bankNumber) {
+		this.bankNumber = bankNumber;
 	}
 }

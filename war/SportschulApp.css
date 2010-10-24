@@ -118,15 +118,14 @@ h1 {
 	width: 500px;
 }
 
-.detailsDataPanel td:nth-child (1) {
-	color: #6d747f;
-	padding-right: 50px;
+.detailsDataPanel td:nth-child(1) {
+	color:#6d747f;
+	padding-right:50px;
 }
 
-.detailsDataPanel td:nth-child (2) {
+.detailsDataPanel td:nth-child(2){
 	text-align: right;
 }
-
 .secondaryDetailsData {
 	width: 100%;
 }
@@ -139,24 +138,23 @@ h1 {
 	font-size: 15px;
 }
 
-.primaryDetailsData td:nth-child (1) {
+.primaryDetailsData td:nth-child(1) {
 	color: #6d747f;
-	padding-right: 50px;
+	padding-right: 50 px;
 }
 
-.primaryDetailsData td:nth-child (2) {
+.primaryDetailsData td:nth-child(2) {
+	text-align:right;
+}
+
+.secondaryDetailsData td:nth-child(1) {
+	color:#6d747f;
+	padding-right: 50 px;
+}
+
+.secondaryDetailsData td:nth-child(2) {
 	text-align: right;
 }
-
-.secondaryDetailsData td:nth-child (1) {
-	color: #6d747f;
-	padding-right: 50px;
-}
-
-.secondaryDetailsData td:nth-child (2) {
-	text-align: right;
-}
-
 .primaryDetailsData tr {
 	border-bottom: 1px solid black !important;
 }
@@ -747,6 +745,13 @@ h1 {
 	width: 170px;
 	font-size: 16px;
 	padding-right: 7px;
+}
+
+.disclosurePanel {
+	border-bottom: 2px dashed #D4DCED;
+}
+
+.AdditionalisclosurePanel{
 }
 
 .userValidationFailedBorder {

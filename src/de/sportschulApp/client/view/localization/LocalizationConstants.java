@@ -233,6 +233,30 @@ public interface LocalizationConstants extends Constants {
 	String popupHelpUsername();
 
 	String usernameAlreadyTaken();
-	
+
 	String createEditCourse();
+
+	String accountOwnerForename();
+
+	String accountOwnerSurname();
+
+	String accountNumber();
+
+	String bankNumber();
+
+	String bankName();
+
+	String accountInformations();
+
+	String likeAbove();
+
+	String popupHelpAccountForename();
+
+	String popupHelpAccountSurename();
+
+	String popupHelpBankname();
+
+	String popupHelpBanknumber();
+
+	String popupHelpAccountNumber();
 }
