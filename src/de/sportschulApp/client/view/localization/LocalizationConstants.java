@@ -233,4 +233,6 @@ public interface LocalizationConstants extends Constants {
 	String popupHelpUsername();
 
 	String usernameAlreadyTaken();
+	
+	String createEditCourse();
 }

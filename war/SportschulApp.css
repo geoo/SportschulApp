@@ -46,8 +46,6 @@ h1 {
 }
 
 /** CSS für CellTable */
-<<<<<<< HEAD
-
 .GE1C3V1DE tbody tr {
 	height: 60px !important;
 	cursor: pointer;
@@ -64,6 +62,21 @@ h1 {
 
 .clickable {
 	cursor: pointer;
+}
+
+.formHeader {
+	background-color: #e2eaf6;
+	white-space: nowrap !important;
+	display: block;	
+	width: 470px;
+	padding-left: 10px;
+	padding-top: 5px;
+	border-bottom: 1px dashed #44618c;
+}
+
+.formHeader .gwt-Label {
+	color: #1f2e44;
+	font-size: 18px !important;
 }
 
 .clickableLabel {
@@ -454,9 +467,6 @@ h1 {
 .createCourseWrapper {
 	width: 470px;
 	margin: 20px auto 0 auto;
-	padding-top: 20px;
-	padding-left: 20px;
-	margin-bottom: 40px;
 	background-color: #f5f7fa;
 	border: 1px solid #a9adc3 !important;
 }
@@ -486,17 +496,31 @@ h1 {
 	width: 150px;
 }
 
+.createCourseForm {
+	padding-left: 20px;	
+	padding-top: 20px;
+}
+
 .dateInputFieldsTable {
 	padding-bottom: 20px;
 }
 
 .dateInputFieldWrapper {
-	width: 96%;
+	width: 100%;
 	padding-top: 10px;
 	margin-bottom: 10px;
 	border-top: 2px dashed #D4DCED;
 	border-bottom: 2px dashed #D4DCED;
 }
+
+.tariffInputFieldWrapper {
+	width: 100%;
+	padding-top: 10px;
+	margin-bottom: 10px;
+	border-bottom: 2px dashed #D4DCED;
+}
+
+
 
 .dateInputFieldsTable .gwt-Label {
 	padding-right: 10px;

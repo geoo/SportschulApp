@@ -158,11 +158,52 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 		return courseDates;
 	}
 	
+	public ArrayList<CourseTariff> getCourseTariffsForCourse(int courseId) {
+		ArrayList<CourseTariff> courseTariffs = new ArrayList<CourseTariff>();
+		
+		
+		DataBankerConnection dbc = new DataBankerConnection();
+		ResultSet rs = null;
+		Statement stmt = dbc.getStatement();
+		String query = "SELECT name,costs FROM Course_has_tariff WHERE Course_ID='" + courseId + "'";
+		
+		try {
+			rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				courseTariffs.add(new CourseTariff(rs.getString(1), rs.getString(2)));
+			}
+			rs.close();
+			dbc.close();
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+		return courseTariffs;
+	}
+	
 	public void deleteDatesFromCourse(int courseID) {
 		DataBankerConnection dbc = new DataBankerConnection();
 		Statement stmt = dbc.getStatement();
 
 		String query = "DELETE FROM Course_has_date WHERE Course_id='" + courseID + "'";
+
+		try {
+			stmt.executeUpdate(query);
+			dbc.close();
+			stmt.close();
+			dbc.closeStatement();
+
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+	}
+	
+	public void deleteTariffsFromCourse(int courseID) {
+		DataBankerConnection dbc = new DataBankerConnection();
+		Statement stmt = dbc.getStatement();
+
+		String query = "DELETE FROM Course_has_tariff WHERE Course_id='" + courseID + "'";
 
 		try {
 			stmt.executeUpdate(query);
@@ -193,6 +234,7 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 		try {
 			stmt.executeUpdate(query);
 			deleteDatesFromCourse(courseID);
+			deleteTariffsFromCourse(courseID);
 			dbc.close();
 			stmt.close();
 			dbc.closeStatement();
@@ -229,6 +271,7 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 				newCourse.setInstructor(rs.getString(3));
 				newCourse.setLocation(rs.getString(4));
 				newCourse.setCourseDates(getCourseDatesForCourse(rs.getInt(1)));
+				newCourse.setCourseTariffs(getCourseTariffsForCourse(rs.getInt(1)));
 				newCourse.setBeltColours(getBelts(rs.getInt(1)));
 				courses.add(newCourse);
 			}
@@ -516,6 +559,7 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 				course.setInstructor(rs.getString(3));
 				course.setLocation(rs.getString(4));
 				course.setCourseDates(getCourseDatesForCourse(rs.getInt(1)));
+				course.setCourseTariffs(getCourseTariffsForCourse(rs.getInt(1)));
 				course.setBeltColours(getBelts(rs.getInt(1)));
 			}
 			rs.close();

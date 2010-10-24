@@ -69,7 +69,14 @@ public class CreateCourseView extends Composite implements
 	 * @return courseForm Das Formular.
 	 */
 	private VerticalPanel buildForm() {
+		VerticalPanel courseFormWrapper = new VerticalPanel();
 		VerticalPanel courseForm = new VerticalPanel();
+		courseForm.addStyleName("createCourseForm");
+		
+		HorizontalPanel formHeader = new HorizontalPanel();
+		formHeader.setStyleName("formHeader");
+		
+		formHeader.add(new Label(constants.createEditCourse()));
 		
 		dualListBox.setStyleName("dualListBox");
 		
@@ -136,6 +143,7 @@ public class CreateCourseView extends Composite implements
 		beltInputPanel.add(beltLabel);
 		beltInputPanel.add(dualListBox);
 		
+		
 		courseForm.add(courseNameInputPanel);
 		courseForm.add(dateInputFieldWrapper);
 		courseForm.add(tariffInputFieldWrapper);
@@ -146,8 +154,11 @@ public class CreateCourseView extends Composite implements
 		sendButton.setText(constants.send());
 		courseForm.add(sendButton);
 		
+		courseFormWrapper.add(formHeader);
+		courseFormWrapper.add(courseForm);
 		
-		return courseForm;
+		
+		return courseFormWrapper;
 	}
 	
 	private void refreshDateInputTable() {
@@ -296,8 +307,8 @@ public class CreateCourseView extends Composite implements
 		
 		tariffCostsTextBox.addBlurHandler(new BlurHandler() {
 			public void onBlur(BlurEvent event) {
-				courseTariffs.set(numRow, new CourseTariff(tariffPresenceListBox.getValue(tariffPresenceListBox.getSelectedIndex()), 
-						tariffCostsTextBox.getValue()));
+					courseTariffs.set(numRow, new CourseTariff(tariffPresenceListBox.getValue(tariffPresenceListBox.getSelectedIndex()), 
+							tariffCostsTextBox.getValue()));
 			}
 		});
 		
