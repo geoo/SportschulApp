@@ -106,6 +106,10 @@ public class DualListBox extends AbsolutePanel {
 	public void addLeft(String string) {
 		left.add(string);
 	}
+	
+	public void addRight(String string) {
+		right.add(string);
+	}
 
 	/**
 	 * Adds an widget to the left list box.

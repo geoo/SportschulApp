@@ -94,10 +94,17 @@ public class CreateCoursePresenter implements Presenter {
 	}
 
 	private void fillDualListBox() {
-		display.getDualListBox().addLeft(constants.white());
-		display.getDualListBox().addLeft(constants.whiteYellow());
-		display.getDualListBox().addLeft(constants.yellowOrange());
-
+		display.getDualListBox().addLeft(constants.orangeGreen());
+		display.getDualListBox().addLeft(constants.green() + "1");
+		display.getDualListBox().addLeft(constants.green() + "2");
+		display.getDualListBox().addLeft(constants.blue() + "1");
+		display.getDualListBox().addLeft(constants.blue() + "2");
+		display.getDualListBox().addLeft(constants.brown() + "1");
+		display.getDualListBox().addLeft(constants.brown() + "2");
+		display.getDualListBox().addLeft(constants.black());
+		display.getDualListBox().addLeft(constants.brown());
+		display.getDualListBox().addLeft(constants.red());
+		display.getDualListBox().addRight("test");
 	}
 
 	private void bind() {
