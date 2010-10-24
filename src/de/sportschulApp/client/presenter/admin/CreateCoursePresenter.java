@@ -107,6 +107,7 @@ public class CreateCoursePresenter implements Presenter {
 		display.getDualListBox().addLeft(constants.black());
 		display.getDualListBox().addLeft(constants.brown());
 		display.getDualListBox().addLeft(constants.red());
+		display.getDualListBox().addRight("test");
 
 	}
 
