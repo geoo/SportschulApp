@@ -79,7 +79,7 @@ h1 {
 }
 
 .formWrapper {
-	margin: 20px auto 0 auto;
+	margin: 0px auto 0 auto;
 	background-color: #f5f7fa;
 	border: 1px solid #a9adc3 !important;
 }
@@ -389,7 +389,6 @@ h1 {
 	width: 700px;
 	padding-top: 6px;
 	padding-left: 50px;
-	border: 1px solid #d4dced;
 	display: block;
 }
 

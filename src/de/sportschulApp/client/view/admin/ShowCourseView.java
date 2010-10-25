@@ -19,6 +19,7 @@ public class ShowCourseView extends Composite implements ShowCoursePresenter.Dis
 	private Label courseInsructorLabel = new Label();
 	private Label courseLocationLabel = new Label();
 	private Label courseBeltsLabel = new Label();
+	private Label courseTariffsLabel = new Label();
 	private Label editLabel;
 	private Label deleteLabel;
 
@@ -50,12 +51,27 @@ public class ShowCourseView extends Composite implements ShowCoursePresenter.Dis
 		courseDetailsPanel.setWidget(3, 1, courseLocationLabel);
 		courseDetailsPanel.setWidget(4, 0, new Label(constants.belts() + ":"));
 		courseDetailsPanel.setWidget(4, 1, courseBeltsLabel);
+		courseDetailsPanel.setWidget(5, 0, new Label(constants.tariffs() + ":"));
+		courseDetailsPanel.setWidget(5, 1, courseTariffsLabel);
 		
 		detailsPanel.add(courseDetailsPanel);
 	}
 	
 	public void setData(Course course) {
 		this.courseNameLabel.setText(course.getName());
+		
+		String dates = new String();
+    	for (int i = 0; i < course.getCourseDates().size(); i++) {
+    		dates = dates + course.getCourseDates().get(i).getWeekDay() + " " + course.getCourseDates().get(i).getTime() + ", ";
+    	}
+    	this.courseDateLabel.setText(dates.substring(0, dates.length() - 2));
+   
+    	String tariffs = new String();
+    	for (int i = 0; i < course.getCourseTariffs().size(); i++) {
+    		tariffs = tariffs + course.getCourseTariffs().get(i).getName() + ": " + course.getCourseTariffs().get(i).getCosts() + " €, ";
+    	}
+    	this.courseTariffsLabel.setText(tariffs.substring(0, tariffs.length() -2));
+    	
 		this.courseInsructorLabel.setText(course.getInstructor());
 		this.courseLocationLabel.setText(course.getLocation());
 		

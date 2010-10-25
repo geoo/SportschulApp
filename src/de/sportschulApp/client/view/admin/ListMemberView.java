@@ -50,9 +50,18 @@ public class ListMemberView extends Composite implements ListMemberPresenter.Dis
 		wrapper.add(createSearchPanel());
 	}
 	
-	public HorizontalPanel createSearchPanel() {
+	public VerticalPanel createSearchPanel() {
+		VerticalPanel listMemberMenuWrapper = new VerticalPanel();
+		listMemberMenuWrapper.addStyleName("formWrapper");
+		listMemberMenuWrapper.setWidth("700px");
+		
+		HorizontalPanel formHeader = new HorizontalPanel();
+		formHeader.addStyleName("formHeader");
+		formHeader.add(new Label("Mitglieder anzeigen"));
+
 		HorizontalPanel searchPanel = new HorizontalPanel();
 		searchPanel.setStyleName("searchContainer");
+		
 		
 		showAllButton = new Label("Alle anzeigen");
 		showAllButton.addStyleName("searchLabel");
@@ -70,7 +79,10 @@ public class ListMemberView extends Composite implements ListMemberPresenter.Dis
 		searchPanel.add(searchInputField);
 		searchPanel.add(searchButton);
 		
-		return searchPanel;
+		listMemberMenuWrapper.add(formHeader);
+		listMemberMenuWrapper.add(searchPanel);
+		
+		return listMemberMenuWrapper;
 	}
 	
 	
