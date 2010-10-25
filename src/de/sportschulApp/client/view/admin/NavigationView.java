@@ -27,6 +27,7 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 	private Label menuEventsCreateEvent;
 	private Label menuCourseShowCourses;
 	private Label menuCourseCreateCourse;
+	private Label menuCourseBeltEditor;
 	private Label menuSystemCreateUser;
 	private Label menuSystemShowUsers;
 	private ListBox languagePicker = new ListBox();
@@ -122,8 +123,10 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 		if (navigationID == 2){
 			menuCourseShowCourses = new Label("Kurse anzeigen");
 			menuCourseCreateCourse = new Label("Kurs erstellen");
+			menuCourseBeltEditor = new Label("Gürtel Editor");
 			subNavPanel.add(menuCourseShowCourses);
 			subNavPanel.add(menuCourseCreateCourse);
+			subNavPanel.add(menuCourseBeltEditor);
 		} 
 		
 		if (navigationID == 3){
@@ -162,6 +165,10 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 	
 	public HasClickHandlers getMenuCourseCreateCourse() {
 		return menuCourseCreateCourse;
+	}
+	
+	public HasClickHandlers getMenuCourseBeltEditor() {
+		return menuCourseBeltEditor;
 	}
 	
 	public HasClickHandlers getLogoutButton() {

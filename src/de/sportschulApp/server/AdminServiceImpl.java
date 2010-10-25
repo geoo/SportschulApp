@@ -10,6 +10,7 @@ import de.sportschulApp.server.databanker.DataBankerCourse;
 import de.sportschulApp.server.databanker.DataBankerEvent;
 import de.sportschulApp.server.databanker.DataBankerMember;
 import de.sportschulApp.server.databanker.DataBankerUser;
+import de.sportschulApp.shared.Belt;
 import de.sportschulApp.shared.Course;
 import de.sportschulApp.shared.Event;
 import de.sportschulApp.shared.Member;
@@ -144,5 +145,25 @@ public class AdminServiceImpl extends RemoteServiceServlet implements
 
 	public String changeUser(User user) {
 		return dbu.updateUser(user);
+	}
+	
+	public ArrayList<Belt> getAvailableBelts() {
+		return dbc.getAvailableBelts();
+	}
+	
+	public void createBelt(String beltName) {
+		dbc.createBelt(beltName);
+	}
+	
+	public Belt getBeltByID(int beltID) {
+		return dbc.getBeltByID(beltID);
+	}
+	
+	public void deleteBeltByID(int beltID) {
+		dbc.deleteBeltByID(beltID);
+	}
+	
+	public void renameBeltByID(Belt belt) {
+		dbc.renameBeltByID(belt);
 	}
 }

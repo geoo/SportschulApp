@@ -14,7 +14,6 @@ import com.google.gwt.user.client.ui.Widget;
 import de.sportschulApp.client.event.LanguageChangeEvent;
 import de.sportschulApp.client.event.LogoutEvent;
 import de.sportschulApp.client.presenter.Presenter;
-import de.sportschulApp.client.view.trainer.TrainerNavigationView;
 
 public class TrainerNavigationPresenter implements Presenter {
 	public interface Display {

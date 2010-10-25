@@ -1,9 +1,5 @@
 package de.sportschulApp.client.presenter.admin;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.util.ArrayList;
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;

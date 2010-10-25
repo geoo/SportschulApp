@@ -68,7 +68,6 @@ h1 {
 	background-color: #e2eaf6;
 	white-space: nowrap !important;
 	display: block;	
-	width: 470px;
 	padding-left: 10px;
 	padding-top: 5px;
 	border-bottom: 1px dashed #44618c;
@@ -77,6 +76,24 @@ h1 {
 .formHeader .gwt-Label {
 	color: #1f2e44;
 	font-size: 18px !important;
+}
+
+.formWrapper {
+	margin: 20px auto 0 auto;
+	background-color: #f5f7fa;
+	border: 1px solid #a9adc3 !important;
+}
+
+.formWrapper .gwt-Label{
+	font-size: 15px;
+}
+
+.formInput {
+	border: 3px solid #d4dced;
+	margin-left: 5px;
+	margin-top: 1px;
+	background-color: #ffffff;
+	height: 16px;
 }
 
 .clickableLabel {
@@ -766,4 +783,22 @@ h1 {
 	background-color: #ffffff !important;
 	width: 250px;
 	height: 16px !important;
+}
+
+.addBeltPanel {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.addBeltPanel .gwt-Label {
+	padding-left: 15px;
+	padding-right: 10px;
+}
+
+.addBeltPanel .clickableLabel {
+	cursor: pointer;
+	padding-left: 15px;
+	font-size: 15px !important;
+	white-space: nowrap !important;
+	color: #346492;
 }

@@ -75,6 +75,7 @@ public class CreateCourseView extends Composite implements
 		
 		HorizontalPanel formHeader = new HorizontalPanel();
 		formHeader.setStyleName("formHeader");
+		formHeader.setWidth("470px");
 		
 		formHeader.add(new Label(constants.createEditCourse()));
 		

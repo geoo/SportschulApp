@@ -18,6 +18,7 @@ import de.sportschulApp.client.presenter.Presenter;
 import de.sportschulApp.client.services.AdminServiceAsync;
 import de.sportschulApp.client.view.admin.dualListBox.DualListBox;
 import de.sportschulApp.client.view.localization.LocalizationConstants;
+import de.sportschulApp.shared.Belt;
 import de.sportschulApp.shared.Course;
 import de.sportschulApp.shared.CourseDate;
 import de.sportschulApp.shared.CourseTariff;
@@ -61,6 +62,8 @@ public class CreateCoursePresenter implements Presenter {
 	private PopupDescription popupDesc;
 	private Boolean editItem = false;
 	private String courseID;
+	private ArrayList<String> courseBelts = new ArrayList<String>();
+
 	
 	public CreateCoursePresenter(AdminServiceAsync rpcService,
 			HandlerManager eventBus, Display display) {
@@ -88,23 +91,36 @@ public class CreateCoursePresenter implements Presenter {
 		this.editItem = true;
 		this.courseID = courseID;
 		bind();
-		fillDualListBox();
 		setupValidation();
 		getCourseDetails(courseID);
 	}
-
+	
 	private void fillDualListBox() {
-		display.getDualListBox().addLeft(constants.orangeGreen());
-		display.getDualListBox().addLeft(constants.green() + "1");
-		display.getDualListBox().addLeft(constants.green() + "2");
-		display.getDualListBox().addLeft(constants.blue() + "1");
-		display.getDualListBox().addLeft(constants.blue() + "2");
-		display.getDualListBox().addLeft(constants.brown() + "1");
-		display.getDualListBox().addLeft(constants.brown() + "2");
-		display.getDualListBox().addLeft(constants.black());
-		display.getDualListBox().addLeft(constants.brown());
-		display.getDualListBox().addLeft(constants.red());
-		display.getDualListBox().addRight("test");
+		rpcService.getAvailableBelts(new AsyncCallback<ArrayList<Belt>>() {
+			public void onFailure(Throwable caught) {
+				Window.alert("Fehler beim laden der Gürtelfarben");
+			}
+			public void onSuccess(ArrayList<Belt> result) {
+				for(int i = 0; i < result.size(); i++) {
+					for(int j = 0; j < courseBelts.size(); j++) {
+						if (result.get(i).getName().equals(courseBelts.get(j))) {
+							result.remove(i);
+						}
+					}
+				}
+				
+				for (int i = 0; i < result.size(); i++) {
+					display.getDualListBox().addLeft(result.get(i).getName());
+				}
+				
+				for (int i = 0; i < courseBelts.size(); i++) {
+					display.getDualListBox().addRight(courseBelts.get(i));
+				}
+			}
+		});
+		
+		
+		
 	}
 
 	private void bind() {
@@ -215,6 +231,8 @@ public class CreateCoursePresenter implements Presenter {
 			}
 			public void onSuccess(Course result) {
 				display.fillForm(result);
+				courseBelts = result.getBeltColours();
+				fillDualListBox();
 			}
 		});
 	}

@@ -14,7 +14,6 @@ import de.sportschulApp.client.CookieManager;
 import de.sportschulApp.client.event.LogoutEvent;
 import de.sportschulApp.client.presenter.Presenter;
 import de.sportschulApp.client.services.AdminServiceAsync;
-import de.sportschulApp.shared.Course;
 import de.sportschulApp.shared.User;
 
 public class ShowUserPresenter implements Presenter{

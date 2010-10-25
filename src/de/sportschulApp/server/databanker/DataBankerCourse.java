@@ -6,9 +6,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import de.sportschulApp.shared.Belt;
 import de.sportschulApp.shared.Course;
 import de.sportschulApp.shared.CourseDate;
 import de.sportschulApp.shared.CourseTariff;
+import de.sportschulApp.shared.User;
 
 public class DataBankerCourse implements DataBankerCourseInterface {
 
@@ -260,7 +262,7 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 		ResultSet rs = null;
 		Statement stmt = dbc.getStatement();
 
-		String query = "SELECT * FROM Courses";
+		String query = "SELECT * FROM Courses ORDER BY name";
 
 		try {
 			rs = stmt.executeQuery(query);
@@ -571,5 +573,104 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 		}
 		return course;
 	}
+	
+	public ArrayList<Belt> getAvailableBelts() {
+
+		ArrayList<Belt> belts = new ArrayList<Belt>();
+
+		DataBankerConnection dbc = new DataBankerConnection();
+		ResultSet rs = null;
+		Statement stmt = dbc.getStatement();
+
+		String query = "SELECT * FROM AvailableBelts ORDER BY name";
+
+		try {
+			rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				belts.add(new Belt(rs.getInt(1), rs.getString(2)));
+			}
+			rs.close();
+			dbc.close();
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+		return belts;
+	}
+	
+	public void createBelt(String beltName) {
+		DataBankerConnection dbc = new DataBankerConnection();
+			try {
+				PreparedStatement stmt = dbc.getConnection().prepareStatement(
+								"INSERT INTO AvailableBelts(name) VALUES(?)");
+				stmt.setString(1, beltName);
+	
+				stmt.executeUpdate();
+				dbc.close();
+				stmt.close();
+			} catch (SQLException e) {
+				System.out.println(e);
+			}
+	}
+	
+	public Belt getBeltByID(int beltID){
+		Belt belt = new Belt();
+		ResultSet rs = null;
+
+		DataBankerConnection dbc = new DataBankerConnection();
+		Statement stmt = dbc.getStatement();
+		String query = "SELECT * FROM AvailableBelts WHERE Belt_id='" + beltID + "'";
+		
+		try {
+			rs = stmt.executeQuery(query);
+
+			while (rs.next()) {
+				belt.setBeltID(rs.getInt(1));
+				belt.setName(rs.getString(2));
+			}
+			rs.close();
+			dbc.close();
+			stmt.close();
+			dbc.closeStatement();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return belt;
+	}
+	
+	public void deleteBeltByID(int beltID) {
+		DataBankerConnection dbc = new DataBankerConnection();
+		Statement stmt = dbc.getStatement();
+
+		String query = "DELETE FROM AvailableBelts WHERE Belt_id='" + beltID + "'";
+
+		try {
+			stmt.executeUpdate(query);
+			dbc.close();
+			stmt.close();
+			dbc.closeStatement();
+
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+	}
+	
+	public void renameBeltByID(Belt belt) {
+		DataBankerConnection dbc = new DataBankerConnection();
+			try {
+				PreparedStatement stmt = dbc.getConnection().prepareStatement(
+								"UPDATE AvailableBelts SET name='" + belt.getName() + "' WHERE Belt_id='" + belt.getBeltID() + "'");
+				stmt.executeUpdate();
+	
+				dbc.close();
+				stmt.close();
+	
+	
+			} catch (SQLException e) {
+				System.out.println(e);
+			}
+		}
 
 }

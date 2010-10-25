@@ -24,6 +24,7 @@ public class NavigationPresenter implements Presenter{
 		HasClickHandlers getMenuEventsShowEvents();
 		HasClickHandlers getMenuEventsCreateEvent();
 		HasClickHandlers getMenuCourseCreateCourse();
+		HasClickHandlers getMenuCourseBeltEditor();
 		HasClickHandlers getMenuCourseShowCourses();
 		HasClickHandlers getMenuSystemCreateUser();
 		HasClickHandlers getMenuSystemShowUsers();
@@ -86,6 +87,12 @@ public class NavigationPresenter implements Presenter{
 		this.display.getMenuCourseShowCourses().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				History.newItem("adminCourseShowCourses");	
+			}
+		});
+		
+		this.display.getMenuCourseBeltEditor().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				History.newItem("adminCourseBeltEditor");	
 			}
 		});
 		

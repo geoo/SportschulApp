@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+import de.sportschulApp.shared.Belt;
 import de.sportschulApp.shared.Course;
 import de.sportschulApp.shared.Event;
 import de.sportschulApp.shared.Member;
@@ -66,4 +67,14 @@ public interface AdminService extends RemoteService {
 	String saveUser(User user);
 
 	String changeUser(User user);
+	
+	ArrayList<Belt> getAvailableBelts();
+	
+	void createBelt(String beltName);
+	
+	Belt getBeltByID(int beltID);
+	
+	void deleteBeltByID(int beltID);
+	
+	void renameBeltByID(Belt belt);
 }

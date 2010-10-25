@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -28,6 +30,18 @@ public class ListCourseView extends Composite implements ListCoursePresenter.Dis
 	public ListCourseView() {
 		wrapper.addStyleName("listWrapper");
 		initWidget(wrapper);
+		
+		VerticalPanel courseMenuWrapper = new VerticalPanel();
+		courseMenuWrapper.addStyleName("formWrapper");
+		courseMenuWrapper.setWidth("700px");
+		
+		HorizontalPanel formHeader = new HorizontalPanel();
+		formHeader.addStyleName("formHeader");
+		formHeader.add(new Label("Kurse anzeigen"));
+
+		courseMenuWrapper.add(formHeader);
+
+		wrapper.add(courseMenuWrapper);
 	}
 	
 	

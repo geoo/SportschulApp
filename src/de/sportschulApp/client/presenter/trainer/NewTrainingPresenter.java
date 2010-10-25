@@ -13,7 +13,6 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Image;
@@ -23,7 +22,6 @@ import com.google.gwt.user.client.ui.Widget;
 
 import de.sportschulApp.client.presenter.Presenter;
 import de.sportschulApp.client.services.TrainerServiceAsync;
-
 import de.sportschulApp.client.view.localization.LocalizationConstants;
 import de.sportschulApp.client.view.trainer.MemberTrainingEntryView;
 import de.sportschulApp.shared.Member;

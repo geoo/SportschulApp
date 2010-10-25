@@ -12,11 +12,9 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
 
 import de.sportschulApp.client.event.ShowEventEvent;
-import de.sportschulApp.client.event.ShowUserEvent;
 import de.sportschulApp.client.presenter.Presenter;
 import de.sportschulApp.client.services.AdminServiceAsync;
 import de.sportschulApp.shared.Event;
-import de.sportschulApp.shared.User;
 
 @SuppressWarnings("unchecked")
 public class ListEventPresenter implements Presenter{

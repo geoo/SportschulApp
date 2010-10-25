@@ -8,6 +8,8 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
+import de.sportschulApp.client.event.ShowBeltEvent;
+import de.sportschulApp.client.event.ShowBeltEventHandler;
 import de.sportschulApp.client.event.ShowCourseEvent;
 import de.sportschulApp.client.event.ShowCourseEventHandler;
 import de.sportschulApp.client.event.ShowEventEvent;
@@ -28,7 +30,9 @@ import de.sportschulApp.client.presenter.admin.ShowMemberPresenter;
 import de.sportschulApp.client.presenter.admin.ShowUserPresenter;
 import de.sportschulApp.client.presenter.admin.ShowCoursePresenter;
 import de.sportschulApp.client.presenter.admin.ShowEventPresenter;
+import de.sportschulApp.client.presenter.admin.ShowBeltPresenter;
 import de.sportschulApp.client.presenter.admin.ListUserPresenter;
+import de.sportschulApp.client.presenter.admin.BeltEditorPresenter;
 import de.sportschulApp.client.services.AdminService;
 import de.sportschulApp.client.services.AdminServiceAsync;
 import de.sportschulApp.client.view.admin.ListCourseView;
@@ -42,10 +46,13 @@ import de.sportschulApp.client.view.admin.NavigationView;
 import de.sportschulApp.client.view.admin.ShowMemberView;
 import de.sportschulApp.client.view.admin.ShowUserView;
 import de.sportschulApp.client.view.admin.ShowEventView;
+import de.sportschulApp.client.view.admin.ShowBeltView;
 import de.sportschulApp.client.view.admin.ListUserView;
 import de.sportschulApp.client.view.admin.ShowCourseView;
+import de.sportschulApp.client.view.admin.BeltEditorView;
 import de.sportschulApp.client.view.localization.LocalizationConstants;
 
+@SuppressWarnings("deprecation")
 public class AdminPanelPresenter implements Presenter {
 	public interface Display{
 		HasWidgets getNavigationContainer();
@@ -58,7 +65,7 @@ public class AdminPanelPresenter implements Presenter {
 	private final AdminServiceAsync rpcService;
 	private LocalizationConstants constants;
 	
-	public AdminPanelPresenter( HandlerManager eventBus, Display display, 
+	public AdminPanelPresenter(HandlerManager eventBus, Display display, 
 			LocalizationConstants constants, String token) {
 		this.eventBus = eventBus;
 		this.display = display;
@@ -101,6 +108,15 @@ public class AdminPanelPresenter implements Presenter {
 			eventBus.addHandler(ShowEventEvent.TYPE, new ShowEventEventHandler() {
 				public void onShowEvent(ShowEventEvent event) {
 					doShowEvent(event.getEventID());	
+				}
+			});	
+		}
+		
+		if (!eventBus.isEventHandled(ShowBeltEvent.TYPE)) 
+		{
+			eventBus.addHandler(ShowBeltEvent.TYPE, new ShowBeltEventHandler() {
+				public void onShowBelt(ShowBeltEvent event) {
+					doShowBelt(event.getBeltID());
 				}
 			});	
 		}
@@ -162,6 +178,20 @@ public class AdminPanelPresenter implements Presenter {
 		eventPopup.show();
 	}
 	
+	public void doShowBelt(int beltID) {
+		DialogBox beltPopup = new DialogBox(true);
+		beltPopup.setAnimationEnabled(true);
+		beltPopup.setText("Detailansicht");
+		beltPopup.setGlassEnabled(true);
+		beltPopup.center();
+		beltPopup.setPopupPosition(beltPopup.getAbsoluteLeft() - 200, beltPopup.getAbsoluteTop() - 150);
+		beltPopup.setWidth("auto");
+		Presenter showBeltPresenter = null;
+		showBeltPresenter =  new ShowBeltPresenter(rpcService, eventBus, new ShowBeltView(constants), beltID);
+		showBeltPresenter.go(beltPopup);
+		beltPopup.show();
+	}
+	
 	public void go(HasWidgets container) {
 		container.clear();
 		container.add(display.asWidget());
@@ -193,6 +223,9 @@ public class AdminPanelPresenter implements Presenter {
 		} else if (token.equals("adminCourseShowCourses")) {
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(2, constants));
 			contentPresenter = new ListCoursePresenter(rpcService, eventBus, new ListCourseView()); 
+		} else if (token.equals("adminCourseBeltEditor")) {
+			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(2, constants));
+			contentPresenter = new BeltEditorPresenter(rpcService, eventBus, new BeltEditorView()); 
 		} else if ((token.length() >= "adminCourseEditCourse".length()) && (token.subSequence(0, 21).equals("adminCourseEditCourse"))) {
 			String courseID = token.substring(22);
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(2, constants));

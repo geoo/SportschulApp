@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import de.sportschulApp.shared.Belt;
 import de.sportschulApp.shared.Course;
 import de.sportschulApp.shared.Event;
 import de.sportschulApp.shared.Member;
@@ -67,4 +68,14 @@ public interface AdminServiceAsync {
 	void saveUser(User user,  AsyncCallback<String> callback);
 
 	void changeUser(User user, AsyncCallback<String> asyncCallback);
+
+	void getAvailableBelts(AsyncCallback<ArrayList<Belt>> callback);
+
+	void createBelt(String beltName, AsyncCallback<Void> callback);
+
+	void getBeltByID(int beltID, AsyncCallback<Belt> callback);
+
+	void deleteBeltByID(int beltID, AsyncCallback<Void> callback);
+
+	void renameBeltByID(Belt belt, AsyncCallback<Void> callback);
 }
