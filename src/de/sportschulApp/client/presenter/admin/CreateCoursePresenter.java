@@ -101,16 +101,20 @@ public class CreateCoursePresenter implements Presenter {
 				Window.alert("Fehler beim laden der Gürtelfarben");
 			}
 			public void onSuccess(ArrayList<Belt> result) {
-				for(int i = 0; i < result.size(); i++) {
+				ArrayList<Belt> leftTemp = result;
+				for(int i = 0; i < leftTemp.size(); i++) {
 					for(int j = 0; j < courseBelts.size(); j++) {
-						if (result.get(i).getName().equals(courseBelts.get(j))) {
-							result.remove(i);
+						if(leftTemp.get(i) != null) {
+							if (result.get(i).getName().equals(courseBelts.get(j))) {
+								leftTemp.set(i, null);
+							}
 						}
 					}
 				}
-				
-				for (int i = 0; i < result.size(); i++) {
-					display.getDualListBox().addLeft(result.get(i).getName());
+				for (int i = 0; i < leftTemp.size(); i++) {
+					if(leftTemp.get(i) != null) {
+						display.getDualListBox().addLeft(leftTemp.get(i).getName());
+					}
 				}
 				
 				for (int i = 0; i < courseBelts.size(); i++) {

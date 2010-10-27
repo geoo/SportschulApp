@@ -61,7 +61,6 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			stmt.setString(17, member.getBeltsize());
 			stmt.setString(18, member.getNote());
 			stmt.setInt(19, member.getTrainingunits());
-			
 
 			// Hinzuf�gen der ArrayList Courses
 			int size = member.getCourses().size();
@@ -101,8 +100,6 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			stmt.setString(42, member.getAccountNumber());
 			stmt.setString(43, member.getBankName());
 			stmt.setString(44, member.getBankNumber());
-
-
 
 			stmt.executeUpdate();
 
@@ -241,7 +238,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			stmt.setString(43, member.getAccountNumber());
 			stmt.setString(44, member.getBankName());
 			stmt.setString(45, member.getBankNumber());
-			
+
 			stmt.executeUpdate();
 
 			dbc.close();
@@ -683,6 +680,118 @@ public class DataBankerMember implements DataBankerMemberInterface {
 	}
 
 	public ArrayList<Member> search(String searchQuery) {
+
+		ArrayList<Member> memberList = new ArrayList<Member>();
+
+		ResultSet rs = null;
+
+		DataBankerConnection dbc = new DataBankerConnection();
+		Statement stmt = dbc.getStatement();
+		String query = "SELECT * FROM Member m  where m.forename LIKE '"
+				+ searchQuery
+				+ "%' or m.surname LIKE '"
+				+ searchQuery
+				+ "%' or m.zipcode LIKE '"
+				+ searchQuery
+				+ "%' or m.city LIKE '"
+				+ searchQuery
+				+ "%' or m.street LIKE '"
+				+ searchQuery
+				+ "%' or m.phone LIKE '"
+				+ searchQuery
+				+ "%' or m.mobilephone LIKE '"
+				+ searchQuery
+				+ "%' or m.fax LIKE '"
+				+ searchQuery
+				+ "%' or m.email LIKE '"
+				+ searchQuery
+				+ "%' or m.homepage LIKE '"
+				+ searchQuery
+				+ "%' or m.birthDay LIKE '"
+				+ searchQuery
+				+ "%' or m.birthMonth LIKE '"
+				+ searchQuery
+				+ "%' or m.birthYear LIKE '"
+				+ searchQuery
+				+ "%' or m.diseases LIKE '"
+				+ searchQuery
+				+ "%' or m.beltsize LIKE '"
+				+ searchQuery
+				+ "%' or m.note LIKE '"
+				+ searchQuery
+				+ "%' or m.trainingunits LIKE '" + searchQuery + "%'";
+
+		try {
+			rs = stmt.executeQuery(query);
+			if (rs.wasNull()) {
+			}
+			while (rs.next()) {
+				Member member = new Member();
+				member.setMemberID(rs.getInt("Member_id"));
+				member.setBarcodeID(rs.getInt("barcode_id"));
+				member.setForename(rs.getString("forename"));
+				member.setSurname(rs.getString("surname"));
+				member.setZipcode(rs.getInt("zipcode"));
+				member.setCity(rs.getString("city"));
+				member.setStreet(rs.getString("street"));
+				member.setPhone(rs.getString("phone"));
+				member.setMobilephone(rs.getString("mobilephone"));
+				member.setFax(rs.getString("fax"));
+				member.setEmail(rs.getString("email"));
+				member.setHomepage(rs.getString("homepage"));
+				member.setBirthDay(rs.getString("birthDay"));
+				member.setBirthMonth(rs.getString("birthMonth"));
+				member.setBirthYear(rs.getString("birthYear"));
+				member.setPicture(rs.getString("picture"));
+				member.setDiseases(rs.getString("diseases"));
+				member.setBeltsize(rs.getString("beltsize"));
+				member.setNote(rs.getString("note"));
+				member.setAccountForename(rs.getString("accountForename"));
+				member.setAccountSurname(rs.getString("accountSurname"));
+				member.setAccountNumber(rs.getString("accountNumber"));
+				member.setBankName(rs.getString("bankName"));
+				member.setBankNumber(rs.getString("bankNumber"));
+
+				ArrayList<Integer> courses = new ArrayList<Integer>();
+				courses.add(rs.getInt("course_01"));
+				courses.add(rs.getInt("course_02"));
+				courses.add(rs.getInt("course_03"));
+				courses.add(rs.getInt("course_04"));
+				courses.add(rs.getInt("course_05"));
+				courses.add(rs.getInt("course_06"));
+				courses.add(rs.getInt("course_07"));
+				courses.add(rs.getInt("course_08"));
+				courses.add(rs.getInt("course_09"));
+				courses.add(rs.getInt("course_10"));
+
+				ArrayList<Integer> graduation = new ArrayList<Integer>();
+				graduation.add(rs.getInt("graduation_01"));
+				graduation.add(rs.getInt("graduation_02"));
+				graduation.add(rs.getInt("graduation_03"));
+				graduation.add(rs.getInt("graduation_04"));
+				graduation.add(rs.getInt("graduation_05"));
+				graduation.add(rs.getInt("graduation_06"));
+				graduation.add(rs.getInt("graduation_07"));
+				graduation.add(rs.getInt("graduation_08"));
+				graduation.add(rs.getInt("graduation_09"));
+				graduation.add(rs.getInt("graduation_10"));
+
+				memberList.add(member);
+			}
+			rs.close();
+			dbc.close();
+			stmt.close();
+			dbc.closeStatement();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return memberList;
+
+	}
+
+	public ArrayList<Member> search2(String searchQuery) {
 
 		ArrayList<Member> memberList = new ArrayList<Member>();
 

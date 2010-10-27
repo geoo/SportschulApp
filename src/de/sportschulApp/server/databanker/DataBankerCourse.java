@@ -25,7 +25,6 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 	 *         wenn ein Fehler auftritt und "course created" wenn der Kurs
 	 *         angelegt wurde
 	 */
-
 	public String createCourse(Course course) {
 		DataBankerConnection dbc = new DataBankerConnection();
 		int courseID = 0;
@@ -119,7 +118,7 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 		for (int i = 0; i < courseTariffs.size(); i++) {
 			try {
 				PreparedStatement stmt = dbc.getConnection().prepareStatement(
-								"INSERT INTO Course_has_tariff(Course_id, name, costs) VALUES(?,?,?)");
+								"INSERT INTO Course_has_tariff(Course_id, name, costs) VALUES(?,?,REPLACE(?,',','.'))");
 				stmt.setInt(1, courseID);
 				stmt.setString(2, courseTariffs.get(i).getName());
 				stmt.setString(3, courseTariffs.get(i).getCosts());
@@ -357,10 +356,10 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 					.prepareStatement(
 							"INSERT INTO Belts(Course_id, grade1, grade2, grade3, grade4, grade5, grade6, grade7, grade8, grade9, grade10, grade11, grade12, grade13, grade14, grade15, grade16, grade17, grade18, grade19 ,grade20) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			stmt.setInt(1, courseID);
+			
 			if (belts.isEmpty()) {
 				return false;
 			} else {
-
 				for (int i = 0; i < belts.size(); i++) {
 					stmt.setString(i + 2, belts.get(i));
 				}
