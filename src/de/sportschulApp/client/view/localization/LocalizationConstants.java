@@ -123,6 +123,14 @@ public interface LocalizationConstants extends Constants {
 	String popupHelpInstructor();
 
 	String popupHelpLocation();
+	
+	String popupHelpEventName();
+
+	String popupHelpEventDate();
+
+	String popupHelpEventLocation();
+
+	String popupHelpEventCosts();
 
 	String memberCreated();
 	
@@ -259,4 +267,8 @@ public interface LocalizationConstants extends Constants {
 	String popupHelpBanknumber();
 
 	String popupHelpAccountNumber();
+	
+	String eventType();
+	
+	String examiner();
 }

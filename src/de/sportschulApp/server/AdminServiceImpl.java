@@ -135,6 +135,10 @@ public class AdminServiceImpl extends RemoteServiceServlet implements
 		dbe.createEvent(event);
 	}
 	
+	public void updateEvent(Event event) {
+		dbe.updateEvent(event);
+	}
+	
 	public void updateCourse(Course course) {
 		dbc.updateCourse(course);
 	}

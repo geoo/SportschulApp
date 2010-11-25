@@ -24,7 +24,6 @@ public class DataBankerEvent implements DataBankerEventInterface {
 	 *         aufgetreten ist
 	 */
 	public boolean createEvent(Event event) {
-
 		DataBankerConnection dbc = new DataBankerConnection();
 		try {
 
@@ -32,21 +31,22 @@ public class DataBankerEvent implements DataBankerEventInterface {
 
 					.getConnection()
 					.prepareStatement(
-							"INSERT INTO Event(Course_id, name, costs, location, date, time) VALUES(?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
-			stmt.setInt(1, event.getCourseID());
-			stmt.setString(2, event.getName());
+							"INSERT INTO Event(name, type, costs, location, date, time) VALUES(?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, event.getName());
+			stmt.setString(2, event.getType());
 			stmt.setString(3, event.getCosts());
 			stmt.setString(4, event.getLocation());
-			stmt.setDate(5, event.getDate());
-			stmt.setTime(6, event.getTime());
+			stmt.setString(5, event.getDate());
+			stmt.setString(6, event.getTime());
 			
 			
 			stmt.executeUpdate();
 
-			ResultSet generatedKeys = stmt.getGeneratedKeys();
-			
-			while(generatedKeys.next()) {
-				setExaminersForEvent(generatedKeys.getInt(1), event.getExaminers());
+			if (!(event.getExaminers().isEmpty())) {
+				ResultSet generatedKeys = stmt.getGeneratedKeys();
+				while(generatedKeys.next()) {
+					setExaminersForEvent(generatedKeys.getInt(1), event.getExaminers());
+				}
 			}
 			
 			dbc.close();
@@ -100,30 +100,10 @@ public class DataBankerEvent implements DataBankerEventInterface {
 	 * @return true bei erfolg, false bei scheitern
 	 */
 	public boolean updateEvent(Event event) {
-
-		DataBankerConnection dbc = new DataBankerConnection();
-		Statement stmt = dbc.getStatement();
-
-		String query = "UPDATE Event SET Course_id ='" + event.getCourseID()
-				+ "', name ='" + event.getName() + "', costs ='"
-				+ event.getCosts() + "', date ='" + event.getDate()
-				+ "', time ='" + event.getTime() + "', location ='"
-				+ event.getLocation() + "' where Event_id = '"
-				+ event.getEventID() + "'";
-
-		try {
-			stmt.executeUpdate(query);
-			updateExaminersForEvent(event.getEventID(), event.getExaminers());
-			dbc.close();
-			stmt.close();
-			dbc.closeStatement();
-
-		} catch (SQLException e) {
-			System.out.println(e);
-			return false;
+		if (deleteEvent(event.getEventID())) {
+			createEvent(event);
 		}
-		return true;
-
+		return false;
 	}
 
 	/**
@@ -205,11 +185,11 @@ public class DataBankerEvent implements DataBankerEventInterface {
 			rs = stmt.executeQuery(query);
 			while (rs.next()) {
 				event.setEventID(rs.getInt("Event_id"));
-				event.setCourseID(rs.getInt("Course_id"));
+				event.setType(rs.getString("type"));
 				event.setName(rs.getString("name"));
 				event.setCosts(rs.getString("costs"));
-				event.setDate(rs.getDate("date"));
-				event.setTime(rs.getTime("time"));
+				event.setDate(rs.getString("date"));
+				event.setTime(rs.getString("time"));
 				event.setLocation(rs.getString("location"));
 				event.setExaminers(getExaminersForEvent(event.getEventID()));
 				
@@ -259,20 +239,19 @@ public class DataBankerEvent implements DataBankerEventInterface {
 		DataBankerConnection dbc = new DataBankerConnection();
 		ResultSet rs = null;
 		Statement stmt = dbc.getStatement();
-		String query = "SELECT Event_id, Course_id, name, costs, date, time, location FROM Event";
+		String query = "SELECT * FROM Event ORDER BY name";
 
 		try {
 			rs = stmt.executeQuery(query);
 			while (rs.next()) {
 				Event newEvent = new Event();
 				newEvent.setEventID(rs.getInt(1));
-				newEvent.setCourseID(rs.getInt(2));
-				newEvent.setName(rs.getString(3));
+				newEvent.setName(rs.getString(2));
+				newEvent.setType(rs.getString(3));
 				newEvent.setCosts(rs.getString(4));
-				System.out.println(rs.getDate(5));
-				newEvent.setDate(rs.getDate(5));
-				newEvent.setTime(rs.getTime(6));
-				newEvent.setLocation(rs.getString(7));
+				newEvent.setLocation(rs.getString(5));
+				newEvent.setDate(rs.getString(6));
+				newEvent.setTime(rs.getString(7));
 				newEvent.setExaminers(getExaminersForEvent(newEvent.getEventID()));
 				events.add(newEvent);
 			}
@@ -352,3 +331,6 @@ public class DataBankerEvent implements DataBankerEventInterface {
 		setExaminersForEvent(eventID, examiners);
 	}
 }
+
+
+

@@ -78,4 +78,6 @@ public interface AdminServiceAsync {
 	void deleteBeltByID(int beltID, AsyncCallback<Void> callback);
 
 	void renameBeltByID(Belt belt, AsyncCallback<Void> callback);
+
+	void updateEvent(Event event, AsyncCallback<Void> callback);
 }

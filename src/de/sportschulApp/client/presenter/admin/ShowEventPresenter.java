@@ -30,31 +30,6 @@ public class ShowEventPresenter implements Presenter{
 	    this.display = display;
 	    this.rpcService = rpcService;
 	    bind();
-	    
-//	    Time time = new Time(10, 10, 10);
-//	    Date date = new Date(0);
-//	    date.getTime();
-//	    
-//	    ArrayList<String> exam = new ArrayList<String>();
-//	    exam.add("test");
-//	    exam.add("test22");
-//	    
-//	    Event event2 = new Event(1,2,"das","12",date,time,"eh", exam);
-//	    System.out.println("dasdoif");
-//	    rpcService.createEvent(event2, new AsyncCallback<Void>() {
-//
-//			@Override
-//			public void onFailure(Throwable caught) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//
-//			@Override
-//			public void onSuccess(Void result) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//		});
 	    fetchData(courseID);
 	}
 

@@ -2,32 +2,31 @@ package de.sportschulApp.shared;
 
 
 import java.io.Serializable;
-import java.sql.Date;
-import java.sql.Time;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
 public class Event implements Serializable {
 	private int eventID;
-	private int courseID;
+	private String type;
 	private String name;
 	private String costs;
-	private Date date;
-	private Time time;
+	private String date;
+	private String time;
 	private String location;
 	private ArrayList<String> examiners;
+	private ArrayList<EventParticipant> participants;
 
 	
-	public Event(int eventID, int courseID, String name, String costs, Date date, Time time, String location, ArrayList<String> examiners) {
+	public Event(int eventID, String type, String name, String costs, String date, String time, String location, ArrayList<String> examiners, ArrayList<EventParticipant> participants) {
 	this.eventID = eventID;
-	this.courseID = courseID;
+	this.type = type;
 	this.name = name;
 	this.costs = costs;
 	this.date = date;
 	this.time = time;
 	this.location = location;
 	this.examiners = examiners;
-	
+	this.participants = participants;
 	}
 
 	public Event() {
@@ -51,15 +50,15 @@ public class Event implements Serializable {
 	/**
 	 * @param courseID the courseID to set
 	 */
-	public void setCourseID(int courseID) {
-		this.courseID = courseID;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	/**
 	 * @return the courseID
 	 */
-	public int getCourseID() {
-		return courseID;
+	public String getType() {
+		return type;
 	}
 
 	/**
@@ -93,28 +92,28 @@ public class Event implements Serializable {
 	/**
 	 * @param date the date to set
 	 */
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 
 	/**
 	 * @return the date
 	 */
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
 	/**
 	 * @param time the time to set
 	 */
-	public void setTime(Time time) {
+	public void setTime(String time) {
 		this.time = time;
 	}
 
 	/**
 	 * @return the time
 	 */
-	public Time getTime() {
+	public String getTime() {
 		return time;
 	}
 
@@ -144,6 +143,20 @@ public class Event implements Serializable {
 	 */
 	public ArrayList<String> getExaminers() {
 		return examiners;
+	}
+
+	/**
+	 * @param participants the participants to set
+	 */
+	public void setParticipants(ArrayList<EventParticipant> participants) {
+		this.participants = participants;
+	}
+
+	/**
+	 * @return the participants
+	 */
+	public ArrayList<EventParticipant> getParticipants() {
+		return participants;
 	}
 
 }
