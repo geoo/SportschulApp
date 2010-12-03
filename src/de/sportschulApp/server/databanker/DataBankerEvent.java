@@ -12,6 +12,8 @@ import java.util.ArrayList;
 
 import de.sportschulApp.shared.Course;
 import de.sportschulApp.shared.Event;
+import de.sportschulApp.shared.EventParticipant;
+import de.sportschulApp.shared.Member;
 
 public class DataBankerEvent implements DataBankerEventInterface {
 
@@ -23,7 +25,7 @@ public class DataBankerEvent implements DataBankerEventInterface {
 	 * @return true wenn anlegen funktioniert hat, false wenn ein Fehler
 	 *         aufgetreten ist
 	 */
-	public boolean createEvent(Event event) {
+	public Integer createEvent(Event event) {
 		DataBankerConnection dbc = new DataBankerConnection();
 		try {
 
@@ -41,22 +43,24 @@ public class DataBankerEvent implements DataBankerEventInterface {
 			
 			
 			stmt.executeUpdate();
-
-			if (!(event.getExaminers().isEmpty())) {
-				ResultSet generatedKeys = stmt.getGeneratedKeys();
-				while(generatedKeys.next()) {
-					setExaminersForEvent(generatedKeys.getInt(1), event.getExaminers());
+			ResultSet generatedKeys = stmt.getGeneratedKeys();
+			int eventID = 0;
+			while(generatedKeys.next()) {
+				eventID = generatedKeys.getInt(1);
+				setExaminersForEvent(eventID, event.getExaminers());
+				if (event.getEventID() > 0) {
+					updateParticipantsID(event.getEventID(), eventID);
 				}
 			}
 			
 			dbc.close();
 			stmt.close();
 
-			return true;
+			return eventID;
 
 		} catch (SQLException e) {
 			System.out.println(e);
-			return false;
+			return 0;
 		}
 
 	}
@@ -99,11 +103,11 @@ public class DataBankerEvent implements DataBankerEventInterface {
 	 * 
 	 * @return true bei erfolg, false bei scheitern
 	 */
-	public boolean updateEvent(Event event) {
+	public Integer updateEvent(Event event) {
 		if (deleteEvent(event.getEventID())) {
-			createEvent(event);
+			return createEvent(event);
 		}
-		return false;
+		return 0;
 	}
 
 	/**
@@ -206,20 +210,40 @@ public class DataBankerEvent implements DataBankerEventInterface {
 
 	}
 
-	public ArrayList<Integer> getEventParticipants(int eventID) {
-
-		ArrayList<Integer>participants = new ArrayList<Integer>();
+	public ArrayList<EventParticipant> getEventParticipants(int eventID, ArrayList<Member> members) {
+		ArrayList<EventParticipant> participants = new ArrayList<EventParticipant>();
+		for (int i = 0; i < members.size(); i++) {
+			EventParticipant participant = new EventParticipant();
+			participant.setEventID(eventID);
+			participant.setBarcodeID(members.get(i).getBarcodeID() + "");
+			participant.setForename(members.get(i).getForename());
+			participant.setSurname(members.get(i).getSurname());
+			participant.setPassed("Nein");
+			participant.setPaid("Nein");
+			participant.setNote("");
+			participant.setParticipant("Nein");
+			participant.setPicUrl(members.get(i).getPicture());
+			participants.add(participant);
+		}
 		DataBankerConnection dbc = new DataBankerConnection();
+		
 		try {
 
 			ResultSet rs = null;
 			Statement stmt = dbc.getStatement();
-			String query = "SELECT Member_id FROM EventParticipants WHERE Event_id='"
+			String query = "SELECT Barcode_id, passed, paid, note FROM Event_has_participants WHERE Event_id='"
 					+ eventID + "'";
 
 			rs = stmt.executeQuery(query);
 			while (rs.next()) {
-				participants.add(rs.getInt(1));
+				for (int i = 0; i < participants.size(); i++) {
+					if (rs.getString("Barcode_id").equals(participants.get(i).getBarcodeID())) {
+						participants.get(i).setPassed(rs.getString("passed"));
+						participants.get(i).setPaid(rs.getString("paid"));
+						participants.get(i).setNote(rs.getString("note"));
+						participants.get(i).setParticipant("Ja");
+					}
+				}
 			}
 			rs.close();
 			stmt.close();
@@ -231,6 +255,21 @@ public class DataBankerEvent implements DataBankerEventInterface {
 		
 		return participants;
 
+	}
+	
+	public void updateParticipantsID(int oldEventID, int newEventID) {
+		DataBankerConnection dbc = new DataBankerConnection();
+		Statement stmt = dbc.getStatement();
+		String query = "UPDATE Event_has_participants SET Event_id=" + newEventID + " WHERE Event_id=" + oldEventID;
+		
+		try {
+			stmt.executeUpdate(query);
+			dbc.close();
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
 	}
 
 	public ArrayList<Event> getEventList() {
@@ -309,7 +348,7 @@ public class DataBankerEvent implements DataBankerEventInterface {
 		}
 	}
 	
-	public void deleteExaminersFromEvent(int eventID) {
+	public Boolean deleteExaminersFromEvent(int eventID) {
 		DataBankerConnection dbc = new DataBankerConnection();
 		Statement stmt = dbc.getStatement();
 
@@ -323,12 +362,62 @@ public class DataBankerEvent implements DataBankerEventInterface {
 
 		} catch (SQLException e) {
 			System.out.println(e);
+			return false;
 		}
+		return true;
 	}
 	
 	public void updateExaminersForEvent(int eventID, ArrayList<String> examiners) {
-		deleteExaminersFromEvent(eventID);
-		setExaminersForEvent(eventID, examiners);
+		if (deleteExaminersFromEvent(eventID)) {
+			setExaminersForEvent(eventID, examiners);
+		}
+	}
+	
+	public Boolean deleteParticipantsForEvent(int eventID) {
+		DataBankerConnection dbc = new DataBankerConnection();
+		Statement stmt = dbc.getStatement();
+
+		String query = "DELETE FROM Event_has_participants WHERE Event_id='" + eventID + "'";
+
+		try {
+			stmt.executeUpdate(query);
+			dbc.close();
+			stmt.close();
+			dbc.closeStatement();
+
+		} catch (SQLException e) {
+			System.out.println(e);
+			return false;
+		}
+		return true;
+	}
+
+	public void setParticipantsForEvent(int eventID,
+			ArrayList<EventParticipant> participants) {
+		if (deleteParticipantsForEvent(eventID)) {
+			DataBankerConnection dbc = new DataBankerConnection();
+			for (int i = 0; i < participants.size(); i++) {
+				try {
+					PreparedStatement stmt = dbc.getConnection().prepareStatement(
+									"INSERT INTO Event_has_participants(Event_id, Barcode_id, passed, paid, note) VALUES(?,?,?,?,?)");
+					stmt.setInt(1, eventID);
+					stmt.setString(2, participants.get(i).getBarcodeID());
+					stmt.setString(3, participants.get(i).getPassed());
+					stmt.setString(4, participants.get(i).getPaid());
+					stmt.setString(5, participants.get(i).getNote());
+		
+					stmt.executeUpdate();
+		
+					dbc.close();
+					stmt.close();
+		
+		
+				} catch (SQLException e) {
+					System.out.println(e);
+				}
+			}
+			
+		}
 	}
 }
 

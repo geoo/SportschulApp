@@ -6,6 +6,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -101,27 +102,27 @@ public class CreateEventPresenter implements Presenter {
 								Event newEvent = display.getFormData();
 		
 								if (!(editItem)) {
-									rpcService.createEvent(newEvent, new AsyncCallback<Void>() {								
+									rpcService.createEvent(newEvent, new AsyncCallback<Integer>() {								
 										@Override
 										public void onFailure(Throwable caught) {
 											Window.alert("Anlegen des Events fehlgeschlagen!");
 										}
 										@Override
-										public void onSuccess(Void result) {
-											Window.alert("hat geklappt");
+										public void onSuccess(Integer result) {
+											History.newItem("adminEventsEditParticipants:" + result);
 										}
 									});
 								} else {
 									newEvent.setEventID(Integer.valueOf(eventID));
 									
-									rpcService.updateEvent(newEvent, new AsyncCallback<Void>() {
+									rpcService.updateEvent(newEvent, new AsyncCallback<Integer>() {
 										@Override
 										public void onFailure(Throwable caught) {
 											Window.alert("Bearbeiten des Events fehlgeschlagen!");
 										}
 										@Override
-										public void onSuccess(Void result) {
-											// TODO Auto-generated method stub
+										public void onSuccess(Integer result) {
+											History.newItem("adminEventsEditParticipants:" + result);
 										}
 									});
 								}

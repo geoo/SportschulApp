@@ -33,6 +33,7 @@ import de.sportschulApp.client.presenter.admin.ShowEventPresenter;
 import de.sportschulApp.client.presenter.admin.ShowBeltPresenter;
 import de.sportschulApp.client.presenter.admin.ListUserPresenter;
 import de.sportschulApp.client.presenter.admin.BeltEditorPresenter;
+import de.sportschulApp.client.presenter.admin.ListEventParticipantsPresenter;
 import de.sportschulApp.client.services.AdminService;
 import de.sportschulApp.client.services.AdminServiceAsync;
 import de.sportschulApp.client.view.admin.ListCourseView;
@@ -40,6 +41,7 @@ import de.sportschulApp.client.view.admin.CreateCourseView;
 import de.sportschulApp.client.view.admin.CreateEventView;
 import de.sportschulApp.client.view.admin.CreateMemberView;
 import de.sportschulApp.client.view.admin.CreateUserView;
+import de.sportschulApp.client.view.admin.ListEventParticipantsView;
 import de.sportschulApp.client.view.admin.ListEventView;
 import de.sportschulApp.client.view.admin.ListMemberView;
 import de.sportschulApp.client.view.admin.NavigationView;
@@ -221,6 +223,10 @@ public class AdminPanelPresenter implements Presenter {
 			String eventID = token.substring(21);
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(1, constants));
 			contentPresenter =  new CreateEventPresenter(rpcService, eventBus, new CreateEventView(constants), eventID);	
+		} else if ((token.length() >= "adminEventsEditParticipants".length()) && (token.subSequence(0, 27).equals("adminEventsEditParticipants"))) {
+			String eventID = token.substring(28);
+			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(1, constants));
+			contentPresenter =  new ListEventParticipantsPresenter(rpcService, eventBus, new ListEventParticipantsView(eventBus), eventID);
 		} else if (token.equals("adminCourseCreateCourse")) {
 			navigationPresenter = new NavigationPresenter(eventBus, new NavigationView(2, constants));
 			contentPresenter =  new CreateCoursePresenter(rpcService, eventBus, new CreateCourseView(constants, true));

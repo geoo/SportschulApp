@@ -6,20 +6,26 @@ import java.io.Serializable;
 public class EventParticipant implements Serializable {
 	
 	private int eventID;
-	private int memberID;
-	private String memberName;
-	private int passed;
+	private String barcodeID;
+	private String forename;
+	private String surname;
+	private String passed;
 	private String paid;
 	private String note;
+	private String participant;
+	private String picUrl;
 	
 	
-	public EventParticipant(int eventID, int memberID, String memberName, int passed, String paid, String note) {
+	public EventParticipant(int eventID, String barcodeID, String forename, String surname, String passed, String paid, String note, String participant, String picUrl) {
 		this.eventID = eventID;
-		this.memberID = memberID;
-		this.memberName = memberName;
+		this.barcodeID = barcodeID;
+		this.forename = forename;
+		this.surname = surname;
 		this.passed = passed;
 		this.paid = paid;
 		this.note = note;
+		this.participant = participant;
+		this.picUrl = picUrl;
 	}
 	
 	public EventParticipant() {
@@ -34,27 +40,27 @@ public class EventParticipant implements Serializable {
 		this.eventID = eventID;
 	}
 
-	public int getMemberID() {
-		return memberID;
+	public String getBarcodeID() {
+		return barcodeID;
 	}
 
-	public void setMemberID(int memberID) {
-		this.memberID = memberID;
+	public void setBarcodeID(String memberID) {
+		this.barcodeID = memberID;
 	}
 
-	public String getMemberName() {
-		return memberName;
+	public String getForename() {
+		return forename;
 	}
 
-	public void setMemberName(String memberName) {
-		this.memberName = memberName;
+	public void setForename(String forename) {
+		this.forename = forename;
 	}
 
-	public int getPassed() {
+	public String getPassed() {
 		return passed;
 	}
 
-	public void setPassed(int passed) {
+	public void setPassed(String passed) {
 		this.passed = passed;
 	}
 
@@ -72,6 +78,48 @@ public class EventParticipant implements Serializable {
 
 	public void setNote(String note) {
 		this.note = note;
+	}
+
+	/**
+	 * @param surname the surname to set
+	 */
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+
+	/**
+	 * @return the surname
+	 */
+	public String getSurname() {
+		return surname;
+	}
+
+	/**
+	 * @param praticipant the praticipant to set
+	 */
+	public void setParticipant(String participant) {
+		this.participant = participant;
+	}
+
+	/**
+	 * @return the praticipant
+	 */
+	public String getParticipant() {
+		return participant;
+	}
+
+	/**
+	 * @param picUrl the picUrl to set
+	 */
+	public void setPicUrl(String picUrl) {
+		this.picUrl = picUrl;
+	}
+
+	/**
+	 * @return the picUrl
+	 */
+	public String getPicUrl() {
+		return picUrl;
 	}
 
 

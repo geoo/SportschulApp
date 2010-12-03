@@ -1,6 +1,7 @@
 package de.sportschulApp.client.services;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -8,6 +9,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import de.sportschulApp.shared.Belt;
 import de.sportschulApp.shared.Course;
 import de.sportschulApp.shared.Event;
+import de.sportschulApp.shared.EventParticipant;
 import de.sportschulApp.shared.Member;
 import de.sportschulApp.shared.User;
 
@@ -60,9 +62,9 @@ public interface AdminService extends RemoteService {
 	
 	void deleteEventByEventID(int eventID);
 	
-	void createEvent(Event event);
+	Integer createEvent(Event event);
 	
-	void updateEvent(Event event);
+	Integer updateEvent(Event event);
 	
 	void updateCourse(Course course);
 
@@ -79,4 +81,9 @@ public interface AdminService extends RemoteService {
 	void deleteBeltByID(int beltID);
 	
 	void renameBeltByID(Belt belt);
+	
+	void setEventParticipants(int eventID, ArrayList<EventParticipant> participants);
+
+	ArrayList<EventParticipant> getEventParticipants(int eventID);
+	
 }

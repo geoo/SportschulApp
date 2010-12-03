@@ -13,6 +13,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -120,7 +121,7 @@ public class CreateEventView extends Composite implements
 			}
 		}
 		timeListBoxMinutes = new ListBox();
-		for (int i = 1; i < 60; i++) {
+		for (int i = 0; i < 60; i++) {
 			if (i < 10) {
 				timeListBoxMinutes.addItem("0" + i);
 			} else {
@@ -321,6 +322,18 @@ public class CreateEventView extends Composite implements
 		this.locationTextBox.setText(event.getLocation());
 		this.dateBox.getTextBox().setText(event.getDate());
 		this.examiners = event.getExaminers();
+			
+		for (int i = 0; i < timeListBoxHour.getItemCount(); i++) {
+			if (timeListBoxHour.getValue(i).equals(event.getTime().substring(0, 2))) {
+				timeListBoxHour.setSelectedIndex(i);
+			}
+		}
+		
+		for (int i = 0; i < timeListBoxMinutes.getItemCount(); i++) {
+			if (timeListBoxMinutes.getValue(i).equals(event.getTime().substring(3, 5))) {
+				timeListBoxMinutes.setSelectedIndex(i);
+			}
+		}
 		
 		refreshExaminersInputTable();
 		

@@ -2,6 +2,7 @@ package de.sportschulApp.server;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -13,6 +14,7 @@ import de.sportschulApp.server.databanker.DataBankerUser;
 import de.sportschulApp.shared.Belt;
 import de.sportschulApp.shared.Course;
 import de.sportschulApp.shared.Event;
+import de.sportschulApp.shared.EventParticipant;
 import de.sportschulApp.shared.Member;
 import de.sportschulApp.shared.User;
 
@@ -129,14 +131,15 @@ public class AdminServiceImpl extends RemoteServiceServlet implements
 	
 	public void deleteEventByEventID(int eventID) {
 		dbe.deleteEvent(eventID);
+		dbe.deleteParticipantsForEvent(eventID);
 	}
 	
-	public void createEvent(Event event) {
-		dbe.createEvent(event);
+	public Integer createEvent(Event event) {
+		return dbe.createEvent(event);
 	}
 	
-	public void updateEvent(Event event) {
-		dbe.updateEvent(event);
+	public Integer updateEvent(Event event) {
+		return dbe.updateEvent(event);
 	}
 	
 	public void updateCourse(Course course) {
@@ -170,4 +173,16 @@ public class AdminServiceImpl extends RemoteServiceServlet implements
 	public void renameBeltByID(Belt belt) {
 		dbc.renameBeltByID(belt);
 	}
+
+	@Override
+	public ArrayList<EventParticipant> getEventParticipants(int eventID) {
+		return dbe.getEventParticipants(eventID, dbm.getMemberList());
+	}
+
+	@Override
+	public void setEventParticipants(int eventID,
+			ArrayList<EventParticipant> participants) {
+		dbe.setParticipantsForEvent(eventID,(ArrayList<EventParticipant>) participants);		
+	}
+
 }

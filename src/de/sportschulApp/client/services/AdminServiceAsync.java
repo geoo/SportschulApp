@@ -1,12 +1,14 @@
 package de.sportschulApp.client.services;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import de.sportschulApp.shared.Belt;
 import de.sportschulApp.shared.Course;
 import de.sportschulApp.shared.Event;
+import de.sportschulApp.shared.EventParticipant;
 import de.sportschulApp.shared.Member;
 import de.sportschulApp.shared.User;
 
@@ -61,7 +63,7 @@ public interface AdminServiceAsync {
 
 	void deleteEventByEventID(int eventID, AsyncCallback<Void> callback);
 
-	void createEvent(Event event, AsyncCallback<Void> callback);
+	void createEvent(Event event, AsyncCallback<Integer> callback);
 
 	void updateCourse(Course course, AsyncCallback<Void> callback);
 
@@ -79,5 +81,12 @@ public interface AdminServiceAsync {
 
 	void renameBeltByID(Belt belt, AsyncCallback<Void> callback);
 
-	void updateEvent(Event event, AsyncCallback<Void> callback);
+	void updateEvent(Event event, AsyncCallback<Integer> callback);
+
+	void getEventParticipants(int eventID,
+			AsyncCallback<ArrayList<EventParticipant>> callback);
+
+	void setEventParticipants(int eventID,
+			ArrayList<EventParticipant> participants,
+			AsyncCallback<Void> callback);
 }
