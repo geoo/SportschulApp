@@ -1,8 +1,8 @@
 package de.sportschulApp.client.view.admin;
 
-import gwtupload.client.IFileInput.FileInputType;
 import gwtupload.client.MultiUploader;
 import gwtupload.client.PreloadedImage;
+import gwtupload.client.IFileInput.FileInputType;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -29,11 +29,11 @@ import eu.maydu.gwt.validation.client.DefaultValidationProcessor;
 import eu.maydu.gwt.validation.client.ValidationProcessor;
 
 public class CreateMemberView extends Composite implements
-		CreateMemberPresenter.Display {
+CreateMemberPresenter.Display {
 	public class CourseSelectorWidget {
-		private VerticalPanel courseVerticalPanel;
 		private Label courseLabel;
 		private ListBox courseListBox;
+		private VerticalPanel courseVerticalPanel;
 		private Label gradeLabel;
 		private ListBox gradeListBox;
 
@@ -59,25 +59,16 @@ public class CreateMemberView extends Composite implements
 
 		}
 
-		public VerticalPanel getCourseSelector() {
-			return courseVerticalPanel;
-		}
-
 		public HasChangeHandlers getCourseHandler() {
 			return courseListBox;
 		}
 
+		public VerticalPanel getCourseSelector() {
+			return courseVerticalPanel;
+		}
+
 		public HasChangeHandlers getGradeHandler() {
 			return gradeListBox;
-		}
-
-		public String getSelectedCourseName() {
-			int selected = courseListBox.getSelectedIndex();
-			return courseListBox.getItemText(selected);
-		}
-
-		public int getSelectedBeltNr() {
-			return gradeListBox.getSelectedIndex();
 		}
 
 		public String getSelectedBeltName() {
@@ -85,14 +76,13 @@ public class CreateMemberView extends Composite implements
 			return gradeListBox.getItemText(selected);
 		}
 
-		public void setCourseList(ArrayList<String> courseList) {
-			Iterator<String> itr = courseList.iterator();
-			int i = 1;
-			while (itr.hasNext()) {
-				courseListBox.insertItem(itr.next(), i);
-				i++;
-			}
+		public int getSelectedBeltNr() {
+			return gradeListBox.getSelectedIndex();
+		}
 
+		public String getSelectedCourseName() {
+			int selected = courseListBox.getSelectedIndex();
+			return courseListBox.getItemText(selected);
 		}
 
 		public void setBeltList(ArrayList<String> beltList) {
@@ -106,72 +96,82 @@ public class CreateMemberView extends Composite implements
 
 		}
 
+		public void setCourseList(ArrayList<String> courseList) {
+			Iterator<String> itr = courseList.iterator();
+			int i = 1;
+			while (itr.hasNext()) {
+				courseListBox.insertItem(itr.next(), i);
+				i++;
+			}
+
+		}
+
 	}
 
-	private LocalizationConstants constants;
-	private Label forenameLabel;
-	private TextBox forenameTextBox;
-	private Label surnameLabel;
-	private TextBox surnameTextBox;
-	private Label barcodeLabel;
-	private TextBox barcodeTextBox;
-	private Label streetLabel;
-	private TextBox streetTextBox;
-	private Label zipcodeLabel;
-	private TextBox zipcodeTextBox;
-	private Label cityLabel;
-	private TextBox cityTextBox;
-	private Label phoneLabel;
-	private TextBox phoneTextBox;
-	private Label mobilephoneLabel;
-	private TextBox mobilephoneTextBox;
-	private Label faxLabel;
-	private TextBox faxTextBox;
-	private Label emailLabel;
-	private TextBox emailTextBox;
-	private Label homepageLabel;
-	private TextBox homepageTextBox;
-	private ListBox birthTextBox1;
-	private ListBox birthTextBox2;
-	private ListBox birthTextBox3;
-	private Label birthLabel;
-	private TextArea diseasesTextBox;
-	private Widget diseasesLabel;
-	private TextBox beltsizeTextBox;
-	private Label beltsizeLabel;
-	private Label noteLabel;
-	private TextArea noteTextBox;
-	private Label trainingunitsLabel;
-	private TextBox trainingunitsTextBox;
-	private VerticalPanel createMemberPanel = new VerticalPanel();
-	private VerticalPanel createMemberPanel2 = new VerticalPanel();
-	private VerticalPanel bankAccountPanel = new VerticalPanel();
-	private VerticalPanel wrapper = new VerticalPanel();
-	private Button sendButton = new Button();
-	private MultiUploader defaultUploader;
-	ArrayList<CourseSelectorWidget> courseList = new ArrayList<CourseSelectorWidget>();
-	private Label pictureUploadLabel;
-	private PreloadedImage image;
-	HorizontalPanel pictureUploadPanel;
-	private String imageUrl;
-	private DefaultValidationProcessor validator;
-
-	private DisclosurePanel importantDisclosurePanel;
-	private DisclosurePanel additionalDisclosurePanel;
-	private DisclosurePanel bankAccountDisclosurePanel;
-	private HorizontalPanel barcodeInputPanel;
+	private Label accountNumberLabel;
+	private TextBox accountNumberTextBox;
 	private Label accountOwnerForenameLabel;
 	private TextBox accountOwnerForenameTextBox;
 	private Label accountOwnerSurnameLabel;
 	private TextBox accountOwnerSurnameTextBox;
-	private Label accountNumberLabel;
-	private TextBox accountNumberTextBox;
-	private Label bankNumberLabel;
-	private TextBox bankNumberTextBox;
+	private DisclosurePanel additionalDisclosurePanel;
+	private DisclosurePanel bankAccountDisclosurePanel;
+	private VerticalPanel bankAccountPanel = new VerticalPanel();
 	private Label bankNameLabel;
 	private TextBox bankNameTextBox;
+	private Label bankNumberLabel;
+	private TextBox bankNumberTextBox;
+	private HorizontalPanel barcodeInputPanel;
+	private Label barcodeLabel;
+	private TextBox barcodeTextBox;
+	private Label beltsizeLabel;
+	private TextBox beltsizeTextBox;
+	private Label birthLabel;
+	private ListBox birthTextBox1;
+	private ListBox birthTextBox2;
+	private ListBox birthTextBox3;
+	private Label cityLabel;
+	private TextBox cityTextBox;
+	private LocalizationConstants constants;
+	ArrayList<CourseSelectorWidget> courseList = new ArrayList<CourseSelectorWidget>();
+	private VerticalPanel createMemberPanel = new VerticalPanel();
+	private VerticalPanel createMemberPanel2 = new VerticalPanel();
+	private MultiUploader defaultUploader;
+	private Widget diseasesLabel;
+	private TextArea diseasesTextBox;
+	private Label emailLabel;
+	private TextBox emailTextBox;
+	private Label faxLabel;
+	private TextBox faxTextBox;
+	private Label forenameLabel;
+	private TextBox forenameTextBox;
+	private Label homepageLabel;
+	private TextBox homepageTextBox;
+	private PreloadedImage image;
+	private String imageUrl;
+	private DisclosurePanel importantDisclosurePanel;
 	private CheckBox likeAbove;
 	private CheckBox likeAbove2;
+	private Label mobilephoneLabel;
+	private TextBox mobilephoneTextBox;
+	private Label noteLabel;
+
+	private TextArea noteTextBox;
+	private Label phoneLabel;
+	private TextBox phoneTextBox;
+	private Label pictureUploadLabel;
+	HorizontalPanel pictureUploadPanel;
+	private Button sendButton = new Button();
+	private Label streetLabel;
+	private TextBox streetTextBox;
+	private Label surnameLabel;
+	private TextBox surnameTextBox;
+	private Label trainingunitsLabel;
+	private TextBox trainingunitsTextBox;
+	private DefaultValidationProcessor validator;
+	private VerticalPanel wrapper = new VerticalPanel();
+	private Label zipcodeLabel;
+	private TextBox zipcodeTextBox;
 
 	public CreateMemberView(LocalizationConstants constants) {
 
@@ -410,41 +410,6 @@ public class CreateMemberView extends Composite implements
 
 	}
 
-	public Widget asWidget() {
-		return this;
-	}
-
-	public void setCourseList(ArrayList<String> courseList) {
-		for (int i = 0; i < 10; i++) {
-			this.courseList.get(i).setCourseList(courseList);
-		}
-	}
-
-	public HasClickHandlers getSendButton() {
-		return sendButton;
-	}
-
-	public HasChangeHandlers getCourseHandler(int index) {
-		return courseList.get(index).getCourseHandler();
-	}
-
-	public HasChangeHandlers getGradeHandler(int index) {
-		return courseList.get(index).getGradeHandler();
-	}
-
-	public String getSelectedCourseName(int index) {
-		return courseList.get(index).getSelectedCourseName();
-
-	}
-
-	public int getSelectedBeltNr(int index) {
-		return courseList.get(index).getSelectedBeltNr();
-	}
-
-	public void setBeltList(int index, ArrayList<String> beltList) {
-		this.courseList.get(index).setBeltList(beltList);
-	}
-
 	public void addNewCourseSelector() {
 		for (int i = 0; i < 10; i++) {
 			if (!courseList.get(i).getCourseSelector().isAttached()) {
@@ -455,123 +420,9 @@ public class CreateMemberView extends Composite implements
 		}
 	}
 
-	public MultiUploader getUploadHandler() {
-		return defaultUploader;
-	}
-
-	public void setImage(PreloadedImage image, String imageUrl) {
-
-		pictureUploadPanel.remove(defaultUploader);
-		pictureUploadPanel.add(image);
-		this.imageUrl = imageUrl;
-	}
-
-	public ValidationProcessor getValidator() {
-		return validator;
-	}
-
-	public TextBox getForenameTextBox() {
-		return forenameTextBox;
-	}
-
-	public TextBox getSurnameTextBox() {
-		return surnameTextBox;
-	}
-
-	public TextBox getBarcodeTextBox() {
-		return barcodeTextBox;
-	}
-
-	public TextBox getStreetTextBox() {
-		return streetTextBox;
-	}
-
-	public TextBox getZipcodeTextBox() {
-		return zipcodeTextBox;
-	}
-
-	public TextBox getCityTextBox() {
-		return cityTextBox;
-	}
-
-	public TextBox getPhoneTextBox() {
-		return phoneTextBox;
-	}
-
-	public TextBox getmobilephoneTextBox() {
-		return mobilephoneTextBox;
-	}
-
-	public TextBox getEmailTextBox() {
-		return emailTextBox;
-	}
-
-	public TextBox getFaxTextBox() {
-		return faxTextBox;
-	}
-
-	public TextBox getHomepageTextBox() {
-		return homepageTextBox;
-	}
-
-	public ListBox getBirthTextBox1() {
-		return birthTextBox1;
-	}
-
-	public ListBox getBirthTextBox2() {
-		return birthTextBox2;
-	}
-
-	public ListBox getBirthTextBox3() {
-		return birthTextBox3;
-	}
-
-	public TextArea getDiseasesTextBox() {
-		return diseasesTextBox;
-	}
-
-	public TextBox getBeltsizeTextBox() {
-		return beltsizeTextBox;
-	}
-
-	public TextArea getNoteTextBox() {
-		return noteTextBox;
-	}
-
-	public TextBox getTrainingunitsTextBox() {
-		return trainingunitsTextBox;
-	}
-
-	public ListBox getCourseListBox() {
-		return courseList.get(0).courseListBox;
-	}
-
-	public ListBox getGradeListBox() {
-		return null;
-	}
-
-	public String getPictureUrl() {
-		return imageUrl;
-	}
-
-	public ArrayList<CourseSelectorWidget> getCourseList() {
-		return courseList;
-	}
-
-	public String getListBoxString() {
-		return "<" + constants.select() + ">";
-	}
-
-	public LocalizationConstants getConstants() {
-		return constants;
-	}
-
-	public CheckBox getForenameCheckBox() {
-		return likeAbove;
-	}
-
-	public CheckBox getSurnameCheckBox() {
-		return likeAbove2;
+	@Override
+	public Widget asWidget() {
+		return this;
 	}
 
 	public void fillForm(Member member) {
@@ -622,6 +473,18 @@ public class CreateMemberView extends Composite implements
 
 	}
 
+	public TextBoxBase getAccountForenameTextBox() {
+		return accountOwnerForenameTextBox;
+	}
+
+	public TextBoxBase getAccountNumberTextBox() {
+		return accountNumberTextBox;
+	}
+
+	public TextBoxBase getAccountSurnameTextBox() {
+		return accountOwnerSurnameTextBox;
+	}
+
 	public TextBox getAccoutForenameTextbox() {
 		return accountOwnerForenameTextBox;
 	}
@@ -630,24 +493,162 @@ public class CreateMemberView extends Composite implements
 		return accountOwnerSurnameTextBox;
 	}
 
-	public TextBoxBase getAccountForenameTextBox() {
-		return accountOwnerForenameTextBox;
-	}
-
-	public TextBoxBase getAccountSurnameTextBox() {
-		return accountOwnerSurnameTextBox;
-	}
-
-	public TextBoxBase getAccountNumberTextBox() {
-		return accountNumberTextBox;
+	public TextBoxBase getBankNameTextBox() {
+		return bankNameTextBox;
 	}
 
 	public TextBoxBase getBankNumberTextBox() {
 		return bankNumberTextBox;
 	}
 
-	public TextBoxBase getBankNameTextBox() {
-		return bankNameTextBox;
+	public TextBox getBarcodeTextBox() {
+		return barcodeTextBox;
+	}
+
+	public TextBox getBeltsizeTextBox() {
+		return beltsizeTextBox;
+	}
+
+	public ListBox getBirthTextBox1() {
+		return birthTextBox1;
+	}
+
+	public ListBox getBirthTextBox2() {
+		return birthTextBox2;
+	}
+
+	public ListBox getBirthTextBox3() {
+		return birthTextBox3;
+	}
+
+	public TextBox getCityTextBox() {
+		return cityTextBox;
+	}
+
+	public LocalizationConstants getConstants() {
+		return constants;
+	}
+
+	public HasChangeHandlers getCourseHandler(int index) {
+		return courseList.get(index).getCourseHandler();
+	}
+
+	public ArrayList<CourseSelectorWidget> getCourseList() {
+		return courseList;
+	}
+
+	public ListBox getCourseListBox() {
+		return courseList.get(0).courseListBox;
+	}
+
+	public TextArea getDiseasesTextBox() {
+		return diseasesTextBox;
+	}
+
+	public TextBox getEmailTextBox() {
+		return emailTextBox;
+	}
+
+	public TextBox getFaxTextBox() {
+		return faxTextBox;
+	}
+
+	public CheckBox getForenameCheckBox() {
+		return likeAbove;
+	}
+
+	public TextBox getForenameTextBox() {
+		return forenameTextBox;
+	}
+
+	public HasChangeHandlers getGradeHandler(int index) {
+		return courseList.get(index).getGradeHandler();
+	}
+
+	public ListBox getGradeListBox() {
+		return null;
+	}
+
+	public TextBox getHomepageTextBox() {
+		return homepageTextBox;
+	}
+
+	public String getListBoxString() {
+		return "<" + constants.select() + ">";
+	}
+
+	public TextBox getmobilephoneTextBox() {
+		return mobilephoneTextBox;
+	}
+
+	public TextArea getNoteTextBox() {
+		return noteTextBox;
+	}
+
+	public TextBox getPhoneTextBox() {
+		return phoneTextBox;
+	}
+
+	public String getPictureUrl() {
+		return imageUrl;
+	}
+
+	public int getSelectedBeltNr(int index) {
+		return courseList.get(index).getSelectedBeltNr();
+	}
+
+	public String getSelectedCourseName(int index) {
+		return courseList.get(index).getSelectedCourseName();
+
+	}
+
+	public HasClickHandlers getSendButton() {
+		return sendButton;
+	}
+
+	public TextBox getStreetTextBox() {
+		return streetTextBox;
+	}
+
+	public CheckBox getSurnameCheckBox() {
+		return likeAbove2;
+	}
+
+	public TextBox getSurnameTextBox() {
+		return surnameTextBox;
+	}
+
+	public TextBox getTrainingunitsTextBox() {
+		return trainingunitsTextBox;
+	}
+
+	public MultiUploader getUploadHandler() {
+		return defaultUploader;
+	}
+
+	public ValidationProcessor getValidator() {
+		return validator;
+	}
+
+	public TextBox getZipcodeTextBox() {
+		return zipcodeTextBox;
+	}
+
+	public void setBeltList(int index, ArrayList<String> beltList) {
+		courseList.get(index).setBeltList(beltList);
+	}
+
+	public void setCourseList(ArrayList<String> courseList) {
+		for (int i = 0; i < 10; i++) {
+			this.courseList.get(i).setCourseList(courseList);
+		}
+	}
+
+	public void setImage(PreloadedImage image, String imageUrl) {
+
+		pictureUploadPanel.remove(defaultUploader);
+		pictureUploadPanel.add(image);
+		this.imageUrl = imageUrl;
 	}
 
 }

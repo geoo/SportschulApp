@@ -29,7 +29,7 @@ public class DataBankerUser implements DataBankerUserInterface {
 			ResultSet rs = null;
 			Statement stmt = dbc.getStatement();
 			String query = "SELECT User_id FROM User WHERE username='"
-					+ user.getUsername() + "'";
+				+ user.getUsername() + "'";
 
 			rs = stmt.executeQuery(query);
 			while (rs.next()) {
@@ -42,9 +42,9 @@ public class DataBankerUser implements DataBankerUserInterface {
 
 			PreparedStatement stmt2 = dbc
 
-					.getConnection()
-					.prepareStatement(
-							"INSERT INTO user(permission, username, password, forename, surname) VALUES(?,?,?,?,?)");
+			.getConnection()
+			.prepareStatement(
+					"INSERT INTO user(permission, username, password, forename, surname) VALUES(?,?,?,?,?)");
 			stmt2.setString(1, user.getPermission());
 			stmt2.setString(2, user.getUsername());
 			stmt2.setString(3,
@@ -97,111 +97,6 @@ public class DataBankerUser implements DataBankerUserInterface {
 	}
 
 	/**
-	 * �ndert einen Benutzereintrag
-	 * 
-	 * @param ein
-	 *            Objekt des Typs User
-	 * 
-	 * @return true bei erfolg, false bei scheitern
-	 */
-	public String updateUser(User user) {
-
-		DataBankerConnection dbc = new DataBankerConnection();
-
-		ResultSet rs = null;
-		Statement stmt2 = dbc.getStatement();
-		String query2 = "SELECT User_id, username FROM User WHERE username='"
-				+ user.getUsername() + "'";
-		try {
-
-			rs = stmt2.executeQuery(query2);
-			while (rs.next()) {
-				if (rs.getInt(1) > 0) {
-					if (rs.getString(2).equals(user.getUsername())) {	
-					} else {
-						return "Benutzername schon vorhanden";
-					}
-				}
-			}
-			rs.close();
-			stmt2.close();
-
-			Statement stmt = dbc.getStatement();
-
-			String password = BCrypt.hashpw(user.getPassword(),
-					BCrypt.gensalt());
-
-			String query = "UPDATE User SET permission ='"
-					+ user.getPermission() + "', username ='"
-					+ user.getUsername() + "', password ='" + password
-					+ "', forename ='" + user.getForename() + "', surname ='"
-					+ user.getSurname() + "' where User_id = '"
-					+ user.getUserID() + "'";
-
-			stmt.executeUpdate(query);
-			dbc.close();
-			stmt.close();
-			dbc.closeStatement();
-
-		} catch (SQLException e) {
-			System.out.println(e);
-			return "Fehler beim ändern";
-		}
-		return "Benutzer geändert";
-
-	}
-
-	/**
-	 * Ist f�r den Login eines Benutzers verantwortlich
-	 * 
-	 * @param Benutzername
-	 *            und Passwort des Benutzers
-	 * 
-	 * @return bei richtigem Passwort: Permission des Benutzers, bei falschem
-	 *         Passwort oder Benutzernamen "wrongPW"
-	 * 
-	 */
-
-	public String userLogin(String username, String password) {
-
-		String permission = null;
-		String hashFromDB = null;
-
-		ResultSet rs = null;
-		DataBankerConnection dbc = new DataBankerConnection();
-		Statement stmt = dbc.getStatement();
-
-		String query = "SELECT permission, password FROM User WHERE username='"
-				+ username + "'";
-		try {
-			rs = stmt.executeQuery(query);
-			while (rs.next()) {
-				hashFromDB = rs.getString(2);
-				permission = rs.getString(1);
-			}
-			rs.close();
-			dbc.close();
-			stmt.close();
-			dbc.closeStatement();
-
-			if (hashFromDB == null) {
-				return "wrongPW";
-			}
-		} catch (SQLException e) {
-			System.out.println(e);
-			return "wrongPW";
-		}
-
-		// Passwort check
-		if (BCrypt.checkpw(password, hashFromDB)) {
-			return permission;
-		}
-
-		// Bei falschem Passwort
-		return "wrongPW";
-	}
-
-	/**
 	 * Liefert ein User Objekt zur�ck
 	 * 
 	 * @param userID
@@ -217,6 +112,43 @@ public class DataBankerUser implements DataBankerUserInterface {
 		DataBankerConnection dbc = new DataBankerConnection();
 		Statement stmt = dbc.getStatement();
 		String query = "SELECT * FROM User WHERE User_id='" + userID + "'";
+		try {
+			rs = stmt.executeQuery(query);
+			if (rs.wasNull()) {
+			}
+			rs.next();
+			user.setUserID(rs.getInt("User_id"));
+			user.setPermission(rs.getString("permission"));
+			user.setUsername(rs.getString("username"));
+			user.setForename(rs.getString("forename"));
+			user.setSurname(rs.getString("surname"));
+			rs.close();
+			dbc.close();
+			stmt.close();
+			dbc.closeStatement();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return user;
+	}
+
+	/**
+	 * Liefert ein User Objekt zur�ck
+	 * 
+	 * @param username
+	 * 
+	 * @return Objekt des Typs User
+	 * 
+	 */
+	public User getUser(String username) {
+
+		User user = new User();
+		ResultSet rs = null;
+
+		DataBankerConnection dbc = new DataBankerConnection();
+		Statement stmt = dbc.getStatement();
+		String query = "SELECT * FROM User WHERE username='" + username + "'";
 		try {
 			rs = stmt.executeQuery(query);
 			if (rs.wasNull()) {
@@ -278,39 +210,107 @@ public class DataBankerUser implements DataBankerUserInterface {
 	}
 
 	/**
-	 * Liefert ein User Objekt zur�ck
+	 * �ndert einen Benutzereintrag
 	 * 
-	 * @param username
+	 * @param ein
+	 *            Objekt des Typs User
 	 * 
-	 * @return Objekt des Typs User
-	 * 
+	 * @return true bei erfolg, false bei scheitern
 	 */
-	public User getUser(String username) {
-
-		User user = new User();
-		ResultSet rs = null;
+	public String updateUser(User user) {
 
 		DataBankerConnection dbc = new DataBankerConnection();
+
+		ResultSet rs = null;
+		Statement stmt2 = dbc.getStatement();
+		String query2 = "SELECT User_id, username FROM User WHERE username='"
+			+ user.getUsername() + "'";
+		try {
+
+			rs = stmt2.executeQuery(query2);
+			while (rs.next()) {
+				if (rs.getInt(1) > 0) {
+					if (rs.getString(2).equals(user.getUsername())) {
+					} else {
+						return "Benutzername schon vorhanden";
+					}
+				}
+			}
+			rs.close();
+			stmt2.close();
+
+			Statement stmt = dbc.getStatement();
+
+			String password = BCrypt.hashpw(user.getPassword(),
+					BCrypt.gensalt());
+
+			String query = "UPDATE User SET permission ='"
+				+ user.getPermission() + "', username ='"
+				+ user.getUsername() + "', password ='" + password
+				+ "', forename ='" + user.getForename() + "', surname ='"
+				+ user.getSurname() + "' where User_id = '"
+				+ user.getUserID() + "'";
+
+			stmt.executeUpdate(query);
+			dbc.close();
+			stmt.close();
+			dbc.closeStatement();
+
+		} catch (SQLException e) {
+			System.out.println(e);
+			return "Fehler beim ändern";
+		}
+		return "Benutzer geändert";
+
+	}
+
+	/**
+	 * Ist f�r den Login eines Benutzers verantwortlich
+	 * 
+	 * @param Benutzername
+	 *            und Passwort des Benutzers
+	 * 
+	 * @return bei richtigem Passwort: Permission des Benutzers, bei falschem
+	 *         Passwort oder Benutzernamen "wrongPW"
+	 * 
+	 */
+
+	public String userLogin(String username, String password) {
+
+		String permission = null;
+		String hashFromDB = null;
+
+		ResultSet rs = null;
+		DataBankerConnection dbc = new DataBankerConnection();
 		Statement stmt = dbc.getStatement();
-		String query = "SELECT * FROM User WHERE username='" + username + "'";
+
+		String query = "SELECT permission, password FROM User WHERE username='"
+			+ username + "'";
 		try {
 			rs = stmt.executeQuery(query);
-			if (rs.wasNull()) {
+			while (rs.next()) {
+				hashFromDB = rs.getString(2);
+				permission = rs.getString(1);
 			}
-			rs.next();
-			user.setUserID(rs.getInt("User_id"));
-			user.setPermission(rs.getString("permission"));
-			user.setUsername(rs.getString("username"));
-			user.setForename(rs.getString("forename"));
-			user.setSurname(rs.getString("surname"));
 			rs.close();
 			dbc.close();
 			stmt.close();
 			dbc.closeStatement();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
+
+			if (hashFromDB == null) {
+				return "wrongPW";
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+			return "wrongPW";
 		}
-		return user;
+
+		// Passwort check
+		if (BCrypt.checkpw(password, hashFromDB)) {
+			return permission;
+		}
+
+		// Bei falschem Passwort
+		return "wrongPW";
 	}
 }

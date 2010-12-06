@@ -1,7 +1,6 @@
 package de.sportschulApp.client.services;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -16,74 +15,74 @@ import de.sportschulApp.shared.User;
 
 @RemoteServiceRelativePath("AdminService")
 public interface AdminService extends RemoteService {
-	ArrayList<Member> getMemberList();
+	String changeUser(User user);
 
-	ArrayList<String> getCourseList();
-	
-	ArrayList<Course> getCompleteCourseList();
-	
-	String getCourseName(int id);
-	
-	String getCourseBeltPair(int courseID, int beltID);
+	void createBelt(String beltName);
+
+	String createCourse(Course course);
+
+	Integer createEvent(Event event);
+
+	void deleteBeltByID(int beltID);
+
+	void deleteCourseByID(int courseID);
+
+	void deleteEventByEventID(int eventID);
+
+	void deleteMemberByMemberID(int memberID);
+
+	void deleteUserByUserID(int userID);
+
+	ArrayList<Belt> getAvailableBelts();
+
+	Belt getBeltByID(int beltID);
 
 	ArrayList<String> getBeltList(String courseName);
-	
-	Member getMemberByMemberID(int memberID);
-	
-	void deleteMemberByMemberID(int memberID);
-	
-	Member getMemberByBarcodeID(int barcodeID);
+
+	ArrayList<Course> getCompleteCourseList();
+
+	String getCourseBeltPair(int courseID, int beltID);
+
+	Course getCourseByID(int courseID);
 
 	int getCourseID(String courseName);
 
 	ArrayList<Integer> getCourseIDs(ArrayList<String> courseNames);
 
-	String saveMember(Member member);
+	ArrayList<String> getCourseList();
 
-	String createCourse(Course course);
-	
-	Course getCourseByID(int courseID);
-	
-	void deleteCourseByID(int courseID);
+	String getCourseName(int id);
+
+	Event getEventByEventID(int eventID);
+
+	ArrayList<Event> getEventList();
+
+	ArrayList<EventParticipant> getEventParticipants(int eventID);
 
 	ArrayList<User> getInstructorList();
-	
-	ArrayList<Member> searchMember(String searchQuery);
-	
-	ArrayList<User> getUserList();
-	
+
+	Member getMemberByBarcodeID(int barcodeID);
+
+	Member getMemberByMemberID(int memberID);
+
+	ArrayList<Member> getMemberList();
+
 	User getUserByUserID(int userID);
-	
-	void deleteUserByUserID(int userID);
-	
-	ArrayList<Event> getEventList();
-	
-	Event getEventByEventID(int eventID);
-	
-	void deleteEventByEventID(int eventID);
-	
-	Integer createEvent(Event event);
-	
-	Integer updateEvent(Event event);
-	
-	void updateCourse(Course course);
+
+	ArrayList<User> getUserList();
+
+	void renameBeltByID(Belt belt);
+
+	String saveMember(Member member);
 
 	String saveUser(User user);
 
-	String changeUser(User user);
-	
-	ArrayList<Belt> getAvailableBelts();
-	
-	void createBelt(String beltName);
-	
-	Belt getBeltByID(int beltID);
-	
-	void deleteBeltByID(int beltID);
-	
-	void renameBeltByID(Belt belt);
-	
+	ArrayList<Member> searchMember(String searchQuery);
+
 	void setEventParticipants(int eventID, ArrayList<EventParticipant> participants);
 
-	ArrayList<EventParticipant> getEventParticipants(int eventID);
-	
+	void updateCourse(Course course);
+
+	Integer updateEvent(Event event);
+
 }

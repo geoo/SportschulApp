@@ -42,51 +42,29 @@ import eu.maydu.gwt.validation.client.validators.strings.StringLengthValidator;
 
 public class CreateMemberPresenter implements Presenter {
 	public interface Display {
-		void setCourseList(ArrayList<String> courseList);
-
-		void setBeltList(int index, ArrayList<String> beltList);
-
 		void addNewCourseSelector();
 
-		void setImage(PreloadedImage image, String imageUrl);
+		Widget asWidget();
 
-		ValidationProcessor getValidator();
+		void fillForm(Member result);
 
-		HasClickHandlers getSendButton();
+		TextBoxBase getAccountForenameTextBox();
 
-		HasChangeHandlers getCourseHandler(int index);
+		TextBoxBase getAccountNumberTextBox();
 
-		HasChangeHandlers getGradeHandler(int index);
+		TextBoxBase getAccountSurnameTextBox();
 
-		String getSelectedCourseName(int index);
+		TextBox getAccoutForenameTextbox();
 
-		int getSelectedBeltNr(int index);
+		TextBox getAccoutSurnameTextbox();
 
-		String getPictureUrl();
+		TextBoxBase getBankNameTextBox();
 
-		MultiUploader getUploadHandler();
-
-		TextBox getForenameTextBox();
-
-		TextBox getSurnameTextBox();
+		TextBoxBase getBankNumberTextBox();
 
 		TextBox getBarcodeTextBox();
 
-		TextBox getStreetTextBox();
-
-		TextBox getZipcodeTextBox();
-
-		TextBox getCityTextBox();
-
-		TextBox getPhoneTextBox();
-
-		TextBox getmobilephoneTextBox();
-
-		TextBox getEmailTextBox();
-
-		TextBox getFaxTextBox();
-
-		TextBox getHomepageTextBox();
+		TextBox getBeltsizeTextBox();
 
 		ListBox getBirthTextBox1();
 
@@ -94,64 +72,106 @@ public class CreateMemberPresenter implements Presenter {
 
 		ListBox getBirthTextBox3();
 
-		TextArea getDiseasesTextBox();
-
-		TextBox getBeltsizeTextBox();
-
-		TextArea getNoteTextBox();
-
-		TextBox getTrainingunitsTextBox();
-
-		ListBox getCourseListBox();
-
-		ListBox getGradeListBox();
-
-		Widget asWidget();
-
-		ArrayList<CourseSelectorWidget> getCourseList();
-
-		String getListBoxString();
+		TextBox getCityTextBox();
 
 		LocalizationConstants getConstants();
 
-		void fillForm(Member result);
+		HasChangeHandlers getCourseHandler(int index);
+
+		ArrayList<CourseSelectorWidget> getCourseList();
+
+		ListBox getCourseListBox();
+
+		TextArea getDiseasesTextBox();
+
+		TextBox getEmailTextBox();
+
+		TextBox getFaxTextBox();
 
 		CheckBox getForenameCheckBox();
 
+		TextBox getForenameTextBox();
+
+		HasChangeHandlers getGradeHandler(int index);
+
+		ListBox getGradeListBox();
+
+		TextBox getHomepageTextBox();
+
+		String getListBoxString();
+
+		TextBox getmobilephoneTextBox();
+
+		TextArea getNoteTextBox();
+
+		TextBox getPhoneTextBox();
+
+		String getPictureUrl();
+
+		int getSelectedBeltNr(int index);
+
+		String getSelectedCourseName(int index);
+
+		HasClickHandlers getSendButton();
+
+		TextBox getStreetTextBox();
+
 		CheckBox getSurnameCheckBox();
 
-		TextBox getAccoutForenameTextbox();
+		TextBox getSurnameTextBox();
 
-		TextBox getAccoutSurnameTextbox();
+		TextBox getTrainingunitsTextBox();
 
-		TextBoxBase getAccountForenameTextBox();
+		MultiUploader getUploadHandler();
 
-		TextBoxBase getAccountSurnameTextBox();
+		ValidationProcessor getValidator();
 
-		TextBoxBase getAccountNumberTextBox();
+		TextBox getZipcodeTextBox();
 
-		TextBoxBase getBankNumberTextBox();
+		void setBeltList(int index, ArrayList<String> beltList);
 
-		TextBoxBase getBankNameTextBox();
+		void setCourseList(ArrayList<String> courseList);
+
+		void setImage(PreloadedImage image, String imageUrl);
 
 	}
 
-	private String imageUrl;
-	private final Display display;
-	private final AdminServiceAsync rpcService;
-	private ValidationProcessor validator;
-	private ArrayList<Integer> courses;
-	private ArrayList<Integer> grades;
 	private LocalizationConstants constants;
-	private HandlerManager eventBus;
+	private final Display display;
 	private boolean error = false;
+	private ArrayList<Integer> grades;
+	private String imageUrl;
+	// Load the image in the document and in the case of success attach it to
+	// the viewer
+	private IUploader.OnFinishUploaderHandler onFinishUploaderHandler = new IUploader.OnFinishUploaderHandler() {
+
+		public void onFinish(IUploader uploader) {
+			if (uploader.getStatus() == Status.SUCCESS) {
+				imageUrl = uploader.getServerResponse();
+				new PreloadedImage(imageUrl, showImage);
+
+			}
+		}
+	};
+	private PopupDescription popupDesc;
+
+	private final AdminServiceAsync rpcService;
+
+	// Attach an image to the pictures viewer
+	private OnLoadPreloadedImageHandler showImage = new OnLoadPreloadedImageHandler() {
+		public void onLoad(PreloadedImage image) {
+			image.setWidth("100px");
+			display.setImage(image, imageUrl);
+		}
+	};
+
+	private ValidationProcessor validator;
 
 	public CreateMemberPresenter(AdminServiceAsync rpcService,
 			HandlerManager eventBus, Display display) {
-		this.eventBus = eventBus;
 		this.display = display;
 		this.rpcService = rpcService;
-		this.constants = display.getConstants();
+		constants = display.getConstants();
 		bind();
 		getCourseList();
 		setupValidation();
@@ -169,10 +189,9 @@ public class CreateMemberPresenter implements Presenter {
 	 */
 	public CreateMemberPresenter(AdminServiceAsync rpcService,
 			HandlerManager eventBus, Display display, String barcodeID) {
-		this.eventBus = eventBus;
 		this.display = display;
 		this.rpcService = rpcService;
-		this.constants = display.getConstants();
+		constants = display.getConstants();
 		getMember(barcodeID);
 		bind();
 		getCourseList();
@@ -181,47 +200,33 @@ public class CreateMemberPresenter implements Presenter {
 
 	}
 
-	private void getMember(String barcodeID) {
-		rpcService.getMemberByBarcodeID(Integer.parseInt(barcodeID),
-				new AsyncCallback<Member>() {
-
-					public void onFailure(Throwable caught) {
-
-					}
-
-					public void onSuccess(Member result) {
-						display.fillForm(result);
-					}
-				});
-	}
-
 	private void bind() {
-		this.display.getSendButton().addClickHandler(new ClickHandler() {
+		display.getSendButton().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				boolean success = display.getValidator().validate();
 				if (display.getBirthTextBox1().getSelectedIndex() == 0) {
 					display.getBirthTextBox1().setStyleName(
-							"validationFailedBorder");
+					"validationFailedBorder");
 					success = false;
 				} else {
 					display.getBirthTextBox1().removeStyleName(
-							"validationFailedBorder");
+					"validationFailedBorder");
 				}
 				if (display.getBirthTextBox2().getSelectedIndex() == 0) {
 					display.getBirthTextBox2().setStyleName(
-							"validationFailedBorder");
+					"validationFailedBorder");
 					success = false;
 				} else {
 					display.getBirthTextBox2().removeStyleName(
-							"validationFailedBorder");
+					"validationFailedBorder");
 				}
 				if (display.getBirthTextBox3().getSelectedIndex() == 0) {
 					display.getBirthTextBox3().setStyleName(
-							"validationFailedBorder");
+					"validationFailedBorder");
 					success = false;
 				} else {
 					display.getBirthTextBox3().removeStyleName(
-							"validationFailedBorder");
+					"validationFailedBorder");
 				}
 
 				if (success) {
@@ -239,18 +244,18 @@ public class CreateMemberPresenter implements Presenter {
 			}
 		});
 
-		this.display.getUploadHandler().addOnFinishUploadHandler(
+		display.getUploadHandler().addOnFinishUploadHandler(
 				onFinishUploaderHandler);
 		for (int i = 0; i < 10; i++) {
 			final int test = i;
-			this.display.getCourseHandler(i).addChangeHandler(
+			display.getCourseHandler(i).addChangeHandler(
 					new ChangeHandler() {
 
 						public void onChange(ChangeEvent event) {
 							getBeltList(test);
 						}
 					});
-			this.display.getGradeHandler(i).addChangeHandler(
+			display.getGradeHandler(i).addChangeHandler(
 					new ChangeHandler() {
 
 						public void onChange(ChangeEvent event) {
@@ -293,46 +298,13 @@ public class CreateMemberPresenter implements Presenter {
 		});
 	}
 
-	public void go(HasWidgets container) {
-		container.clear();
-		container.add(display.asWidget());
-	}
-
-	public void getCourseList() {
-		rpcService.getCourseList(new AsyncCallback<ArrayList<String>>() {
-			public void onSuccess(ArrayList<String> result) {
-				display.setCourseList(result);
-			}
-
-			public void onFailure(Throwable caught) {
-
-			}
-		});
-
-	}
-
-	public void getBeltList(int index) {
-		final int test = index;
-		rpcService.getBeltList(display.getSelectedCourseName(index),
-				new AsyncCallback<ArrayList<String>>() {
-					public void onSuccess(ArrayList<String> result) {
-						display.setBeltList(test, result);
-					}
-
-					public void onFailure(Throwable caught) {
-
-					}
-				});
-
-	}
-
 	public void fillForm() {
 		error = false;
 		// courses = new ArrayList<Integer>();
 		grades = new ArrayList<Integer>();
 
 		ArrayList<CourseSelectorWidget> courseListWidget = display
-				.getCourseList();
+		.getCourseList();
 
 		ArrayList<String> courseNames = new ArrayList<String>();
 
@@ -357,136 +329,161 @@ public class CreateMemberPresenter implements Presenter {
 			rpcService.getCourseIDs(courseNames,
 					new AsyncCallback<ArrayList<Integer>>() {
 
-						private String accountForename;
-						private String accountSurname;
+				private String accountForename;
+				private String accountSurname;
 
-						public void onSuccess(ArrayList<Integer> result) {
+				public void onFailure(Throwable caught) {
+					System.out.println("rpc errror");
+				}
 
-							// prüfen ob "wie oben" bei Vorname gesetzt
-							if (display.getForenameCheckBox().getValue()) {
-								accountForename = display.getForenameTextBox()
-										.getText();
-							} else {
-								accountForename = display
-										.getAccountForenameTextBox().getText();
-							}
+				public void onSuccess(ArrayList<Integer> result) {
 
-							// prüfen ob "wie oben" bei Nachname gesetzt
-							if (display.getSurnameCheckBox().getValue()) {
-								accountSurname = display.getSurnameTextBox()
-										.getText();
-							} else {
-								accountSurname = display
-										.getAccountSurnameTextBox().getText();
-							}
+					// prüfen ob "wie oben" bei Vorname gesetzt
+					if (display.getForenameCheckBox().getValue()) {
+						accountForename = display.getForenameTextBox()
+						.getText();
+					} else {
+						accountForename = display
+						.getAccountForenameTextBox().getText();
+					}
 
-							// courses = result;
-							Integer selected = display.getBirthTextBox1()
-									.getSelectedIndex();
-							String birthDay = selected.toString();
+					// prüfen ob "wie oben" bei Nachname gesetzt
+					if (display.getSurnameCheckBox().getValue()) {
+						accountSurname = display.getSurnameTextBox()
+						.getText();
+					} else {
+						accountSurname = display
+						.getAccountSurnameTextBox().getText();
+					}
 
-							selected = display.getBirthTextBox2()
-									.getSelectedIndex();
-							String birthMonth = selected.toString();
+					// courses = result;
+					Integer selected = display.getBirthTextBox1()
+					.getSelectedIndex();
+					String birthDay = selected.toString();
 
-							selected = display.getBirthTextBox3()
-									.getSelectedIndex();
-							String birthYear = display.getBirthTextBox3()
-									.getItemText(selected);
-							Member member = new Member(0, new Integer(display
-									.getBarcodeTextBox().getText()), display
-									.getForenameTextBox().getText(), display
-									.getSurnameTextBox().getText(),
-									new Integer(display.getZipcodeTextBox()
-											.getText()), display
-											.getCityTextBox().getText(),
+					selected = display.getBirthTextBox2()
+					.getSelectedIndex();
+					String birthMonth = selected.toString();
+
+					selected = display.getBirthTextBox3()
+					.getSelectedIndex();
+					String birthYear = display.getBirthTextBox3()
+					.getItemText(selected);
+					Member member = new Member(0, new Integer(display
+							.getBarcodeTextBox().getText()), display
+							.getForenameTextBox().getText(), display
+							.getSurnameTextBox().getText(),
+							new Integer(display.getZipcodeTextBox()
+									.getText()), display
+									.getCityTextBox().getText(),
 									display.getStreetTextBox().getText(),
 									display.getPhoneTextBox().getText(),
 									display.getmobilephoneTextBox().getText(),
 									display.getFaxTextBox().getText(), display
-											.getEmailTextBox().getText(),
+									.getEmailTextBox().getText(),
 									display.getHomepageTextBox().getText(),
 									birthDay, birthMonth, birthYear, display
-											.getPictureUrl(), display
-											.getDiseasesTextBox().getText(),
+									.getPictureUrl(), display
+									.getDiseasesTextBox().getText(),
 									display.getBeltsizeTextBox().getText(),
 									display.getNoteTextBox().getText(),
 									new Integer(display
 											.getTrainingunitsTextBox()
 											.getText()), accountForename,
-									accountSurname, display
+											accountSurname, display
 											.getAccountNumberTextBox()
 											.getText(), display
 											.getBankNameTextBox().getText(),
-									display.getBankNumberTextBox().getText(),
-									result, grades);
+											display.getBankNumberTextBox().getText(),
+											result, grades);
 
-							try {
-								if (member.getPicture() == null) {
-									member.setPicture("imgs/standartMember.jpg");
-								}
-							} catch (NullPointerException e) {
-							}
-							rpcService.saveMember(member,
-									new AsyncCallback<String>() {
-
-										public void onSuccess(String result) {
-											System.out.println("result: "
-													+ result);
-											if (result
-													.equals("barcode_id already used")) {
-												display.getBarcodeTextBox()
-														.setStyleName(
-																"validationFailedBorderBarcode");
-												Window.alert(display
-														.getConstants()
-														.barcodeUsed());
-											} else {
-												Window.alert(constants
-														.memberCreated());
-												History.newItem("adminMembersShowMembers");
-											}
-										}
-
-										public void onFailure(Throwable caught) {
-											System.out.println("rpc errror");
-										}
-									});
-
+					try {
+						if (member.getPicture() == null) {
+							member.setPicture("imgs/standartMember.jpg");
 						}
+					} catch (NullPointerException e) {
+					}
+					rpcService.saveMember(member,
+							new AsyncCallback<String>() {
 
 						public void onFailure(Throwable caught) {
 							System.out.println("rpc errror");
 						}
+
+						public void onSuccess(String result) {
+							System.out.println("result: "
+									+ result);
+							if (result
+									.equals("barcode_id already used")) {
+								display.getBarcodeTextBox()
+								.setStyleName(
+										"validationFailedBorderBarcode");
+								Window.alert(display
+										.getConstants()
+										.barcodeUsed());
+							} else {
+								Window.alert(constants
+										.memberCreated());
+								History.newItem("adminMembersShowMembers");
+							}
+						}
 					});
+
+				}
+			});
 		}
 	}
 
-	// Load the image in the document and in the case of success attach it to
-	// the viewer
-	private IUploader.OnFinishUploaderHandler onFinishUploaderHandler = new IUploader.OnFinishUploaderHandler() {
-
-		public void onFinish(IUploader uploader) {
-			if (uploader.getStatus() == Status.SUCCESS) {
-				imageUrl = uploader.getServerResponse();
-				new PreloadedImage(imageUrl, showImage);
+	public void getBeltList(int index) {
+		final int test = index;
+		rpcService.getBeltList(display.getSelectedCourseName(index),
+				new AsyncCallback<ArrayList<String>>() {
+			public void onFailure(Throwable caught) {
 
 			}
-		}
-	};
 
-	// Attach an image to the pictures viewer
-	private OnLoadPreloadedImageHandler showImage = new OnLoadPreloadedImageHandler() {
-		public void onLoad(PreloadedImage image) {
-			image.setWidth("100px");
-			display.setImage(image, imageUrl);
-		}
-	};
-	private PopupDescription popupDesc;
+			public void onSuccess(ArrayList<String> result) {
+				display.setBeltList(test, result);
+			}
+		});
+
+	}
+
+	public void getCourseList() {
+		rpcService.getCourseList(new AsyncCallback<ArrayList<String>>() {
+			public void onFailure(Throwable caught) {
+
+			}
+
+			public void onSuccess(ArrayList<String> result) {
+				display.setCourseList(result);
+			}
+		});
+
+	}
+
+	private void getMember(String barcodeID) {
+		rpcService.getMemberByBarcodeID(Integer.parseInt(barcodeID),
+				new AsyncCallback<Member>() {
+
+			public void onFailure(Throwable caught) {
+
+			}
+
+			public void onSuccess(Member result) {
+				display.fillForm(result);
+			}
+		});
+	}
+	public void go(HasWidgets container) {
+		container.clear();
+		container.add(display.asWidget());
+	}
 
 	private void setupValidation() {
 		class CustomValidationMessages extends ValidationMessages {
 
+			@Override
 			public String getDescriptionMessage(String msgKey) {
 				HashMap<String, String> msgMap = new HashMap<String, String>();
 				msgMap.put("forename", constants.popupHelpForename());
@@ -518,20 +515,20 @@ public class CreateMemberPresenter implements Presenter {
 			}
 		}
 
-		this.validator = display.getValidator();
+		validator = display.getValidator();
 		ValidationMessages messages = new CustomValidationMessages();
 
 		popupDesc = new PopupDescription(messages);
 
 		validator.addValidators("forename",
 				new StringLengthValidator(display.getForenameTextBox(), 2, 30)
-						.addActionForFailure(new StyleAction(
-								"validationFailedBorder")));
+		.addActionForFailure(new StyleAction(
+		"validationFailedBorder")));
 
 		validator.addValidators("surname",
 				new StringLengthValidator(display.getSurnameTextBox(), 2, 30)
-						.addActionForFailure(new StyleAction(
-								"validationFailedBorder")));
+		.addActionForFailure(new StyleAction(
+		"validationFailedBorder")));
 
 		validator.addValidators("barcode",
 				new IntegerValidator(display.getBarcodeTextBox(), 0,
@@ -540,8 +537,8 @@ public class CreateMemberPresenter implements Presenter {
 
 		validator.addValidators("street",
 				new StringLengthValidator(display.getStreetTextBox(), 2, 30)
-						.addActionForFailure(new StyleAction(
-								"validationFailedBorder")));
+		.addActionForFailure(new StyleAction(
+		"validationFailedBorder")));
 
 		validator.addValidators("zipcodeInt",
 				new IntegerValidator(display.getZipcodeTextBox(), 0,
@@ -550,24 +547,24 @@ public class CreateMemberPresenter implements Presenter {
 
 		validator.addValidators("zipcodeLength", new StringLengthValidator(
 				display.getZipcodeTextBox(), 5, 5)
-				.addActionForFailure(new StyleAction("validationFailedBorder"))
+		.addActionForFailure(new StyleAction("validationFailedBorder"))
 		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
-				);
+		);
 
 		validator.addValidators("city",
 				new StringLengthValidator(display.getCityTextBox(), 2, 30)
-						.addActionForFailure(new StyleAction(
-								"validationFailedBorder")));
+		.addActionForFailure(new StyleAction(
+		"validationFailedBorder")));
 
 		validator.addValidators("phone",
 				new StringLengthValidator(display.getPhoneTextBox(), 1, 30)
-						.addActionForFailure(new StyleAction(
-								"validationFailedBorder")));
+		.addActionForFailure(new StyleAction(
+		"validationFailedBorder")));
 
 		validator.addValidators("beltsize",
 				new NotEmptyValidator(display.getBeltsizeTextBox())
-						.addActionForFailure(new StyleAction(
-								"validationFailedBorder")));
+		.addActionForFailure(new StyleAction(
+		"validationFailedBorder")));
 
 		validator.addValidators("trainingunits",
 				new IntegerValidator(display.getTrainingunitsTextBox(), 1,
@@ -575,21 +572,21 @@ public class CreateMemberPresenter implements Presenter {
 						"validationFailedBorder")));
 
 		validator
-				.addValidators("accountForename", new StringLengthValidator(
-						display.getAccountForenameTextBox(), 2, 30)
-						.addActionForFailure(new StyleAction(
-								"validationFailedBorder")));
+		.addValidators("accountForename", new StringLengthValidator(
+				display.getAccountForenameTextBox(), 2, 30)
+		.addActionForFailure(new StyleAction(
+		"validationFailedBorder")));
 
 		validator
-				.addValidators("accountSurname", new StringLengthValidator(
-						display.getAccountSurnameTextBox(), 2, 30)
-						.addActionForFailure(new StyleAction(
-								"validationFailedBorder")));
+		.addValidators("accountSurname", new StringLengthValidator(
+				display.getAccountSurnameTextBox(), 2, 30)
+		.addActionForFailure(new StyleAction(
+		"validationFailedBorder")));
 
 		validator.addValidators("Bankname",
 				new StringLengthValidator(display.getBankNameTextBox(), 2, 30)
-						.addActionForFailure(new StyleAction(
-								"validationFailedBorder")));
+		.addActionForFailure(new StyleAction(
+		"validationFailedBorder")));
 
 		validator.addValidators("accountNumber",
 				new IntegerValidator(display.getAccountNumberTextBox(), 0,

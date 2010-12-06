@@ -10,43 +10,45 @@ import com.google.gwt.user.client.ui.Widget;
 
 import de.sportschulApp.client.presenter.admin.ShowEventPresenter;
 import de.sportschulApp.client.view.localization.LocalizationConstants;
-import de.sportschulApp.shared.Course;
 import de.sportschulApp.shared.Event;
 
 public class ShowEventView extends Composite implements ShowEventPresenter.Display {
-	
-	private Label eventNameLabel = new Label();
-	private Label eventCoursesLabel = new Label();
-	private Label eventDateLabel = new Label();
-	private Label eventTimeLabel = new Label();
-	private Label eventCostsLabel = new Label();
-	private Label eventInsructorsLabel = new Label();
-	private Label eventLocationLabel = new Label();
-	private Label editLabel;
+
 	private Label deleteLabel;
+	private Label editLabel;
+	private Label showParticipantsLabel;
+	private Label eventCostsLabel = new Label();
+	private Label eventDateLabel = new Label();
+	private Label eventExaminersLabel = new Label();
+	private Label eventLocationLabel = new Label();
+	private Label eventNameLabel = new Label();
+	private Label eventTimeLabel = new Label();
+	private Label eventTypeLabel = new Label();
 
 	public ShowEventView(LocalizationConstants constants) {
 		VerticalPanel detailsPanel = new VerticalPanel();
 		detailsPanel.setWidth("450px");
 		initWidget(detailsPanel);
-		
+
 		HorizontalPanel metaPanel = new HorizontalPanel();
 		metaPanel.addStyleName("metaPanel");
-		
+
 		editLabel = new Label("Event bearbeiten");
+		showParticipantsLabel = new Label("Teilnehmer anzeigen");
 		deleteLabel = new Label("Event löschen");
-		
+
 		metaPanel.add(editLabel);
+		metaPanel.add(showParticipantsLabel);
 		metaPanel.add(deleteLabel);
-		
+
 		detailsPanel.add(metaPanel);
 
 		FlexTable courseDetailsPanel = new FlexTable();
 		courseDetailsPanel.setStyleName("detailsDataPanel");
 		courseDetailsPanel.setWidget(0, 0, new Label(constants.eventName() + ":"));
 		courseDetailsPanel.setWidget(0, 1, eventNameLabel);
-//		courseDetailsPanel.setWidget(1, 0, new Label(constants.course() + ":"));
-//		courseDetailsPanel.setWidget(1, 1, eventCoursesLabel);
+		courseDetailsPanel.setWidget(1, 0, new Label(constants.eventType() + ":"));
+		courseDetailsPanel.setWidget(1, 1, eventTypeLabel);
 		courseDetailsPanel.setWidget(2, 0, new Label(constants.date() + ":"));
 		courseDetailsPanel.setWidget(2, 1, eventDateLabel);
 		courseDetailsPanel.setWidget(3, 0, new Label(constants.time() + ":"));
@@ -55,28 +57,41 @@ public class ShowEventView extends Composite implements ShowEventPresenter.Displ
 		courseDetailsPanel.setWidget(4, 1, eventCostsLabel);
 		courseDetailsPanel.setWidget(5, 0, new Label(constants.location()+ ":"));
 		courseDetailsPanel.setWidget(5, 1, eventLocationLabel);
-		
+		courseDetailsPanel.setWidget(6, 0, new Label(constants.examiner()+ ":"));
+		courseDetailsPanel.setWidget(6, 1, eventExaminersLabel);
+
 		detailsPanel.add(courseDetailsPanel);
 	}
-	
-	public void setData(Event event) {
-		this.eventNameLabel.setText(event.getName());
-//		this.eventCoursesLabel.setText(event.getCourseID());
-//		this.eventDateLabel.setText(event.getDate().toString());
-//		this.eventTimeLabel.setText(event.getTime().toString());
-		this.eventCostsLabel.setText(event.getCosts());
-		this.eventLocationLabel.setText(event.getLocation());
-	}
-	
-	public HasClickHandlers getEditLabel() {
-		return this.editLabel;
-	}
-	
-	public HasClickHandlers getDeleteLabel() {
-		return this.deleteLabel;
-	}
-	
+
+	@Override
 	public Widget asWidget() {
 		return this;
+	}
+
+	public HasClickHandlers getDeleteLabel() {
+		return deleteLabel;
+	}
+
+	public HasClickHandlers getEditLabel() {
+		return editLabel;
+	}
+	
+	public HasClickHandlers getShowParticipantsLabel() {
+		return showParticipantsLabel;
+	}
+
+	public void setData(Event event) {
+		eventNameLabel.setText(event.getName());
+		eventTypeLabel.setText(event.getType());
+		eventDateLabel.setText(event.getDate());
+		eventTimeLabel.setText(event.getTime() + " Uhr");
+		eventCostsLabel.setText(event.getCosts());
+		eventLocationLabel.setText(event.getLocation());
+		
+		String examiners = new String();
+		for (int i = 0; i < event.getExaminers().size(); i++) {
+			examiners = examiners + event.getExaminers().get(i) + ", ";
+		}
+		eventExaminersLabel.setText(examiners.substring(0, examiners.length() -2));
 	}
 }

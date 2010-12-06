@@ -1,11 +1,9 @@
 package de.sportschulApp.client.view.trainer;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.rpc.client.RpcService;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DecoratedPopupPanel;
@@ -13,7 +11,6 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -22,24 +19,24 @@ import de.sportschulApp.client.view.localization.LocalizationConstants;
 import de.sportschulApp.shared.Member;
 
 public class MemberTrainingEntryView extends Composite implements
-		MemberTrainingEntryPresenter.Display {
+MemberTrainingEntryPresenter.Display {
 
+	private Label birthdayLabel;
+	private Button cancelButton;
 	private LocalizationConstants constants;
-	private Label membernameLabel1;
-	private Image picture;
 	private Image deleteButton;
 	private HorizontalPanel diseasesPanel;
+	private Member member;
+	private Label membernameLabel1;
+	private Label membernameLabel2;
 	private VerticalPanel memberTrainingEntryWrapper1;
 	private Image noteButton;
-	private Member member;
-	private Label trainingsPresenceLabel1;
-	private Label membernameLabel2;
-	private Label trainingsPresenceLabel2;
+	private Image picture;
 	private DecoratedPopupPanel popup;
-	private Button saveNoteButton;
-	private Button cancelButton;
 	private TextArea popupTextBox;
-	private Label birthdayLabel;
+	private Button saveNoteButton;
+	private Label trainingsPresenceLabel1;
+	private Label trainingsPresenceLabel2;
 
 	public MemberTrainingEntryView(LocalizationConstants constants) {
 		this.constants = constants;
@@ -92,12 +89,16 @@ public class MemberTrainingEntryView extends Composite implements
 
 	}
 
+	@Override
 	public Widget asWidget() {
 		return this;
 	}
 
-	public LocalizationConstants getConstants() {
-		return constants;
+	public void buildPopup() {
+	}
+
+	public void closePopup() {
+		popup.hide();
 	}
 
 	public void fillEntry(Member member, Integer trainingspresence) {
@@ -161,7 +162,7 @@ public class MemberTrainingEntryView extends Composite implements
 		Date memberBirthDate = new Date();
 
 		memberBirthDate
-				.setYear(Integer.parseInt((member.getBirthYear())) - 1900);
+		.setYear(Integer.parseInt((member.getBirthYear())) - 1900);
 		memberBirthDate.setMonth(Integer.parseInt(member.getBirthMonth()) - 1);
 		memberBirthDate.setDate(Integer.parseInt(member.getBirthDay()));
 
@@ -198,6 +199,10 @@ public class MemberTrainingEntryView extends Composite implements
 		}
 	}
 
+	public LocalizationConstants getConstants() {
+		return constants;
+	}
+
 	public Image getDeleteButton() {
 		return deleteButton;
 	}
@@ -206,7 +211,31 @@ public class MemberTrainingEntryView extends Composite implements
 		return noteButton;
 	}
 
-	public void buildPopup() {
+	public HasClickHandlers getPopupCancelButton() {
+		return cancelButton;
+	}
+
+	public HasClickHandlers getPopupSendButton() {
+		return saveNoteButton;
+	}
+
+	public String getPopupTextArea() {
+		return popupTextBox.getText();
+	}
+
+	public void showBirthdayLabel(int index) {
+		if (index == 0) {
+			birthdayLabel.setText(member.getForename()
+					+ " hat heute Geburtstag");
+		} else if (index == 1) {
+			birthdayLabel.setText(member.getForename() + " hatte am "
+					+ member.getBirthDay() + "." + member.getBirthMonth()
+					+ ". Geburtstag");
+		} else if (index == 2) {
+			birthdayLabel.setText(member.getForename() + " hat am "
+					+ member.getBirthDay() + "." + member.getBirthMonth()
+					+ ". Geburtstag");
+		}
 	}
 
 	public void showPopup(int left, int top, String note) {
@@ -232,36 +261,5 @@ public class MemberTrainingEntryView extends Composite implements
 
 		popup.show();
 
-	}
-
-	public HasClickHandlers getPopupCancelButton() {
-		return cancelButton;
-	}
-
-	public HasClickHandlers getPopupSendButton() {
-		return saveNoteButton;
-	}
-
-	public void closePopup() {
-		popup.hide();
-	}
-
-	public String getPopupTextArea() {
-		return popupTextBox.getText();
-	}
-
-	public void showBirthdayLabel(int index) {
-		if (index == 0) {
-			birthdayLabel.setText(member.getForename()
-					+ " hat heute Geburtstag");
-		} else if (index == 1) {
-			birthdayLabel.setText(member.getForename() + " hatte am "
-					+ member.getBirthDay() + "." + member.getBirthMonth()
-					+ ". Geburtstag");
-		} else if (index == 2) {
-			birthdayLabel.setText(member.getForename() + " hat am "
-					+ member.getBirthDay() + "." + member.getBirthMonth()
-					+ ". Geburtstag");
-		}
 	}
 }

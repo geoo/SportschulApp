@@ -4,24 +4,24 @@ import java.io.Serializable;
 
 @SuppressWarnings("serial")
 public class CourseTariff implements Serializable {
-	
-	private String name;
+
 	private String costs;
-	
-	public CourseTariff(String name, String costs) {
-		this.setName(name);
-		this.setCosts(costs);
-	}
-	
+	private String name;
+
 	public CourseTariff() {
-		
+
+	}
+
+	public CourseTariff(String name, String costs) {
+		setName(name);
+		setCosts(costs);
 	}
 
 	/**
-	 * @param name the name to set
+	 * @return the costs
 	 */
-	public void setName(String name) {
-		this.name = name;
+	public String getCosts() {
+		return costs;
 	}
 
 	/**
@@ -39,10 +39,10 @@ public class CourseTariff implements Serializable {
 	}
 
 	/**
-	 * @return the costs
+	 * @param name the name to set
 	 */
-	public String getCosts() {
-		return costs;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

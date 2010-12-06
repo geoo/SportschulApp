@@ -16,11 +16,8 @@ import com.google.gwt.user.client.ui.Widget;
 
 import de.sportschulApp.client.presenter.Presenter;
 import de.sportschulApp.client.services.AdminServiceAsync;
-import de.sportschulApp.client.view.admin.ListMemberView;
 import de.sportschulApp.client.view.localization.LocalizationConstants;
-import de.sportschulApp.shared.Course;
 import de.sportschulApp.shared.Event;
-import eu.maydu.gwt.validation.client.DefaultValidationProcessor;
 import eu.maydu.gwt.validation.client.ValidationProcessor;
 import eu.maydu.gwt.validation.client.actions.StyleAction;
 import eu.maydu.gwt.validation.client.description.PopupDescription;
@@ -32,49 +29,47 @@ public class CreateEventPresenter implements Presenter {
 
 		Widget asWidget();
 
-		VerticalPanel getWrapper();
+		Boolean checkExaminers();
+
+		void fillForm(Event event);
+
+		LocalizationConstants getConstants();
+
+		HasClickHandlers getCreateEventButtonHandler();
 
 		VerticalPanel getCreateEventPanel();
 
-		HasClickHandlers getCreateEventButtonHandler();
-		
-		LocalizationConstants getConstants();
-		
-		ValidationProcessor getValidator();
-		
-		TextBox getEventNameTextBox();
-		
 		TextBox getDateTextBox();
-		
-		TextBox getLocationTextBox();
-		
+
 		TextBox getEventCostsTextBox();
-		
+
+		TextBox getEventNameTextBox();
+
 		TextBox getFirstInstructorTextBox();
-		
-		Boolean checkExaminers();
-		
+
 		Event getFormData();
-		
-		void fillForm(Event event);
+
+		TextBox getLocationTextBox();
+
+		ValidationProcessor getValidator();
+
+		VerticalPanel getWrapper();
 	}
 
-	private final Display display;
-	private final AdminServiceAsync rpcService;
-	private final HandlerManager eventBus;
-	private ValidationProcessor validator;
-	private PopupDescription popupDesc;
 	private final LocalizationConstants constants;
-	private String eventID;
+	private final Display display;
 	private Boolean editItem = false;
+	private String eventID;
+	private PopupDescription popupDesc;
+	private final AdminServiceAsync rpcService;
+	private ValidationProcessor validator;
 
 	public CreateEventPresenter(AdminServiceAsync rpcService,
 			HandlerManager eventBus, Display display) {
 		this.display = display;
 		this.rpcService = rpcService;
-		this.eventBus = eventBus;
-		this.constants = display.getConstants();
-		bind();		
+		constants = display.getConstants();
+		bind();
 		setupValidation();
 	}
 
@@ -82,11 +77,10 @@ public class CreateEventPresenter implements Presenter {
 			HandlerManager eventBus, Display display, String eventID) {
 		this.display = display;
 		this.rpcService = rpcService;
-		this.eventBus = eventBus;
-		this.constants = display.getConstants();
+		constants = display.getConstants();
 		this.eventID = eventID;
-		this.editItem = true;
-		bind();		
+		editItem = true;
+		bind();
 		setupValidation();
 		getEventDetails(eventID);
 	}
@@ -98,11 +92,11 @@ public class CreateEventPresenter implements Presenter {
 					public void onClick(ClickEvent event) {
 						if (display.getValidator().validate()) {
 							if (display.checkExaminers()) {
-								
+
 								Event newEvent = display.getFormData();
-		
+
 								if (!(editItem)) {
-									rpcService.createEvent(newEvent, new AsyncCallback<Integer>() {								
+									rpcService.createEvent(newEvent, new AsyncCallback<Integer>() {
 										@Override
 										public void onFailure(Throwable caught) {
 											Window.alert("Anlegen des Events fehlgeschlagen!");
@@ -114,7 +108,7 @@ public class CreateEventPresenter implements Presenter {
 									});
 								} else {
 									newEvent.setEventID(Integer.valueOf(eventID));
-									
+
 									rpcService.updateEvent(newEvent, new AsyncCallback<Integer>() {
 										@Override
 										public void onFailure(Throwable caught) {
@@ -136,6 +130,18 @@ public class CreateEventPresenter implements Presenter {
 				});
 	}
 
+	public void getEventDetails(String eventID) {
+		rpcService.getEventByEventID(Integer.valueOf(eventID), new AsyncCallback<Event>() {
+			public void onFailure(Throwable caught) {
+				Window.alert("Fehler beim abfragen der Eventdaten.");
+			}
+			@Override
+			public void onSuccess(Event result) {
+				display.fillForm(result);
+			}
+		});
+	}
+
 	public void go(HasWidgets container) {
 		container.clear();
 		container.add(display.asWidget());
@@ -144,6 +150,7 @@ public class CreateEventPresenter implements Presenter {
 	public void setupValidation() {
 		class CustomValidationMessages extends ValidationMessages {
 
+			@Override
 			public String getDescriptionMessage(String msgKey) {
 				HashMap<String, String> msgMap = new HashMap<String, String>();
 				msgMap.put("eventName", constants.popupHelpEventName());
@@ -156,33 +163,21 @@ public class CreateEventPresenter implements Presenter {
 			}
 		}
 
-		this.validator = display.getValidator();
+		validator = display.getValidator();
 		ValidationMessages messages = new CustomValidationMessages();
 
 		popupDesc = new PopupDescription(messages);
 
 		validator.addValidators("eventName",new StringLengthValidator(display.getEventNameTextBox(), 2, 30).addActionForFailure(new StyleAction("validationFailedBorder")));
 		popupDesc.addDescription("eventName", display.getEventNameTextBox());
-		
+
 		validator.addValidators("eventDate", new StringLengthValidator(display.getDateTextBox(), 2, 30).addActionForFailure(new StyleAction("validationFailedBorder")));
-		
+
 		validator.addValidators("eventLocation", new StringLengthValidator(display.getLocationTextBox(), 2, 30).addActionForFailure(new StyleAction("validationFailedBorder")));
 		popupDesc.addDescription("eventLocation", display.getLocationTextBox());
-		
+
 		validator.addValidators("eventCosts", new StringLengthValidator(display.getEventCostsTextBox(), 2, 30).addActionForFailure(new StyleAction("validationFailedBorder")));
 		popupDesc.addDescription("eventCosts", display.getEventCostsTextBox());
-	}
-	
-	public void getEventDetails(String eventID) {
-		rpcService.getEventByEventID(Integer.valueOf(eventID), new AsyncCallback<Event>() {
-			public void onFailure(Throwable caught) {
-				Window.alert("Fehler beim abfragen der Eventdaten.");
-			}
-			@Override
-			public void onSuccess(Event result) {
-				display.fillForm(result);
-			}
-		});
 	}
 
 }

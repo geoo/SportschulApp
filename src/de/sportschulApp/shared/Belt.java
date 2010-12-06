@@ -4,25 +4,25 @@ import java.io.Serializable;
 
 @SuppressWarnings("serial")
 public class Belt implements Serializable {
-	
+
 	private int beltID;
 	private String name;
-	
-	public Belt(int beltID, String name) {
-		this.setBeltID(beltID);
-		this.setName(name);
-	}
-	
+
 	public Belt() {
-		
+
+	}
+
+	public Belt(int beltID, String name) {
+		setBeltID(beltID);
+		setName(name);
 	}
 
 
 	/**
-	 * @param name the name to set
+	 * @return the beltID
 	 */
-	public void setName(String name) {
-		this.name = name;
+	public int getBeltID() {
+		return beltID;
 	}
 
 	/**
@@ -40,9 +40,9 @@ public class Belt implements Serializable {
 	}
 
 	/**
-	 * @return the beltID
+	 * @param name the name to set
 	 */
-	public int getBeltID() {
-		return beltID;
+	public void setName(String name) {
+		this.name = name;
 	}
 }

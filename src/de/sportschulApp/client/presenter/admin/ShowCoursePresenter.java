@@ -16,53 +16,39 @@ import de.sportschulApp.shared.Course;
 
 public class ShowCoursePresenter implements Presenter{
 	public interface Display{
-		void setData(Course course);
-		HasClickHandlers getEditLabel();
-		HasClickHandlers getDeleteLabel();
 		Widget asWidget();
+		HasClickHandlers getDeleteLabel();
+		HasClickHandlers getEditLabel();
+		void setData(Course course);
 	}
-	
+
+	private Course course = new Course();
 	private final Display display;
 	private final AdminServiceAsync rpcService;
-	private Course course = new Course();
-	
+
 	public ShowCoursePresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display, int courseID) {
-	    this.display = display;
-	    this.rpcService = rpcService;
-	    bind();
-	    fetchCourseData(courseID);
+		this.display = display;
+		this.rpcService = rpcService;
+		bind();
+		fetchCourseData(courseID);
 	}
-
-	public void fetchCourseData(int courseID) {
-		rpcService.getCourseByID(courseID, new AsyncCallback<Course>() {
-			public void onSuccess(Course result) {
-				course = result;
-				display.setData(result);
-			}
-
-			public void onFailure(Throwable caught) {
-				Window.alert("Fehler beim laden der Kursdaten");
-			}
-		});
-	}
-	
 
 	private void bind() {
-		this.display.getEditLabel().addClickHandler(new ClickHandler() {
+		display.getEditLabel().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				History.newItem("adminCourseEditCourse:" + course.getCourseID());
 			}
 		});
-		
-		this.display.getDeleteLabel().addClickHandler(new ClickHandler() {
+
+		display.getDeleteLabel().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				if(Window.confirm("Bestätigen sie mit OK wenn der Kurs wirklich gelöscht werden soll.")) {
 					rpcService.deleteCourseByID(course.getCourseID(), new AsyncCallback<Void>() {
+						public void onFailure(Throwable caught) {
+							Window.alert("Das löschen des Kurses ist Fehlgeschlagen");
+						}
 						public void onSuccess(Void result) {
 							History.fireCurrentHistoryState();
-						}
-						public void onFailure(Throwable caught) {
-							Window.alert("Das löschen des Kurses ist Fehlgeschlagen");	
 						}
 					});
 				}
@@ -70,9 +56,23 @@ public class ShowCoursePresenter implements Presenter{
 		});
 	}
 
+
+	public void fetchCourseData(int courseID) {
+		rpcService.getCourseByID(courseID, new AsyncCallback<Course>() {
+			public void onFailure(Throwable caught) {
+				Window.alert("Fehler beim laden der Kursdaten");
+			}
+
+			public void onSuccess(Course result) {
+				course = result;
+				display.setData(result);
+			}
+		});
+	}
+
 	public void go(HasWidgets container) {
 		container.clear();
-	    container.add(display.asWidget());
+		container.add(display.asWidget());
 	}
 
 }

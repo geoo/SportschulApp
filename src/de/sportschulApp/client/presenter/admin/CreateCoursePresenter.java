@@ -33,48 +33,48 @@ public class CreateCoursePresenter implements Presenter {
 	public interface Display {
 		Widget asWidget();
 
-		DualListBox getDualListBox();
+		void fillForm(Course course);
 
 		LocalizationConstants getConstants();
+
+		ArrayList<CourseDate> getCourseDates();
+
+		TextBox getCourseNameTextBox();
+
+		ArrayList<CourseTariff> getCourseTariffs();
+
+		DualListBox getDualListBox();
+
+		TextBox getInstructorTextBox();
+
+		TextBox getLocationTextBox();
 
 		HasClickHandlers getSendButtonHandler();
 
 		ValidationProcessor getValidator();
 
-		TextBox getCourseNameTextBox();
-
-		TextBox getInstructorTextBox();
-
-		TextBox getLocationTextBox();
-		
-		ArrayList<CourseDate> getCourseDates();
-		
-		ArrayList<CourseTariff> getCourseTariffs();
-		
-		void fillForm(Course course);
-
 	}
 
-	private final Display display;
-	private final AdminServiceAsync rpcService;
 	private LocalizationConstants constants;
-	private ValidationProcessor validator;
-	private PopupDescription popupDesc;
-	private Boolean editItem = false;
-	private String courseID;
 	private ArrayList<String> courseBelts = new ArrayList<String>();
+	private String courseID;
+	private final Display display;
+	private Boolean editItem = false;
+	private PopupDescription popupDesc;
+	private final AdminServiceAsync rpcService;
+	private ValidationProcessor validator;
 
-	
+
 	public CreateCoursePresenter(AdminServiceAsync rpcService,
 			HandlerManager eventBus, Display display) {
 		this.display = display;
 		this.rpcService = rpcService;
-		this.constants = display.getConstants();
+		constants = display.getConstants();
 		bind();
 		fillDualListBox();
 		setupValidation();
 	}
-	
+
 	/**
 	 * Konstruktor für den EditCourseView
 	 * 
@@ -87,44 +87,12 @@ public class CreateCoursePresenter implements Presenter {
 			HandlerManager eventBus, Display display, String courseID) {
 		this.display = display;
 		this.rpcService = rpcService;
-		this.constants = display.getConstants();
-		this.editItem = true;
+		constants = display.getConstants();
+		editItem = true;
 		this.courseID = courseID;
 		bind();
 		setupValidation();
 		getCourseDetails(courseID);
-	}
-	
-	private void fillDualListBox() {
-		rpcService.getAvailableBelts(new AsyncCallback<ArrayList<Belt>>() {
-			public void onFailure(Throwable caught) {
-				Window.alert("Fehler beim laden der Gürtelfarben");
-			}
-			public void onSuccess(ArrayList<Belt> result) {
-				ArrayList<Belt> leftTemp = result;
-				for(int i = 0; i < leftTemp.size(); i++) {
-					for(int j = 0; j < courseBelts.size(); j++) {
-						if(leftTemp.get(i) != null) {
-							if (result.get(i).getName().equals(courseBelts.get(j))) {
-								leftTemp.set(i, null);
-							}
-						}
-					}
-				}
-				for (int i = 0; i < leftTemp.size(); i++) {
-					if(leftTemp.get(i) != null) {
-						display.getDualListBox().addLeft(leftTemp.get(i).getName());
-					}
-				}
-				
-				for (int i = 0; i < courseBelts.size(); i++) {
-					display.getDualListBox().addRight(courseBelts.get(i));
-				}
-			}
-		});
-		
-		
-		
 	}
 
 	private void bind() {
@@ -149,85 +117,79 @@ public class CreateCoursePresenter implements Presenter {
 		});
 	}
 
+	private void fillDualListBox() {
+		rpcService.getAvailableBelts(new AsyncCallback<ArrayList<Belt>>() {
+			public void onFailure(Throwable caught) {
+				Window.alert("Fehler beim laden der Gürtelfarben");
+			}
+			public void onSuccess(ArrayList<Belt> result) {
+				ArrayList<Belt> leftTemp = result;
+				for(int i = 0; i < leftTemp.size(); i++) {
+					for(int j = 0; j < courseBelts.size(); j++) {
+						if(leftTemp.get(i) != null) {
+							if (result.get(i).getName().equals(courseBelts.get(j))) {
+								leftTemp.set(i, null);
+							}
+						}
+					}
+				}
+				for (int i = 0; i < leftTemp.size(); i++) {
+					if(leftTemp.get(i) != null) {
+						display.getDualListBox().addLeft(leftTemp.get(i).getName());
+					}
+				}
+
+				for (int i = 0; i < courseBelts.size(); i++) {
+					display.getDualListBox().addRight(courseBelts.get(i));
+				}
+			}
+		});
+
+
+
+	}
+
 	private void fillForm() {
 		Course course = new Course(0, display.getCourseNameTextBox().getText(), display
-						.getInstructorTextBox().getText(), display
-						.getLocationTextBox().getText(), this.display.getCourseDates(), this.display.getCourseTariffs(), display
-						.getDualListBox().getWidgetListRight());
-		
-		if (!(this.editItem)) {
+				.getInstructorTextBox().getText(), display
+				.getLocationTextBox().getText(), display.getCourseDates(), display.getCourseTariffs(), display
+				.getDualListBox().getWidgetListRight());
+
+		if (!(editItem)) {
 			rpcService.createCourse(course, new AsyncCallback<String>() {
+				public void onFailure(Throwable caught) {
+					System.out.println("rpc errror");
+				}
+
 				public void onSuccess(String result) {
 					System.out.println("result: " + result);
-	
+
 					if (result.equals("name alrady used")) {
 						display.getCourseNameTextBox().setStyleName(
-								"validationFailedBorderCourseName");
+						"validationFailedBorderCourseName");
 						Window.alert(display.getConstants().courseNameUsed());
-	
+
 					} else {
 						Window.alert(constants.courseCreated());
 						History.newItem("adminCourseShowCourses");
 					}
 				}
-	
-				public void onFailure(Throwable caught) {
-					System.out.println("rpc errror");
-				}
 			});
 		} else {
-			course.setCourseID(Integer.valueOf(this.courseID));
+			course.setCourseID(Integer.valueOf(courseID));
 			rpcService.updateCourse(course, new AsyncCallback<Void>() {
+				public void onFailure(Throwable caught) {
+					Window.alert("Editieren des Kurses fehlgeschlagen.");
+
+				}
 				public void onSuccess(Void result) {
 					Window.alert("Editieren des Kurses erfolgreich");
 					History.newItem("adminCourseShowCourses");
 				}
-				public void onFailure(Throwable caught) {
-					Window.alert("Editieren des Kurses fehlgeschlagen.");
-					
-				}
 			});
 		}
 	}
 
-	public void go(HasWidgets container) {
-		container.clear();
-		container.add(display.asWidget());
-	}
-
-	
-	public void setupValidation() {
-		class CustomValidationMessages extends ValidationMessages {
-
-			public String getDescriptionMessage(String msgKey) {
-				HashMap<String, String> msgMap = new HashMap<String, String>();
-				msgMap.put("courseName", constants.popupHelpCourseName());
-				msgMap.put("instructor", constants.popupHelpInstructor());
-				msgMap.put("location", constants.popupHelpLocation());
-
-				String temp = msgMap.get(msgKey.trim());
-				return temp;
-			}
-		}
-
-		this.validator = display.getValidator();
-		ValidationMessages messages = new CustomValidationMessages();
-
-		popupDesc = new PopupDescription(messages);
-
-		validator
-				.addValidators(
-						"courseName",
-						new StringLengthValidator(display
-								.getCourseNameTextBox(), 2, 30)
-								.addActionForFailure(new StyleAction(
-										"validationFailedBorder")));
-
-		popupDesc.addDescription("courseName", display.getCourseNameTextBox());
-		popupDesc.addDescription("instructor", display.getInstructorTextBox());
-		popupDesc.addDescription("location", display.getLocationTextBox());
-	}
-	
 	public void getCourseDetails(String courseID) {
 		rpcService.getCourseByID(Integer.valueOf(courseID), new AsyncCallback<Course>() {
 			public void onFailure(Throwable caught) {
@@ -239,5 +201,44 @@ public class CreateCoursePresenter implements Presenter {
 				fillDualListBox();
 			}
 		});
+	}
+
+
+	public void go(HasWidgets container) {
+		container.clear();
+		container.add(display.asWidget());
+	}
+
+	public void setupValidation() {
+		class CustomValidationMessages extends ValidationMessages {
+
+			@Override
+			public String getDescriptionMessage(String msgKey) {
+				HashMap<String, String> msgMap = new HashMap<String, String>();
+				msgMap.put("courseName", constants.popupHelpCourseName());
+				msgMap.put("instructor", constants.popupHelpInstructor());
+				msgMap.put("location", constants.popupHelpLocation());
+
+				String temp = msgMap.get(msgKey.trim());
+				return temp;
+			}
+		}
+
+		validator = display.getValidator();
+		ValidationMessages messages = new CustomValidationMessages();
+
+		popupDesc = new PopupDescription(messages);
+
+		validator
+		.addValidators(
+				"courseName",
+				new StringLengthValidator(display
+						.getCourseNameTextBox(), 2, 30)
+				.addActionForFailure(new StyleAction(
+				"validationFailedBorder")));
+
+		popupDesc.addDescription("courseName", display.getCourseNameTextBox());
+		popupDesc.addDescription("instructor", display.getInstructorTextBox());
+		popupDesc.addDescription("location", display.getLocationTextBox());
 	}
 }

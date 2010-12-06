@@ -12,13 +12,14 @@ public class SettingsView extends Composite implements SettingsPresenter.Display
 	public SettingsView() {
 		VerticalPanel dummyPanel = new VerticalPanel();
 		initWidget(dummyPanel);
-		
+
 		Label dummyLabel = new Label("Systemverwaltung");
-		
+
 		dummyPanel.add(dummyLabel);
-		
+
 	}
-	
+
+	@Override
 	public Widget asWidget() {
 		return this;
 	}

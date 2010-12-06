@@ -5,33 +5,36 @@ import java.util.ArrayList;
 
 @SuppressWarnings("serial")
 public class Member implements Serializable {
-	private int memberID;
+	private String accountForename;
+	private String accountNumber;
+	private String accountSurname;
+	private String bankName;
+	private String bankNumber;
 	private int barcodeID;
-	private String forename;
-	private String surname;
-	private int zipcode;
-	private String city;
-	private String street;
-	private String phone;
-	private String mobilephone;
-	private String fax;
-	private String email;
-	private String homepage;
+	private String beltsize;
 	private String birthDay;
 	private String birthMonth;
 	private String birthYear;
-	private String picture;
-	private String diseases;
-	private String beltsize;
-	private String note;
-	private int trainingunits;
-	private String accountForename;
-	private String accountSurname;
-	private String accountNumber;
-	private String bankName;
-	private String bankNumber;
+	private String city;
 	private ArrayList<Integer> courses;
+	private String diseases;
+	private String email;
+	private String fax;
+	private String forename;
 	private ArrayList<Integer> graduations;
+	private String homepage;
+	private int memberID;
+	private String mobilephone;
+	private String note;
+	private String phone;
+	private String picture;
+	private String street;
+	private String surname;
+	private int trainingunits;
+	private int zipcode;
+
+	public Member() {
+	}
 
 	public Member(int memberID, int barcodeID, String forename, String surname,
 			int zipcode, String city, String street, String phone,
@@ -42,60 +45,69 @@ public class Member implements Serializable {
 			String accountNumber, String bankName, String bankNumber,
 			ArrayList<Integer> courses, ArrayList<Integer> graduations) {
 
-		this.setMemberID(memberID);
-		this.setBarcodeID(barcodeID);
-		this.setForename(forename);
-		this.setSurname(surname);
-		this.setZipcode(zipcode);
-		this.setCity(city);
-		this.setStreet(street);
-		this.setPhone(phone);
-		this.setMobilephone(mobilephone);
-		this.setFax(fax);
-		this.setEmail(email);
-		this.setHomepage(homepage);
-		this.setBirthDay(birthDay);
-		this.setBirthMonth(birthMonth);
-		this.setBirthYear(birthYear);
-		this.setPicture(picture);
-		this.setDiseases(diseases);
-		this.setBeltsize(beltsize);
-		this.setNote(note);
-		this.setTrainingunits(trainingunits);
-		this.setCourses(courses);
-		this.setGraduations(graduations);
-		this.setAccountForename(accountForename);
-		this.setAccountSurname(accountSurname);
-		this.setAccountNumber(accountNumber);
-		this.setBankName(bankName);
-		this.setBankNumber(bankNumber);
+		setMemberID(memberID);
+		setBarcodeID(barcodeID);
+		setForename(forename);
+		setSurname(surname);
+		setZipcode(zipcode);
+		setCity(city);
+		setStreet(street);
+		setPhone(phone);
+		setMobilephone(mobilephone);
+		setFax(fax);
+		setEmail(email);
+		setHomepage(homepage);
+		setBirthDay(birthDay);
+		setBirthMonth(birthMonth);
+		setBirthYear(birthYear);
+		setPicture(picture);
+		setDiseases(diseases);
+		setBeltsize(beltsize);
+		setNote(note);
+		setTrainingunits(trainingunits);
+		setCourses(courses);
+		setGraduations(graduations);
+		setAccountForename(accountForename);
+		setAccountSurname(accountSurname);
+		setAccountNumber(accountNumber);
+		setBankName(bankName);
+		setBankNumber(bankNumber);
 
-	}
-
-	public Member() {
 	}
 
 	/**
-	 * @param memberID
-	 *            the memberID to set
+	 * @return the accountForename
 	 */
-	public void setMemberID(int memberID) {
-		this.memberID = memberID;
+	public String getAccountForename() {
+		return accountForename;
 	}
 
 	/**
-	 * @return the memberID
+	 * @return the accountNumber
 	 */
-	public int getMemberID() {
-		return memberID;
+	public String getAccountNumber() {
+		return accountNumber;
 	}
 
 	/**
-	 * @param barcodeID
-	 *            the barcodeID to set
+	 * @return the accountSurname
 	 */
-	public void setBarcodeID(int barcodeID) {
-		this.barcodeID = barcodeID;
+	public String getAccountSurname() {
+		return accountSurname;
+	}
+
+	/**
+	 * @return the bankName
+	 */
+	public String getBankName() {
+		return bankName;
+	}
+
+	/**
+	 * @return the bankNumber
+	 */
+	public String getBankNumber() {
+		return bankNumber;
 	}
 
 	/**
@@ -106,266 +118,10 @@ public class Member implements Serializable {
 	}
 
 	/**
-	 * @param forename
-	 *            the forename to set
-	 */
-	public void setForename(String forename) {
-		this.forename = forename;
-	}
-
-	/**
-	 * @return the forename
-	 */
-	public String getForename() {
-		return forename;
-	}
-
-	/**
-	 * @param surname
-	 *            the surname to set
-	 */
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
-
-	/**
-	 * @return the surname
-	 */
-	public String getSurname() {
-		return surname;
-	}
-
-	/**
-	 * @param zipcode
-	 *            the zipcode to set
-	 */
-	public void setZipcode(int zipcode) {
-		this.zipcode = zipcode;
-	}
-
-	/**
-	 * @return the zipcode
-	 */
-	public int getZipcode() {
-		return zipcode;
-	}
-
-	/**
-	 * @param city
-	 *            the city to set
-	 */
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	/**
-	 * @return the city
-	 */
-	public String getCity() {
-		return city;
-	}
-
-	/**
-	 * @param street
-	 *            the street to set
-	 */
-	public void setStreet(String street) {
-		this.street = street;
-	}
-
-	/**
-	 * @return the street
-	 */
-	public String getStreet() {
-		return street;
-	}
-
-	/**
-	 * @param phone
-	 *            the phone to set
-	 */
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	/**
-	 * @return the phone
-	 */
-	public String getPhone() {
-		return phone;
-	}
-
-	/**
-	 * @param mobilephone
-	 *            the mobilephone to set
-	 */
-	public void setMobilephone(String mobilephone) {
-		this.mobilephone = mobilephone;
-	}
-
-	/**
-	 * @return the mobilephone
-	 */
-	public String getMobilephone() {
-		return mobilephone;
-	}
-
-	/**
-	 * @param fax
-	 *            the fax to set
-	 */
-	public void setFax(String fax) {
-		this.fax = fax;
-	}
-
-	/**
-	 * @return the fax
-	 */
-	public String getFax() {
-		return fax;
-	}
-
-	/**
-	 * @param email
-	 *            the email to set
-	 */
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	/**
-	 * @return the email
-	 */
-	public String getEmail() {
-		return email;
-	}
-
-	/**
-	 * @param homepage
-	 *            the homepage to set
-	 */
-	public void setHomepage(String homepage) {
-		this.homepage = homepage;
-	}
-
-	/**
-	 * @return the homepage
-	 */
-	public String getHomepage() {
-		return homepage;
-	}
-
-	/**
-	 * @param picture
-	 *            the picture to set
-	 */
-	public void setPicture(String picture) {
-		this.picture = picture;
-	}
-
-	/**
-	 * @return the picture
-	 */
-	public String getPicture() {
-		return picture;
-	}
-
-	/**
-	 * @param diseases
-	 *            the diseases to set
-	 */
-	public void setDiseases(String diseases) {
-		this.diseases = diseases;
-	}
-
-	/**
-	 * @return the diseases
-	 */
-	public String getDiseases() {
-		return diseases;
-	}
-
-	/**
-	 * @param beltsize
-	 *            the beltsize to set
-	 */
-	public void setBeltsize(String beltsize) {
-		this.beltsize = beltsize;
-	}
-
-	/**
 	 * @return the beltsize
 	 */
 	public String getBeltsize() {
 		return beltsize;
-	}
-
-	/**
-	 * @param note
-	 *            the note to set
-	 */
-	public void setNote(String note) {
-		this.note = note;
-	}
-
-	/**
-	 * @return the note
-	 */
-	public String getNote() {
-		return note;
-	}
-
-	/**
-	 * @param trainingunits
-	 *            the trainingunits to set
-	 */
-	public void setTrainingunits(int trainingunits) {
-		this.trainingunits = trainingunits;
-	}
-
-	/**
-	 * @return the trainingunits
-	 */
-	public int getTrainingunits() {
-		return trainingunits;
-	}
-
-	/**
-	 * @param courses
-	 *            the courses to set
-	 */
-	public void setCourses(ArrayList<Integer> courses) {
-		this.courses = courses;
-	}
-
-	/**
-	 * @return the courses
-	 */
-	public ArrayList<Integer> getCourses() {
-		return courses;
-	}
-
-	/**
-	 * @param graduations
-	 *            the graduations to set
-	 */
-	public void setGraduations(ArrayList<Integer> graduations) {
-		this.graduations = graduations;
-	}
-
-	/**
-	 * @return the graduations
-	 */
-	public ArrayList<Integer> getGraduations() {
-		return graduations;
-	}
-
-	/**
-	 * @param birthDay
-	 *            the birthDay to set
-	 */
-	public void setBirthDay(String birthDay) {
-		this.birthDay = birthDay;
 	}
 
 	/**
@@ -376,26 +132,10 @@ public class Member implements Serializable {
 	}
 
 	/**
-	 * @param birthMonth
-	 *            the birthMonth to set
-	 */
-	public void setBirthMonth(String birthMonth) {
-		this.birthMonth = birthMonth;
-	}
-
-	/**
 	 * @return the birthMonth
 	 */
 	public String getBirthMonth() {
 		return birthMonth;
-	}
-
-	/**
-	 * @param birthYear
-	 *            the birthYear to set
-	 */
-	public void setBirthYear(String birthYear) {
-		this.birthYear = birthYear;
 	}
 
 	/**
@@ -406,10 +146,122 @@ public class Member implements Serializable {
 	}
 
 	/**
-	 * @return the accountForename
+	 * @return the city
 	 */
-	public String getAccountForename() {
-		return accountForename;
+	public String getCity() {
+		return city;
+	}
+
+	/**
+	 * @return the courses
+	 */
+	public ArrayList<Integer> getCourses() {
+		return courses;
+	}
+
+	/**
+	 * @return the diseases
+	 */
+	public String getDiseases() {
+		return diseases;
+	}
+
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
+
+	/**
+	 * @return the fax
+	 */
+	public String getFax() {
+		return fax;
+	}
+
+	/**
+	 * @return the forename
+	 */
+	public String getForename() {
+		return forename;
+	}
+
+	/**
+	 * @return the graduations
+	 */
+	public ArrayList<Integer> getGraduations() {
+		return graduations;
+	}
+
+	/**
+	 * @return the homepage
+	 */
+	public String getHomepage() {
+		return homepage;
+	}
+
+	/**
+	 * @return the memberID
+	 */
+	public int getMemberID() {
+		return memberID;
+	}
+
+	/**
+	 * @return the mobilephone
+	 */
+	public String getMobilephone() {
+		return mobilephone;
+	}
+
+	/**
+	 * @return the note
+	 */
+	public String getNote() {
+		return note;
+	}
+
+	/**
+	 * @return the phone
+	 */
+	public String getPhone() {
+		return phone;
+	}
+
+	/**
+	 * @return the picture
+	 */
+	public String getPicture() {
+		return picture;
+	}
+
+	/**
+	 * @return the street
+	 */
+	public String getStreet() {
+		return street;
+	}
+
+	/**
+	 * @return the surname
+	 */
+	public String getSurname() {
+		return surname;
+	}
+
+	/**
+	 * @return the trainingunits
+	 */
+	public int getTrainingunits() {
+		return trainingunits;
+	}
+
+	/**
+	 * @return the zipcode
+	 */
+	public int getZipcode() {
+		return zipcode;
 	}
 
 	/**
@@ -421,10 +273,11 @@ public class Member implements Serializable {
 	}
 
 	/**
-	 * @return the accountSurname
+	 * @param accountNumber
+	 *            the accountNumber to set
 	 */
-	public String getAccountSurname() {
-		return accountSurname;
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
 	}
 
 	/**
@@ -436,28 +289,6 @@ public class Member implements Serializable {
 	}
 
 	/**
-	 * @return the accountNumber
-	 */
-	public String getAccountNumber() {
-		return accountNumber;
-	}
-
-	/**
-	 * @param accountNumber
-	 *            the accountNumber to set
-	 */
-	public void setAccountNumber(String accountNumber) {
-		this.accountNumber = accountNumber;
-	}
-
-	/**
-	 * @return the bankName
-	 */
-	public String getBankName() {
-		return bankName;
-	}
-
-	/**
 	 * @param bankName
 	 *            the bankName to set
 	 */
@@ -466,17 +297,186 @@ public class Member implements Serializable {
 	}
 
 	/**
-	 * @return the bankNumber
-	 */
-	public String getBankNumber() {
-		return bankNumber;
-	}
-
-	/**
 	 * @param bankNumber
 	 *            the bankNumber to set
 	 */
 	public void setBankNumber(String bankNumber) {
 		this.bankNumber = bankNumber;
+	}
+
+	/**
+	 * @param barcodeID
+	 *            the barcodeID to set
+	 */
+	public void setBarcodeID(int barcodeID) {
+		this.barcodeID = barcodeID;
+	}
+
+	/**
+	 * @param beltsize
+	 *            the beltsize to set
+	 */
+	public void setBeltsize(String beltsize) {
+		this.beltsize = beltsize;
+	}
+
+	/**
+	 * @param birthDay
+	 *            the birthDay to set
+	 */
+	public void setBirthDay(String birthDay) {
+		this.birthDay = birthDay;
+	}
+
+	/**
+	 * @param birthMonth
+	 *            the birthMonth to set
+	 */
+	public void setBirthMonth(String birthMonth) {
+		this.birthMonth = birthMonth;
+	}
+
+	/**
+	 * @param birthYear
+	 *            the birthYear to set
+	 */
+	public void setBirthYear(String birthYear) {
+		this.birthYear = birthYear;
+	}
+
+	/**
+	 * @param city
+	 *            the city to set
+	 */
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	/**
+	 * @param courses
+	 *            the courses to set
+	 */
+	public void setCourses(ArrayList<Integer> courses) {
+		this.courses = courses;
+	}
+
+	/**
+	 * @param diseases
+	 *            the diseases to set
+	 */
+	public void setDiseases(String diseases) {
+		this.diseases = diseases;
+	}
+
+	/**
+	 * @param email
+	 *            the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	/**
+	 * @param fax
+	 *            the fax to set
+	 */
+	public void setFax(String fax) {
+		this.fax = fax;
+	}
+
+	/**
+	 * @param forename
+	 *            the forename to set
+	 */
+	public void setForename(String forename) {
+		this.forename = forename;
+	}
+
+	/**
+	 * @param graduations
+	 *            the graduations to set
+	 */
+	public void setGraduations(ArrayList<Integer> graduations) {
+		this.graduations = graduations;
+	}
+
+	/**
+	 * @param homepage
+	 *            the homepage to set
+	 */
+	public void setHomepage(String homepage) {
+		this.homepage = homepage;
+	}
+
+	/**
+	 * @param memberID
+	 *            the memberID to set
+	 */
+	public void setMemberID(int memberID) {
+		this.memberID = memberID;
+	}
+
+	/**
+	 * @param mobilephone
+	 *            the mobilephone to set
+	 */
+	public void setMobilephone(String mobilephone) {
+		this.mobilephone = mobilephone;
+	}
+
+	/**
+	 * @param note
+	 *            the note to set
+	 */
+	public void setNote(String note) {
+		this.note = note;
+	}
+
+	/**
+	 * @param phone
+	 *            the phone to set
+	 */
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	/**
+	 * @param picture
+	 *            the picture to set
+	 */
+	public void setPicture(String picture) {
+		this.picture = picture;
+	}
+
+	/**
+	 * @param street
+	 *            the street to set
+	 */
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
+	/**
+	 * @param surname
+	 *            the surname to set
+	 */
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+
+	/**
+	 * @param trainingunits
+	 *            the trainingunits to set
+	 */
+	public void setTrainingunits(int trainingunits) {
+		this.trainingunits = trainingunits;
+	}
+
+	/**
+	 * @param zipcode
+	 *            the zipcode to set
+	 */
+	public void setZipcode(int zipcode) {
+		this.zipcode = zipcode;
 	}
 }

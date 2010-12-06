@@ -3,11 +3,9 @@ package de.sportschulApp.client.view.admin;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -16,28 +14,28 @@ import de.sportschulApp.client.view.localization.LocalizationConstants;
 import de.sportschulApp.shared.Member;
 
 public class ShowMemberView extends Composite implements
-		ShowMemberPresenter.Display {
+ShowMemberPresenter.Display {
 
 	private Label barcodeIDLabel = new Label();
-	private Label forenameLabel = new Label();
-	private Label surnameLabel = new Label();
-	private Label zipcodeLabel = new Label();
-	private Label cityLabel = new Label();
-	private Label streetLabel = new Label();
-	private Label phoneLabel = new Label();
-	private Label mobilePhoneLabel = new Label();
-	private Label faxLabel = new Label();
-	private Label emailLabel = new Label();
-	private Label homepageLabel = new Label();
-	private Label birthContainer = new Label();
 	private Label beltSizeLabel = new Label();
-	private Label noteLabel = new Label();
-	private Label trainingUnitsLabel = new Label();
+	private Label birthContainer = new Label();
+	private Label cityLabel = new Label();
 	private Label coursesLabel = new Label();
-	private Label editLabel;
 	private Label deleteLabel;
+	private Label editLabel;
+	private Label emailLabel = new Label();
+	private Label faxLabel = new Label();
+	private Label forenameLabel = new Label();
+	private Label homepageLabel = new Label();
 	private Image memberPicture = new Image("");
+	private Label mobilePhoneLabel = new Label();
+	private Label noteLabel = new Label();
+	private Label phoneLabel = new Label();
 	FlexTable secondaryDetailsData = new FlexTable();
+	private Label streetLabel = new Label();
+	private Label surnameLabel = new Label();
+	private Label trainingUnitsLabel = new Label();
+	private Label zipcodeLabel = new Label();
 
 	public ShowMemberView(LocalizationConstants constants) {
 		VerticalPanel memberPanel = new VerticalPanel();
@@ -64,13 +62,13 @@ public class ShowMemberView extends Composite implements
 		FlexTable primaryDetailsData = new FlexTable();
 		primaryDetailsData.setStyleName("primaryDetailsData");
 		primaryDetailsData
-				.setWidget(0, 0, new Label(constants.barcode() + ":"));
+		.setWidget(0, 0, new Label(constants.barcode() + ":"));
 		primaryDetailsData.setWidget(0, 1, barcodeIDLabel);
 		primaryDetailsData.setWidget(1, 0,
 				new Label(constants.forename() + ":"));
 		primaryDetailsData.setWidget(1, 1, forenameLabel);
 		primaryDetailsData
-				.setWidget(2, 0, new Label(constants.surname() + ":"));
+		.setWidget(2, 0, new Label(constants.surname() + ":"));
 		primaryDetailsData.setWidget(2, 1, surnameLabel);
 		primaryDetailsData.setWidget(3, 0, new Label(constants.birth() + ":"));
 		primaryDetailsData.setWidget(3, 1, birthContainer);
@@ -96,7 +94,7 @@ public class ShowMemberView extends Composite implements
 		secondaryDetailsData.setWidget(3, 0, new Label(constants.fax() + ":"));
 		secondaryDetailsData.setWidget(3, 1, faxLabel);
 		secondaryDetailsData
-				.setWidget(4, 0, new Label(constants.email() + ":"));
+		.setWidget(4, 0, new Label(constants.email() + ":"));
 		secondaryDetailsData.setWidget(4, 1, emailLabel);
 		secondaryDetailsData.setWidget(5, 0, new Label(constants.homepage()
 				+ ":"));
@@ -111,41 +109,42 @@ public class ShowMemberView extends Composite implements
 		memberPanel.add(secondaryDetailsData);
 	}
 
+	@Override
 	public Widget asWidget() {
 		return this;
 	}
 
-	public void setMemberData(Member member) {
-		this.barcodeIDLabel.setText(member.getBarcodeID() + "");
-		this.forenameLabel.setText(member.getForename());
-		this.surnameLabel.setText(member.getSurname());
-		this.zipcodeLabel.setText(member.getZipcode() + "");
-		this.cityLabel.setText(member.getCity());
-		this.streetLabel.setText(member.getStreet());
-		this.phoneLabel.setText(member.getPhone());
-		this.mobilePhoneLabel.setText(member.getMobilephone());
-		this.faxLabel.setText(member.getFax());
-		this.emailLabel.setText(member.getEmail());
-		this.homepageLabel.setText(member.getHomepage());
-		this.birthContainer.setText(member.getBirthDay() + "."
-				+ member.getBirthMonth() + "." + member.getBirthYear());
-		this.beltSizeLabel.setText(member.getBeltsize());
-		this.noteLabel.setText(member.getNote());
-		this.trainingUnitsLabel.setText(member.getTrainingunits() + "");
-
-		this.memberPicture.setUrl(member.getPicture());
-
+	public HasClickHandlers getDeleteLabel() {
+		return deleteLabel;
 	}
 
 	public HasClickHandlers getEditLabel() {
-		return this.editLabel;
-	}
-
-	public HasClickHandlers getDeleteLabel() {
-		return this.deleteLabel;
+		return editLabel;
 	}
 
 	public void setMemberCourses(String courses) {
-		this.coursesLabel.setText(courses);
+		coursesLabel.setText(courses);
+	}
+
+	public void setMemberData(Member member) {
+		barcodeIDLabel.setText(member.getBarcodeID() + "");
+		forenameLabel.setText(member.getForename());
+		surnameLabel.setText(member.getSurname());
+		zipcodeLabel.setText(member.getZipcode() + "");
+		cityLabel.setText(member.getCity());
+		streetLabel.setText(member.getStreet());
+		phoneLabel.setText(member.getPhone());
+		mobilePhoneLabel.setText(member.getMobilephone());
+		faxLabel.setText(member.getFax());
+		emailLabel.setText(member.getEmail());
+		homepageLabel.setText(member.getHomepage());
+		birthContainer.setText(member.getBirthDay() + "."
+				+ member.getBirthMonth() + "." + member.getBirthYear());
+		beltSizeLabel.setText(member.getBeltsize());
+		noteLabel.setText(member.getNote());
+		trainingUnitsLabel.setText(member.getTrainingunits() + "");
+
+		memberPicture.setUrl(member.getPicture());
+
 	}
 }

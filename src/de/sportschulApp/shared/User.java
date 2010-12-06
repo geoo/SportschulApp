@@ -5,64 +5,40 @@ import java.sql.Date;
 
 @SuppressWarnings("serial")
 public class User implements Serializable {
-	private int userID;
-	private String username;
+	private String forename;
+	private Date lastLogin;
 	private String password;
 	private String permission;
-	private String forename;
 	private String surname;
-	private Date lastLogin;
-
-	public User(int userID, String permission, String username,
-			String password, String forename, String surname) {
-		this.setUserID(userID);
-		this.setPermission(permission);
-		this.setUsername(username);
-		this.setPassword(password);
-		this.setForename(forename);
-		this.setSurname(surname);
-	}
+	private int userID;
+	private String username;
 
 	public User() {
 
 	}
 
-	/**
-	 * @param userID
-	 *            the userID to set
-	 */
-	public void setUserID(int userID) {
-		this.userID = userID;
+	public User(int userID, String permission, String username,
+			String password, String forename, String surname) {
+		setUserID(userID);
+		setPermission(permission);
+		setUsername(username);
+		setPassword(password);
+		setForename(forename);
+		setSurname(surname);
 	}
 
 	/**
-	 * @return the userID
+	 * @return the forename
 	 */
-	public int getUserID() {
-		return userID;
+	public String getForename() {
+		return forename;
 	}
 
 	/**
-	 * @param username
-	 *            the username to set
+	 * @return the lastLogin
 	 */
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	/**
-	 * @return the username
-	 */
-	public String getUsername() {
-		return username;
-	}
-
-	/**
-	 * @param password
-	 *            the password to set
-	 */
-	public void setPassword(String password) {
-		this.password = password;
+	public Date getLastLogin() {
+		return lastLogin;
 	}
 
 	/**
@@ -73,18 +49,31 @@ public class User implements Serializable {
 	}
 
 	/**
-	 * @param permission
-	 *            the permission to set
-	 */
-	public void setPermission(String permission) {
-		this.permission = permission;
-	}
-
-	/**
 	 * @return the permission
 	 */
 	public String getPermission() {
 		return permission;
+	}
+
+	/**
+	 * @return the surname
+	 */
+	public String getSurname() {
+		return surname;
+	}
+
+	/**
+	 * @return the userID
+	 */
+	public int getUserID() {
+		return userID;
+	}
+
+	/**
+	 * @return the username
+	 */
+	public String getUsername() {
+		return username;
 	}
 
 	/**
@@ -96,10 +85,27 @@ public class User implements Serializable {
 	}
 
 	/**
-	 * @return the forename
+	 * @param date
+	 *            the lastLogin to set
 	 */
-	public String getForename() {
-		return forename;
+	public void setLastLogin(Date date) {
+		lastLogin = date;
+	}
+
+	/**
+	 * @param password
+	 *            the password to set
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	/**
+	 * @param permission
+	 *            the permission to set
+	 */
+	public void setPermission(String permission) {
+		this.permission = permission;
 	}
 
 	/**
@@ -111,25 +117,19 @@ public class User implements Serializable {
 	}
 
 	/**
-	 * @return the surname
+	 * @param userID
+	 *            the userID to set
 	 */
-	public String getSurname() {
-		return surname;
+	public void setUserID(int userID) {
+		this.userID = userID;
 	}
 
 	/**
-	 * @param date
-	 *            the lastLogin to set
+	 * @param username
+	 *            the username to set
 	 */
-	public void setLastLogin(Date date) {
-		this.lastLogin = date;
-	}
-
-	/**
-	 * @return the lastLogin
-	 */
-	public Date getLastLogin() {
-		return lastLogin;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 }

@@ -17,15 +17,15 @@ import de.sportschulApp.client.presenter.Presenter;
 
 public class TrainerNavigationPresenter implements Presenter {
 	public interface Display {
+		Widget asWidget();
+
 		HasChangeHandlers getLanguagePickerOnChange();
 
 		String getLanguagePickerValue();
 
-		HasClickHandlers getMenuTrainingNewTraining();
-
 		HasClickHandlers getLogoutButton();
 
-		Widget asWidget();
+		HasClickHandlers getMenuTrainingNewTraining();
 
 	}
 
@@ -35,40 +35,40 @@ public class TrainerNavigationPresenter implements Presenter {
 	public TrainerNavigationPresenter(HandlerManager eventBus,
 			Display trainerNavigationView) {
 		this.eventBus = eventBus;
-		this.display = trainerNavigationView;
+		display = trainerNavigationView;
 		bind();
 	}
 
 	private void bind() {
-		this.display.getLogoutButton().addClickHandler(new ClickHandler() {
+		display.getLogoutButton().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				eventBus.fireEvent(new LogoutEvent());
 			}
 		});
 
-		this.display.getLanguagePickerOnChange().addChangeHandler(
+		display.getLanguagePickerOnChange().addChangeHandler(
 				new ChangeHandler() {
 					public void onChange(ChangeEvent event) {
 						changeLanguage();
 					}
 				});
 
-		this.display.getMenuTrainingNewTraining().addClickHandler(
+		display.getMenuTrainingNewTraining().addClickHandler(
 				new ClickHandler() {
 					public void onClick(ClickEvent event) {
 						History.newItem("trainerNewTraining");
 					}
 				});
-		
+
+	}
+
+	public void changeLanguage() {
+		eventBus.fireEvent(new LanguageChangeEvent(display
+				.getLanguagePickerValue()));
 	}
 
 	public void go(HasWidgets container) {
 		container.clear();
 		container.add(display.asWidget());
-	}
-
-	public void changeLanguage() {
-		eventBus.fireEvent(new LanguageChangeEvent(this.display
-				.getLanguagePickerValue()));
 	}
 }

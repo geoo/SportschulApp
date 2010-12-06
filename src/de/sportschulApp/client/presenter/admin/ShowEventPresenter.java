@@ -16,64 +16,71 @@ import de.sportschulApp.shared.Event;
 
 public class ShowEventPresenter implements Presenter{
 	public interface Display{
-		void setData(Event event);
-		HasClickHandlers getEditLabel();
-		HasClickHandlers getDeleteLabel();
 		Widget asWidget();
+		HasClickHandlers getDeleteLabel();
+		HasClickHandlers getEditLabel();
+		HasClickHandlers getShowParticipantsLabel();
+		void setData(Event event);
 	}
-	
+
 	private final Display display;
-	private final AdminServiceAsync rpcService;
 	private Event event = new Event();
-	
-	public ShowEventPresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display, int courseID) {
-	    this.display = display;
-	    this.rpcService = rpcService;
-	    bind();
-	    fetchData(courseID);
-	}
+	private final AdminServiceAsync rpcService;
 
-	public void fetchData(int eventID) {
-		rpcService.getEventByEventID(eventID, new AsyncCallback<Event>() {
-			public void onSuccess(Event result) {
-				event = result;
-				display.setData(result);
-			}
-
-			public void onFailure(Throwable caught) {
-				Window.alert("Fehler beim laden der Eventdaten");
-			}
-		});
+	public ShowEventPresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display, int eventID) {
+		this.display = display;
+		this.rpcService = rpcService;
+		bind();
+		fetchData(eventID);
 	}
-	
 
 	private void bind() {
-		this.display.getEditLabel().addClickHandler(new ClickHandler() {
+		display.getEditLabel().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent clickEvent) {
 				History.newItem("adminEventsEditEvent:" + event.getEventID());
 			}
 		});
 		
-		this.display.getDeleteLabel().addClickHandler(new ClickHandler() {
+		display.getShowParticipantsLabel().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent e) {
+				History.newItem("adminEventsEditParticipants:" + event.getEventID());
+			}
+		});
+
+		display.getDeleteLabel().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent clickEvent) {
 				if(Window.confirm("Bestätigen sie mit OK wenn das Event wirklich gelöscht werden soll.")) {
 					rpcService.deleteEventByEventID(event.getEventID(), new AsyncCallback<Void>() {
+						public void onFailure(Throwable caught) {
+							Window.alert("Das löschen des Events ist Fehlgeschlagen");
+						}
 						public void onSuccess(Void result) {
 							History.fireCurrentHistoryState();
-						}
-						public void onFailure(Throwable caught) {
-							Window.alert("Das löschen des Events ist Fehlgeschlagen");	
 						}
 					});
 				}
 			}
 		});
 	}
-	
+
+
+	public void fetchData(int eventID) {
+		rpcService.getEventByEventID(eventID, new AsyncCallback<Event>() {
+			public void onFailure(Throwable caught) {
+				Window.alert("Fehler beim laden der Eventdaten");
+			}
+
+			public void onSuccess(Event result) {
+				event = result;
+				display.setData(result);
+			}
+		});
+	}
+
 
 	public void go(HasWidgets container) {
 		container.clear();
-	    container.add(display.asWidget());
+		container.add(display.asWidget());
 	}
 
 }

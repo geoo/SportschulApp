@@ -20,92 +20,90 @@ import de.sportschulApp.shared.Belt;
 
 public class ShowBeltPresenter implements Presenter{
 	public interface Display{
-		void setData(Belt belt);
-		HasValue<String> getBeltTextBox();
-		HasClickHandlers getRenameLabel();
-		HasClickHandlers getDeleteLabel();
-		HasKeyUpHandlers getBeltTextBoxOnKeyUp();
 		Widget asWidget();
+		HasValue<String> getBeltTextBox();
+		HasKeyUpHandlers getBeltTextBoxOnKeyUp();
+		HasClickHandlers getDeleteLabel();
+		HasClickHandlers getRenameLabel();
+		void setData(Belt belt);
 	}
-	
+
+	private Belt belt = new Belt();
 	private final Display display;
 	private final AdminServiceAsync rpcService;
-	private final HandlerManager eventBus;
-	private Belt belt = new Belt();
-	
+
 	public ShowBeltPresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display, int beltID) {
-		this.eventBus = eventBus;
-	    this.display = display;
-	    this.rpcService = rpcService;
-	    bind();
-	    fetchData(beltID);
+		this.display = display;
+		this.rpcService = rpcService;
+		bind();
+		fetchData(beltID);
 	}
 
-	public void fetchData(int beltID) {
-		rpcService.getBeltByID(beltID, new AsyncCallback<Belt>() {
-			public void onSuccess(Belt result) {
-				belt = result;
-				display.setData(result);
-			}
-
-			public void onFailure(Throwable caught) {
-				Window.alert("Fehler beim laden der Gurtfarbe");
-			}
-		});
-	}
-	
-
-	private void bind() {		
-		this.display.getDeleteLabel().addClickHandler(new ClickHandler() {
+	private void bind() {
+		display.getDeleteLabel().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				if(Window.confirm("Bestätigen sie mit OK wenn die Gurtfarbe wirklich gelöscht werden soll.")) {
 					rpcService.deleteBeltByID(belt.getBeltID(), new AsyncCallback<Void>() {
+						public void onFailure(Throwable caught) {
+							Window.alert("Das löschen der Gurtfarbe ist Fehlgeschlagen");
+						}
 						public void onSuccess(Void result) {
 							History.fireCurrentHistoryState();
-						}
-						public void onFailure(Throwable caught) {
-							Window.alert("Das löschen der Gurtfarbe ist Fehlgeschlagen");	
 						}
 					});
 				}
 			}
 		});
-		
-		this.display.getBeltTextBoxOnKeyUp().addKeyUpHandler(new KeyUpHandler() {
+
+		display.getBeltTextBoxOnKeyUp().addKeyUpHandler(new KeyUpHandler() {
 			public void onKeyUp(KeyUpEvent event) {
 				if (event.getNativeKeyCode() == 13) {
 					doRenameBelt();
-				}	
+				}
 			}
 		});
-		
-		this.display.getRenameLabel().addClickHandler(new ClickHandler() {
+
+		display.getRenameLabel().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				doRenameBelt();
 			}
 		});
 	}
-	
+
+
 	private void doRenameBelt() {
-		rpcService.renameBeltByID(new Belt(belt.getBeltID(), this.display.getBeltTextBox().getValue()), new AsyncCallback<Void>() {
+		rpcService.renameBeltByID(new Belt(belt.getBeltID(), display.getBeltTextBox().getValue()), new AsyncCallback<Void>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void onSuccess(Void result) {
 				History.fireCurrentHistoryState();
-				
+
+			}
+		});
+	}
+
+	public void fetchData(int beltID) {
+		rpcService.getBeltByID(beltID, new AsyncCallback<Belt>() {
+			public void onFailure(Throwable caught) {
+				Window.alert("Fehler beim laden der Gurtfarbe");
+			}
+
+			public void onSuccess(Belt result) {
+				belt = result;
+				display.setData(result);
 			}
 		});
 	}
 
 	public void go(HasWidgets container) {
 		container.clear();
-	    container.add(display.asWidget());
+		container.add(display.asWidget());
 	}
 
 }

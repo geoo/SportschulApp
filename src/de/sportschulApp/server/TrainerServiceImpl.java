@@ -1,7 +1,5 @@
 package de.sportschulApp.server;
 
-import java.util.ArrayList;
-
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import de.sportschulApp.client.services.TrainerService;
@@ -10,7 +8,7 @@ import de.sportschulApp.shared.Member;
 
 @SuppressWarnings("serial")
 public class TrainerServiceImpl extends RemoteServiceServlet implements
-		TrainerService {
+TrainerService {
 
 	DataBankerMember dbm = new DataBankerMember();
 
@@ -18,12 +16,12 @@ public class TrainerServiceImpl extends RemoteServiceServlet implements
 		return dbm.getMember(barcodeID);
 	}
 
-	public int getTrainingspresence(int memberID, int month, int year) {
-		return dbm.getTrainingsPresenceInt(memberID, month, year);
-	}
-
 	public String getNote(int barcodeID) {
 		return dbm.getNote(barcodeID);
+	}
+
+	public int getTrainingspresence(int memberID, int month, int year) {
+		return dbm.getTrainingsPresenceInt(memberID, month, year);
 	}
 
 	public String setNote(int barcodeID, String note) {

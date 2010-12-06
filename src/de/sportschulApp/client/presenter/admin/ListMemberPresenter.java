@@ -26,45 +26,45 @@ import de.sportschulApp.shared.Member;
 @SuppressWarnings("unchecked")
 public class ListMemberPresenter implements Presenter{
 	public interface Display{
-		void setMemberList(ArrayList<Member> memberList);
-		void setSelectionModel(SingleSelectionModel selectionModel);
+		Widget asWidget();
 		HasClickHandlers getSearchButton();
-		HasClickHandlers getShowAllButton();
 		TextBox getSearchInput();
 		HasValue<String> getSearchQuery();
-		Widget asWidget();
+		HasClickHandlers getShowAllButton();
+		void setMemberList(ArrayList<Member> memberList);
+		void setSelectionModel(SingleSelectionModel selectionModel);
 	}
-	
+
 	private final Display display;
-	private final AdminServiceAsync rpcService;
 	private final HandlerManager eventBus;
-	
+	private final AdminServiceAsync rpcService;
+
 	public ListMemberPresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display) {
-	    this.display = display;
-	    this.rpcService = rpcService;
-	    this.eventBus = eventBus;
-	    bind();
-	    fetchListData();
-	  }
+		this.display = display;
+		this.rpcService = rpcService;
+		this.eventBus = eventBus;
+		bind();
+		fetchListData();
+	}
 
 	private void bind() {
 		setSelectionModel();
-		
-		this.display.getSearchButton().addClickHandler(new ClickHandler() {
+
+		display.getSearchButton().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				executeSearch();
 			}
 		});
-		
-		this.display.getSearchInput().addKeyUpHandler(new KeyUpHandler() {
+
+		display.getSearchInput().addKeyUpHandler(new KeyUpHandler() {
 			public void onKeyUp(KeyUpEvent event) {
 				if (event.getNativeKeyCode() == 13) {
 					executeSearch();
-				}	
+				}
 			}
 		});
-		
-		this.display.getShowAllButton().addClickHandler(new ClickHandler() {
+
+		display.getShowAllButton().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				fetchListData();
 				display.getSearchInput().setText("");
@@ -72,34 +72,38 @@ public class ListMemberPresenter implements Presenter{
 		});
 	}
 
-	public void go(HasWidgets container) {
-		container.clear();
-	    container.add(display.asWidget());
-	}
-	
 	public void executeSearch() {
 		String searchQuery = new String(display.getSearchQuery().getValue());
 		rpcService.searchMember(searchQuery, new AsyncCallback<ArrayList<Member>>() {
+			public void onFailure(Throwable caught) {
+			}
 			public void onSuccess(ArrayList<Member> result) {
 				display.setMemberList(result);
-			}
-			public void onFailure(Throwable caught) {
 			}
 		});
 	}
-	
+
 	public void fetchListData() {
 		rpcService.getMemberList(new AsyncCallback<ArrayList<Member>>() {
-			public void onSuccess(ArrayList<Member> result) {
-				display.setMemberList(result);
-			}
 			public void onFailure(Throwable caught) {
 				Window.alert("Abrufen der Mitgliedsdaten fehlgeschlagen.");
 			}
+			public void onSuccess(ArrayList<Member> result) {
+				display.setMemberList(result);
+			}
 		});
-		
+
 	}
-	
+
+	public Display getDisplay(){
+		return display;
+	}
+
+	public void go(HasWidgets container) {
+		container.clear();
+		container.add(display.asWidget());
+	}
+
 	public void setSelectionModel() {
 		final SingleSelectionModel<Member> selectionModel = new SingleSelectionModel<Member>();
 		Handler selectionHandler = new SelectionChangeEvent.Handler() {
@@ -110,11 +114,7 @@ public class ListMemberPresenter implements Presenter{
 			}
 		};
 		selectionModel.addSelectionChangeHandler(selectionHandler);
-		this.display.setSelectionModel(selectionModel);
+		display.setSelectionModel(selectionModel);
 	}
-	
-	public Display getDisplay(){
-		return display;
-	}
-	
+
 }

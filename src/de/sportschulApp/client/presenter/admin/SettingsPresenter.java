@@ -11,23 +11,20 @@ public class SettingsPresenter implements Presenter{
 	public interface Display{
 		Widget asWidget();
 	}
-	
+
 	private final Display display;
-	private final AdminServiceAsync rpcService;
-	
 	public SettingsPresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display) {
-	    this.display = display;
-	    this.rpcService = rpcService;
-	    bind();
-	  }
+		this.display = display;
+		bind();
+	}
 
 	private void bind() {
-		
+
 	}
 
 	public void go(HasWidgets container) {
 		container.clear();
-	    container.add(display.asWidget());
+		container.add(display.asWidget());
 	}
 
 }

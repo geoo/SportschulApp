@@ -10,9 +10,23 @@ import de.sportschulApp.shared.Belt;
 import de.sportschulApp.shared.Course;
 import de.sportschulApp.shared.CourseDate;
 import de.sportschulApp.shared.CourseTariff;
-import de.sportschulApp.shared.User;
 
 public class DataBankerCourse implements DataBankerCourseInterface {
+
+	public void createBelt(String beltName) {
+		DataBankerConnection dbc = new DataBankerConnection();
+		try {
+			PreparedStatement stmt = dbc.getConnection().prepareStatement(
+					"INSERT INTO AvailableBelts(name) VALUES(?)");
+			stmt.setString(1, beltName);
+
+			stmt.executeUpdate();
+			dbc.close();
+			stmt.close();
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+	}
 
 	/**
 	 * Erstellt einen Kurseintrag
@@ -34,7 +48,7 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 			ResultSet rs = null;
 			Statement stmt2 = dbc.getStatement();
 			String query = "SELECT count(*) FROM Courses WHERE name='"
-					+ course.getName() + "'";
+				+ course.getName() + "'";
 
 			rs = stmt2.executeQuery(query);
 			while (rs.next()) {
@@ -47,17 +61,17 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 			PreparedStatement stmt = null;
 			stmt = dbc
 
-					.getConnection()
-					.prepareStatement(
-							"INSERT INTO Courses(name, instructor, location) VALUES(?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+			.getConnection()
+			.prepareStatement(
+					"INSERT INTO Courses(name, instructor, location) VALUES(?,?,?)", Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, course.getName());
 			stmt.setString(2, course.getInstructor());
 			stmt.setString(3, course.getLocation());
 
 			stmt.executeUpdate();
-			
+
 			ResultSet generatedKeys = stmt.getGeneratedKeys();
-			
+
 			while(generatedKeys.next()) {
 				setDatesForCourse(generatedKeys.getInt(1), course.getCourseDates());
 				setTariffsForCourse(generatedKeys.getInt(1), course.getCourseTariffs());
@@ -66,7 +80,7 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 			ResultSet rs2 = null;
 			Statement stmt3 = dbc.getStatement();
 			String query2 = "SELECT Courses_id FROM Courses WHERE name='"
-					+ course.getName() + "'";
+				+ course.getName() + "'";
 
 			rs2 = stmt3.executeQuery(query2);
 
@@ -91,103 +105,11 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 		}
 	}
 
-	public void setDatesForCourse(int courseID, ArrayList<CourseDate> courseDates) {
-		DataBankerConnection dbc = new DataBankerConnection();
-		for (int i = 0; i < courseDates.size(); i++) {
-			try {
-				PreparedStatement stmt = dbc.getConnection().prepareStatement(
-								"INSERT INTO Course_has_date(Course_id, weekDay, time) VALUES(?,?,?)");
-				stmt.setInt(1, courseID);
-				stmt.setString(2, courseDates.get(i).getWeekDay());
-				stmt.setString(3, courseDates.get(i).getTime());
-	
-				stmt.executeUpdate();
-	
-				dbc.close();
-				stmt.close();
-	
-	
-			} catch (SQLException e) {
-				System.out.println(e);
-			}
-		}
-	}
-	
-	public void setTariffsForCourse(int courseID, ArrayList<CourseTariff> courseTariffs) {
-		DataBankerConnection dbc = new DataBankerConnection();
-		for (int i = 0; i < courseTariffs.size(); i++) {
-			try {
-				PreparedStatement stmt = dbc.getConnection().prepareStatement(
-								"INSERT INTO Course_has_tariff(Course_id, name, costs) VALUES(?,?,REPLACE(?,',','.'))");
-				stmt.setInt(1, courseID);
-				stmt.setString(2, courseTariffs.get(i).getName());
-				stmt.setString(3, courseTariffs.get(i).getCosts());
-	
-				stmt.executeUpdate();
-	
-				dbc.close();
-				stmt.close();
-	
-	
-			} catch (SQLException e) {
-				System.out.println(e);
-			}
-		}
-	}
-	
-	public ArrayList<CourseDate> getCourseDatesForCourse(int courseId) {
-		ArrayList<CourseDate> courseDates = new ArrayList<CourseDate>();
-		
-		
-		DataBankerConnection dbc = new DataBankerConnection();
-		ResultSet rs = null;
-		Statement stmt = dbc.getStatement();
-		String query = "SELECT weekDay,time FROM Course_has_date WHERE Course_ID='" + courseId + "'";
-		
-		try {
-			rs = stmt.executeQuery(query);
-			while (rs.next()) {
-				courseDates.add(new CourseDate(rs.getString(1), rs.getString(2)));
-			}
-			rs.close();
-			dbc.close();
-			stmt.close();
-		} catch (Exception e) {
-			System.out.println(e);
-			return null;
-		}
-		return courseDates;
-	}
-	
-	public ArrayList<CourseTariff> getCourseTariffsForCourse(int courseId) {
-		ArrayList<CourseTariff> courseTariffs = new ArrayList<CourseTariff>();
-		
-		
-		DataBankerConnection dbc = new DataBankerConnection();
-		ResultSet rs = null;
-		Statement stmt = dbc.getStatement();
-		String query = "SELECT name,costs FROM Course_has_tariff WHERE Course_ID='" + courseId + "'";
-		
-		try {
-			rs = stmt.executeQuery(query);
-			while (rs.next()) {
-				courseTariffs.add(new CourseTariff(rs.getString(1), rs.getString(2)));
-			}
-			rs.close();
-			dbc.close();
-			stmt.close();
-		} catch (Exception e) {
-			System.out.println(e);
-			return null;
-		}
-		return courseTariffs;
-	}
-	
-	public void deleteDatesFromCourse(int courseID) {
+	public void deleteBeltByID(int beltID) {
 		DataBankerConnection dbc = new DataBankerConnection();
 		Statement stmt = dbc.getStatement();
 
-		String query = "DELETE FROM Course_has_date WHERE Course_id='" + courseID + "'";
+		String query = "DELETE FROM AvailableBelts WHERE Belt_id='" + beltID + "'";
 
 		try {
 			stmt.executeUpdate(query);
@@ -197,202 +119,6 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 
 		} catch (SQLException e) {
 			System.out.println(e);
-		}
-	}
-	
-	public void deleteTariffsFromCourse(int courseID) {
-		DataBankerConnection dbc = new DataBankerConnection();
-		Statement stmt = dbc.getStatement();
-
-		String query = "DELETE FROM Course_has_tariff WHERE Course_id='" + courseID + "'";
-
-		try {
-			stmt.executeUpdate(query);
-			dbc.close();
-			stmt.close();
-			dbc.closeStatement();
-
-		} catch (SQLException e) {
-			System.out.println(e);
-		}
-	}
-
-	public boolean updateCourse(Course course) {
-		if (deleteCourse(course.getCourseID())) {
-			createCourse(course);
-		}
-		return false;
-	}
-
-	public boolean deleteCourse(int courseID) {
-
-		DataBankerConnection dbc = new DataBankerConnection();
-		Statement stmt = dbc.getStatement();
-
-		String query = "DELETE FROM Courses WHERE Courses_id='" + courseID
-				+ "'";
-
-		try {
-			stmt.executeUpdate(query);
-			deleteDatesFromCourse(courseID);
-			deleteTariffsFromCourse(courseID);
-			dbc.close();
-			stmt.close();
-			dbc.closeStatement();
-
-		} catch (SQLException e) {
-			System.out.println(e);
-			return false;
-		}
-
-		if (deleteBelts(courseID)) {
-			return true;
-		} else {
-			return false;
-		}
-
-	}
-
-	public ArrayList<Course> getCourses() {
-
-		ArrayList<Course> courses = new ArrayList<Course>();
-
-		DataBankerConnection dbc = new DataBankerConnection();
-		ResultSet rs = null;
-		Statement stmt = dbc.getStatement();
-
-		String query = "SELECT * FROM Courses ORDER BY name";
-
-		try {
-			rs = stmt.executeQuery(query);
-			while (rs.next()) {
-				Course newCourse = new Course();
-				newCourse.setCourseID(rs.getInt(1));
-				newCourse.setName(rs.getString(2));
-				newCourse.setInstructor(rs.getString(3));
-				newCourse.setLocation(rs.getString(4));
-				newCourse.setCourseDates(getCourseDatesForCourse(rs.getInt(1)));
-				newCourse.setCourseTariffs(getCourseTariffsForCourse(rs.getInt(1)));
-				newCourse.setBeltColours(getBelts(rs.getInt(1)));
-				courses.add(newCourse);
-			}
-			rs.close();
-			dbc.close();
-			stmt.close();
-		} catch (Exception e) {
-			System.out.println(e);
-			return null;
-		}
-		return courses;
-	}
-
-	public ArrayList<String> getCourseNames() {
-
-		ArrayList<String> names = new ArrayList<String>();
-
-		DataBankerConnection dbc = new DataBankerConnection();
-		ResultSet rs = null;
-		Statement stmt = dbc.getStatement();
-
-		String query = "SELECT name FROM Courses";
-
-		try {
-			rs = stmt.executeQuery(query);
-			while (rs.next()) {
-				names.add(rs.getString(1));
-			}
-			rs.close();
-			dbc.close();
-			stmt.close();
-		} catch (Exception e) {
-			System.out.println(e);
-			return null;
-		}
-		return names;
-	}
-
-	public ArrayList<String> getBelts(int courseID) {
-
-		ArrayList<String> belts = new ArrayList<String>();
-		DataBankerConnection dbc = new DataBankerConnection();
-		ResultSet rs = null;
-		Statement stmt = dbc.getStatement();
-
-		String query = "SELECT * FROM Belts WHERE Course_id='" + courseID + "'";
-
-		try {
-			rs = stmt.executeQuery(query);
-			while (rs.next()) {
-				for (int i = 2; i < 22 && rs.getString(i).length() > 0; i++) {
-					belts.add(rs.getString(i));
-				}
-			}
-			rs.close();
-			dbc.close();
-			stmt.close();
-		} catch (Exception e) {
-			System.out.println(e);
-			return null;
-		}
-		return belts;
-	}
-
-	/**
-	 * Erstellt einen G�rteleintrag
-	 * 
-	 * @param courseID
-	 *            der G�rtel, ArraList<String> mit G�rtelfarben
-	 * 
-	 * 
-	 * @return true bei erfolg, false bei scheitern
-	 */
-	public boolean setBelts(int courseID, ArrayList<String> belts) {
-
-		DataBankerConnection dbc = new DataBankerConnection();
-		try {
-			PreparedStatement stmt = dbc
-
-					.getConnection()
-					.prepareStatement(
-							"INSERT INTO Belts(Course_id, grade1, grade2, grade3, grade4, grade5, grade6, grade7, grade8, grade9, grade10, grade11, grade12, grade13, grade14, grade15, grade16, grade17, grade18, grade19 ,grade20) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-			stmt.setInt(1, courseID);
-			
-			if (belts.isEmpty()) {
-				return false;
-			} else {
-				for (int i = 0; i < belts.size(); i++) {
-					stmt.setString(i + 2, belts.get(i));
-				}
-				for (int j = belts.size() + 2; j < 22; j++) {
-					stmt.setString(j, "");
-				}
-			}
-			stmt.executeUpdate();
-
-			dbc.close();
-			stmt.close();
-		} catch (SQLException e) {
-			System.out.println(e);
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * Updated einen G�rteleintrag
-	 * 
-	 * @param courseID
-	 *            der G�rtel, ArrayList<String> mit den farben
-	 * 
-	 * 
-	 * @return true bei erfolg, false bei scheitern
-	 */
-	public boolean updateBelts(int courseID, ArrayList<String> belts) {
-		if (deleteBelts(courseID)) {
-			setBelts(courseID, belts);
-			return true;
-		} else {
-			return false;
 		}
 	}
 
@@ -425,22 +151,83 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 		return true;
 	}
 
-	public String nextBelt(int courseID, int lastBelt) {
+	public boolean deleteCourse(int courseID) {
 
-		int newBelt = lastBelt + 1;
-		String graduation = "grade" + newBelt;
+		DataBankerConnection dbc = new DataBankerConnection();
+		Statement stmt = dbc.getStatement();
+
+		String query = "DELETE FROM Courses WHERE Courses_id='" + courseID
+		+ "'";
+
+		try {
+			stmt.executeUpdate(query);
+			deleteDatesFromCourse(courseID);
+			deleteTariffsFromCourse(courseID);
+			dbc.close();
+			stmt.close();
+			dbc.closeStatement();
+
+		} catch (SQLException e) {
+			System.out.println(e);
+			return false;
+		}
+
+		if (deleteBelts(courseID)) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
+	public void deleteDatesFromCourse(int courseID) {
+		DataBankerConnection dbc = new DataBankerConnection();
+		Statement stmt = dbc.getStatement();
+
+		String query = "DELETE FROM Course_has_date WHERE Course_id='" + courseID + "'";
+
+		try {
+			stmt.executeUpdate(query);
+			dbc.close();
+			stmt.close();
+			dbc.closeStatement();
+
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+	}
+
+	public void deleteTariffsFromCourse(int courseID) {
+		DataBankerConnection dbc = new DataBankerConnection();
+		Statement stmt = dbc.getStatement();
+
+		String query = "DELETE FROM Course_has_tariff WHERE Course_id='" + courseID + "'";
+
+		try {
+			stmt.executeUpdate(query);
+			dbc.close();
+			stmt.close();
+			dbc.closeStatement();
+
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+	}
+
+	public ArrayList<Belt> getAvailableBelts() {
+
+		ArrayList<Belt> belts = new ArrayList<Belt>();
 
 		DataBankerConnection dbc = new DataBankerConnection();
 		ResultSet rs = null;
 		Statement stmt = dbc.getStatement();
 
-		String query = "SELECT " + graduation + " FROM Belts WHERE Course_id='"
-				+ courseID + "'";
+		String query = "SELECT * FROM AvailableBelts ORDER BY name";
 
 		try {
 			rs = stmt.executeQuery(query);
 			while (rs.next()) {
-				return rs.getString(1);
+				belts.add(new Belt(rs.getInt(1), rs.getString(2)));
 			}
 			rs.close();
 			dbc.close();
@@ -449,47 +236,50 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 			System.out.println(e);
 			return null;
 		}
-
-		return null;
+		return belts;
 	}
 
-	public int getCourseID(String courseName) {
-		int courseID = 0;
-		DataBankerConnection dbc = new DataBankerConnection();
+	public Belt getBeltByID(int beltID){
+		Belt belt = new Belt();
 		ResultSet rs = null;
-		Statement stmt = dbc.getStatement();
 
-		String query = "SELECT Courses_id FROM Courses WHERE name = '"
-				+ courseName + "'";
+		DataBankerConnection dbc = new DataBankerConnection();
+		Statement stmt = dbc.getStatement();
+		String query = "SELECT * FROM AvailableBelts WHERE Belt_id='" + beltID + "'";
 
 		try {
 			rs = stmt.executeQuery(query);
+
 			while (rs.next()) {
-				courseID = rs.getInt(1);
+				belt.setBeltID(rs.getInt(1));
+				belt.setName(rs.getString(2));
 			}
 			rs.close();
 			dbc.close();
 			stmt.close();
+			dbc.closeStatement();
 		} catch (Exception e) {
-			System.out.println(e);
-			return 0;
+			e.printStackTrace();
+			return null;
 		}
-		return courseID;
+		return belt;
 	}
 
-	public String getCourseName(int courseID) {
-		String courseName = null;
+	public ArrayList<String> getBelts(int courseID) {
+
+		ArrayList<String> belts = new ArrayList<String>();
 		DataBankerConnection dbc = new DataBankerConnection();
 		ResultSet rs = null;
 		Statement stmt = dbc.getStatement();
 
-		String query = "SELECT name FROM Courses where Courses_id = '"
-				+ courseID + "'";
+		String query = "SELECT * FROM Belts WHERE Course_id='" + courseID + "'";
 
 		try {
 			rs = stmt.executeQuery(query);
 			while (rs.next()) {
-				courseName = rs.getString(1);
+				for (int i = 2; i < 22 && rs.getString(i).length() > 0; i++) {
+					belts.add(rs.getString(i));
+				}
 			}
 			rs.close();
 			dbc.close();
@@ -498,7 +288,7 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 			System.out.println(e);
 			return null;
 		}
-		return courseName;
+		return belts;
 	}
 
 	public String getCourseBeltPair(int courseID, int beltID) {
@@ -511,10 +301,10 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 		Statement stmt2 = dbc.getStatement();
 
 		String query1 = "SELECT name FROM Courses where Courses_id = '"
-				+ courseID + "'";
+			+ courseID + "'";
 
 		String query2 = "SELECT grade" + beltID
-				+ " FROM Belts where Course_id = '" + courseID + "'";
+		+ " FROM Belts where Course_id = '" + courseID + "'";
 
 		try {
 			rs1 = stmt1.executeQuery(query1);
@@ -550,7 +340,7 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 		Statement stmt = dbc.getStatement();
 
 		String query = "SELECT * FROM Courses where  Courses_id = '" + courseID
-				+ "'";
+		+ "'";
 
 		try {
 			rs = stmt.executeQuery(query);
@@ -572,21 +362,20 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 		}
 		return course;
 	}
-	
-	public ArrayList<Belt> getAvailableBelts() {
 
-		ArrayList<Belt> belts = new ArrayList<Belt>();
+	public ArrayList<CourseDate> getCourseDatesForCourse(int courseId) {
+		ArrayList<CourseDate> courseDates = new ArrayList<CourseDate>();
+
 
 		DataBankerConnection dbc = new DataBankerConnection();
 		ResultSet rs = null;
 		Statement stmt = dbc.getStatement();
-
-		String query = "SELECT * FROM AvailableBelts ORDER BY name";
+		String query = "SELECT weekDay,time FROM Course_has_date WHERE Course_ID='" + courseId + "'";
 
 		try {
 			rs = stmt.executeQuery(query);
 			while (rs.next()) {
-				belts.add(new Belt(rs.getInt(1), rs.getString(2)));
+				courseDates.add(new CourseDate(rs.getString(1), rs.getString(2)));
 			}
 			rs.close();
 			dbc.close();
@@ -595,81 +384,291 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 			System.out.println(e);
 			return null;
 		}
-		return belts;
+		return courseDates;
 	}
-	
-	public void createBelt(String beltName) {
-		DataBankerConnection dbc = new DataBankerConnection();
-			try {
-				PreparedStatement stmt = dbc.getConnection().prepareStatement(
-								"INSERT INTO AvailableBelts(name) VALUES(?)");
-				stmt.setString(1, beltName);
-	
-				stmt.executeUpdate();
-				dbc.close();
-				stmt.close();
-			} catch (SQLException e) {
-				System.out.println(e);
-			}
-	}
-	
-	public Belt getBeltByID(int beltID){
-		Belt belt = new Belt();
-		ResultSet rs = null;
 
+	public int getCourseID(String courseName) {
+		int courseID = 0;
 		DataBankerConnection dbc = new DataBankerConnection();
+		ResultSet rs = null;
 		Statement stmt = dbc.getStatement();
-		String query = "SELECT * FROM AvailableBelts WHERE Belt_id='" + beltID + "'";
-		
+
+		String query = "SELECT Courses_id FROM Courses WHERE name = '"
+			+ courseName + "'";
+
 		try {
 			rs = stmt.executeQuery(query);
-
 			while (rs.next()) {
-				belt.setBeltID(rs.getInt(1));
-				belt.setName(rs.getString(2));
+				courseID = rs.getInt(1);
 			}
 			rs.close();
 			dbc.close();
 			stmt.close();
-			dbc.closeStatement();
 		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
+			System.out.println(e);
+			return 0;
 		}
-		return belt;
+		return courseID;
 	}
-	
-	public void deleteBeltByID(int beltID) {
+
+	public String getCourseName(int courseID) {
+		String courseName = null;
 		DataBankerConnection dbc = new DataBankerConnection();
+		ResultSet rs = null;
 		Statement stmt = dbc.getStatement();
 
-		String query = "DELETE FROM AvailableBelts WHERE Belt_id='" + beltID + "'";
+		String query = "SELECT name FROM Courses where Courses_id = '"
+			+ courseID + "'";
 
 		try {
-			stmt.executeUpdate(query);
+			rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				courseName = rs.getString(1);
+			}
+			rs.close();
 			dbc.close();
 			stmt.close();
-			dbc.closeStatement();
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+		return courseName;
+	}
+
+	public ArrayList<String> getCourseNames() {
+
+		ArrayList<String> names = new ArrayList<String>();
+
+		DataBankerConnection dbc = new DataBankerConnection();
+		ResultSet rs = null;
+		Statement stmt = dbc.getStatement();
+
+		String query = "SELECT name FROM Courses";
+
+		try {
+			rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				names.add(rs.getString(1));
+			}
+			rs.close();
+			dbc.close();
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+		return names;
+	}
+
+	public ArrayList<Course> getCourses() {
+
+		ArrayList<Course> courses = new ArrayList<Course>();
+
+		DataBankerConnection dbc = new DataBankerConnection();
+		ResultSet rs = null;
+		Statement stmt = dbc.getStatement();
+
+		String query = "SELECT * FROM Courses ORDER BY name";
+
+		try {
+			rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				Course newCourse = new Course();
+				newCourse.setCourseID(rs.getInt(1));
+				newCourse.setName(rs.getString(2));
+				newCourse.setInstructor(rs.getString(3));
+				newCourse.setLocation(rs.getString(4));
+				newCourse.setCourseDates(getCourseDatesForCourse(rs.getInt(1)));
+				newCourse.setCourseTariffs(getCourseTariffsForCourse(rs.getInt(1)));
+				newCourse.setBeltColours(getBelts(rs.getInt(1)));
+				courses.add(newCourse);
+			}
+			rs.close();
+			dbc.close();
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+		return courses;
+	}
+
+	public ArrayList<CourseTariff> getCourseTariffsForCourse(int courseId) {
+		ArrayList<CourseTariff> courseTariffs = new ArrayList<CourseTariff>();
+
+
+		DataBankerConnection dbc = new DataBankerConnection();
+		ResultSet rs = null;
+		Statement stmt = dbc.getStatement();
+		String query = "SELECT name,costs FROM Course_has_tariff WHERE Course_ID='" + courseId + "'";
+
+		try {
+			rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				courseTariffs.add(new CourseTariff(rs.getString(1), rs.getString(2)));
+			}
+			rs.close();
+			dbc.close();
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+		return courseTariffs;
+	}
+
+	public String nextBelt(int courseID, int lastBelt) {
+
+		int newBelt = lastBelt + 1;
+		String graduation = "grade" + newBelt;
+
+		DataBankerConnection dbc = new DataBankerConnection();
+		ResultSet rs = null;
+		Statement stmt = dbc.getStatement();
+
+		String query = "SELECT " + graduation + " FROM Belts WHERE Course_id='"
+		+ courseID + "'";
+
+		try {
+			rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				return rs.getString(1);
+			}
+			rs.close();
+			dbc.close();
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+
+		return null;
+	}
+
+	public void renameBeltByID(Belt belt) {
+		DataBankerConnection dbc = new DataBankerConnection();
+		try {
+			PreparedStatement stmt = dbc.getConnection().prepareStatement(
+					"UPDATE AvailableBelts SET name='" + belt.getName() + "' WHERE Belt_id='" + belt.getBeltID() + "'");
+			stmt.executeUpdate();
+
+			dbc.close();
+			stmt.close();
+
 
 		} catch (SQLException e) {
 			System.out.println(e);
 		}
 	}
-	
-	public void renameBeltByID(Belt belt) {
+
+	/**
+	 * Erstellt einen G�rteleintrag
+	 * 
+	 * @param courseID
+	 *            der G�rtel, ArraList<String> mit G�rtelfarben
+	 * 
+	 * 
+	 * @return true bei erfolg, false bei scheitern
+	 */
+	public boolean setBelts(int courseID, ArrayList<String> belts) {
+
 		DataBankerConnection dbc = new DataBankerConnection();
+		try {
+			PreparedStatement stmt = dbc
+
+			.getConnection()
+			.prepareStatement(
+					"INSERT INTO Belts(Course_id, grade1, grade2, grade3, grade4, grade5, grade6, grade7, grade8, grade9, grade10, grade11, grade12, grade13, grade14, grade15, grade16, grade17, grade18, grade19 ,grade20) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			stmt.setInt(1, courseID);
+
+			if (belts.isEmpty()) {
+				return false;
+			} else {
+				for (int i = 0; i < belts.size(); i++) {
+					stmt.setString(i + 2, belts.get(i));
+				}
+				for (int j = belts.size() + 2; j < 22; j++) {
+					stmt.setString(j, "");
+				}
+			}
+			stmt.executeUpdate();
+
+			dbc.close();
+			stmt.close();
+		} catch (SQLException e) {
+			System.out.println(e);
+			return false;
+		}
+		return true;
+	}
+
+	public void setDatesForCourse(int courseID, ArrayList<CourseDate> courseDates) {
+		DataBankerConnection dbc = new DataBankerConnection();
+		for (int i = 0; i < courseDates.size(); i++) {
 			try {
 				PreparedStatement stmt = dbc.getConnection().prepareStatement(
-								"UPDATE AvailableBelts SET name='" + belt.getName() + "' WHERE Belt_id='" + belt.getBeltID() + "'");
+				"INSERT INTO Course_has_date(Course_id, weekDay, time) VALUES(?,?,?)");
+				stmt.setInt(1, courseID);
+				stmt.setString(2, courseDates.get(i).getWeekDay());
+				stmt.setString(3, courseDates.get(i).getTime());
+
 				stmt.executeUpdate();
-	
+
 				dbc.close();
 				stmt.close();
-	
-	
+
+
 			} catch (SQLException e) {
 				System.out.println(e);
 			}
 		}
+	}
+
+	public void setTariffsForCourse(int courseID, ArrayList<CourseTariff> courseTariffs) {
+		DataBankerConnection dbc = new DataBankerConnection();
+		for (int i = 0; i < courseTariffs.size(); i++) {
+			try {
+				PreparedStatement stmt = dbc.getConnection().prepareStatement(
+				"INSERT INTO Course_has_tariff(Course_id, name, costs) VALUES(?,?,REPLACE(?,',','.'))");
+				stmt.setInt(1, courseID);
+				stmt.setString(2, courseTariffs.get(i).getName());
+				stmt.setString(3, courseTariffs.get(i).getCosts());
+
+				stmt.executeUpdate();
+
+				dbc.close();
+				stmt.close();
+
+
+			} catch (SQLException e) {
+				System.out.println(e);
+			}
+		}
+	}
+
+	/**
+	 * Updated einen G�rteleintrag
+	 * 
+	 * @param courseID
+	 *            der G�rtel, ArrayList<String> mit den farben
+	 * 
+	 * 
+	 * @return true bei erfolg, false bei scheitern
+	 */
+	public boolean updateBelts(int courseID, ArrayList<String> belts) {
+		if (deleteBelts(courseID)) {
+			setBelts(courseID, belts);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean updateCourse(Course course) {
+		if (deleteCourse(course.getCourseID())) {
+			createCourse(course);
+		}
+		return false;
+	}
 
 }

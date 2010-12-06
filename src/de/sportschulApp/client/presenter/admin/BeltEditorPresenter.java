@@ -27,61 +27,55 @@ import de.sportschulApp.shared.Belt;
 @SuppressWarnings("unchecked")
 public class BeltEditorPresenter implements Presenter{
 	public interface Display{
+		Widget asWidget();
+		HasClickHandlers getAddBeltLabel();
+		HasValue<String> getAddBeltTextBox();
+		HasKeyUpHandlers getBeltTextBoxOnKeyUp();
 		void setListData(ArrayList<Belt> listData);
 		void setSelectionModel(SingleSelectionModel selectionModel);
-		HasValue<String> getAddBeltTextBox();
-		HasClickHandlers getAddBeltLabel();
-		HasKeyUpHandlers getBeltTextBoxOnKeyUp();
-		Widget asWidget();
 	}
-	
+
 	private final Display display;
-	private final AdminServiceAsync rpcService;
 	private final HandlerManager eventBus;
-	
+	private final AdminServiceAsync rpcService;
+
 	public BeltEditorPresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display) {
-	    this.display = display;
-	    this.rpcService = rpcService;
-	    this.eventBus = eventBus;
-	    bind();
-	    fetchBeltList();
-	  }
+		this.display = display;
+		this.rpcService = rpcService;
+		this.eventBus = eventBus;
+		bind();
+		fetchBeltList();
+	}
 
 	private void bind() {
-		this.display.getAddBeltLabel().addClickHandler(new ClickHandler() {
+		display.getAddBeltLabel().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				doCreateBelt();
 			}
 		});
-		
-		this.display.getBeltTextBoxOnKeyUp().addKeyUpHandler(new KeyUpHandler() {
+
+		display.getBeltTextBoxOnKeyUp().addKeyUpHandler(new KeyUpHandler() {
 			public void onKeyUp(KeyUpEvent event) {
 				if (event.getNativeKeyCode() == 13) {
 					doCreateBelt();
-				}	
+				}
 			}
 		});
-		
+
 		setSelectionModel();
 	}
-	
+
 	private void doCreateBelt() {
 		rpcService.createBelt(display.getAddBeltTextBox().getValue(), new AsyncCallback<Void>() {
 			public void onFailure(Throwable caught) {
-				Window.alert("Fehler beim anlegen der Gurtfarbe");						
+				Window.alert("Fehler beim anlegen der Gurtfarbe");
 			}
 			public void onSuccess(Void result) {
-				History.fireCurrentHistoryState();	
+				History.fireCurrentHistoryState();
 			}
 		});
 	}
 
-	public void go(HasWidgets container) {
-		container.clear();
-	    container.add(display.asWidget());
-	}
-
-	
 	public void fetchBeltList() {
 		rpcService.getAvailableBelts(new AsyncCallback<ArrayList<Belt>>() {
 			public void onFailure(Throwable caught) {
@@ -91,9 +85,19 @@ public class BeltEditorPresenter implements Presenter{
 				display.setListData(result);
 			}
 		});
-		
+
 	}
-	
+
+
+	public Display getDisplay(){
+		return display;
+	}
+
+	public void go(HasWidgets container) {
+		container.clear();
+		container.add(display.asWidget());
+	}
+
 	public void setSelectionModel() {
 		final SingleSelectionModel<Belt> selectionModel = new SingleSelectionModel<Belt>();
 		Handler selectionHandler = new SelectionChangeEvent.Handler() {
@@ -104,11 +108,7 @@ public class BeltEditorPresenter implements Presenter{
 			}
 		};
 		selectionModel.addSelectionChangeHandler(selectionHandler);
-		this.display.setSelectionModel(selectionModel);
+		display.setSelectionModel(selectionModel);
 	}
-	
-	public Display getDisplay(){
-		return display;
-	}
-	
+
 }

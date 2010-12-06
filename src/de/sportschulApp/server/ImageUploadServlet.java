@@ -3,8 +3,6 @@ package de.sportschulApp.server;
 import gwtupload.server.UploadAction;
 import gwtupload.server.exceptions.UploadActionException;
 
-import org.apache.commons.fileupload.FileItem;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,6 +12,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.fileupload.FileItem;
 
 public class ImageUploadServlet extends UploadAction {
 
@@ -52,7 +52,7 @@ public class ImageUploadServlet extends UploadAction {
 					GregorianCalendar cal = new GregorianCalendar();
 
 					saveName = "uploads/member/" + cal.getTimeInMillis()
-							+ extension;
+					+ extension;
 
 					File file = new File(saveName);
 
@@ -98,7 +98,7 @@ public class ImageUploadServlet extends UploadAction {
 	 */
 	@Override
 	public void removeItem(HttpServletRequest request, String fieldName)
-			throws UploadActionException {
+	throws UploadActionException {
 		File file = receivedFiles.get(fieldName);
 		receivedFiles.remove(fieldName);
 		receivedContentTypes.remove(fieldName);

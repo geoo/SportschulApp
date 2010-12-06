@@ -24,21 +24,21 @@ import de.sportschulApp.shared.User;
 
 public class LoginPresenter implements Presenter {
 	public interface Display {
+		Widget asWidget();
 		HasChangeHandlers getLanguagePickerOnChange();
 		String getLanguagePickerValue();
-		HasKeyUpHandlers getUserNameOnKeyUp();
-		HasKeyUpHandlers getPasswordOnKeyUp();
 		HasClickHandlers getLoginButton();
-		HasValue<String> getUserName();
 		HasValue<String> getPassword();
-		Widget asWidget();
+		HasKeyUpHandlers getPasswordOnKeyUp();
+		HasValue<String> getUserName();
+		HasKeyUpHandlers getUserNameOnKeyUp();
 		void setErrorLabel();
 	}
 
+	private final Display display;
+	private final HandlerManager eventBus;
 	private User loginUser;
 	private final LoginServiceAsync rpcService;
-	private final HandlerManager eventBus;
-	private final Display display;
 
 	public LoginPresenter(LoginServiceAsync rpcService,
 			HandlerManager eventBus, Display display) {
@@ -49,32 +49,62 @@ public class LoginPresenter implements Presenter {
 	}
 
 	public void bind() {
-		this.display.getLoginButton().addClickHandler(new ClickHandler() {
+		display.getLoginButton().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				doLogin();
 			}
 		});
-		
-		
-		this.display.getUserNameOnKeyUp().addKeyUpHandler(new KeyUpHandler() {
+
+
+		display.getUserNameOnKeyUp().addKeyUpHandler(new KeyUpHandler() {
 			public void onKeyUp(KeyUpEvent event) {
 				if (event.getNativeKeyCode() == 13) {
 					doLogin();
-				}	
+				}
 			}
 		});
-		
-		this.display.getPasswordOnKeyUp().addKeyUpHandler(new KeyUpHandler() {
+
+		display.getPasswordOnKeyUp().addKeyUpHandler(new KeyUpHandler() {
 			public void onKeyUp(KeyUpEvent event) {
 				if (event.getNativeKeyCode() == 13) {
 					doLogin();
-				}	
+				}
 			}
 		});
-		
-		this.display.getLanguagePickerOnChange().addChangeHandler(new ChangeHandler() {
+
+		display.getLanguagePickerOnChange().addChangeHandler(new ChangeHandler() {
 			public void onChange(ChangeEvent event) {
 				changeLanguage();
+			}
+		});
+	}
+
+	public void changeLanguage(){
+		eventBus.fireEvent(new LanguageChangeEvent(display.getLanguagePickerValue()));
+	}
+
+	public void doLogin() {
+		loginUser = new User();
+		loginUser.setUsername(display.getUserName().getValue());
+		loginUser.setPassword(display.getPassword().getValue());
+
+		rpcService.login(loginUser, new AsyncCallback<User>() {
+			public void onFailure(Throwable caught) {
+				Window.alert("Anmelden fehlgeschlagen");
+			}
+
+			public void onSuccess(User user) {
+				if (!user.getPermission().equals("wrongPW")) {
+					CookieManager.setUserCookie(user.getUsername(),
+							user.getPermission());
+					eventBus.fireEvent(new LoginEvent());
+
+					System.out.println("Angemeldet als: " + user.getUsername());
+					System.out.println("Permission: "+user.getPermission());
+				}
+				else{
+					showErrorLabel();
+				}
 			}
 		});
 	}
@@ -84,37 +114,7 @@ public class LoginPresenter implements Presenter {
 		container.add(display.asWidget());
 	}
 
-	public void doLogin() {
-		loginUser = new User();
-		loginUser.setUsername(display.getUserName().getValue());
-		loginUser.setPassword(display.getPassword().getValue());
-
-		rpcService.login(loginUser, new AsyncCallback<User>() {
-			public void onSuccess(User user) {
-				if (!user.getPermission().equals("wrongPW")) {
-					CookieManager.setUserCookie(user.getUsername(),
-							user.getPermission());
-					eventBus.fireEvent(new LoginEvent());
-					
-					System.out.println("Angemeldet als: " + user.getUsername());
-					System.out.println("Permission: "+user.getPermission());
-				}
-				else{
-					showErrorLabel();
-				}
-			}
-
-			public void onFailure(Throwable caught) {
-				Window.alert("Anmelden fehlgeschlagen");
-			}
-		});
-	}
-	
 	public void showErrorLabel() {
-		this.display.setErrorLabel();
-	}
-	
-	public void changeLanguage(){
-		eventBus.fireEvent(new LanguageChangeEvent(this.display.getLanguagePickerValue()));
+		display.setErrorLabel();
 	}
 }

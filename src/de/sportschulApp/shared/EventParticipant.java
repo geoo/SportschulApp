@@ -4,18 +4,22 @@ import java.io.Serializable;
 
 @SuppressWarnings("serial")
 public class EventParticipant implements Serializable {
-	
-	private int eventID;
+
 	private String barcodeID;
+	private int eventID;
 	private String forename;
-	private String surname;
-	private String passed;
-	private String paid;
 	private String note;
+	private String paid;
 	private String participant;
+	private String passed;
 	private String picUrl;
-	
-	
+	private String surname;
+
+
+	public EventParticipant() {
+
+	}
+
 	public EventParticipant(int eventID, String barcodeID, String forename, String surname, String passed, String paid, String note, String participant, String picUrl) {
 		this.eventID = eventID;
 		this.barcodeID = barcodeID;
@@ -27,64 +31,43 @@ public class EventParticipant implements Serializable {
 		this.participant = participant;
 		this.picUrl = picUrl;
 	}
-	
-	public EventParticipant() {
-		
-	}
-	
-	public int getEventID() {
-		return eventID;
-	}
-	
-	public void setEventID(int eventID) {
-		this.eventID = eventID;
-	}
 
 	public String getBarcodeID() {
 		return barcodeID;
 	}
 
-	public void setBarcodeID(String memberID) {
-		this.barcodeID = memberID;
+	public int getEventID() {
+		return eventID;
 	}
 
 	public String getForename() {
 		return forename;
 	}
 
-	public void setForename(String forename) {
-		this.forename = forename;
-	}
-
-	public String getPassed() {
-		return passed;
-	}
-
-	public void setPassed(String passed) {
-		this.passed = passed;
+	public String getNote() {
+		return note;
 	}
 
 	public String getPaid() {
 		return paid;
 	}
 
-	public void setPaid(String paid) {
-		this.paid = paid;
+	/**
+	 * @return the praticipant
+	 */
+	public String getParticipant() {
+		return participant;
 	}
 
-	public String getNote() {
-		return note;
-	}
-
-	public void setNote(String note) {
-		this.note = note;
+	public String getPassed() {
+		return passed;
 	}
 
 	/**
-	 * @param surname the surname to set
+	 * @return the picUrl
 	 */
-	public void setSurname(String surname) {
-		this.surname = surname;
+	public String getPicUrl() {
+		return picUrl;
 	}
 
 	/**
@@ -94,6 +77,26 @@ public class EventParticipant implements Serializable {
 		return surname;
 	}
 
+	public void setBarcodeID(String memberID) {
+		barcodeID = memberID;
+	}
+
+	public void setEventID(int eventID) {
+		this.eventID = eventID;
+	}
+
+	public void setForename(String forename) {
+		this.forename = forename;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
+	}
+
+	public void setPaid(String paid) {
+		this.paid = paid;
+	}
+
 	/**
 	 * @param praticipant the praticipant to set
 	 */
@@ -101,11 +104,8 @@ public class EventParticipant implements Serializable {
 		this.participant = participant;
 	}
 
-	/**
-	 * @return the praticipant
-	 */
-	public String getParticipant() {
-		return participant;
+	public void setPassed(String passed) {
+		this.passed = passed;
 	}
 
 	/**
@@ -116,12 +116,12 @@ public class EventParticipant implements Serializable {
 	}
 
 	/**
-	 * @return the picUrl
+	 * @param surname the surname to set
 	 */
-	public String getPicUrl() {
-		return picUrl;
+	public void setSurname(String surname) {
+		this.surname = surname;
 	}
 
 
-	
+
 }

@@ -5,13 +5,14 @@ import com.google.gwt.event.shared.GwtEvent;
 public class ShowCourseEvent extends GwtEvent<ShowCourseEventHandler>{
 	public static Type<ShowCourseEventHandler> TYPE = new Type<ShowCourseEventHandler>();
 	private int id;
-		
+
 	public ShowCourseEvent(int id) {
 		this.id = id;
 	}
-	
-	public int getCourseID() {
-		return id;
+
+	@Override
+	protected void dispatch(ShowCourseEventHandler handler) {
+		handler.onShowCourse(this);
 	}
 
 	@Override
@@ -19,8 +20,7 @@ public class ShowCourseEvent extends GwtEvent<ShowCourseEventHandler>{
 		return TYPE;
 	}
 
-	@Override
-	protected void dispatch(ShowCourseEventHandler handler) {
-		handler.onShowCourse(this);
+	public int getCourseID() {
+		return id;
 	}
 }

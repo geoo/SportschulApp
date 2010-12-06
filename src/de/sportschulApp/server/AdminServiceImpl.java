@@ -2,7 +2,6 @@ package de.sportschulApp.server;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -20,32 +19,56 @@ import de.sportschulApp.shared.User;
 
 @SuppressWarnings("serial")
 public class AdminServiceImpl extends RemoteServiceServlet implements
-		AdminService {
+AdminService {
 
-	DataBankerMember dbm = new DataBankerMember();
 	DataBankerCourse dbc = new DataBankerCourse();
-	DataBankerUser dbu = new DataBankerUser();
 	DataBankerEvent dbe = new DataBankerEvent();
+	DataBankerMember dbm = new DataBankerMember();
+	DataBankerUser dbu = new DataBankerUser();
 
-	public ArrayList<Member> getMemberList() {
-		ArrayList<Member> memberList = dbm.getMemberList();
-		return memberList;
+	public String changeUser(User user) {
+		return dbu.updateUser(user);
 	}
 
-	public ArrayList<String> getCourseList() {
-		return dbc.getCourseNames();
+	public void createBelt(String beltName) {
+		dbc.createBelt(beltName);
 	}
-	
-	public ArrayList<Course> getCompleteCourseList() {
-		return dbc.getCourses();
+
+	public String createCourse(Course course) {
+		return dbc.createCourse(course);
 	}
-	
-	public Course getCourseByID(int courseID) {
-		return dbc.getCourseByID(courseID);
+
+	public Integer createEvent(Event event) {
+		return dbe.createEvent(event);
 	}
-	
+
+	public void deleteBeltByID(int beltID) {
+		dbc.deleteBeltByID(beltID);
+	}
+
 	public void deleteCourseByID(int courseID) {
 		dbc.deleteCourse(courseID);
+	}
+
+	public void deleteEventByEventID(int eventID) {
+		dbe.deleteEvent(eventID);
+		dbe.deleteParticipantsForEvent(eventID);
+	}
+
+	public void deleteMemberByMemberID(int memberID) {
+		dbm.deleteMember(memberID);
+	}
+
+	public void deleteUserByUserID(int userID) {
+		dbu.deleteUser(userID);
+	}
+
+	public ArrayList<Belt> getAvailableBelts() {
+		return dbc.getAvailableBelts();
+	}
+
+	public Belt getBeltByID(int beltID) {
+		return dbc.getBeltByID(beltID);
 	}
 
 	public ArrayList<String> getBeltList(String courseName) {
@@ -53,16 +76,16 @@ public class AdminServiceImpl extends RemoteServiceServlet implements
 		return dbc.getBelts(courseID);
 	}
 
-	public Member getMemberByMemberID(int memberID) {
-		return dbm.getMemberWithMemberID(memberID);
+	public ArrayList<Course> getCompleteCourseList() {
+		return dbc.getCourses();
 	}
 
-	public Member getMemberByBarcodeID(int barcodeID) {
-		return dbm.getMember(barcodeID);
+	public String getCourseBeltPair(int courseID, int beltID) {
+		return dbc.getCourseBeltPair(courseID, beltID);
 	}
-	
-	public void deleteMemberByMemberID(int memberID) {
-		dbm.deleteMember(memberID);
+
+	public Course getCourseByID(int courseID) {
+		return dbc.getCourseByID(courseID);
 	}
 
 	public int getCourseID(String courseName) {
@@ -81,97 +104,20 @@ public class AdminServiceImpl extends RemoteServiceServlet implements
 
 	}
 
-	public String saveMember(Member member) {
-		System.out.println("Member Courses: "+member.getCourses());
-		System.out.println("Member Grades: "+member.getGraduations());
-
-		return dbm.createMember(member);
-	
-	}
-
-	public String createCourse(Course course) {
-		return dbc.createCourse(course);
-	}
-
-	public ArrayList<User> getInstructorList() {
-
-		return dbu.getUserList();
+	public ArrayList<String> getCourseList() {
+		return dbc.getCourseNames();
 	}
 
 	public String getCourseName(int id) {
 		return dbc.getCourseName(id);
 	}
-	
-	public String getCourseBeltPair(int courseID, int beltID) {
-		return dbc.getCourseBeltPair(courseID, beltID);
-	}
 
-	public ArrayList<Member> searchMember(String searchQuery){
-		return dbm.search(searchQuery);}
-
-	public ArrayList<User> getUserList() {
-		return dbu.getUserList();
-	}
-	
-	public User getUserByUserID(int userID) {
-		return dbu.getUser(userID);
-	}
-
-	public void deleteUserByUserID(int userID) {
-		dbu.deleteUser(userID);
-	}
-	
-	public ArrayList<Event> getEventList() {
-		return dbe.getEventList();
-	}
-	
 	public Event getEventByEventID(int eventID) {
 		return dbe.getEvent(eventID);
 	}
-	
-	public void deleteEventByEventID(int eventID) {
-		dbe.deleteEvent(eventID);
-		dbe.deleteParticipantsForEvent(eventID);
-	}
-	
-	public Integer createEvent(Event event) {
-		return dbe.createEvent(event);
-	}
-	
-	public Integer updateEvent(Event event) {
-		return dbe.updateEvent(event);
-	}
-	
-	public void updateCourse(Course course) {
-		dbc.updateCourse(course);
-	}
 
-	public String saveUser(User user) {
-		return dbu.createUser(user);
-	}
-
-	public String changeUser(User user) {
-		return dbu.updateUser(user);
-	}
-	
-	public ArrayList<Belt> getAvailableBelts() {
-		return dbc.getAvailableBelts();
-	}
-	
-	public void createBelt(String beltName) {
-		dbc.createBelt(beltName);
-	}
-	
-	public Belt getBeltByID(int beltID) {
-		return dbc.getBeltByID(beltID);
-	}
-	
-	public void deleteBeltByID(int beltID) {
-		dbc.deleteBeltByID(beltID);
-	}
-	
-	public void renameBeltByID(Belt belt) {
-		dbc.renameBeltByID(belt);
+	public ArrayList<Event> getEventList() {
+		return dbe.getEventList();
 	}
 
 	@Override
@@ -179,10 +125,63 @@ public class AdminServiceImpl extends RemoteServiceServlet implements
 		return dbe.getEventParticipants(eventID, dbm.getMemberList());
 	}
 
+	public ArrayList<User> getInstructorList() {
+
+		return dbu.getUserList();
+	}
+
+	public Member getMemberByBarcodeID(int barcodeID) {
+		return dbm.getMember(barcodeID);
+	}
+
+	public Member getMemberByMemberID(int memberID) {
+		return dbm.getMemberWithMemberID(memberID);
+	}
+
+	public ArrayList<Member> getMemberList() {
+		ArrayList<Member> memberList = dbm.getMemberList();
+		return memberList;
+	}
+
+	public User getUserByUserID(int userID) {
+		return dbu.getUser(userID);
+	}
+
+	public ArrayList<User> getUserList() {
+		return dbu.getUserList();
+	}
+
+	public void renameBeltByID(Belt belt) {
+		dbc.renameBeltByID(belt);
+	}
+
+	public String saveMember(Member member) {
+		System.out.println("Member Courses: "+member.getCourses());
+		System.out.println("Member Grades: "+member.getGraduations());
+
+		return dbm.createMember(member);
+
+	}
+
+	public String saveUser(User user) {
+		return dbu.createUser(user);
+	}
+
+	public ArrayList<Member> searchMember(String searchQuery){
+		return dbm.search(searchQuery);}
+
 	@Override
 	public void setEventParticipants(int eventID,
 			ArrayList<EventParticipant> participants) {
-		dbe.setParticipantsForEvent(eventID,(ArrayList<EventParticipant>) participants);		
+		dbe.setParticipantsForEvent(eventID,participants);
+	}
+
+	public void updateCourse(Course course) {
+		dbc.updateCourse(course);
+	}
+
+	public Integer updateEvent(Event event) {
+		return dbe.updateEvent(event);
 	}
 
 }

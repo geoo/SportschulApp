@@ -4,261 +4,151 @@ import com.google.gwt.i18n.client.Constants;
 
 public interface LocalizationConstants extends Constants {
 
-	String username();
+	String accountInformations();
 
-	String password();
-
-	String login();
-
-	String forename();
-
-	String surname();
-
-	String barcode();
-
-	String street();
-
-	String zipcode();
-
-	String city();
-
-	String phone();
-
-	String mobilephone();
-
-	String fax();
-
-	String email();
-
-	String homepage();
-
-	String birth();
-
-	String diseases();
-
-	String beltsize();
-
-	String note();
-
-	String trainingunits();
-
-	String course();
-
-	String grade();
-
-	String select();
-
-	String send();
-
-	String picture();
-
-	String barcodeUsed();
-
-	String day();
-
-	String month();
-
-	String year();
-
-	String language();
-
-	String january();
-
-	String february();
-
-	String march();
-
-	String april();
-
-	String may();
-
-	String june();
-
-	String july();
-
-	String august();
-
-	String september();
-
-	String october();
-
-	String november();
-
-	String december();
-
-	String popupHelpSurname();
-
-	String popupHelpForename();
-
-	String popupHelpBarcode();
-
-	String popupHelpStreet();
-
-	String popupHelpZipcode();
-
-	String popupHelpCity();
-
-	String popupHelpPhone();
-
-	String popupHelpBeltsize();
-
-	String popupHelpTrainingunits();
-
-	String popupHelpMobilephone();
-
-	String popupHelpFax();
-
-	String popupHelpEmail();
-
-	String popupHelpHomepage();
-
-	String popupHelpDiseases();
-
-	String popupHelpNote();
-	
-	String popupHelpCourseName();
-
-	String popupHelpTime();
-
-	String popupHelpInstructor();
-
-	String popupHelpLocation();
-	
-	String popupHelpEventName();
-
-	String popupHelpEventDate();
-
-	String popupHelpEventLocation();
-
-	String popupHelpEventCosts();
-
-	String memberCreated();
-	
-	String importantInformations();
-	
-	String additionalInformations();
-
-	String white();
-
-	String whiteYellow();
-
-	String orangeGreen();
-
-	String yellowOrange();
-
-	String green();
-
-	String blue();
-
-	String brown();
-
-	String black();
-
-	String red();
-
-	String courseName();
-
-	String time();
-
-	String instructor();
-
-	String location();
-
-	String belts();
-
-	String courseNameUsed();
-
-	String courseCreated();
-
-	String eventName();
-
-	String date();
-
-	String costs();
-
-	String hour();
-
-	String minutes();
-
-	String save();
-	
-	String cancel();
-
-	String scan();
-
-	String name();
-
-	String presence();
-
-	String from();
-
-	String search();
-	
-	String type();
-	
-	String monday();
-	
-	String tuesday();
-	
-	String wednesday();
-	
-	String thursday();
-	
-	String friday();
-	
-	String saturday();
-	
-	String sunday();
-	
-	String trainingTime();
-	
-	String delete();
-	
-	String weekday();
-	
-	String clock();
-	
-	String tariffs();
-
-	String passwordConfirm();
-
-	String permission();
-
-	String admin();
-	
-	String trainer();
-
-	String popupHelpUserForename();
-
-	String popupHelpUserSurname();
-
-	String popupHelpUserPassword();
-
-	String popupHelpUserPasswordConfirm();
-
-	String selectPermission();
-
-	String popupHelpUsername();
-
-	String usernameAlreadyTaken();
-
-	String createEditCourse();
+	String accountNumber();
 
 	String accountOwnerForename();
 
 	String accountOwnerSurname();
 
-	String accountNumber();
+	String additionalInformations();
 
-	String bankNumber();
+	String admin();
+
+	String april();
+
+	String august();
 
 	String bankName();
 
-	String accountInformations();
+	String bankNumber();
+
+	String barcode();
+
+	String barcodeUsed();
+
+	String belts();
+
+	String beltsize();
+
+	String birth();
+
+	String black();
+
+	String blue();
+
+	String brown();
+
+	String cancel();
+
+	String city();
+
+	String clock();
+
+	String costs();
+
+	String course();
+
+	String courseCreated();
+
+	String courseName();
+
+	String courseNameUsed();
+
+	String createEditCourse();
+
+	String date();
+
+	String day();
+
+	String december();
+
+	String delete();
+
+	String diseases();
+
+	String email();
+
+	String eventName();
+
+	String eventType();
+
+	String examiner();
+
+	String fax();
+
+	String february();
+
+	String forename();
+
+	String friday();
+
+	String from();
+
+	String grade();
+
+	String green();
+
+	String homepage();
+
+	String hour();
+
+	String importantInformations();
+
+	String instructor();
+
+	String january();
+
+	String july();
+
+	String june();
+
+	String language();
 
 	String likeAbove();
 
+	String location();
+
+	String login();
+
+	String march();
+
+	String may();
+
+	String memberCreated();
+
+	String minutes();
+
+	String mobilephone();
+
+	String monday();
+
+	String month();
+
+	String name();
+
+	String note();
+
+	String november();
+
+	String october();
+
+	String orangeGreen();
+
+	String password();
+
+	String passwordConfirm();
+
+	String permission();
+
+	String phone();
+
+	String picture();
+
 	String popupHelpAccountForename();
+
+	String popupHelpAccountNumber();
 
 	String popupHelpAccountSurename();
 
@@ -266,9 +156,119 @@ public interface LocalizationConstants extends Constants {
 
 	String popupHelpBanknumber();
 
-	String popupHelpAccountNumber();
-	
-	String eventType();
-	
-	String examiner();
+	String popupHelpBarcode();
+
+	String popupHelpBeltsize();
+
+	String popupHelpCity();
+
+	String popupHelpCourseName();
+
+	String popupHelpDiseases();
+
+	String popupHelpEmail();
+
+	String popupHelpEventCosts();
+
+	String popupHelpEventDate();
+
+	String popupHelpEventLocation();
+
+	String popupHelpEventName();
+
+	String popupHelpFax();
+
+	String popupHelpForename();
+
+	String popupHelpHomepage();
+
+	String popupHelpInstructor();
+
+	String popupHelpLocation();
+
+	String popupHelpMobilephone();
+
+	String popupHelpNote();
+
+	String popupHelpPhone();
+
+	String popupHelpStreet();
+
+	String popupHelpSurname();
+
+	String popupHelpTime();
+
+	String popupHelpTrainingunits();
+
+	String popupHelpUserForename();
+
+	String popupHelpUsername();
+
+	String popupHelpUserPassword();
+
+	String popupHelpUserPasswordConfirm();
+
+	String popupHelpUserSurname();
+
+	String popupHelpZipcode();
+
+	String presence();
+
+	String red();
+
+	String saturday();
+
+	String save();
+
+	String scan();
+
+	String search();
+
+	String select();
+
+	String selectPermission();
+
+	String send();
+
+	String september();
+
+	String street();
+
+	String sunday();
+
+	String surname();
+
+	String tariffs();
+
+	String thursday();
+
+	String time();
+
+	String trainer();
+
+	String trainingTime();
+
+	String trainingunits();
+
+	String tuesday();
+
+	String type();
+
+	String username();
+
+	String usernameAlreadyTaken();
+
+	String wednesday();
+
+	String weekday();
+
+	String white();
+
+	String whiteYellow();
+
+	String year();
+
+	String yellowOrange();
+
+	String zipcode();
 }

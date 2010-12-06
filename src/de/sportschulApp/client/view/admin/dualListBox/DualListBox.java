@@ -1,5 +1,9 @@
 package de.sportschulApp.client.view.admin.dualListBox;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import com.allen_sauer.gwt.dnd.client.DragController;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -10,11 +14,6 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-
-import com.allen_sauer.gwt.dnd.client.DragController;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Example of two lists side by side for {@link DualListExample}.
@@ -46,7 +45,7 @@ public class DualListBox extends AbsolutePanel {
 
 		VerticalPanel verticalPanel = new VerticalPanel();
 		verticalPanel
-				.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
 		dragController = new ListBoxDragController(this);
 		left = new MouseListBox(dragController, LIST_SIZE);
@@ -106,10 +105,6 @@ public class DualListBox extends AbsolutePanel {
 	public void addLeft(String string) {
 		left.add(string);
 	}
-	
-	public void addRight(String string) {
-		right.add(string);
-	}
 
 	/**
 	 * Adds an widget to the left list box.
@@ -121,19 +116,12 @@ public class DualListBox extends AbsolutePanel {
 		left.add(widget);
 	}
 
-	public DragController getDragController() {
-		return dragController;
+	public void addRight(String string) {
+		right.add(string);
 	}
 
-	protected void moveItems(MouseListBox from, MouseListBox to,
-			boolean justSelectedItems) {
-		ArrayList<Widget> widgetList = justSelectedItems ? dragController
-				.getSelectedWidgets(from) : from.widgetList();
-		for (Widget widget : widgetList) {
-			// TODO let widget.removeFromParent() take care of from.remove()
-			from.remove(widget);
-			to.add(widget);
-		}
+	public DragController getDragController() {
+		return dragController;
 	}
 
 	public ArrayList<String> getWidgetListLeft() {
@@ -168,6 +156,17 @@ public class DualListBox extends AbsolutePanel {
 		}
 
 		return result;
+	}
+
+	protected void moveItems(MouseListBox from, MouseListBox to,
+			boolean justSelectedItems) {
+		ArrayList<Widget> widgetList = justSelectedItems ? dragController
+				.getSelectedWidgets(from) : from.widgetList();
+				for (Widget widget : widgetList) {
+					// TODO let widget.removeFromParent() take care of from.remove()
+					from.remove(widget);
+					to.add(widget);
+				}
 	}
 
 }

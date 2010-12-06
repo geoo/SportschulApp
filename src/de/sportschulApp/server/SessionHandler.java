@@ -8,10 +8,10 @@ public class SessionHandler {
 	private static final long serialVersionUID = 1L;
 
 
-	public void setSession(String username, HttpServletRequest r) {
+	public void deleteSession(HttpServletRequest r) {
 		HttpServletRequest request = r;
-		HttpSession session = request.getSession(true);
-		session.setAttribute("Username", username);
+		HttpSession session = request.getSession();
+		session.removeAttribute("Username");
 	}
 
 	public String getSession(HttpServletRequest r) {
@@ -20,10 +20,10 @@ public class SessionHandler {
 		return session.getAttribute("Username").toString();
 	}
 
-	public void deleteSession(HttpServletRequest r) {
+	public void setSession(String username, HttpServletRequest r) {
 		HttpServletRequest request = r;
-		HttpSession session = request.getSession();
-		session.removeAttribute("Username");
+		HttpSession session = request.getSession(true);
+		session.setAttribute("Username", username);
 	}
 
 }

@@ -2,13 +2,13 @@ package de.sportschulApp.server.databanker;
 
 
 /**
- * †ber die Klasse DataBanker.java lŠuft die komplette Kommunikation mit der
- * Datenbank. Die Verbindung zur Datenbank wird Ÿber DataBankerConnection.java
+ * ï¿½ber die Klasse DataBanker.java lï¿½uft die komplette Kommunikation mit der
+ * Datenbank. Die Verbindung zur Datenbank wird ï¿½ber DataBankerConnection.java
  * hergestellt.
  */
 
 public class DataBanker implements DataBankerInterface {
 
 
-	
+
 }

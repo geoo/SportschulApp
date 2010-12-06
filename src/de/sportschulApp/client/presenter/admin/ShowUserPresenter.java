@@ -18,66 +18,52 @@ import de.sportschulApp.shared.User;
 
 public class ShowUserPresenter implements Presenter{
 	public interface Display{
-		void setData(User user);
-		HasClickHandlers getEditLabel();
-		HasClickHandlers getDeleteLabel();
 		Widget asWidget();
+		HasClickHandlers getDeleteLabel();
+		HasClickHandlers getEditLabel();
+		void setData(User user);
 	}
-	
+
 	private final Display display;
-	private final AdminServiceAsync rpcService;
 	private final HandlerManager eventBus;
+	private final AdminServiceAsync rpcService;
 	private User user = new User();
-	
+
 	public ShowUserPresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display, int userID) {
 		this.eventBus = eventBus;
-	    this.display = display;
-	    this.rpcService = rpcService;
-	    bind();
-	    fetchData(userID);
+		this.display = display;
+		this.rpcService = rpcService;
+		bind();
+		fetchData(userID);
 	}
-
-	public void fetchData(int courseID) {
-		rpcService.getUserByUserID(courseID, new AsyncCallback<User>() {
-			public void onSuccess(User result) {
-				user = result;
-				display.setData(result);
-			}
-
-			public void onFailure(Throwable caught) {
-				Window.alert("Fehler beim laden der Benutzerdaten");
-			}
-		});
-	}
-	
 
 	private void bind() {
-		this.display.getEditLabel().addClickHandler(new ClickHandler() {
+		display.getEditLabel().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				History.newItem("adminSystemEditUser:" + user.getUserID());
 			}
 		});
-		
-		this.display.getDeleteLabel().addClickHandler(new ClickHandler() {
+
+		display.getDeleteLabel().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				if(!(CookieManager.getUsername().equals(user.getUsername()))) {
 					if(Window.confirm("Bestätigen sie mit OK wenn der Benutzer wirklich gelöscht werden soll.")) {
 						rpcService.deleteUserByUserID(user.getUserID(), new AsyncCallback<Void>() {
+							public void onFailure(Throwable caught) {
+								Window.alert("Das löschen des Benutzers ist Fehlgeschlagen");
+							}
 							public void onSuccess(Void result) {
 								History.fireCurrentHistoryState();
 							}
-							public void onFailure(Throwable caught) {
-								Window.alert("Das löschen des Benutzers ist Fehlgeschlagen");	
-							}
 						});
-					} 
+					}
 				} else if (Window.confirm("Achtung! Es handelt sich hierbei um ihren eigenen Account! Wirklich fortfahren?")) {
 					rpcService.deleteUserByUserID(user.getUserID(), new AsyncCallback<Void>() {
+						public void onFailure(Throwable caught) {
+							Window.alert("Das löschen des Benutzers ist Fehlgeschlagen");
+						}
 						public void onSuccess(Void result) {
 							eventBus.fireEvent(new LogoutEvent());
-						}
-						public void onFailure(Throwable caught) {
-							Window.alert("Das löschen des Benutzers ist Fehlgeschlagen");	
 						}
 					});
 				}
@@ -85,9 +71,23 @@ public class ShowUserPresenter implements Presenter{
 		});
 	}
 
+
+	public void fetchData(int courseID) {
+		rpcService.getUserByUserID(courseID, new AsyncCallback<User>() {
+			public void onFailure(Throwable caught) {
+				Window.alert("Fehler beim laden der Benutzerdaten");
+			}
+
+			public void onSuccess(User result) {
+				user = result;
+				display.setData(result);
+			}
+		});
+	}
+
 	public void go(HasWidgets container) {
 		container.clear();
-	    container.add(display.asWidget());
+		container.add(display.asWidget());
 	}
 
 }

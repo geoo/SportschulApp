@@ -19,45 +19,49 @@ import de.sportschulApp.shared.User;
 @SuppressWarnings("unchecked")
 public class ListUserPresenter implements Presenter{
 	public interface Display{
+		Widget asWidget();
 		void setListData(ArrayList<User> listData);
 		void setSelectionModel(SingleSelectionModel selectionModel);
-		Widget asWidget();
 	}
-	
+
 	private final Display display;
-	private final AdminServiceAsync rpcService;
 	private final HandlerManager eventBus;
-	
+	private final AdminServiceAsync rpcService;
+
 	public ListUserPresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display) {
-	    this.display = display;
-	    this.rpcService = rpcService;
-	    this.eventBus = eventBus;
-	    bind();
-	    fetchListData();
-	  }
+		this.display = display;
+		this.rpcService = rpcService;
+		this.eventBus = eventBus;
+		bind();
+		fetchListData();
+	}
 
 	private void bind() {
 		setSelectionModel();
 	}
 
-	public void go(HasWidgets container) {
-		container.clear();
-	    container.add(display.asWidget());
-	}
-
-	
 	public void fetchListData() {
 		rpcService.getUserList(new AsyncCallback<ArrayList<User>>() {
-			public void onSuccess(ArrayList<User> result) {
-				display.setListData(result);
-			}
 			public void onFailure(Throwable caught) {
 				Window.alert("Abrufen der Benutzerdaten fehlgeschlagen.");
 			}
+			public void onSuccess(ArrayList<User> result) {
+				display.setListData(result);
+			}
 		});
-		
+
 	}
-	
+
+
+	public Display getDisplay(){
+		return display;
+	}
+
+	public void go(HasWidgets container) {
+		container.clear();
+		container.add(display.asWidget());
+	}
+
 	public void setSelectionModel() {
 		final SingleSelectionModel<User> selectionModel = new SingleSelectionModel<User>();
 		Handler selectionHandler = new SelectionChangeEvent.Handler() {
@@ -68,11 +72,7 @@ public class ListUserPresenter implements Presenter{
 			}
 		};
 		selectionModel.addSelectionChangeHandler(selectionHandler);
-		this.display.setSelectionModel(selectionModel);
+		display.setSelectionModel(selectionModel);
 	}
-	
-	public Display getDisplay(){
-		return display;
-	}
-	
+
 }

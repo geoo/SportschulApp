@@ -7,13 +7,13 @@ import java.util.ArrayList;
 
 public class Course implements Serializable{
 
+	private ArrayList<String> beltColours;
+	private ArrayList<CourseDate> courseDates;
 	private int courseID;
-	private String name;
+	private ArrayList<CourseTariff> courseTariffs;
 	private String instructor;
 	private String location;
-	private ArrayList<CourseDate> courseDates;
-	private ArrayList<CourseTariff> courseTariffs;
-	private ArrayList<String> beltColours;
+	private String name;
 
 	public Course() {
 	}
@@ -24,10 +24,73 @@ public class Course implements Serializable{
 		this.name = name;
 		this.instructor = instructor;
 		this.location = location;
-		this.setCourseDates(courseDates);
-		this.setCourseTariffs(courseTariffs);
+		setCourseDates(courseDates);
+		setCourseTariffs(courseTariffs);
 		this.beltColours = beltColours;
 
+	}
+
+	/**
+	 * @return the beltColours
+	 */
+	public ArrayList<String> getBeltColours() {
+		return beltColours;
+	}
+
+	/**
+	 * @return the courseDates
+	 */
+	public ArrayList<CourseDate> getCourseDates() {
+		return courseDates;
+	}
+
+	/**
+	 * @return the courseID
+	 */
+	public int getCourseID() {
+		return courseID;
+	}
+
+	/**
+	 * @return the courseTariffs
+	 */
+	public ArrayList<CourseTariff> getCourseTariffs() {
+		return courseTariffs;
+	}
+
+	/**
+	 * @return the instructor
+	 */
+	public String getInstructor() {
+		return instructor;
+	}
+
+	/**
+	 * @return the location
+	 */
+	public String getLocation() {
+		return location;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param beltColours the beltColours to set
+	 */
+	public void setBeltColours(ArrayList<String> beltColours) {
+		this.beltColours = beltColours;
+	}
+
+	/**
+	 * @param courseDates the courseDates to set
+	 */
+	public void setCourseDates(ArrayList<CourseDate> courseDates) {
+		this.courseDates = courseDates;
 	}
 
 	/**
@@ -39,25 +102,10 @@ public class Course implements Serializable{
 	}
 
 	/**
-	 * @return the courseID
+	 * @param courseTariffs the courseTariffs to set
 	 */
-	public int getCourseID() {
-		return courseID;
-	}
-
-	/**
-	 * @param name
-	 *            the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
+	public void setCourseTariffs(ArrayList<CourseTariff> courseTariffs) {
+		this.courseTariffs = courseTariffs;
 	}
 
 	/**
@@ -69,13 +117,6 @@ public class Course implements Serializable{
 	}
 
 	/**
-	 * @return the instructor
-	 */
-	public String getInstructor() {
-		return instructor;
-	}
-
-	/**
 	 * @param location
 	 *            the location to set
 	 */
@@ -84,51 +125,10 @@ public class Course implements Serializable{
 	}
 
 	/**
-	 * @return the location
+	 * @param name
+	 *            the name to set
 	 */
-	public String getLocation() {
-		return location;
-	}
-
-	/**
-	 * @param beltColours the beltColours to set
-	 */
-	public void setBeltColours(ArrayList<String> beltColours) {
-		this.beltColours = beltColours;
-	}
-
-	/**
-	 * @return the beltColours
-	 */
-	public ArrayList<String> getBeltColours() {
-		return beltColours;
-	}
-
-	/**
-	 * @param courseDates the courseDates to set
-	 */
-	public void setCourseDates(ArrayList<CourseDate> courseDates) {
-		this.courseDates = courseDates;
-	}
-
-	/**
-	 * @return the courseDates
-	 */
-	public ArrayList<CourseDate> getCourseDates() {
-		return courseDates;
-	}
-
-	/**
-	 * @param courseTariffs the courseTariffs to set
-	 */
-	public void setCourseTariffs(ArrayList<CourseTariff> courseTariffs) {
-		this.courseTariffs = courseTariffs;
-	}
-
-	/**
-	 * @return the courseTariffs
-	 */
-	public ArrayList<CourseTariff> getCourseTariffs() {
-		return courseTariffs;
+	public void setName(String name) {
+		this.name = name;
 	}
 }

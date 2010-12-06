@@ -19,45 +19,49 @@ import de.sportschulApp.shared.Event;
 @SuppressWarnings("unchecked")
 public class ListEventPresenter implements Presenter{
 	public interface Display{
+		Widget asWidget();
 		void setListData(ArrayList<Event> listData);
 		void setSelectionModel(SingleSelectionModel selectionModel);
-		Widget asWidget();
 	}
-	
+
 	private final Display display;
-	private final AdminServiceAsync rpcService;
 	private final HandlerManager eventBus;
-	
+	private final AdminServiceAsync rpcService;
+
 	public ListEventPresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display) {
-	    this.display = display;
-	    this.rpcService = rpcService;
-	    this.eventBus = eventBus;
-	    bind();
-	    fetchListData();
-	  }
+		this.display = display;
+		this.rpcService = rpcService;
+		this.eventBus = eventBus;
+		bind();
+		fetchListData();
+	}
 
 	private void bind() {
 		setSelectionModel();
 	}
 
-	public void go(HasWidgets container) {
-		container.clear();
-	    container.add(display.asWidget());
-	}
-
-	
 	public void fetchListData() {
 		rpcService.getEventList(new AsyncCallback<ArrayList<Event>>() {
-			public void onSuccess(ArrayList<Event> result) {
-				display.setListData(result);
-			}
 			public void onFailure(Throwable caught) {
 				Window.alert("Abrufen der Benutzerdaten fehlgeschlagen.");
 			}
+			public void onSuccess(ArrayList<Event> result) {
+				display.setListData(result);
+			}
 		});
-		
+
 	}
-	
+
+
+	public Display getDisplay(){
+		return display;
+	}
+
+	public void go(HasWidgets container) {
+		container.clear();
+		container.add(display.asWidget());
+	}
+
 	public void setSelectionModel() {
 		final SingleSelectionModel<Event> selectionModel = new SingleSelectionModel<Event>();
 		Handler selectionHandler = new SelectionChangeEvent.Handler() {
@@ -68,11 +72,7 @@ public class ListEventPresenter implements Presenter{
 			}
 		};
 		selectionModel.addSelectionChangeHandler(selectionHandler);
-		this.display.setSelectionModel(selectionModel);
+		display.setSelectionModel(selectionModel);
 	}
-	
-	public Display getDisplay(){
-		return display;
-	}
-	
+
 }

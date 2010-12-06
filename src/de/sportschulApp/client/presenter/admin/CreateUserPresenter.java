@@ -43,41 +43,39 @@ public class CreateUserPresenter implements Presenter {
 
 		LocalizationConstants getConstants();
 
-		HasClickHandlers getSaveButton();
-
-		ValidationProcessor getValidator();
-
 		TextBox getForenameTextBox();
-
-		TextBox getSurnameTextBox();
-
-		TextBox getPasswordTextBox();
 
 		TextBox getPasswordConfirmTextBox();
 
+		TextBox getPasswordTextBox();
+
 		ListBox getPermissionListbox();
+
+		HasClickHandlers getSaveButton();
+
+		TextBox getSurnameTextBox();
 
 		TextBox getUsernameTextBox();
 
+		ValidationProcessor getValidator();
+
 	}
 
+	private LocalizationConstants constants;
 	// datenfelder - presenter
 	private final Display display;
-	private final AdminServiceAsync rpcService;
-	private HandlerManager eventBus;
-	private LocalizationConstants constants;
-	private PopupDescription popupDesc;
-	private ValidationProcessor validator;
 	private boolean editable = false;
+	private PopupDescription popupDesc;
+	private final AdminServiceAsync rpcService;
 	private int userID;
+	private ValidationProcessor validator;
 
 	// konstruktor - presenter
 	public CreateUserPresenter(AdminServiceAsync rpcService,
 			HandlerManager eventBus, Display display) {
 		this.display = display;
 		this.rpcService = rpcService;
-		this.eventBus = eventBus;
-		this.constants = display.getConstants();
+		constants = display.getConstants();
 		bind();
 		setupValidation();
 	}
@@ -94,39 +92,12 @@ public class CreateUserPresenter implements Presenter {
 			HandlerManager eventBus, Display display, String userID) {
 		this.display = display;
 		this.rpcService = rpcService;
-		this.eventBus = eventBus;
-		this.constants = display.getConstants();
+		constants = display.getConstants();
 		bind();
 		setupValidation();
 		editable = true;
 		this.userID = Integer.parseInt(userID);
 		getUser(Integer.parseInt(userID));
-	}
-
-	private void getUser(int userID) {
-		rpcService.getUserByUserID(userID, new AsyncCallback<User>() {
-
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-
-			}
-
-			public void onSuccess(User result) {
-				fillTextBoxes(result);
-			}
-		});
-	}
-
-	private void fillTextBoxes(User user) {
-		display.getUsernameTextBox().setText(user.getUsername());
-		display.getForenameTextBox().setText(user.getForename());
-		display.getSurnameTextBox().setText(user.getSurname());
-		if (user.getPermission().equals("admin")) {
-			display.getPermissionListbox().setItemSelected(2, true);
-		} else {
-			display.getPermissionListbox().setItemSelected(1, true);
-		}
-
 	}
 
 	/**
@@ -142,17 +113,17 @@ public class CreateUserPresenter implements Presenter {
 					if (!(display.getPasswordTextBox().getText().equals(display
 							.getPasswordConfirmTextBox().getText()))) {
 						display.getPasswordTextBox().setStyleName(
-								"userValidationFailedBorder");
+						"userValidationFailedBorder");
 						display.getPasswordConfirmTextBox().setStyleName(
-								"userValidationFailedBorder");
+						"userValidationFailedBorder");
 
 					}
 					if ((display.getPasswordTextBox().getText().equals(display
 							.getPasswordConfirmTextBox().getText()))) {
 						display.getPasswordTextBox().setStyleName(
-								"userValidationPassedBorder");
+						"userValidationPassedBorder");
 						display.getPasswordConfirmTextBox().setStyleName(
-								"userValidationPassedBorder");
+						"userValidationPassedBorder");
 					}
 					if (display.getPermissionListbox().getSelectedIndex() == 0) {
 						Window.alert(constants.selectPermission());
@@ -163,71 +134,6 @@ public class CreateUserPresenter implements Presenter {
 			}
 
 		});
-	}
-
-	/**
-	 * bringt die View zur Anzeige
-	 */
-	public void go(HasWidgets container) {
-		container.clear();
-		container.add(display.asWidget());
-	}
-
-	private void setupValidation() {
-		class CustomValidationMessages extends ValidationMessages {
-
-			public String getDescriptionMessage(String msgKey) {
-				HashMap<String, String> msgMap = new HashMap<String, String>();
-				msgMap.put("username", constants.popupHelpUsername());
-				msgMap.put("forename", constants.popupHelpUserForename());
-				msgMap.put("surname", constants.popupHelpUserSurname());
-				msgMap.put("password", constants.popupHelpUserPassword());
-				msgMap.put("passwordConfirm",
-						constants.popupHelpUserPasswordConfirm());
-
-				String temp = msgMap.get(msgKey.trim());
-				return temp;
-			}
-		}
-
-		this.validator = display.getValidator();
-		ValidationMessages messages = new CustomValidationMessages();
-
-		popupDesc = new PopupDescription(messages);
-
-		validator.addValidators("username",
-				new StringLengthValidator(display.getUsernameTextBox(), 2, 30)
-						.addActionForFailure(new StyleAction(
-								"validationFailedBorder")));
-
-		validator.addValidators("forename",
-				new StringLengthValidator(display.getForenameTextBox(), 2, 30)
-						.addActionForFailure(new StyleAction(
-								"validationFailedBorder")));
-
-		validator.addValidators("surname",
-				new StringLengthValidator(display.getSurnameTextBox(), 2, 30)
-						.addActionForFailure(new StyleAction(
-								"validationFailedBorder")));
-
-		validator.addValidators("password",
-				new StringLengthValidator(display.getPasswordTextBox(), 6, 30)
-						.addActionForFailure(new StyleAction(
-								"validationFailedBorder")));
-
-		validator
-				.addValidators("passwordConfirm", new StringLengthValidator(
-						display.getPasswordConfirmTextBox(), 6, 30)
-						.addActionForFailure(new StyleAction(
-								"validationFailedBorder")));
-
-		popupDesc.addDescription("username ", display.getUsernameTextBox());
-		popupDesc.addDescription("forename ", display.getForenameTextBox());
-		popupDesc.addDescription("surname ", display.getSurnameTextBox());
-		popupDesc.addDescription("password ", display.getPasswordTextBox());
-		popupDesc.addDescription("passwordConfirm ",
-				display.getPasswordConfirmTextBox());
-
 	}
 
 	private void fillForm() {
@@ -253,7 +159,7 @@ public class CreateUserPresenter implements Presenter {
 					if (result.equals("Benutzername schon vorhanden")) {
 						Window.alert(constants.usernameAlreadyTaken());
 						display.getUsernameTextBox().setStyleName(
-								"userValidationFailedBorder");
+						"userValidationFailedBorder");
 					}
 					History.newItem("adminSystemShowUsers");
 
@@ -272,12 +178,104 @@ public class CreateUserPresenter implements Presenter {
 					if (result.equals("Benutzername schon vorhanden")) {
 						Window.alert(constants.usernameAlreadyTaken());
 						display.getUsernameTextBox().setStyleName(
-								"userValidationFailedBorder");
+						"userValidationFailedBorder");
 					}
 					History.newItem("adminSystemShowUsers");
 
 				}
 			});
 		}
+	}
+
+	private void fillTextBoxes(User user) {
+		display.getUsernameTextBox().setText(user.getUsername());
+		display.getForenameTextBox().setText(user.getForename());
+		display.getSurnameTextBox().setText(user.getSurname());
+		if (user.getPermission().equals("admin")) {
+			display.getPermissionListbox().setItemSelected(2, true);
+		} else {
+			display.getPermissionListbox().setItemSelected(1, true);
+		}
+
+	}
+
+	private void getUser(int userID) {
+		rpcService.getUserByUserID(userID, new AsyncCallback<User>() {
+
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+
+			}
+
+			public void onSuccess(User result) {
+				fillTextBoxes(result);
+			}
+		});
+	}
+
+	/**
+	 * bringt die View zur Anzeige
+	 */
+	public void go(HasWidgets container) {
+		container.clear();
+		container.add(display.asWidget());
+	}
+
+	private void setupValidation() {
+		class CustomValidationMessages extends ValidationMessages {
+
+			@Override
+			public String getDescriptionMessage(String msgKey) {
+				HashMap<String, String> msgMap = new HashMap<String, String>();
+				msgMap.put("username", constants.popupHelpUsername());
+				msgMap.put("forename", constants.popupHelpUserForename());
+				msgMap.put("surname", constants.popupHelpUserSurname());
+				msgMap.put("password", constants.popupHelpUserPassword());
+				msgMap.put("passwordConfirm",
+						constants.popupHelpUserPasswordConfirm());
+
+				String temp = msgMap.get(msgKey.trim());
+				return temp;
+			}
+		}
+
+		validator = display.getValidator();
+		ValidationMessages messages = new CustomValidationMessages();
+
+		popupDesc = new PopupDescription(messages);
+
+		validator.addValidators("username",
+				new StringLengthValidator(display.getUsernameTextBox(), 2, 30)
+		.addActionForFailure(new StyleAction(
+		"validationFailedBorder")));
+
+		validator.addValidators("forename",
+				new StringLengthValidator(display.getForenameTextBox(), 2, 30)
+		.addActionForFailure(new StyleAction(
+		"validationFailedBorder")));
+
+		validator.addValidators("surname",
+				new StringLengthValidator(display.getSurnameTextBox(), 2, 30)
+		.addActionForFailure(new StyleAction(
+		"validationFailedBorder")));
+
+		validator.addValidators("password",
+				new StringLengthValidator(display.getPasswordTextBox(), 6, 30)
+		.addActionForFailure(new StyleAction(
+		"validationFailedBorder")));
+
+		validator
+		.addValidators("passwordConfirm", new StringLengthValidator(
+				display.getPasswordConfirmTextBox(), 6, 30)
+		.addActionForFailure(new StyleAction(
+		"validationFailedBorder")));
+
+		popupDesc.addDescription("username ", display.getUsernameTextBox());
+		popupDesc.addDescription("forename ", display.getForenameTextBox());
+		popupDesc.addDescription("surname ", display.getSurnameTextBox());
+		popupDesc.addDescription("password ", display.getPasswordTextBox());
+		popupDesc.addDescription("passwordConfirm ",
+				display.getPasswordConfirmTextBox());
+
 	}
 }

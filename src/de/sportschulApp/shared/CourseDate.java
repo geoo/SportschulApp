@@ -4,24 +4,24 @@ import java.io.Serializable;
 
 @SuppressWarnings("serial")
 public class CourseDate implements Serializable {
-	
-	private String weekDay;
+
 	private String time;
-	
-	public CourseDate(String weekDay, String time) {
-		this.setWeekDay(weekDay);
-		this.setTime(time);
-	}
-	
+	private String weekDay;
+
 	public CourseDate() {
-		
+
+	}
+
+	public CourseDate(String weekDay, String time) {
+		setWeekDay(weekDay);
+		setTime(time);
 	}
 
 	/**
-	 * @param weekDay the weekDay to set
+	 * @return the time
 	 */
-	public void setWeekDay(String weekDay) {
-		this.weekDay = weekDay;
+	public String getTime() {
+		return time;
 	}
 
 	/**
@@ -39,9 +39,9 @@ public class CourseDate implements Serializable {
 	}
 
 	/**
-	 * @return the time
+	 * @param weekDay the weekDay to set
 	 */
-	public String getTime() {
-		return time;
+	public void setWeekDay(String weekDay) {
+		this.weekDay = weekDay;
 	}
 }

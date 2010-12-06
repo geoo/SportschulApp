@@ -3,7 +3,6 @@ package de.sportschulApp.client.view.admin;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -18,7 +17,7 @@ import eu.maydu.gwt.validation.client.DefaultValidationProcessor;
 import eu.maydu.gwt.validation.client.ValidationProcessor;
 
 public class CreateUserView extends Composite implements
-		CreateUserPresenter.Display {
+CreateUserPresenter.Display {
 
 	/**
 	 * datenfelder
@@ -27,20 +26,20 @@ public class CreateUserView extends Composite implements
 	private LocalizationConstants constants;
 	private VerticalPanel mainPanel;
 	private Button saveButton;
-	// benutzername
-	private Label userNameLabel;
 	private TextBox systemUserForenameTextBox;
+	private TextBox systemUsernameTextBox;
+	private PasswordTextBox systemUserPasswortConfirmTextBox;
 	// passwort
 	private TextBox systemUserPasswortTextBox;
+	private TextBox systemUserSurnameTextBox;
+	private Label userForenameLabel;
+	// benutzername
+	private Label userNameLabel;
+	private Label userPasswordConfirmLabel;
 	private Label userPasswordLabel;
 	private Label userPermissionLabel;
 	private ListBox userPermissionListBox;
 	private ValidationProcessor validator;
-	private TextBox systemUserSurnameTextBox;
-	private PasswordTextBox systemUserPasswortConfirmTextBox;
-	private Label userPasswordConfirmLabel;
-	private Label userForenameLabel;
-	private TextBox systemUsernameTextBox;
 
 	/**
 	 * Konstruktor
@@ -86,7 +85,7 @@ public class CreateUserView extends Composite implements
 		userPasswordConfirmLabel = new Label(constants.passwordConfirm() + ":*");
 		systemUserPasswortInputPanelConfirm.add(userPasswordConfirmLabel);
 		systemUserPasswortInputPanelConfirm
-				.add(systemUserPasswortConfirmTextBox);
+		.add(systemUserPasswortConfirmTextBox);
 
 		HorizontalPanel systemUserPermissionInputPanel = new HorizontalPanel();
 		userPermissionLabel = new Label(constants.permission() + ":*");
@@ -112,8 +111,32 @@ public class CreateUserView extends Composite implements
 	 * 
 	 * @return die view
 	 */
+	@Override
 	public Widget asWidget() {
 		return this;
+	}
+
+	/**
+	 * gibt die sprachinformationen
+	 */
+	public LocalizationConstants getConstants() {
+		return constants;
+	}
+
+	public TextBox getForenameTextBox() {
+		return systemUserForenameTextBox;
+	}
+
+	public TextBox getPasswordConfirmTextBox() {
+		return systemUserPasswortConfirmTextBox;
+	}
+
+	public TextBox getPasswordTextBox() {
+		return systemUserPasswortTextBox;
+	}
+
+	public ListBox getPermissionListbox() {
+		return userPermissionListBox;
 	}
 
 	/**
@@ -125,39 +148,16 @@ public class CreateUserView extends Composite implements
 		return saveButton;
 	}
 
-	/**
-	 * gibt die sprachinformationen
-	 */
-	public LocalizationConstants getConstants() {
-		return constants;
-	}
-
-	public ValidationProcessor getValidator() {
-		return validator;
-	}
-
-	public TextBox getForenameTextBox() {
-		return systemUserForenameTextBox;
-	}
-
 	public TextBox getSurnameTextBox() {
 		return systemUserSurnameTextBox;
-	}
-
-	public TextBox getPasswordTextBox() {
-		return systemUserPasswortTextBox;
-	}
-
-	public TextBox getPasswordConfirmTextBox() {
-		return systemUserPasswortConfirmTextBox;
 	}
 
 	public TextBox getUsernameTextBox() {
 		return systemUsernameTextBox;
 	}
 
-	public ListBox getPermissionListbox() {
-		return userPermissionListBox;
+	public ValidationProcessor getValidator() {
+		return validator;
 	}
 
 }

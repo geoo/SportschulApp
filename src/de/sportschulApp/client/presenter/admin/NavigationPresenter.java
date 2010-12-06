@@ -17,105 +17,105 @@ import de.sportschulApp.client.presenter.Presenter;
 
 public class NavigationPresenter implements Presenter{
 	public interface Display{
+		Widget asWidget();
 		HasChangeHandlers getLanguagePickerOnChange();
 		String getLanguagePickerValue();
-		HasClickHandlers getMenuMembersShowMembers();
-		HasClickHandlers getMenuMembersCreateMember();
-		HasClickHandlers getMenuEventsShowEvents();
-		HasClickHandlers getMenuEventsCreateEvent();
-		HasClickHandlers getMenuCourseCreateCourse();
+		HasClickHandlers getLogoutButton();
 		HasClickHandlers getMenuCourseBeltEditor();
+		HasClickHandlers getMenuCourseCreateCourse();
 		HasClickHandlers getMenuCourseShowCourses();
+		HasClickHandlers getMenuEventsCreateEvent();
+		HasClickHandlers getMenuEventsShowEvents();
+		HasClickHandlers getMenuMembersCreateMember();
+		HasClickHandlers getMenuMembersShowMembers();
 		HasClickHandlers getMenuSystemCreateUser();
 		HasClickHandlers getMenuSystemShowUsers();
-		HasClickHandlers getLogoutButton();
-		Widget asWidget();
 	}
-	
+
 	private final Display display;
 	private final HandlerManager eventBus;
-	
+
 	public NavigationPresenter(HandlerManager eventBus, Display display) {
 		this.eventBus = eventBus;
 		this.display = display;
 		bind();
 	}
-	
+
 	private void bind() {
-		this.display.getLogoutButton().addClickHandler(new ClickHandler() {
+		display.getLogoutButton().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				eventBus.fireEvent(new LogoutEvent());
 			}
 		});
-		
-		this.display.getLanguagePickerOnChange().addChangeHandler(new ChangeHandler() {
+
+		display.getLanguagePickerOnChange().addChangeHandler(new ChangeHandler() {
 			public void onChange(ChangeEvent event) {
 				changeLanguage();
 			}
 		});
-		
-		this.display.getMenuMembersShowMembers().addClickHandler(new ClickHandler() {
+
+		display.getMenuMembersShowMembers().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				History.newItem("adminMembersShowMembers");
 			}
 		});
-		
-		this.display.getMenuMembersCreateMember().addClickHandler(new ClickHandler() {
+
+		display.getMenuMembersCreateMember().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				History.newItem("adminMembersCreateMember");
 			}
 		});
-		
-		this.display.getMenuEventsShowEvents().addClickHandler(new ClickHandler() {
+
+		display.getMenuEventsShowEvents().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				History.newItem("adminEventsShowEvents");
 			}
 		});
-		
-		this.display.getMenuEventsCreateEvent().addClickHandler(new ClickHandler() {
+
+		display.getMenuEventsCreateEvent().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				History.newItem("adminEventsCreateEvent");
 			}
 		});
-		
-		this.display.getMenuCourseCreateCourse().addClickHandler(new ClickHandler() {
+
+		display.getMenuCourseCreateCourse().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				History.newItem("adminCourseCreateCourse");
 			}
 		});
-		
-		this.display.getMenuCourseShowCourses().addClickHandler(new ClickHandler() {
+
+		display.getMenuCourseShowCourses().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				History.newItem("adminCourseShowCourses");	
+				History.newItem("adminCourseShowCourses");
 			}
 		});
-		
-		this.display.getMenuCourseBeltEditor().addClickHandler(new ClickHandler() {
+
+		display.getMenuCourseBeltEditor().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				History.newItem("adminCourseBeltEditor");	
+				History.newItem("adminCourseBeltEditor");
 			}
 		});
-		
-		this.display.getMenuSystemCreateUser().addClickHandler(new ClickHandler() {
+
+		display.getMenuSystemCreateUser().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				History.newItem("adminSystemCreateUser");
 			}
 		});
-		
-		this.display.getMenuSystemShowUsers().addClickHandler(new ClickHandler() {
+
+		display.getMenuSystemShowUsers().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				History.newItem("adminSystemShowUsers");
 			}
 		});
-		
+
 	}
-	
+
+	public void changeLanguage(){
+		eventBus.fireEvent(new LanguageChangeEvent(display.getLanguagePickerValue()));
+	}
+
 	public void go(HasWidgets container) {
 		container.clear();
 		container.add(display.asWidget());
-	}
-	
-	public void changeLanguage(){
-		eventBus.fireEvent(new LanguageChangeEvent(this.display.getLanguagePickerValue()));
 	}
 }

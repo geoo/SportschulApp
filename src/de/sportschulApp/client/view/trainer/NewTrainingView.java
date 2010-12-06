@@ -14,13 +14,13 @@ import de.sportschulApp.client.presenter.trainer.NewTrainingPresenter;
 import de.sportschulApp.client.view.localization.LocalizationConstants;
 
 public class NewTrainingView extends Composite implements
-		NewTrainingPresenter.Display {
+NewTrainingPresenter.Display {
 
-	private LocalizationConstants constants;
 	private Label barcodeLabel;
 	private TextBox barcodeTextBox;
-	private VerticalPanel newTrainingWrapper;
+	private LocalizationConstants constants;
 	private VerticalPanel memberEntryPanel;
+	private VerticalPanel newTrainingWrapper;
 	private Button scanButton;
 	private Image scanImage;
 
@@ -49,20 +49,17 @@ public class NewTrainingView extends Composite implements
 
 	}
 
+	@Override
 	public Widget asWidget() {
 		return this;
-	}
-
-	public LocalizationConstants getConstants() {
-		return constants;
 	}
 
 	public TextBox getBarcodeTextBox() {
 		return barcodeTextBox;
 	}
 
-	public VerticalPanel getWrapper() {
-		return memberEntryPanel;
+	public LocalizationConstants getConstants() {
+		return constants;
 	}
 
 	public HasClickHandlers getScanButton() {
@@ -71,6 +68,10 @@ public class NewTrainingView extends Composite implements
 
 	public Image getScanImage() {
 		return scanImage;
+	}
+
+	public VerticalPanel getWrapper() {
+		return memberEntryPanel;
 	}
 
 }

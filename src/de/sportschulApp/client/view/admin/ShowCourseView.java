@@ -13,30 +13,30 @@ import de.sportschulApp.client.view.localization.LocalizationConstants;
 import de.sportschulApp.shared.Course;
 
 public class ShowCourseView extends Composite implements ShowCoursePresenter.Display {
-	
-	private Label courseNameLabel = new Label();
+
+	private Label courseBeltsLabel = new Label();
 	private Label courseDateLabel = new Label();
 	private Label courseInsructorLabel = new Label();
 	private Label courseLocationLabel = new Label();
-	private Label courseBeltsLabel = new Label();
+	private Label courseNameLabel = new Label();
 	private Label courseTariffsLabel = new Label();
-	private Label editLabel;
 	private Label deleteLabel;
+	private Label editLabel;
 
 	public ShowCourseView(LocalizationConstants constants) {
 		VerticalPanel detailsPanel = new VerticalPanel();
 		detailsPanel.setWidth("450px");
 		initWidget(detailsPanel);
-		
+
 		HorizontalPanel metaPanel = new HorizontalPanel();
 		metaPanel.addStyleName("metaPanel");
-		
+
 		editLabel = new Label("Kurs bearbeiten");
 		deleteLabel = new Label("Kurs löschen");
-		
+
 		metaPanel.add(editLabel);
 		metaPanel.add(deleteLabel);
-		
+
 		detailsPanel.add(metaPanel);
 
 		FlexTable courseDetailsPanel = new FlexTable();
@@ -53,45 +53,46 @@ public class ShowCourseView extends Composite implements ShowCoursePresenter.Dis
 		courseDetailsPanel.setWidget(4, 1, courseBeltsLabel);
 		courseDetailsPanel.setWidget(5, 0, new Label(constants.tariffs() + ":"));
 		courseDetailsPanel.setWidget(5, 1, courseTariffsLabel);
-		
+
 		detailsPanel.add(courseDetailsPanel);
 	}
-	
+
+	@Override
+	public Widget asWidget() {
+		return this;
+	}
+
+	public HasClickHandlers getDeleteLabel() {
+		return deleteLabel;
+	}
+
+	public HasClickHandlers getEditLabel() {
+		return editLabel;
+	}
+
 	public void setData(Course course) {
-		this.courseNameLabel.setText(course.getName());
-		
+		courseNameLabel.setText(course.getName());
+
 		String dates = new String();
-    	for (int i = 0; i < course.getCourseDates().size(); i++) {
-    		dates = dates + course.getCourseDates().get(i).getWeekDay() + " " + course.getCourseDates().get(i).getTime() + ", ";
-    	}
-    	this.courseDateLabel.setText(dates.substring(0, dates.length() - 2));
-   
-    	String tariffs = new String();
-    	for (int i = 0; i < course.getCourseTariffs().size(); i++) {
-    		tariffs = tariffs + course.getCourseTariffs().get(i).getName() + ": " + course.getCourseTariffs().get(i).getCosts() + " €, ";
-    	}
-    	this.courseTariffsLabel.setText(tariffs.substring(0, tariffs.length() -2));
-    	
-		this.courseInsructorLabel.setText(course.getInstructor());
-		this.courseLocationLabel.setText(course.getLocation());
-		
+		for (int i = 0; i < course.getCourseDates().size(); i++) {
+			dates = dates + course.getCourseDates().get(i).getWeekDay() + " " + course.getCourseDates().get(i).getTime() + ", ";
+		}
+		courseDateLabel.setText(dates.substring(0, dates.length() - 2));
+
+		String tariffs = new String();
+		for (int i = 0; i < course.getCourseTariffs().size(); i++) {
+			tariffs = tariffs + course.getCourseTariffs().get(i).getName() + ": " + course.getCourseTariffs().get(i).getCosts() + " €, ";
+		}
+		courseTariffsLabel.setText(tariffs.substring(0, tariffs.length() -2));
+
+		courseInsructorLabel.setText(course.getInstructor());
+		courseLocationLabel.setText(course.getLocation());
+
 		String beltColors = new String();
 		for (int i = 0; i < course.getBeltColours().size(); i++) {
 			beltColors = beltColors + (course.getBeltColours().get(i) + ", ");
 		}
-		
-		this.courseBeltsLabel.setText(beltColors.substring(0, beltColors.length() - 2));
-	}
-	
-	public HasClickHandlers getEditLabel() {
-		return this.editLabel;
-	}
-	
-	public HasClickHandlers getDeleteLabel() {
-		return this.deleteLabel;
-	}
-	
-	public Widget asWidget() {
-		return this;
+
+		courseBeltsLabel.setText(beltColors.substring(0, beltColors.length() - 2));
 	}
 }

@@ -31,108 +31,123 @@ public class NewTrainingPresenter implements Presenter {
 	public interface Display {
 		Widget asWidget();
 
-		LocalizationConstants getConstants();
-
 		TextBox getBarcodeTextBox();
 
-		VerticalPanel getWrapper();
+		LocalizationConstants getConstants();
 
 		HasClickHandlers getScanButton();
 
 		Image getScanImage();
+
+		VerticalPanel getWrapper();
 	}
 
+	private HashMap<Integer, String> barcodeIDs = new HashMap<Integer, String>();
+	private LocalizationConstants constants;
 	private final Display display;
 	private final TrainerServiceAsync rpcService;
-	private LocalizationConstants constants;
-	private HashMap<Integer, String> barcodeIDs = new HashMap<Integer, String>();
 	Date today = new Date();
 
 	public NewTrainingPresenter(TrainerServiceAsync rpcService,
 			HandlerManager eventBus, Display display) {
 		this.display = display;
 		this.rpcService = rpcService;
-		this.constants = display.getConstants();
+		constants = display.getConstants();
 		bind();
 
 	}
 
+	private void addTrainingspresence(int barcodeID) {
+		rpcService.setTrainingsPresence(barcodeID, today.getDate(),
+				today.getMonth(), today.getYear(), new AsyncCallback<String>() {
+
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+
+			}
+
+			public void onSuccess(String result) {
+				System.out.println("Trainingspresence added!");
+			}
+		});
+	}
+
 	private void bind() {
 
-		this.display.getBarcodeTextBox().addKeyUpHandler(new KeyUpHandler() {
+		display.getBarcodeTextBox().addKeyUpHandler(new KeyUpHandler() {
 			public void onKeyUp(KeyUpEvent event) {
 				if (event.getNativeKeyCode() == 13) {
 					rpcService.getMemberByBarcodeID(Integer.parseInt(display
 							.getBarcodeTextBox().getValue()),
 							new AsyncCallback<Member>() {
 
-								private MemberTrainingEntryPresenter presenter;
+						private MemberTrainingEntryPresenter presenter;
 
-								public void onFailure(Throwable caught) {
-									// TODO Auto-generated method stub
+						public void onFailure(Throwable caught) {
+							// TODO Auto-generated method stub
 
-								}
+						}
 
-								public void onSuccess(Member result) {
-									try {
-										if (result.getForename() == null) {
-											System.out
-													.println("Barcode nicht in DB!");
+						public void onSuccess(Member result) {
+							try {
+								if (result.getForename() == null) {
+									System.out
+									.println("Barcode nicht in DB!");
+								} else {
+									if (barcodeIDs.containsKey(result
+											.getBarcodeID())) {
+										// TODO Member schon gescannt
+										System.out
+										.println("Member schon gescannt!");
+									} else {
+
+										barcodeIDs.put(
+												result.getBarcodeID(),
+												null);
+										if (display.getWrapper()
+												.getWidgetCount() == 0) {
+											display.getWrapper()
+											.setStyleName(
+													"memberEntryPanel");
+
+											addTrainingspresence(result
+													.getBarcodeID());
+											presenter = new MemberTrainingEntryPresenter(
+													rpcService,
+													result,
+													new MemberTrainingEntryView(
+															constants));
+											display.getWrapper()
+											.insert((MemberTrainingEntryView) presenter
+													.asWidget(),
+													0);
 										} else {
-											if (barcodeIDs.containsKey(result
-													.getBarcodeID())) {
-												// TODO Member schon gescannt
-												System.out
-														.println("Member schon gescannt!");
-											} else {
+											addTrainingspresence(result
+													.getBarcodeID());
+											presenter = new MemberTrainingEntryPresenter(
+													rpcService,
+													result,
+													new MemberTrainingEntryView(
+															constants));
 
-												barcodeIDs.put(
-														result.getBarcodeID(),
-														null);
-												if (display.getWrapper()
-														.getWidgetCount() == 0) {
-													display.getWrapper()
-															.setStyleName(
-																	"memberEntryPanel");
-
-													addTrainingspresence(result
-															.getBarcodeID());
-													presenter = new MemberTrainingEntryPresenter(
-															rpcService,
-															result,
-															new MemberTrainingEntryView(
-																	constants));
-													display.getWrapper()
-															.insert((MemberTrainingEntryView) presenter
-																	.asWidget(),
-																	0);
-												} else {
-													addTrainingspresence(result
-															.getBarcodeID());
-													presenter = new MemberTrainingEntryPresenter(
-															rpcService,
-															result,
-															new MemberTrainingEntryView(
-																	constants));
-
-													display.getWrapper()
-															.insert((MemberTrainingEntryView) presenter
-																	.asWidget(),
-																	0);
-												}
-											}
+											display.getWrapper()
+											.insert((MemberTrainingEntryView) presenter
+													.asWidget(),
+													0);
 										}
-										display.getBarcodeTextBox()
-												.setSelectionRange(
-														0,
-														display.getBarcodeTextBox()
-																.getText()
-																.length());
-									} catch (NullPointerException e) {
 									}
 								}
+								display.getBarcodeTextBox()
+								.setSelectionRange(
+										0,
+										display.getBarcodeTextBox()
+										.getText()
+										.length());
+							} catch (NullPointerException e) {
+							}
+						}
 
-							});
+					});
 				}
 			}
 		});
@@ -168,21 +183,6 @@ public class NewTrainingPresenter implements Presenter {
 	public void go(HasWidgets container) {
 		container.clear();
 		container.add(display.asWidget());
-	}
-
-	private void addTrainingspresence(int barcodeID) {
-		rpcService.setTrainingsPresence(barcodeID, today.getDate(),
-				today.getMonth(), today.getYear(), new AsyncCallback<String>() {
-
-					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
-
-					}
-
-					public void onSuccess(String result) {
-						System.out.println("Trainingspresence added!");
-					}
-				});
 	}
 
 }

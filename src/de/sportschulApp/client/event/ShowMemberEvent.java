@@ -5,13 +5,14 @@ import com.google.gwt.event.shared.GwtEvent;
 public class ShowMemberEvent extends GwtEvent<ShowMemberEventHandler>{
 	public static Type<ShowMemberEventHandler> TYPE = new Type<ShowMemberEventHandler>();
 	private int barcode;
-		
+
 	public ShowMemberEvent(int barcode) {
 		this.barcode = barcode;
 	}
-	
-	public int getBarcode() {
-		return barcode;
+
+	@Override
+	protected void dispatch(ShowMemberEventHandler handler) {
+		handler.onShowMember(this);
 	}
 
 	@Override
@@ -19,8 +20,7 @@ public class ShowMemberEvent extends GwtEvent<ShowMemberEventHandler>{
 		return TYPE;
 	}
 
-	@Override
-	protected void dispatch(ShowMemberEventHandler handler) {
-		handler.onShowMember(this);
+	public int getBarcode() {
+		return barcode;
 	}
 }

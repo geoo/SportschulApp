@@ -9,37 +9,38 @@ import de.sportschulApp.client.presenter.TrainerPanelPresenter;
 
 public class TrainerPanelView extends Composite implements TrainerPanelPresenter.Display {
 
-	VerticalPanel trainerPanelContainer;
-	VerticalPanel navigationContainer;
 	VerticalPanel contentContainer;
-	
+	VerticalPanel navigationContainer;
+	VerticalPanel trainerPanelContainer;
+
 	public TrainerPanelView() {
-		
+
 		trainerPanelContainer = new VerticalPanel();
 		trainerPanelContainer.setSize("100%", "100%");
-		
+
 		navigationContainer = new VerticalPanel();
 		navigationContainer.setWidth("100%");
-		
+
 		contentContainer = new VerticalPanel();
 		contentContainer.setSize("100%", "100%");
-		
+
 		initWidget(trainerPanelContainer);
-		
+
 		trainerPanelContainer.add(navigationContainer);
 		trainerPanelContainer.add(contentContainer);
-			
+
 	}
-	
-	public HasWidgets getNavigationContainer() {
-		return navigationContainer;
+
+	@Override
+	public Widget asWidget() {
+		return this;
 	}
-	
+
 	public HasWidgets getContentContainer() {
 		return contentContainer;
 	}
-	
-	public Widget asWidget() {
-		return this;
+
+	public HasWidgets getNavigationContainer() {
+		return navigationContainer;
 	}
 }
