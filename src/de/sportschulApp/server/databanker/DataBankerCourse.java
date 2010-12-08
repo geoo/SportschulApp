@@ -57,52 +57,48 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 				}
 			}
 			stmt2.close();
-
-			PreparedStatement stmt = null;
-			stmt = dbc
-
-			.getConnection()
-			.prepareStatement(
-					"INSERT INTO Courses(name, instructor, location) VALUES(?,?,?)", Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, course.getName());
-			stmt.setString(2, course.getInstructor());
-			stmt.setString(3, course.getLocation());
-
-			stmt.executeUpdate();
-
-			ResultSet generatedKeys = stmt.getGeneratedKeys();
-
-			while(generatedKeys.next()) {
-				setDatesForCourse(generatedKeys.getInt(1), course.getCourseDates());
-				setTariffsForCourse(generatedKeys.getInt(1), course.getCourseTariffs());
-			}
-
-			ResultSet rs2 = null;
-			Statement stmt3 = dbc.getStatement();
-			String query2 = "SELECT Courses_id FROM Courses WHERE name='"
-				+ course.getName() + "'";
-
-			rs2 = stmt3.executeQuery(query2);
-
-			while (rs2.next()) {
-				courseID = rs2.getInt(1);
-			}
-
 			rs.close();
-			rs2.close();
-			stmt3.close();
+
+			if (course.getCourseID() > 0) {
+				PreparedStatement stmt = dbc.getConnection().prepareStatement("INSERT INTO Courses(Courses_id, name, instructor, location) VALUES(?,?,?,?)");
+				stmt.setInt(1, course.getCourseID());
+				stmt.setString(2, course.getName());
+				stmt.setString(3, course.getInstructor());
+				stmt.setString(4, course.getLocation());
+				
+				stmt.executeUpdate();
+				
+				
+				setDatesForCourse(course.getCourseID(), course.getCourseDates());
+				setTariffsForCourse(course.getCourseID(), course.getCourseTariffs());
+				setBelts(course.getCourseID(), course.getBeltColours());
+				
+				stmt.close();
+			} else {
+				PreparedStatement stmt = dbc.getConnection().prepareStatement("INSERT INTO Courses(name, instructor, location) VALUES(?,?,?)", Statement.RETURN_GENERATED_KEYS);
+				stmt.setString(1, course.getName());
+				stmt.setString(2, course.getInstructor());
+				stmt.setString(3, course.getLocation());
+				
+				stmt.executeUpdate();
+				
+				ResultSet generatedKeys = stmt.getGeneratedKeys();
+				
+				while(generatedKeys.next()) {
+					setDatesForCourse(generatedKeys.getInt(1), course.getCourseDates());
+					setTariffsForCourse(generatedKeys.getInt(1), course.getCourseTariffs());
+					setBelts(generatedKeys.getInt(1), course.getBeltColours());
+				}
+				
+				stmt.close();
+			}
 			dbc.close();
-			stmt.close();
 		} catch (SQLException e) {
 			System.out.println(e);
 			return "error";
 		}
 
-		if (setBelts(courseID, course.getBeltColours())) {
-			return "course created";
-		} else {
-			return "error";
-		}
+		return "course created";
 	}
 
 	public void deleteBeltByID(int beltID) {

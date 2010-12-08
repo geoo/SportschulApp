@@ -84,7 +84,7 @@ public class ShowEventView extends Composite implements ShowEventPresenter.Displ
 		eventNameLabel.setText(event.getName());
 		eventTypeLabel.setText(event.getType());
 		eventDateLabel.setText(event.getDate());
-		eventTimeLabel.setText(event.getTime() + " Uhr");
+		eventTimeLabel.setText(event.getStartTime() + " - " + event.getEndTime() + " Uhr");
 		eventCostsLabel.setText(event.getCosts());
 		eventLocationLabel.setText(event.getLocation());
 		

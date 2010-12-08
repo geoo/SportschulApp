@@ -99,7 +99,7 @@ public class ListEventView extends Composite implements ListEventPresenter.Displ
 		cellTable.addColumn(new TextColumn<Event>() {
 			@Override
 			public String getValue(Event event) {
-				return event.getTime().toString() + " Uhr";
+				return event.getStartTime() + " - " + event.getEndTime() + " Uhr";
 			}
 		}, "Uhrzeit");
 

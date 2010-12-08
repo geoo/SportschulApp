@@ -96,6 +96,7 @@ public class CreateEventPresenter implements Presenter {
 								Event newEvent = display.getFormData();
 
 								if (!(editItem)) {
+									newEvent.setEventID(0);
 									rpcService.createEvent(newEvent, new AsyncCallback<Integer>() {
 										@Override
 										public void onFailure(Throwable caught) {

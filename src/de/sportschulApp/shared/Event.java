@@ -13,7 +13,8 @@ public class Event implements Serializable {
 	private String location;
 	private String name;
 	private ArrayList<EventParticipant> participants;
-	private String time;
+	private String startTime;
+	private String endTime;
 	private String type;
 
 
@@ -21,13 +22,14 @@ public class Event implements Serializable {
 
 	}
 
-	public Event(int eventID, String type, String name, String costs, String date, String time, String location, ArrayList<String> examiners, ArrayList<EventParticipant> participants) {
+	public Event(int eventID, String type, String name, String costs, String date, String startTime, String endTime, String location, ArrayList<String> examiners, ArrayList<EventParticipant> participants) {
 		this.eventID = eventID;
 		this.type = type;
 		this.name = name;
 		this.costs = costs;
 		this.date = date;
-		this.time = time;
+		this.startTime = startTime;
+		this.endTime = endTime;
 		this.location = location;
 		this.examiners = examiners;
 		this.participants = participants;
@@ -85,8 +87,8 @@ public class Event implements Serializable {
 	/**
 	 * @return the time
 	 */
-	public String getTime() {
-		return time;
+	public String getStartTime() {
+		return startTime;
 	}
 
 	/**
@@ -148,8 +150,8 @@ public class Event implements Serializable {
 	/**
 	 * @param time the time to set
 	 */
-	public void setTime(String time) {
-		this.time = time;
+	public void setStartTime(String time) {
+		this.startTime = time;
 	}
 
 	/**
@@ -157,6 +159,20 @@ public class Event implements Serializable {
 	 */
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	/**
+	 * @param endTime the endTime to set
+	 */
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+
+	/**
+	 * @return the endTime
+	 */
+	public String getEndTime() {
+		return endTime;
 	}
 
 }

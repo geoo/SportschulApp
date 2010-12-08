@@ -8,6 +8,7 @@ import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -27,6 +28,7 @@ public class TrainerNavigationPresenter implements Presenter {
 
 		HasClickHandlers getMenuTrainingNewTraining();
 
+		HasClickHandlers getMenuTrainingNewEvent();
 	}
 
 	private final Display display;
@@ -57,6 +59,13 @@ public class TrainerNavigationPresenter implements Presenter {
 				new ClickHandler() {
 					public void onClick(ClickEvent event) {
 						History.newItem("trainerNewTraining");
+					}
+				});
+		
+		display.getMenuTrainingNewEvent().addClickHandler(
+				new ClickHandler() {
+					public void onClick(ClickEvent event) {
+						History.newItem("trainerNewEvent");
 					}
 				});
 
