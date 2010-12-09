@@ -47,11 +47,13 @@ CreateUserPresenter.Display {
 	public CreateUserView(LocalizationConstants constants) {
 		this.constants = constants;
 		validator = new DefaultValidationProcessor();
+		
+		VerticalPanel wrapper = new VerticalPanel();
+		wrapper.setStyleName("createUserWrapper");
 
 		// hauptpanel generieren
 		mainPanel = new VerticalPanel();
-		mainPanel.setStyleName("createUserWrapper");
-		initWidget(mainPanel);
+		initWidget(wrapper);
 		saveButton = new Button(constants.save());
 
 		// benutzername panel generieren
@@ -104,6 +106,23 @@ CreateUserPresenter.Display {
 		mainPanel.add(systemUserPasswortInputPanelConfirm);
 		mainPanel.add(systemUserPermissionInputPanel);
 		mainPanel.add(saveButton);
+		
+		wrapper.add(createHeadPanel());
+		wrapper.add(mainPanel);
+	}
+	
+	public VerticalPanel createHeadPanel() {
+		VerticalPanel createUserHeader = new VerticalPanel();
+		createUserHeader.addStyleName("createUserHeadWrapper");
+		createUserHeader.setWidth("500px");
+
+		HorizontalPanel formHeader = new HorizontalPanel();
+		formHeader.addStyleName("formHeader");
+		formHeader.add(new Label("Nutzer anlegen / bearbeiten"));
+
+		createUserHeader.add(formHeader);
+
+		return createUserHeader;
 	}
 
 	/**

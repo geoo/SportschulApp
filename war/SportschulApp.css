@@ -85,6 +85,13 @@ h1 {
 	border: 1px solid #a9adc3 !important;
 }
 
+.newEventFormWrapper {
+	margin: 0px auto 0 auto;
+	background-color: #f5f7fa;
+	border: 1px solid #a9adc3 !important;
+	padding: 5px;
+}
+
 .formWrapper .gwt-Label{
 	font-size: 15px;
 }
@@ -95,6 +102,11 @@ h1 {
 	margin-top: 1px;
 	background-color: #ffffff;
 	height: 16px;
+}
+
+.createUserHeadWrapper {
+	margin: -20px;
+	background-color: #f5f7fa;
 }
 
 .participantNote {
@@ -386,7 +398,6 @@ h1 {
 .loginErrorLabel {
 	display: table;
 	margin: auto;
-	padding-left: 220px;
 	color: #ac2f2f;
 }
 
@@ -490,6 +501,10 @@ h1 {
 	margin: 20px auto 0 auto;
 	background-color: #f5f7fa;
 	border: 1px solid #a9adc3 !important;
+}
+
+.newEventWrapper {
+	margin: 20px auto 0 auto;
 }
 
 .createCourseWrapper td {

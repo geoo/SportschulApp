@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -27,6 +29,22 @@ public class ListUserView extends Composite implements ListUserPresenter.Display
 	public ListUserView() {
 		wrapper.addStyleName("listWrapper");
 		initWidget(wrapper);
+		
+		wrapper.add(createHeadPanel());
+	}
+	
+	public VerticalPanel createHeadPanel() {
+		VerticalPanel listHeader = new VerticalPanel();
+		listHeader.addStyleName("formWrapper");
+		listHeader.setWidth("100%");
+
+		HorizontalPanel formHeader = new HorizontalPanel();
+		formHeader.addStyleName("formHeader");
+		formHeader.add(new Label("Nutzer anzeigen"));
+
+		listHeader.add(formHeader);
+
+		return listHeader;
 	}
 
 

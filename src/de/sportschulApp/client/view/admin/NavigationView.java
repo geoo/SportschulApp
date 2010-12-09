@@ -76,7 +76,7 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 		languagePanel.add(languagePicker);
 
 		metaHeadPanel.add(metaHeadLoginDetailsPanel);
-		metaHeadPanel.add(languagePanel);
+//		metaHeadPanel.add(languagePanel);
 
 
 		Image naviLogo = new Image("imgs/mm-logo-navi.png");

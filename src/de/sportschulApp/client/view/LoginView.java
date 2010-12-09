@@ -62,7 +62,7 @@ public class LoginView extends Composite implements LoginPresenter.Display{
 		loginErrorLabel.setStyleName("loginErrorLabel");
 		loginErrorLabel.setVisible(false);
 		metaHeadPanel.add(loginErrorLabel);
-		metaHeadPanel.add(languagePanel);
+//		metaHeadPanel.add(languagePanel);
 
 		HorizontalPanel loginContainer = new HorizontalPanel();
 		loginContainer.setStyleName("loginContainer");

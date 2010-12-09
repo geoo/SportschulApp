@@ -69,7 +69,7 @@ public class TrainerNavigationView extends Composite implements TrainerNavigatio
 		languagePanel.add(languagePicker);
 
 		metaHeadPanel.add(metaHeadLoginDetailsPanel);
-		metaHeadPanel.add(languagePanel);
+//		metaHeadPanel.add(languagePanel);
 
 
 		Image naviLogo = new Image("imgs/mm-logo-navi.png");

@@ -1,9 +1,12 @@
 package de.sportschulApp.server;
 
+import java.util.ArrayList;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import de.sportschulApp.client.services.TrainerService;
 import de.sportschulApp.server.databanker.DataBankerMember;
+import de.sportschulApp.shared.Event;
 import de.sportschulApp.shared.Member;
 
 @SuppressWarnings("serial")
@@ -33,6 +36,12 @@ TrainerService {
 			int year) {
 		dbm.setTrainingsPresence(barcodeID, day, month, year);
 		return null;
+	}
+
+	@Override
+	public ArrayList<Event> getEventList() {
+		// TODO Auto-generated method stub
+		return (new AdminServiceImpl().getEventList());
 	}
 
 }

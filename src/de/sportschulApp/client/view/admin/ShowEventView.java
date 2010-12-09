@@ -34,7 +34,7 @@ public class ShowEventView extends Composite implements ShowEventPresenter.Displ
 		metaPanel.addStyleName("metaPanel");
 
 		editLabel = new Label("Event bearbeiten");
-		showParticipantsLabel = new Label("Teilnehmer anzeigen");
+		showParticipantsLabel = new Label("Teilnehmer bearbeiten");
 		deleteLabel = new Label("Event löschen");
 
 		metaPanel.add(editLabel);
