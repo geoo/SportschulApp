@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import sun.security.action.GetBooleanAction;
+
 import de.sportschulApp.shared.Member;
 
 public class DataBankerMember implements DataBankerMemberInterface {
@@ -26,7 +28,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			ResultSet rs = null;
 			Statement stmt2 = dbc.getStatement();
 			String query = "SELECT Member_id FROM Member WHERE barcode_id='"
-				+ member.getBarcodeID() + "'";
+					+ member.getBarcodeID() + "'";
 
 			rs = stmt2.executeQuery(query);
 			while (rs.next()) {
@@ -39,9 +41,9 @@ public class DataBankerMember implements DataBankerMemberInterface {
 
 			PreparedStatement stmt = dbc
 
-			.getConnection()
-			.prepareStatement(
-					"INSERT INTO Member(barcode_id, forename, surname, zipcode, city, street, phone, mobilephone, fax, email, homepage, birthDay, birthMonth, birthYear, picture, diseases, beltsize, note, trainingunits, course_01, course_02, course_03, course_04, course_05, course_06, course_07, course_08, course_09, course_10, graduation_01, graduation_02, graduation_03, graduation_04, graduation_05, graduation_06, graduation_07, graduation_08, graduation_09, graduation_10, accountForename, accountSurname, accountNumber, bankName, bankNumber) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+					.getConnection()
+					.prepareStatement(
+							"INSERT INTO Member(barcode_id, forename, surname, zipcode, city, street, phone, mobilephone, fax, email, homepage, birthDay, birthMonth, birthYear, picture, diseases, beltsize, note, trainingunits, accountForename, accountSurname, accountNumber, bankName, bankNumber) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			stmt.setInt(1, member.getBarcodeID());
 			stmt.setString(2, member.getForename());
 			stmt.setString(3, member.getSurname());
@@ -61,50 +63,33 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			stmt.setString(17, member.getBeltsize());
 			stmt.setString(18, member.getNote());
 			stmt.setInt(19, member.getTrainingunits());
+			stmt.setString(20, member.getAccountForename());
+			stmt.setString(21, member.getAccountSurname());
+			stmt.setString(22, member.getAccountNumber());
+			stmt.setString(23, member.getBankName());
+			stmt.setString(24, member.getBankNumber());
 
-			// Hinzuf�gen der ArrayList Courses
-			int size = member.getCourses().size();
+			stmt.executeUpdate();
+			stmt.close();
+
+			PreparedStatement stmt3 = null;
 			try {
-				for (int i = 0; i < size; i++) {
-					stmt.setInt(i + 20, member.getCourses().get(i));
+				for (int i = 0; i < member.getCourses().size(); i++) {
+					stmt3 = dbc
+							.getConnection()
+							.prepareStatement(
+									"INSERT INTO Member_has_courses(barcode_id, course_id, graduation, tariff) VALUES(?,?,?,?)");
+					stmt3.setInt(1, member.getBarcodeID());
+					stmt3.setInt(2, member.getCourses().get(i));
+					stmt3.setInt(3, member.getGraduations().get(i));
+					stmt3.setFloat(4, member.getTariffs().get(i));
+					stmt3.executeUpdate();
 				}
 			} catch (IndexOutOfBoundsException e) {
 				System.out.println(e);
 				System.out.println("courses out of bounds");
 			}
-			// Auff�llen mit Nullen, wenn Courses<10
-			if (size < 10) {
-				for (int i = 20 + size; i < 30; i++) {
-					stmt.setInt(i, 0);
-				}
-			}
-
-			// Hinzuf�gen der ArrayList Graduations
-			size = member.getGraduations().size();
-			try {
-				for (int i = 0; i < size; i++) {
-					stmt.setInt(i + 30, member.getGraduations().get(i));
-				}
-			} catch (IndexOutOfBoundsException e) {
-				System.out.println(e);
-				System.out.println("graduations out of bounds");
-			}
-			// Auff�llen mit Nullen, wenn Graduations<10
-			if (size < 10) {
-				for (int i = 30 + size; i < 40; i++) {
-					stmt.setInt(i, 0);
-				}
-			}
-			stmt.setString(40, member.getAccountForename());
-			stmt.setString(41, member.getAccountSurname());
-			stmt.setString(42, member.getAccountNumber());
-			stmt.setString(43, member.getBankName());
-			stmt.setString(44, member.getBankNumber());
-
-			stmt.executeUpdate();
-
-			dbc.close();
-			stmt.close();
+			stmt3.close();
 
 			return "member created";
 
@@ -123,16 +108,40 @@ public class DataBankerMember implements DataBankerMemberInterface {
 	 * @return true bei erfolg, false bei scheitern
 	 */
 	public boolean deleteMember(int memberID) {
-
+		int barcodeId = 0;
 		DataBankerConnection dbc = new DataBankerConnection();
 		Statement stmt = dbc.getStatement();
 
 		String query = "DELETE FROM Member WHERE Member_id='" + memberID + "'";
 
+		ResultSet rs = null;
+		Statement stmt2 = dbc.getStatement();
+		String query2 = "SELECT barcode_id FROM Member WHERE Member_id='"
+				+ memberID + "'";
+
+		try {
+			rs = stmt2.executeQuery(query2);
+
+			while (rs.next()) {
+				barcodeId = rs.getInt(1);
+			}
+			rs.close();
+			stmt2.close();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		Statement stmt3 = dbc.getStatement();
+		String query3 = "DELETE FROM Member_has_courses WHERE barcode_id='"
+				+ barcodeId + "'";
+
 		try {
 			stmt.executeUpdate(query);
+			stmt3.executeUpdate(query3);
 			dbc.close();
 			stmt.close();
+			stmt3.close();
 			dbc.closeStatement();
 
 		} catch (SQLException e) {
@@ -155,8 +164,8 @@ public class DataBankerMember implements DataBankerMemberInterface {
 		DataBankerConnection dbc = new DataBankerConnection();
 
 		String delete = "DELETE FROM TrainingPresence WHERE barcode_id='"
-			+ barcodeID + "' AND day = '" + day + "' AND month = '" + month
-			+ "' AND year = '" + year + "'";
+				+ barcodeID + "' AND day = '" + day + "' AND month = '" + month
+				+ "' AND year = '" + year + "'";
 
 		Statement stmt = dbc.getStatement();
 		try {
@@ -182,11 +191,17 @@ public class DataBankerMember implements DataBankerMemberInterface {
 
 		Member member = new Member();
 		ResultSet rs = null;
+		ResultSet rs2 = null;
 
 		DataBankerConnection dbc = new DataBankerConnection();
 		Statement stmt = dbc.getStatement();
 		String query = "SELECT * FROM Member WHERE barcode_id='" + barcodeID
-		+ "'";
+				+ "'";
+
+		Statement stmt2 = dbc.getStatement();
+		String query2 = "SELECT * FROM Member_has_courses WHERE barcode_id='"
+				+ barcodeID + "'";
+
 		try {
 			rs = stmt.executeQuery(query);
 			if (rs.wasNull()) {
@@ -218,35 +233,31 @@ public class DataBankerMember implements DataBankerMemberInterface {
 				member.setBankName(rs.getString("bankName"));
 				member.setBankNumber(rs.getString("bankNumber"));
 
-				ArrayList<Integer> courses = new ArrayList<Integer>();
-				courses.add(rs.getInt("course_01"));
-				courses.add(rs.getInt("course_02"));
-				courses.add(rs.getInt("course_03"));
-				courses.add(rs.getInt("course_04"));
-				courses.add(rs.getInt("course_05"));
-				courses.add(rs.getInt("course_06"));
-				courses.add(rs.getInt("course_07"));
-				courses.add(rs.getInt("course_08"));
-				courses.add(rs.getInt("course_09"));
-				courses.add(rs.getInt("course_10"));
-				member.setCourses(courses);
-
-				ArrayList<Integer> graduation = new ArrayList<Integer>();
-				graduation.add(rs.getInt("graduation_01"));
-				graduation.add(rs.getInt("graduation_02"));
-				graduation.add(rs.getInt("graduation_03"));
-				graduation.add(rs.getInt("graduation_04"));
-				graduation.add(rs.getInt("graduation_05"));
-				graduation.add(rs.getInt("graduation_06"));
-				graduation.add(rs.getInt("graduation_07"));
-				graduation.add(rs.getInt("graduation_08"));
-				graduation.add(rs.getInt("graduation_09"));
-				graduation.add(rs.getInt("graduation_10"));
-				member.setGraduations(graduation);
 			}
+			
+			
+			ArrayList<Integer> courses = new ArrayList<Integer>();
+			ArrayList<Integer> graduation = new ArrayList<Integer>();
+			ArrayList<Float> tariffs = new ArrayList<Float>();
+
+			rs2 = stmt2.executeQuery(query2);
+			if (rs2.wasNull()) {
+			}
+			while (rs2.next()) {
+				courses.add(rs2.getInt("course_id"));
+				graduation.add(rs2.getInt("graduation"));
+				tariffs.add(rs2.getFloat("tariff"));
+			}
+			member.setCourses(courses);
+			member.setGraduations(graduation);
+			member.setTariffs(tariffs);
+			
+			
 			rs.close();
+			rs2.close();
 			dbc.close();
 			stmt.close();
+			stmt2.close();
 			dbc.closeStatement();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -305,29 +316,31 @@ public class DataBankerMember implements DataBankerMemberInterface {
 				member.setBankNumber(rs.getString("bankNumber"));
 
 				ArrayList<Integer> courses = new ArrayList<Integer>();
-				courses.add(rs.getInt("course_01"));
-				courses.add(rs.getInt("course_02"));
-				courses.add(rs.getInt("course_03"));
-				courses.add(rs.getInt("course_04"));
-				courses.add(rs.getInt("course_05"));
-				courses.add(rs.getInt("course_06"));
-				courses.add(rs.getInt("course_07"));
-				courses.add(rs.getInt("course_08"));
-				courses.add(rs.getInt("course_09"));
-				courses.add(rs.getInt("course_10"));
-
 				ArrayList<Integer> graduation = new ArrayList<Integer>();
-				graduation.add(rs.getInt("graduation_01"));
-				graduation.add(rs.getInt("graduation_02"));
-				graduation.add(rs.getInt("graduation_03"));
-				graduation.add(rs.getInt("graduation_04"));
-				graduation.add(rs.getInt("graduation_05"));
-				graduation.add(rs.getInt("graduation_06"));
-				graduation.add(rs.getInt("graduation_07"));
-				graduation.add(rs.getInt("graduation_08"));
-				graduation.add(rs.getInt("graduation_09"));
-				graduation.add(rs.getInt("graduation_10"));
+				ArrayList<Float> tariffs = new ArrayList<Float>();
 
+				ResultSet rs2 = null;
+				Statement stmt2 = dbc.getStatement();
+				String query2 = "SELECT * FROM Member_has_courses WHERE barcode_id='"
+						+ member.getBarcodeID() + "'";
+
+				
+				rs2 = stmt2.executeQuery(query2);
+				if (rs2.wasNull()) {
+				}
+				while (rs2.next()) {
+					courses.add(rs2.getInt("course_id"));
+					graduation.add(rs2.getInt("graduation"));
+					tariffs.add(rs2.getFloat("tariff"));
+				}
+				member.setCourses(courses);
+				member.setGraduations(graduation);
+				member.setTariffs(tariffs);
+				
+				
+				rs2.close();
+				stmt2.close();
+				
 				memberList.add(member);
 			}
 			rs.close();
@@ -358,7 +371,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 
 		Statement stmt = dbc.getStatement();
 		String query = "SELECT barcode_id FROM Member WHERE Member_id='"
-			+ memberID + "'";
+				+ memberID + "'";
 
 		try {
 			rs = stmt.executeQuery(query);
@@ -384,7 +397,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			Statement stmt = dbc.getStatement();
 
 			String query = "SELECT note FROM Member WHERE barcode_id ='"
-				+ barcodeID + "'";
+					+ barcodeID + "'";
 
 			rs = stmt.executeQuery(query);
 			while (rs.next()) {
@@ -421,10 +434,10 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			// + memberID + "'";
 
 			String query = "SELECT barcode_id, day, month, year FROM TrainingPresence WHERE month ='"
-				+ month
-				+ "' AND barcode_id = '"
-				+ barcodeID
-				+ "' AND year = '" + year + "'";
+					+ month
+					+ "' AND barcode_id = '"
+					+ barcodeID
+					+ "' AND year = '" + year + "'";
 
 			rs = stmt.executeQuery(query);
 			while (rs.next()) {
@@ -464,10 +477,10 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			Statement stmt = dbc.getStatement();
 
 			String query = "SELECT count(*) FROM TrainingPresence WHERE month ='"
-				+ month
-				+ "' AND barcode_id = '"
-				+ barcodeID
-				+ "' AND year = '" + year + "'";
+					+ month
+					+ "' AND barcode_id = '"
+					+ barcodeID
+					+ "' AND year = '" + year + "'";
 
 			rs = stmt.executeQuery(query);
 			while (rs.next()) {
@@ -490,38 +503,20 @@ public class DataBankerMember implements DataBankerMemberInterface {
 		DataBankerConnection dbc = new DataBankerConnection();
 		Statement stmt = dbc.getStatement();
 		String query = "SELECT * FROM Member m  where m.forename LIKE '"
-			+ searchQuery
-			+ "%' or m.surname LIKE '"
-			+ searchQuery
-			+ "%' or m.zipcode LIKE '"
-			+ searchQuery
-			+ "%' or m.city LIKE '"
-			+ searchQuery
-			+ "%' or m.street LIKE '"
-			+ searchQuery
-			+ "%' or m.phone LIKE '"
-			+ searchQuery
-			+ "%' or m.mobilephone LIKE '"
-			+ searchQuery
-			+ "%' or m.fax LIKE '"
-			+ searchQuery
-			+ "%' or m.email LIKE '"
-			+ searchQuery
-			+ "%' or m.homepage LIKE '"
-			+ searchQuery
-			+ "%' or m.birthDay LIKE '"
-			+ searchQuery
-			+ "%' or m.birthMonth LIKE '"
-			+ searchQuery
-			+ "%' or m.birthYear LIKE '"
-			+ searchQuery
-			+ "%' or m.diseases LIKE '"
-			+ searchQuery
-			+ "%' or m.beltsize LIKE '"
-			+ searchQuery
-			+ "%' or m.note LIKE '"
-			+ searchQuery
-			+ "%' or m.trainingunits LIKE '" + searchQuery + "%'";
+				+ searchQuery + "%' or m.surname LIKE '" + searchQuery
+				+ "%' or m.zipcode LIKE '" + searchQuery
+				+ "%' or m.city LIKE '" + searchQuery + "%' or m.street LIKE '"
+				+ searchQuery + "%' or m.phone LIKE '" + searchQuery
+				+ "%' or m.mobilephone LIKE '" + searchQuery
+				+ "%' or m.fax LIKE '" + searchQuery + "%' or m.email LIKE '"
+				+ searchQuery + "%' or m.homepage LIKE '" + searchQuery
+				+ "%' or m.birthDay LIKE '" + searchQuery
+				+ "%' or m.birthMonth LIKE '" + searchQuery
+				+ "%' or m.birthYear LIKE '" + searchQuery
+				+ "%' or m.diseases LIKE '" + searchQuery
+				+ "%' or m.beltsize LIKE '" + searchQuery
+				+ "%' or m.note LIKE '" + searchQuery
+				+ "%' or m.trainingunits LIKE '" + searchQuery + "%'";
 
 		try {
 			rs = stmt.executeQuery(query);
@@ -553,30 +548,31 @@ public class DataBankerMember implements DataBankerMemberInterface {
 				member.setAccountNumber(rs.getString("accountNumber"));
 				member.setBankName(rs.getString("bankName"));
 				member.setBankNumber(rs.getString("bankNumber"));
-
 				ArrayList<Integer> courses = new ArrayList<Integer>();
-				courses.add(rs.getInt("course_01"));
-				courses.add(rs.getInt("course_02"));
-				courses.add(rs.getInt("course_03"));
-				courses.add(rs.getInt("course_04"));
-				courses.add(rs.getInt("course_05"));
-				courses.add(rs.getInt("course_06"));
-				courses.add(rs.getInt("course_07"));
-				courses.add(rs.getInt("course_08"));
-				courses.add(rs.getInt("course_09"));
-				courses.add(rs.getInt("course_10"));
-
 				ArrayList<Integer> graduation = new ArrayList<Integer>();
-				graduation.add(rs.getInt("graduation_01"));
-				graduation.add(rs.getInt("graduation_02"));
-				graduation.add(rs.getInt("graduation_03"));
-				graduation.add(rs.getInt("graduation_04"));
-				graduation.add(rs.getInt("graduation_05"));
-				graduation.add(rs.getInt("graduation_06"));
-				graduation.add(rs.getInt("graduation_07"));
-				graduation.add(rs.getInt("graduation_08"));
-				graduation.add(rs.getInt("graduation_09"));
-				graduation.add(rs.getInt("graduation_10"));
+				ArrayList<Float> tariffs = new ArrayList<Float>();
+
+				ResultSet rs2 = null;
+				Statement stmt2 = dbc.getStatement();
+				String query2 = "SELECT * FROM Member_has_courses WHERE barcode_id='"
+						+ member.getBarcodeID() + "'";
+
+				
+				rs2 = stmt.executeQuery(query2);
+				if (rs2.wasNull()) {
+				}
+				while (rs2.next()) {
+					courses.add(rs2.getInt("course_id"));
+					graduation.add(rs2.getInt("graduation"));
+					tariffs.add(rs2.getFloat("tariff"));
+				}
+				member.setCourses(courses);
+				member.setGraduations(graduation);
+				member.setTariffs(tariffs);
+				
+				
+				rs2.close();
+				stmt2.close();
 
 				memberList.add(member);
 			}
@@ -602,40 +598,40 @@ public class DataBankerMember implements DataBankerMemberInterface {
 		DataBankerConnection dbc = new DataBankerConnection();
 		Statement stmt = dbc.getStatement();
 		String query = "SELECT * FROM Member m INNER JOIN Courses c on m.course_01= c.Courses_id or m.course_02=c.Courses_id or m.course_03=c.Courses_id or m.course_04=c.Courses_id or m.course_05=c.Courses_id or m.course_06=c.Courses_id or m.course_07=c.Courses_id or m.course_08=c.Courses_id or m.course_09=c.Courses_id or m.course_10=c.Courses_id where m.forename LIKE '"
-			+ searchQuery
-			+ "%' or m.surname LIKE '"
-			+ searchQuery
-			+ "%' or m.zipcode LIKE '"
-			+ searchQuery
-			+ "%' or m.city LIKE '"
-			+ searchQuery
-			+ "%' or m.street LIKE '"
-			+ searchQuery
-			+ "%' or m.phone LIKE '"
-			+ searchQuery
-			+ "%' or m.mobilephone LIKE '"
-			+ searchQuery
-			+ "%' or m.fax LIKE '"
-			+ searchQuery
-			+ "%' or m.email LIKE '"
-			+ searchQuery
-			+ "%' or m.homepage LIKE '"
-			+ searchQuery
-			+ "%' or m.birthDay LIKE '"
-			+ searchQuery
-			+ "%' or m.birthMonth LIKE '"
-			+ searchQuery
-			+ "%' or m.birthYear LIKE '"
-			+ searchQuery
-			+ "%' or m.diseases LIKE '"
-			+ searchQuery
-			+ "%' or m.beltsize LIKE '"
-			+ searchQuery
-			+ "%' or m.note LIKE '"
-			+ searchQuery
-			+ "%' or m.trainingunits LIKE '"
-			+ searchQuery
-			+ "%' or c.name LIKE '" + searchQuery + "%'";
+				+ searchQuery
+				+ "%' or m.surname LIKE '"
+				+ searchQuery
+				+ "%' or m.zipcode LIKE '"
+				+ searchQuery
+				+ "%' or m.city LIKE '"
+				+ searchQuery
+				+ "%' or m.street LIKE '"
+				+ searchQuery
+				+ "%' or m.phone LIKE '"
+				+ searchQuery
+				+ "%' or m.mobilephone LIKE '"
+				+ searchQuery
+				+ "%' or m.fax LIKE '"
+				+ searchQuery
+				+ "%' or m.email LIKE '"
+				+ searchQuery
+				+ "%' or m.homepage LIKE '"
+				+ searchQuery
+				+ "%' or m.birthDay LIKE '"
+				+ searchQuery
+				+ "%' or m.birthMonth LIKE '"
+				+ searchQuery
+				+ "%' or m.birthYear LIKE '"
+				+ searchQuery
+				+ "%' or m.diseases LIKE '"
+				+ searchQuery
+				+ "%' or m.beltsize LIKE '"
+				+ searchQuery
+				+ "%' or m.note LIKE '"
+				+ searchQuery
+				+ "%' or m.trainingunits LIKE '"
+				+ searchQuery
+				+ "%' or c.name LIKE '" + searchQuery + "%'";
 
 		try {
 			rs = stmt.executeQuery(query);
@@ -669,28 +665,30 @@ public class DataBankerMember implements DataBankerMemberInterface {
 				member.setBankNumber(rs.getString("bankNumber"));
 
 				ArrayList<Integer> courses = new ArrayList<Integer>();
-				courses.add(rs.getInt("course_01"));
-				courses.add(rs.getInt("course_02"));
-				courses.add(rs.getInt("course_03"));
-				courses.add(rs.getInt("course_04"));
-				courses.add(rs.getInt("course_05"));
-				courses.add(rs.getInt("course_06"));
-				courses.add(rs.getInt("course_07"));
-				courses.add(rs.getInt("course_08"));
-				courses.add(rs.getInt("course_09"));
-				courses.add(rs.getInt("course_10"));
-
 				ArrayList<Integer> graduation = new ArrayList<Integer>();
-				graduation.add(rs.getInt("graduation_01"));
-				graduation.add(rs.getInt("graduation_02"));
-				graduation.add(rs.getInt("graduation_03"));
-				graduation.add(rs.getInt("graduation_04"));
-				graduation.add(rs.getInt("graduation_05"));
-				graduation.add(rs.getInt("graduation_06"));
-				graduation.add(rs.getInt("graduation_07"));
-				graduation.add(rs.getInt("graduation_08"));
-				graduation.add(rs.getInt("graduation_09"));
-				graduation.add(rs.getInt("graduation_10"));
+				ArrayList<Float> tariffs = new ArrayList<Float>();
+
+				ResultSet rs2 = null;
+				Statement stmt2 = dbc.getStatement();
+				String query2 = "SELECT * FROM Member_has_courses WHERE barcode_id='"
+						+ member.getBarcodeID() + "'";
+
+				
+				rs2 = stmt.executeQuery(query2);
+				if (rs2.wasNull()) {
+				}
+				while (rs2.next()) {
+					courses.add(rs2.getInt("course_id"));
+					graduation.add(rs2.getInt("graduation"));
+					tariffs.add(rs2.getFloat("tariff"));
+				}
+				member.setCourses(courses);
+				member.setGraduations(graduation);
+				member.setTariffs(tariffs);
+				
+				
+				rs2.close();
+				stmt2.close();
 
 				memberList.add(member);
 			}
@@ -713,7 +711,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 		Statement stmt = dbc.getStatement();
 
 		String query = "UPDATE Member SET note ='" + note
-		+ "' where barcode_id = '" + barcodeID + "'";
+				+ "' where barcode_id = '" + barcodeID + "'";
 
 		try {
 			stmt.executeUpdate(query);
@@ -746,12 +744,12 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			Statement stmt = dbc.getStatement();
 
 			String query = "SELECT COUNT(*), barcode_id, day, month, year FROM TrainingPresence WHERE day='"
-				+ day
-				+ "' AND month ='"
-				+ month
-				+ "' AND year = '"
-				+ year
-				+ "' AND barcode_id = '" + barcodeID + "'";
+					+ day
+					+ "' AND month ='"
+					+ month
+					+ "' AND year = '"
+					+ year
+					+ "' AND barcode_id = '" + barcodeID + "'";
 
 			rs = stmt.executeQuery(query);
 			rs.next();
@@ -761,13 +759,13 @@ public class DataBankerMember implements DataBankerMemberInterface {
 				Statement stmt2 = dbc.getStatement();
 
 				String query2 = "INSERT INTO TrainingPresence(barcode_id, day,month,year) VALUES ('"
-					+ barcodeID
-					+ "', '"
-					+ day
-					+ "', '"
-					+ month
-					+ "','"
-					+ year + "')";
+						+ barcodeID
+						+ "', '"
+						+ day
+						+ "', '"
+						+ month
+						+ "','"
+						+ year + "')";
 				stmt2.executeUpdate(query2);
 
 				stmt.close();
@@ -809,31 +807,27 @@ public class DataBankerMember implements DataBankerMemberInterface {
 	 */
 	public String updateMember(Member member) {
 		// TODO Update �ndern, damit primery key zur�ck gesetzt wird
-
 		DataBankerConnection dbc = new DataBankerConnection();
 		try {
 			ResultSet rs = null;
 			Statement stmt2 = dbc.getStatement();
 			String query = "SELECT Member_id FROM Member WHERE barcode_id='"
-				+ member.getBarcodeID() + "'";
+					+ member.getBarcodeID() + "'";
 
 			rs = stmt2.executeQuery(query);
 			while (rs.next()) {
-				if (rs.getInt(1) > 0) {
-					return "Barcodenummer schon vorhanden";
-				}
+				member.setMemberID(rs.getInt(1));
 			}
+			deleteMember(member.getMemberID());
 			rs.close();
 			stmt2.close();
-			int id = member.getMemberID();
-			deleteMember(id);
 
 			PreparedStatement stmt = dbc
 
-			.getConnection()
-			.prepareStatement(
-					"INSERT INTO Member(Member_id, barcode_id, forename, surname, zipcode, city, street, phone, mobilephone, fax, email, homepage, birthDay, birthMonth, birthYear, picture, diseases, beltsize, note, trainingunits, course_01, course_02, course_03, course_04, course_05, course_06, course_07, course_08, course_09, course_10, graduation_01, graduation_02, graduation_03, graduation_04, graduation_05, graduation_06, graduation_07, graduation_08, graduation_09, graduation_10, accountForename, accountSurname, accountNumber, bankName, bankNumber) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-			stmt.setInt(1, id);
+					.getConnection()
+					.prepareStatement(
+					"INSERT INTO Member(Member_id, barcode_id, forename, surname, zipcode, city, street, phone, mobilephone, fax, email, homepage, birthDay, birthMonth, birthYear, picture, diseases, beltsize, note, trainingunits, accountForename, accountSurname, accountNumber, bankName, bankNumber) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			stmt.setInt(1, member.getMemberID());
 			stmt.setInt(2, member.getBarcodeID());
 			stmt.setString(3, member.getForename());
 			stmt.setString(4, member.getSurname());
@@ -853,48 +847,33 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			stmt.setString(18, member.getBeltsize());
 			stmt.setString(19, member.getNote());
 			stmt.setInt(20, member.getTrainingunits());
-
-			// Hinzuf�gen der ArrayList Courses
-			int size = member.getCourses().size();
-			try {
-				for (int i = 0; i < size; i++) {
-					stmt.setInt(i + 21, member.getCourses().get(i));
-				}
-			} catch (IndexOutOfBoundsException e) {
-				System.out.println(e);
-				System.out.println("courses out of bounds");
-			}
-			// Auff�llen mit Nullen, wenn Courses<10
-			if (size < 10) {
-				for (int i = 21 + size; i < 21; i++) {
-					stmt.setInt(i, 0);
-				}
-			}
-
-			// Hinzuf�gen der ArrayList Graduations
-			size = member.getGraduations().size();
-			try {
-				for (int i = 0; i < size; i++) {
-					stmt.setInt(i + 21, member.getGraduations().get(i));
-				}
-			} catch (IndexOutOfBoundsException e) {
-				System.out.println(e);
-				System.out.println("graduations out of bounds");
-			}
-			// Auff�llen mit Nullen, wenn Graduations<10
-			if (size < 10) {
-				for (int i = 31 + size; i < 41; i++) {
-					stmt.setInt(i, 0);
-				}
-			}
-			stmt.setString(41, member.getAccountForename());
-			stmt.setString(42, member.getAccountSurname());
-			stmt.setString(43, member.getAccountNumber());
-			stmt.setString(44, member.getBankName());
-			stmt.setString(45, member.getBankNumber());
+			stmt.setString(21, member.getAccountForename());
+			stmt.setString(22, member.getAccountSurname());
+			stmt.setString(23, member.getAccountNumber());
+			stmt.setString(24, member.getBankName());
+			stmt.setString(25, member.getBankNumber());
 
 			stmt.executeUpdate();
 
+
+			PreparedStatement stmt3 = null;
+			try {
+				for (int i = 0; i < member.getCourses().size(); i++) {
+					stmt3 = dbc
+							.getConnection()
+							.prepareStatement(
+									"INSERT INTO Member_has_courses(barcode_id, course_id, graduation, tariff) VALUES(?,?,?,?)");
+					stmt3.setInt(1, member.getBarcodeID());
+					stmt3.setInt(2, member.getCourses().get(i));
+					stmt3.setInt(3, member.getGraduations().get(i));
+					stmt3.setFloat(4, member.getTariffs().get(i));
+					stmt3.executeUpdate();
+				}
+			} catch (NullPointerException e) {
+				System.out.println(e);
+				System.out.println("courses out of bounds");
+			}
+			stmt3.close();
 			dbc.close();
 			stmt.close();
 		} catch (SQLException e) {

@@ -30,7 +30,7 @@ import eu.maydu.gwt.validation.client.DefaultValidationProcessor;
 import eu.maydu.gwt.validation.client.ValidationProcessor;
 
 public class CreateMemberView extends Composite implements
-CreateMemberPresenter.Display {
+		CreateMemberPresenter.Display {
 	public class CourseSelectorWidget {
 		private Label courseLabel;
 		private ListBox courseListBox;
@@ -39,6 +39,7 @@ CreateMemberPresenter.Display {
 		private ListBox gradeListBox;
 		private Label tariffLabel;
 		private ListBox tariffListBox;
+		private ArrayList<CourseTariff> tariffList;
 
 		public CourseSelectorWidget() {
 			courseVerticalPanel = new VerticalPanel();
@@ -56,7 +57,7 @@ CreateMemberPresenter.Display {
 			tariffListBox.insertItem("<" + constants.select() + ">", 0);
 			tariffInputPanel.add(tariffLabel);
 			tariffInputPanel.add(tariffListBox);
-			
+
 			HorizontalPanel gradeInputPanel = new HorizontalPanel();
 			gradeLabel = new Label(constants.grade() + ": ");
 			gradeListBox = new ListBox();
@@ -96,7 +97,23 @@ CreateMemberPresenter.Display {
 			return courseListBox.getItemText(selected);
 		}
 
+		public String getSelectedTariff() {
+			// TODO Auto-generated method stub
+			int selected = tariffListBox.getSelectedIndex();
+			String temp = tariffListBox.getItemText(selected);
+			temp = temp.substring((temp.indexOf("-") + 1), temp.length() - 2);
+			System.out.println("temp= " + temp);
+			return temp;
+		}
+
+		public String getSelectedTariffName() {
+			int selected = tariffListBox.getSelectedIndex();
+			return tariffListBox.getItemText(selected);
+		}
+
 		public void setBeltList(ArrayList<String> beltList) {
+			gradeListBox.clear();
+			gradeListBox.insertItem("<" + constants.select() + ">", 0);
 			Iterator<String> itr = beltList.iterator();
 			int i = 1;
 			while (itr.hasNext()) {
@@ -119,7 +136,14 @@ CreateMemberPresenter.Display {
 
 		public void setTariffList(ArrayList<CourseTariff> tariffList) {
 			// TODO Auto-generated method stub
-			
+			tariffListBox.clear();
+			tariffListBox.insertItem("<" + constants.select() + ">", 0);
+			for (int j = 0; j < tariffList.size(); j++) {
+				tariffListBox.insertItem(tariffList.get(j).getName() + " - "
+						+ tariffList.get(j).getCosts() + " €", j + 1);
+			}
+			gradeListBox.setItemSelected(0, true);
+			this.tariffList = tariffList;
 		}
 
 	}
@@ -182,8 +206,6 @@ CreateMemberPresenter.Display {
 	private TextBox streetTextBox;
 	private Label surnameLabel;
 	private TextBox surnameTextBox;
-	private Label trainingunitsLabel;
-	private TextBox trainingunitsTextBox;
 	private DefaultValidationProcessor validator;
 	private VerticalPanel wrapper = new VerticalPanel();
 	private Label zipcodeLabel;
@@ -387,12 +409,6 @@ CreateMemberPresenter.Display {
 		noteInputPanel.add(noteLabel);
 		noteInputPanel.add(noteTextBox);
 
-		HorizontalPanel trainingunitsInputPanel = new HorizontalPanel();
-		trainingunitsLabel = new Label(constants.trainingunits() + ":* ");
-		trainingunitsTextBox = new TextBox();
-		trainingunitsInputPanel.add(trainingunitsLabel);
-		trainingunitsInputPanel.add(trainingunitsTextBox);
-
 		for (int i = 0; i < 10; i++) {
 			courseList.add(new CourseSelectorWidget());
 		}
@@ -418,7 +434,6 @@ CreateMemberPresenter.Display {
 		createMemberPanel2.add(homepageInputPanel);
 		createMemberPanel2.add(homepageInputPanel);
 		createMemberPanel.add(beltsizeInputPanel);
-		createMemberPanel.add(trainingunitsInputPanel);
 		createMemberPanel2.add(diseasesInputPanel);
 		createMemberPanel2.add(noteInputPanel);
 		createMemberPanel.add(courseList.get(1).getCourseSelector());
@@ -459,7 +474,6 @@ CreateMemberPresenter.Display {
 		birthTextBox3.setSelectedIndex(-temp);
 		phoneTextBox.setText(member.getPhone());
 		beltsizeTextBox.setText(member.getBeltsize());
-		trainingunitsTextBox.setText("" + member.getTrainingunits());
 		mobilephoneTextBox.setText(member.getMobilephone());
 		faxTextBox.setText(member.getFax());
 		emailTextBox.setText(member.getEmail());
@@ -618,6 +632,12 @@ CreateMemberPresenter.Display {
 
 	}
 
+	public float getSelectedTariff(int index) {
+		return Float.valueOf(courseList.get(index).getSelectedTariff());
+
+		// Integer.parseInt(courseList.get(index).getSelectedTariff());
+	}
+
 	public HasClickHandlers getSendButton() {
 		return sendButton;
 	}
@@ -632,10 +652,6 @@ CreateMemberPresenter.Display {
 
 	public TextBox getSurnameTextBox() {
 		return surnameTextBox;
-	}
-
-	public TextBox getTrainingunitsTextBox() {
-		return trainingunitsTextBox;
 	}
 
 	public MultiUploader getUploadHandler() {
@@ -672,5 +688,18 @@ CreateMemberPresenter.Display {
 		this.imageUrl = imageUrl;
 	}
 
+	public int calculateTrainingUnits() {
+		int temp3 = 0;
+		try {
+			for (int i = 0; i < courseList.size(); i++) {
+				String temp = courseList.get(i).getSelectedTariffName();
+				int temp2 = temp.indexOf(" ");
+				temp3 = temp3 + Integer.parseInt(temp.substring(0, temp2));
+
+			}
+		} catch (IndexOutOfBoundsException e) {
+		}
+		return temp3;
+	}
 
 }

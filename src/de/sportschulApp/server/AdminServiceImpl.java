@@ -159,7 +159,7 @@ AdminService {
 	public String saveMember(Member member) {
 		System.out.println("Member Courses: "+member.getCourses());
 		System.out.println("Member Grades: "+member.getGraduations());
-
+		System.out.println("Member Tariffs: "+member.getTariffs());
 		return dbm.createMember(member);
 
 	}
@@ -188,6 +188,10 @@ AdminService {
 	public ArrayList<CourseTariff> getTariff(String courseName){
 		return dbc.getCourseTariffsForCourse(courseName);
 		
+	}
+	
+	public String updateMember(Member member){
+		return dbm.updateMember(member);
 	}
 
 }

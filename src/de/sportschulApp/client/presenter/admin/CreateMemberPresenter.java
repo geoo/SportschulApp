@@ -111,6 +111,8 @@ public class CreateMemberPresenter implements Presenter {
 
 		int getSelectedBeltNr(int index);
 
+		float getSelectedTariff(int index);
+
 		String getSelectedCourseName(int index);
 
 		HasClickHandlers getSendButton();
@@ -120,8 +122,6 @@ public class CreateMemberPresenter implements Presenter {
 		CheckBox getSurnameCheckBox();
 
 		TextBox getSurnameTextBox();
-
-		TextBox getTrainingunitsTextBox();
 
 		MultiUploader getUploadHandler();
 
@@ -137,8 +137,11 @@ public class CreateMemberPresenter implements Presenter {
 
 		void setTariffList(int test, ArrayList<CourseTariff> result);
 
+		int calculateTrainingUnits();
+
 	}
 
+	private boolean createView;
 	private LocalizationConstants constants;
 	private final Display display;
 	private boolean error = false;
@@ -169,6 +172,7 @@ public class CreateMemberPresenter implements Presenter {
 	};
 
 	private ValidationProcessor validator;
+	private ArrayList<Float> tariffs;
 
 	public CreateMemberPresenter(AdminServiceAsync rpcService,
 			HandlerManager eventBus, Display display) {
@@ -199,6 +203,7 @@ public class CreateMemberPresenter implements Presenter {
 		bind();
 		getCourseList();
 		setupValidation();
+		createView = true;
 		System.out.println(barcodeID);
 
 	}
@@ -209,27 +214,27 @@ public class CreateMemberPresenter implements Presenter {
 				boolean success = display.getValidator().validate();
 				if (display.getBirthTextBox1().getSelectedIndex() == 0) {
 					display.getBirthTextBox1().setStyleName(
-					"validationFailedBorder");
+							"validationFailedBorder");
 					success = false;
 				} else {
 					display.getBirthTextBox1().removeStyleName(
-					"validationFailedBorder");
+							"validationFailedBorder");
 				}
 				if (display.getBirthTextBox2().getSelectedIndex() == 0) {
 					display.getBirthTextBox2().setStyleName(
-					"validationFailedBorder");
+							"validationFailedBorder");
 					success = false;
 				} else {
 					display.getBirthTextBox2().removeStyleName(
-					"validationFailedBorder");
+							"validationFailedBorder");
 				}
 				if (display.getBirthTextBox3().getSelectedIndex() == 0) {
 					display.getBirthTextBox3().setStyleName(
-					"validationFailedBorder");
+							"validationFailedBorder");
 					success = false;
 				} else {
 					display.getBirthTextBox3().removeStyleName(
-					"validationFailedBorder");
+							"validationFailedBorder");
 				}
 
 				if (success) {
@@ -247,27 +252,25 @@ public class CreateMemberPresenter implements Presenter {
 			}
 		});
 
-		//TODO
+		// TODO
 		display.getUploadHandler().addOnFinishUploadHandler(
 				onFinishUploaderHandler);
 		for (int i = 0; i < 10; i++) {
 			final int test = i;
-			display.getCourseHandler(i).addChangeHandler(
-					new ChangeHandler() {
+			display.getCourseHandler(i).addChangeHandler(new ChangeHandler() {
 
-						public void onChange(ChangeEvent event) {
-							getBeltList(test);
-							getTariffList(test);
-						}
-					});
-			display.getGradeHandler(i).addChangeHandler(
-					new ChangeHandler() {
+				public void onChange(ChangeEvent event) {
+					getBeltList(test);
+					getTariffList(test);
+				}
+			});
+			display.getGradeHandler(i).addChangeHandler(new ChangeHandler() {
 
-						public void onChange(ChangeEvent event) {
-
-							display.addNewCourseSelector();
-						}
-					});
+				public void onChange(ChangeEvent event) {
+					display.getSelectedTariff(test);
+					display.addNewCourseSelector();
+				}
+			});
 		}
 
 		display.getForenameCheckBox().addClickHandler(new ClickHandler() {
@@ -307,23 +310,26 @@ public class CreateMemberPresenter implements Presenter {
 		error = false;
 		// courses = new ArrayList<Integer>();
 		grades = new ArrayList<Integer>();
-
+		tariffs = new ArrayList<Float>();
 		ArrayList<CourseSelectorWidget> courseListWidget = display
-		.getCourseList();
+				.getCourseList();
 
 		ArrayList<String> courseNames = new ArrayList<String>();
 
 		for (int index = 0; index < 10; index++) {
 			if (!courseListWidget.get(index).getSelectedCourseName()
 					.equals(display.getListBoxString())) {
-				if (!courseListWidget.get(index).getSelectedBeltName()
-						.equals(display.getListBoxString())) {
+				if ((!courseListWidget.get(index).getSelectedBeltName()
+						.equals(display.getListBoxString()) && (!courseListWidget
+						.get(index).getSelectedTariffName()
+						.equals(display.getListBoxString())))) {
 					courseNames.add(courseListWidget.get(index)
 							.getSelectedCourseName());
 					grades.add(display.getSelectedBeltNr(index));
+					tariffs.add(display.getSelectedTariff(index));
 				} else {
 					error = true;
-					Window.alert("Sie haben einen Kurs ohne Gürtelfarbe angegeben");
+					Window.alert("Sie haben einen Kurs ohne Gürtelfarbe oder Tarif angegeben");
 				}
 			}
 		}
@@ -334,141 +340,162 @@ public class CreateMemberPresenter implements Presenter {
 			rpcService.getCourseIDs(courseNames,
 					new AsyncCallback<ArrayList<Integer>>() {
 
-				private String accountForename;
-				private String accountSurname;
-
-				public void onFailure(Throwable caught) {
-					System.out.println("rpc errror");
-				}
-
-				public void onSuccess(ArrayList<Integer> result) {
-
-					// prüfen ob "wie oben" bei Vorname gesetzt
-					if (display.getForenameCheckBox().getValue()) {
-						accountForename = display.getForenameTextBox()
-						.getText();
-					} else {
-						accountForename = display
-						.getAccountForenameTextBox().getText();
-					}
-
-					// prüfen ob "wie oben" bei Nachname gesetzt
-					if (display.getSurnameCheckBox().getValue()) {
-						accountSurname = display.getSurnameTextBox()
-						.getText();
-					} else {
-						accountSurname = display
-						.getAccountSurnameTextBox().getText();
-					}
-
-					// courses = result;
-					Integer selected = display.getBirthTextBox1()
-					.getSelectedIndex();
-					String birthDay = selected.toString();
-
-					selected = display.getBirthTextBox2()
-					.getSelectedIndex();
-					String birthMonth = selected.toString();
-
-					selected = display.getBirthTextBox3()
-					.getSelectedIndex();
-					String birthYear = display.getBirthTextBox3()
-					.getItemText(selected);
-					Member member = new Member(0, new Integer(display
-							.getBarcodeTextBox().getText()), display
-							.getForenameTextBox().getText(), display
-							.getSurnameTextBox().getText(),
-							new Integer(display.getZipcodeTextBox()
-									.getText()), display
-									.getCityTextBox().getText(),
-									display.getStreetTextBox().getText(),
-									display.getPhoneTextBox().getText(),
-									display.getmobilephoneTextBox().getText(),
-									display.getFaxTextBox().getText(), display
-									.getEmailTextBox().getText(),
-									display.getHomepageTextBox().getText(),
-									birthDay, birthMonth, birthYear, display
-									.getPictureUrl(), display
-									.getDiseasesTextBox().getText(),
-									display.getBeltsizeTextBox().getText(),
-									display.getNoteTextBox().getText(),
-									new Integer(display
-											.getTrainingunitsTextBox()
-											.getText()), accountForename,
-											accountSurname, display
-											.getAccountNumberTextBox()
-											.getText(), display
-											.getBankNameTextBox().getText(),
-											display.getBankNumberTextBox().getText(),
-											result, grades);
-
-					try {
-						if (member.getPicture() == null) {
-							member.setPicture("imgs/standartMember.jpg");
-						}
-					} catch (NullPointerException e) {
-					}
-					rpcService.saveMember(member,
-							new AsyncCallback<String>() {
+						private String accountForename;
+						private String accountSurname;
 
 						public void onFailure(Throwable caught) {
 							System.out.println("rpc errror");
 						}
 
-						public void onSuccess(String result) {
-							System.out.println("result: "
-									+ result);
-							if (result
-									.equals("barcode_id already used")) {
-								display.getBarcodeTextBox()
-								.setStyleName(
-										"validationFailedBorderBarcode");
-								Window.alert(display
-										.getConstants()
-										.barcodeUsed());
-							} else {
-								Window.alert(constants
-										.memberCreated());
-								History.newItem("adminMembersShowMembers");
-							}
-						}
-					});
+						public void onSuccess(ArrayList<Integer> result) {
 
-				}
-			});
+							// prüfen ob "wie oben" bei Vorname gesetzt
+							if (display.getForenameCheckBox().getValue()) {
+								accountForename = display.getForenameTextBox()
+										.getText();
+							} else {
+								accountForename = display
+										.getAccountForenameTextBox().getText();
+							}
+
+							// prüfen ob "wie oben" bei Nachname gesetzt
+							if (display.getSurnameCheckBox().getValue()) {
+								accountSurname = display.getSurnameTextBox()
+										.getText();
+							} else {
+								accountSurname = display
+										.getAccountSurnameTextBox().getText();
+							}
+
+							// courses = result;
+							Integer selected = display.getBirthTextBox1()
+									.getSelectedIndex();
+							String birthDay = selected.toString();
+
+							selected = display.getBirthTextBox2()
+									.getSelectedIndex();
+							String birthMonth = selected.toString();
+
+							selected = display.getBirthTextBox3()
+									.getSelectedIndex();
+							String birthYear = display.getBirthTextBox3()
+									.getItemText(selected);
+							Member member = new Member(0, new Integer(display
+									.getBarcodeTextBox().getText()), display
+									.getForenameTextBox().getText(), display
+									.getSurnameTextBox().getText(),
+									new Integer(display.getZipcodeTextBox()
+											.getText()), display
+											.getCityTextBox().getText(),
+									display.getStreetTextBox().getText(),
+									display.getPhoneTextBox().getText(),
+									display.getmobilephoneTextBox().getText(),
+									display.getFaxTextBox().getText(), display
+											.getEmailTextBox().getText(),
+									display.getHomepageTextBox().getText(),
+									birthDay, birthMonth, birthYear, display
+											.getPictureUrl(), display
+											.getDiseasesTextBox().getText(),
+									display.getBeltsizeTextBox().getText(),
+									display.getNoteTextBox().getText(), display
+											.calculateTrainingUnits(),
+									accountForename, accountSurname, display
+											.getAccountNumberTextBox()
+											.getText(), display
+											.getBankNameTextBox().getText(),
+									display.getBankNumberTextBox().getText(),
+									result, grades, tariffs);
+
+							try {
+								if (member.getPicture() == null) {
+									member.setPicture("imgs/standartMember.jpg");
+								}
+							} catch (NullPointerException e) {
+							}
+							if (createView) {
+								rpcService.updateMember(member,
+										new AsyncCallback<String>() {
+											public void onFailure(
+													Throwable caught) {
+												System.out
+														.println("rpc errror");
+											}
+
+											public void onSuccess(String result) {
+												// TODO Auto-generated method
+												// stub
+												System.out
+														.println("ERFOLG");
+												System.out
+														.println("RESULT: "+result);
+											}
+
+										});
+							} else {
+								rpcService.saveMember(member,
+										new AsyncCallback<String>() {
+
+											public void onFailure(
+													Throwable caught) {
+												System.out
+														.println("rpc errror");
+											}
+
+											public void onSuccess(String result) {
+												System.out.println("result: "
+														+ result);
+												if (result
+														.equals("barcode_id already used")) {
+													display.getBarcodeTextBox()
+															.setStyleName(
+																	"validationFailedBorderBarcode");
+													Window.alert(display
+															.getConstants()
+															.barcodeUsed());
+												} else {
+													Window.alert(constants
+															.memberCreated());
+													History.newItem("adminMembersShowMembers");
+
+												}
+											}
+										});
+							}
+
+						}
+
+					});
 		}
 	}
 
-	public void getTariffList(int index){
+	public void getTariffList(int index) {
 		final int test = index;
 		rpcService.getTariff(display.getSelectedCourseName(index),
 				new AsyncCallback<ArrayList<CourseTariff>>() {
-			public void onFailure(Throwable caught) {
+					public void onFailure(Throwable caught) {
 
-			}
+					}
 
-			public void onSuccess(ArrayList<CourseTariff> result) {
-				display.setTariffList(test, result);
+					public void onSuccess(ArrayList<CourseTariff> result) {
+						display.setTariffList(test, result);
 
-			}
+					}
 
-		
-			
-		});
+				});
 	}
-	
+
 	public void getBeltList(int index) {
 		final int test = index;
 		rpcService.getBeltList(display.getSelectedCourseName(index),
 				new AsyncCallback<ArrayList<String>>() {
-			public void onFailure(Throwable caught) {
+					public void onFailure(Throwable caught) {
 
-			}
+					}
 
-			public void onSuccess(ArrayList<String> result) {
-				display.setBeltList(test, result);
-			}
-		});
+					public void onSuccess(ArrayList<String> result) {
+						display.setBeltList(test, result);
+					}
+				});
 
 	}
 
@@ -489,15 +516,17 @@ public class CreateMemberPresenter implements Presenter {
 		rpcService.getMemberByBarcodeID(Integer.parseInt(barcodeID),
 				new AsyncCallback<Member>() {
 
-			public void onFailure(Throwable caught) {
+					public void onFailure(Throwable caught) {
 
-			}
+					}
 
-			public void onSuccess(Member result) {
-				display.fillForm(result);
-			}
-		});
+					public void onSuccess(Member result) {
+
+						display.fillForm(result);
+					}
+				});
 	}
+
 	public void go(HasWidgets container) {
 		container.clear();
 		container.add(display.asWidget());
@@ -517,7 +546,6 @@ public class CreateMemberPresenter implements Presenter {
 				msgMap.put("city", constants.popupHelpCity());
 				msgMap.put("phone", constants.popupHelpPhone());
 				msgMap.put("beltsize", constants.popupHelpBeltsize());
-				msgMap.put("trainingunits", constants.popupHelpTrainingunits());
 				msgMap.put("mobilephone", constants.popupHelpMobilephone());
 				msgMap.put("fax", constants.popupHelpFax());
 				msgMap.put("email", constants.popupHelpEmail());
@@ -545,13 +573,13 @@ public class CreateMemberPresenter implements Presenter {
 
 		validator.addValidators("forename",
 				new StringLengthValidator(display.getForenameTextBox(), 2, 30)
-		.addActionForFailure(new StyleAction(
-		"validationFailedBorder")));
+						.addActionForFailure(new StyleAction(
+								"validationFailedBorder")));
 
 		validator.addValidators("surname",
 				new StringLengthValidator(display.getSurnameTextBox(), 2, 30)
-		.addActionForFailure(new StyleAction(
-		"validationFailedBorder")));
+						.addActionForFailure(new StyleAction(
+								"validationFailedBorder")));
 
 		validator.addValidators("barcode",
 				new IntegerValidator(display.getBarcodeTextBox(), 0,
@@ -560,8 +588,8 @@ public class CreateMemberPresenter implements Presenter {
 
 		validator.addValidators("street",
 				new StringLengthValidator(display.getStreetTextBox(), 2, 30)
-		.addActionForFailure(new StyleAction(
-		"validationFailedBorder")));
+						.addActionForFailure(new StyleAction(
+								"validationFailedBorder")));
 
 		validator.addValidators("zipcodeInt",
 				new IntegerValidator(display.getZipcodeTextBox(), 0,
@@ -570,46 +598,41 @@ public class CreateMemberPresenter implements Presenter {
 
 		validator.addValidators("zipcodeLength", new StringLengthValidator(
 				display.getZipcodeTextBox(), 5, 5)
-		.addActionForFailure(new StyleAction("validationFailedBorder"))
+				.addActionForFailure(new StyleAction("validationFailedBorder"))
 		// .addActionForFailure(new LabelTextAction(forenameErrorLabel))
-		);
+				);
 
 		validator.addValidators("city",
 				new StringLengthValidator(display.getCityTextBox(), 2, 30)
-		.addActionForFailure(new StyleAction(
-		"validationFailedBorder")));
+						.addActionForFailure(new StyleAction(
+								"validationFailedBorder")));
 
 		validator.addValidators("phone",
 				new StringLengthValidator(display.getPhoneTextBox(), 1, 30)
-		.addActionForFailure(new StyleAction(
-		"validationFailedBorder")));
+						.addActionForFailure(new StyleAction(
+								"validationFailedBorder")));
 
 		validator.addValidators("beltsize",
 				new NotEmptyValidator(display.getBeltsizeTextBox())
-		.addActionForFailure(new StyleAction(
-		"validationFailedBorder")));
-
-		validator.addValidators("trainingunits",
-				new IntegerValidator(display.getTrainingunitsTextBox(), 1,
-						Integer.MAX_VALUE).addActionForFailure(new StyleAction(
-						"validationFailedBorder")));
+						.addActionForFailure(new StyleAction(
+								"validationFailedBorder")));
 
 		validator
-		.addValidators("accountForename", new StringLengthValidator(
-				display.getAccountForenameTextBox(), 2, 30)
-		.addActionForFailure(new StyleAction(
-		"validationFailedBorder")));
+				.addValidators("accountForename", new StringLengthValidator(
+						display.getAccountForenameTextBox(), 2, 30)
+						.addActionForFailure(new StyleAction(
+								"validationFailedBorder")));
 
 		validator
-		.addValidators("accountSurname", new StringLengthValidator(
-				display.getAccountSurnameTextBox(), 2, 30)
-		.addActionForFailure(new StyleAction(
-		"validationFailedBorder")));
+				.addValidators("accountSurname", new StringLengthValidator(
+						display.getAccountSurnameTextBox(), 2, 30)
+						.addActionForFailure(new StyleAction(
+								"validationFailedBorder")));
 
 		validator.addValidators("Bankname",
 				new StringLengthValidator(display.getBankNameTextBox(), 2, 30)
-		.addActionForFailure(new StyleAction(
-		"validationFailedBorder")));
+						.addActionForFailure(new StyleAction(
+								"validationFailedBorder")));
 
 		validator.addValidators("accountNumber",
 				new IntegerValidator(display.getAccountNumberTextBox(), 0,
@@ -629,8 +652,6 @@ public class CreateMemberPresenter implements Presenter {
 		popupDesc.addDescription("city ", display.getCityTextBox());
 		popupDesc.addDescription("phone ", display.getPhoneTextBox());
 		popupDesc.addDescription("beltsize ", display.getBeltsizeTextBox());
-		popupDesc.addDescription("trainingunits ",
-				display.getTrainingunitsTextBox());
 		popupDesc.addDescription("mobilephone ",
 				display.getmobilephoneTextBox());
 		popupDesc.addDescription("fax ", display.getFaxTextBox());

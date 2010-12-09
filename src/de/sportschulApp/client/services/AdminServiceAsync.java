@@ -93,5 +93,7 @@ public interface AdminServiceAsync {
 	void getTariff(
 			String selectedCourseName,
 			AsyncCallback<ArrayList<CourseTariff>> asyncCallback);
+
+	void updateMember(Member member, AsyncCallback<String> asyncCallback);
 	
 }

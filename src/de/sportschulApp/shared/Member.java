@@ -22,6 +22,7 @@ public class Member implements Serializable {
 	private String fax;
 	private String forename;
 	private ArrayList<Integer> graduations;
+	private ArrayList<Float> tariffs;
 	private String homepage;
 	private int memberID;
 	private String mobilephone;
@@ -43,7 +44,8 @@ public class Member implements Serializable {
 			String picture, String diseases, String beltsize, String note,
 			int trainingunits, String accountForename, String accountSurname,
 			String accountNumber, String bankName, String bankNumber,
-			ArrayList<Integer> courses, ArrayList<Integer> graduations) {
+			ArrayList<Integer> courses, ArrayList<Integer> graduations,
+			ArrayList<Float> tariffs) {
 
 		setMemberID(memberID);
 		setBarcodeID(barcodeID);
@@ -67,6 +69,7 @@ public class Member implements Serializable {
 		setTrainingunits(trainingunits);
 		setCourses(courses);
 		setGraduations(graduations);
+		setTariffs(tariffs);
 		setAccountForename(accountForename);
 		setAccountSurname(accountSurname);
 		setAccountNumber(accountNumber);
@@ -74,6 +77,11 @@ public class Member implements Serializable {
 		setBankNumber(bankNumber);
 
 	}
+
+	public void setTariffs(ArrayList<Float> tariffs) {
+		this.tariffs = tariffs;
+	}
+
 
 	/**
 	 * @return the accountForename
@@ -158,7 +166,14 @@ public class Member implements Serializable {
 	public ArrayList<Integer> getCourses() {
 		return courses;
 	}
-
+	
+	/**
+	 * @return the tariffs
+	 */
+	public ArrayList<Float> getTariffs() {
+		return tariffs;
+	}
+	
 	/**
 	 * @return the diseases
 	 */

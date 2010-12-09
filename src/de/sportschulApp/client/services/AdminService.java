@@ -88,4 +88,6 @@ public interface AdminService extends RemoteService {
 
 	ArrayList<CourseTariff> getTariff(String selectedCourseName);
 
+	String updateMember(Member member);
+
 }

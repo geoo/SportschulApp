@@ -89,6 +89,7 @@ public class ListMemberPresenter implements Presenter{
 				Window.alert("Abrufen der Mitgliedsdaten fehlgeschlagen.");
 			}
 			public void onSuccess(ArrayList<Member> result) {
+				System.out.println("testtest");
 				display.setMemberList(result);
 			}
 		});
