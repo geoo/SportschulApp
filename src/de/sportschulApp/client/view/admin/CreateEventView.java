@@ -45,9 +45,10 @@ CreateEventPresenter.Display {
 	private TextBox locationTextBox;
 	private RadioButton rb0;
 	private RadioButton rb1;
-	private Label timeLabel;
-	private ListBox timeListBoxHour;
-	private ListBox timeListBoxMinutes;
+	private ListBox startTimeListBoxHour;
+	private ListBox startTimeListBoxMinutes;
+	private ListBox endTimeListBoxHour;
+	private ListBox endTimeListBoxMinutes;
 	private DefaultValidationProcessor validator = new DefaultValidationProcessor();
 	private VerticalPanel wrapper = new VerticalPanel();
 
@@ -146,27 +147,49 @@ CreateEventPresenter.Display {
 		dateInputPanel.add(dateLabel);
 		dateInputPanel.add(dateBox);
 
-		HorizontalPanel timeInputPanel = new HorizontalPanel();
-		timeLabel = new Label(constants.time() + " (Stunde/Minute): ");
-		timeListBoxHour = new ListBox();
+		HorizontalPanel startTimeInputPanel = new HorizontalPanel();
+		Label startTimeLabel = new Label("Start (Stunde/Minute): ");
+		startTimeListBoxHour = new ListBox();
 		for (int i = 0; i < 24; i++) {
 			if (i < 10) {
-				timeListBoxHour.addItem("0" + i);
+				startTimeListBoxHour.addItem("0" + i);
 			} else {
-				timeListBoxHour.addItem("" + i);
+				startTimeListBoxHour.addItem("" + i);
 			}
 		}
-		timeListBoxMinutes = new ListBox();
+		startTimeListBoxMinutes = new ListBox();
 		for (int i = 0; i < 60; i++) {
 			if (i < 10) {
-				timeListBoxMinutes.addItem("0" + i);
+				startTimeListBoxMinutes.addItem("0" + i);
 			} else {
-				timeListBoxMinutes.addItem("" + i);
+				startTimeListBoxMinutes.addItem("" + i);
 			}
 		}
-		timeInputPanel.add(timeLabel);
-		timeInputPanel.add(timeListBoxHour);
-		timeInputPanel.add(timeListBoxMinutes);
+		startTimeInputPanel.add(startTimeLabel);
+		startTimeInputPanel.add(startTimeListBoxHour);
+		startTimeInputPanel.add(startTimeListBoxMinutes);
+		
+		HorizontalPanel endTimeInputPanel = new HorizontalPanel();
+		Label endTimeLabel = new Label("Ende (Stunde/Minute): ");
+		endTimeListBoxHour = new ListBox();
+		for (int i = 0; i < 24; i++) {
+			if (i < 10) {
+				endTimeListBoxHour.addItem("0" + i);
+			} else {
+				endTimeListBoxHour.addItem("" + i);
+			}
+		}
+		endTimeListBoxMinutes = new ListBox();
+		for (int i = 0; i < 60; i++) {
+			if (i < 10) {
+				endTimeListBoxMinutes.addItem("0" + i);
+			} else {
+				endTimeListBoxMinutes.addItem("" + i);
+			}
+		}
+		endTimeInputPanel.add(endTimeLabel);
+		endTimeInputPanel.add(endTimeListBoxHour);
+		endTimeInputPanel.add(endTimeListBoxMinutes);
 
 		VerticalPanel examinersInputFieldWrapper = new VerticalPanel();
 		examinersInputFieldWrapper.addStyleName("examinersInputFieldWrapper");
@@ -205,7 +228,8 @@ CreateEventPresenter.Display {
 		createEventPanel.add(eventNameInputPanel);
 		createEventPanel.add(eventTypePanel);
 		createEventPanel.add(dateInputPanel);
-		createEventPanel.add(timeInputPanel);
+		createEventPanel.add(startTimeInputPanel);
+		createEventPanel.add(endTimeInputPanel);
 		createEventPanel.add(locationInputPanel);
 		createEventPanel.add(costsInputPanel);
 		createEventPanel.add(examinersInputFieldWrapper);
@@ -237,15 +261,27 @@ CreateEventPresenter.Display {
 		dateBox.getTextBox().setText(event.getDate());
 		examiners = event.getExaminers();
 
-		for (int i = 0; i < timeListBoxHour.getItemCount(); i++) {
-			if (timeListBoxHour.getValue(i).equals(event.getTime().substring(0, 2))) {
-				timeListBoxHour.setSelectedIndex(i);
+		for (int i = 0; i < startTimeListBoxHour.getItemCount(); i++) {
+			if (startTimeListBoxHour.getValue(i).equals(event.getStartTime().substring(0, 2))) {
+				startTimeListBoxHour.setSelectedIndex(i);
 			}
 		}
 
-		for (int i = 0; i < timeListBoxMinutes.getItemCount(); i++) {
-			if (timeListBoxMinutes.getValue(i).equals(event.getTime().substring(3, 5))) {
-				timeListBoxMinutes.setSelectedIndex(i);
+		for (int i = 0; i < startTimeListBoxMinutes.getItemCount(); i++) {
+			if (startTimeListBoxMinutes.getValue(i).equals(event.getStartTime().substring(3, 5))) {
+				startTimeListBoxMinutes.setSelectedIndex(i);
+			}
+		}
+		
+		for (int i = 0; i < endTimeListBoxHour.getItemCount(); i++) {
+			if (endTimeListBoxHour.getValue(i).equals(event.getEndTime().substring(0, 2))) {
+				endTimeListBoxHour.setSelectedIndex(i);
+			}
+		}
+
+		for (int i = 0; i < endTimeListBoxMinutes.getItemCount(); i++) {
+			if (endTimeListBoxMinutes.getValue(i).equals(event.getEndTime().substring(3, 5))) {
+				endTimeListBoxMinutes.setSelectedIndex(i);
 			}
 		}
 
@@ -293,7 +329,8 @@ CreateEventPresenter.Display {
 		event.setCosts(costsTextBox.getText());
 		event.setLocation(locationTextBox.getText());
 		event.setDate(dateBox.getTextBox().getValue());
-		event.setTime(timeListBoxHour.getValue(timeListBoxHour.getSelectedIndex()) + ":" + timeListBoxMinutes.getValue(timeListBoxMinutes.getSelectedIndex()));
+		event.setStartTime(startTimeListBoxHour.getValue(startTimeListBoxHour.getSelectedIndex()) + ":" + startTimeListBoxMinutes.getValue(startTimeListBoxMinutes.getSelectedIndex()));
+		event.setEndTime(endTimeListBoxHour.getValue(endTimeListBoxHour.getSelectedIndex()) + ":" + endTimeListBoxMinutes.getValue(endTimeListBoxMinutes.getSelectedIndex()));
 
 		ArrayList<String> examinersTemp = new ArrayList<String>();
 		for (int i = 0; i < examiners.size(); i++) {

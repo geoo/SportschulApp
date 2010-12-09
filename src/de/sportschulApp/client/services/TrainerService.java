@@ -1,8 +1,11 @@
 package de.sportschulApp.client.services;
 
+import java.util.ArrayList;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+import de.sportschulApp.shared.Event;
 import de.sportschulApp.shared.Member;
 
 
@@ -20,6 +23,8 @@ public interface TrainerService extends RemoteService {
 	String setNote(int barcodeID, String note);
 
 	String setTrainingsPresence(int barcodeID, int day, int month, int year);
+	
+	ArrayList<Event> getEventList();
 
 
 }

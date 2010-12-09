@@ -1,7 +1,10 @@
 package de.sportschulApp.client.services;
 
+import java.util.ArrayList;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import de.sportschulApp.shared.Event;
 import de.sportschulApp.shared.Member;
 
 public interface TrainerServiceAsync {
@@ -16,4 +19,6 @@ public interface TrainerServiceAsync {
 
 	void setTrainingsPresence(int barcodeID, int day, int month, int year,
 			AsyncCallback<String> callback);
+
+	void getEventList(AsyncCallback<ArrayList<Event>> callback);
 }

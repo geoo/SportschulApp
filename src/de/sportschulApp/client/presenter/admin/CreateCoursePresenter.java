@@ -156,6 +156,7 @@ public class CreateCoursePresenter implements Presenter {
 				.getDualListBox().getWidgetListRight());
 
 		if (!(editItem)) {
+			course.setCourseID(0);
 			rpcService.createCourse(course, new AsyncCallback<String>() {
 				public void onFailure(Throwable caught) {
 					System.out.println("rpc errror");
@@ -170,7 +171,6 @@ public class CreateCoursePresenter implements Presenter {
 						Window.alert(display.getConstants().courseNameUsed());
 
 					} else {
-						Window.alert(constants.courseCreated());
 						History.newItem("adminCourseShowCourses");
 					}
 				}
@@ -183,7 +183,6 @@ public class CreateCoursePresenter implements Presenter {
 
 				}
 				public void onSuccess(Void result) {
-					Window.alert("Editieren des Kurses erfolgreich");
 					History.newItem("adminCourseShowCourses");
 				}
 			});

@@ -23,6 +23,7 @@ public class TrainerNavigationView extends Composite implements TrainerNavigatio
 	private ListBox languagePicker = new ListBox();
 	private Label logOutLabel;
 	private Label menuTrainingNewTraining;
+	private Label menuTrainingNewEvent;
 
 
 	public TrainerNavigationView(int tabIndex, LocalizationConstants constants) {
@@ -68,7 +69,7 @@ public class TrainerNavigationView extends Composite implements TrainerNavigatio
 		languagePanel.add(languagePicker);
 
 		metaHeadPanel.add(metaHeadLoginDetailsPanel);
-		metaHeadPanel.add(languagePanel);
+//		metaHeadPanel.add(languagePanel);
 
 
 		Image naviLogo = new Image("imgs/mm-logo-navi.png");
@@ -111,10 +112,12 @@ public class TrainerNavigationView extends Composite implements TrainerNavigatio
 		return logOutLabel;
 	}
 
-
-
 	public HasClickHandlers getMenuTrainingNewTraining() {
 		return menuTrainingNewTraining;
+	}
+	
+	public HasClickHandlers getMenuTrainingNewEvent() {
+		return menuTrainingNewEvent;
 	}
 
 	public HorizontalPanel getSubNavigationElements(int navigationID) {
@@ -125,7 +128,8 @@ public class TrainerNavigationView extends Composite implements TrainerNavigatio
 		if (navigationID == 0){
 			menuTrainingNewTraining = new Label("Neues Training");
 			subNavPanel.add(menuTrainingNewTraining);
-
+			menuTrainingNewEvent = new Label("Event starten");
+			subNavPanel.add(menuTrainingNewEvent);
 		}
 
 

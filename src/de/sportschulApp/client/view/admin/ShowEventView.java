@@ -34,7 +34,7 @@ public class ShowEventView extends Composite implements ShowEventPresenter.Displ
 		metaPanel.addStyleName("metaPanel");
 
 		editLabel = new Label("Event bearbeiten");
-		showParticipantsLabel = new Label("Teilnehmer anzeigen");
+		showParticipantsLabel = new Label("Teilnehmer bearbeiten");
 		deleteLabel = new Label("Event löschen");
 
 		metaPanel.add(editLabel);
@@ -84,7 +84,7 @@ public class ShowEventView extends Composite implements ShowEventPresenter.Displ
 		eventNameLabel.setText(event.getName());
 		eventTypeLabel.setText(event.getType());
 		eventDateLabel.setText(event.getDate());
-		eventTimeLabel.setText(event.getTime() + " Uhr");
+		eventTimeLabel.setText(event.getStartTime() + " - " + event.getEndTime() + " Uhr");
 		eventCostsLabel.setText(event.getCosts());
 		eventLocationLabel.setText(event.getLocation());
 		

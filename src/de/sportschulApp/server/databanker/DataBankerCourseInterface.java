@@ -6,8 +6,6 @@ import de.sportschulApp.shared.Course;
 
 public interface DataBankerCourseInterface {
 
-	public String createCourse(Course course);
-
 	public boolean deleteBelts(int courseID);
 
 	public boolean deleteCourse(int courseID);

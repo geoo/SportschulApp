@@ -13,80 +13,50 @@ import de.sportschulApp.shared.Member;
 public class DataBankerEvent implements DataBankerEventInterface {
 
 	/**
-	 * F�gt ein Mitglied zu einem Event hinzu
-	 * 
-	 * @param memberID
-	 *            des Mitglieds und eventID des Events
-	 * 
-	 * @return true bei erfolg, false bei scheitern
-	 */
-	public boolean addMemberToEvent(int memberID, int eventID) {
-
-		DataBankerConnection dbc = new DataBankerConnection();
-		try {
-
-			PreparedStatement stmt = dbc
-
-			.getConnection()
-			.prepareStatement(
-					"INSERT INTO EventParticipants(Member_id, Event_id) VALUES(?,?)");
-			stmt.setInt(1, memberID);
-			stmt.setInt(2, eventID);
-
-			stmt.executeUpdate();
-
-			dbc.close();
-			stmt.close();
-
-			return true;
-
-		} catch (SQLException e) {
-			System.out.println(e);
-			return false;
-		}
-
-	}
-
-	/**
 	 * Legt einen neuen Event an.
-	 * 
-	 * @param ein
-	 *            Objekt des Typs Event
-	 * @return true wenn anlegen funktioniert hat, false wenn ein Fehler
-	 *         aufgetreten ist
 	 */
 	public Integer createEvent(Event event) {
 		DataBankerConnection dbc = new DataBankerConnection();
 		try {
-
-			PreparedStatement stmt = dbc
-
-			.getConnection()
-			.prepareStatement(
-					"INSERT INTO Event(name, type, costs, location, date, time) VALUES(?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, event.getName());
-			stmt.setString(2, event.getType());
-			stmt.setString(3, event.getCosts());
-			stmt.setString(4, event.getLocation());
-			stmt.setString(5, event.getDate());
-			stmt.setString(6, event.getTime());
-
-
-			stmt.executeUpdate();
-			ResultSet generatedKeys = stmt.getGeneratedKeys();
-			int eventID = 0;
-			while(generatedKeys.next()) {
-				eventID = generatedKeys.getInt(1);
-				setExaminersForEvent(eventID, event.getExaminers());
-				if (event.getEventID() > 0) {
-					updateParticipantsID(event.getEventID(), eventID);
+			if (event.getEventID() > 0) {
+				PreparedStatement stmt = dbc.getConnection().prepareStatement("INSERT INTO Event(Event_id, name, type, costs, location, date, startTime, endTime) VALUES(?,?,?,?,?,?,?,?)");
+				
+				stmt.setInt(1, event.getEventID());
+				stmt.setString(2, event.getName());
+				stmt.setString(3, event.getType());
+				stmt.setString(4, event.getCosts());
+				stmt.setString(5, event.getLocation());
+				stmt.setString(6, event.getDate());
+				stmt.setString(7, event.getStartTime());
+				stmt.setString(8, event.getEndTime());
+				
+				stmt.executeUpdate();
+				setExaminersForEvent(event.getEventID(), event.getExaminers());
+				stmt.close();
+			} else {
+				PreparedStatement stmt = dbc.getConnection().prepareStatement("INSERT INTO Event(name, type, costs, location, date, startTime, endTime) VALUES(?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+				
+				stmt.setString(1, event.getName());
+				stmt.setString(2, event.getType());
+				stmt.setString(3, event.getCosts());
+				stmt.setString(4, event.getLocation());
+				stmt.setString(5, event.getDate());
+				stmt.setString(6, event.getStartTime());
+				stmt.setString(7, event.getEndTime());
+				
+				stmt.executeUpdate();
+				ResultSet generatedKeys = stmt.getGeneratedKeys();
+				
+				while(generatedKeys.next()) {
+					setExaminersForEvent(generatedKeys.getInt(1), event.getExaminers());
+					event.setEventID(generatedKeys.getInt(1));
 				}
+				stmt.close();
 			}
 
 			dbc.close();
-			stmt.close();
 
-			return eventID;
+			return event.getEventID();
 
 		} catch (SQLException e) {
 			System.out.println(e);
@@ -181,7 +151,8 @@ public class DataBankerEvent implements DataBankerEventInterface {
 				event.setName(rs.getString("name"));
 				event.setCosts(rs.getString("costs"));
 				event.setDate(rs.getString("date"));
-				event.setTime(rs.getString("time"));
+				event.setStartTime(rs.getString("startTime"));
+				event.setEndTime(rs.getString("endTime"));
 				event.setLocation(rs.getString("location"));
 				event.setExaminers(getExaminersForEvent(event.getEventID()));
 
@@ -216,7 +187,8 @@ public class DataBankerEvent implements DataBankerEventInterface {
 				newEvent.setCosts(rs.getString(4));
 				newEvent.setLocation(rs.getString(5));
 				newEvent.setDate(rs.getString(6));
-				newEvent.setTime(rs.getString(7));
+				newEvent.setStartTime(rs.getString(7));
+				newEvent.setEndTime(rs.getString(8));
 				newEvent.setExaminers(getExaminersForEvent(newEvent.getEventID()));
 				events.add(newEvent);
 			}
@@ -301,36 +273,6 @@ public class DataBankerEvent implements DataBankerEventInterface {
 		return examiners;
 	}
 
-	/**
-	 * Entfernt ein Mitglied von einem Event
-	 * 
-	 * @param memberID
-	 *            des Mitglieds und eventID des Events
-	 * 
-	 * @return true bei erfolg, false bei scheitern
-	 */
-	public boolean removeMemberFromEvent(int memberID, int eventID) {
-
-		DataBankerConnection dbc = new DataBankerConnection();
-		Statement stmt = dbc.getStatement();
-
-		String query = "DELETE FROM EventParticipants WHERE Member_id='"
-			+ memberID + "' AND Event_id='" + eventID + "'";
-
-		try {
-			stmt.executeUpdate(query);
-			dbc.close();
-			stmt.close();
-			dbc.closeStatement();
-
-		} catch (SQLException e) {
-			System.out.println(e);
-			return false;
-		}
-		return true;
-
-	}
-
 	public void setExaminersForEvent(int eventID, ArrayList<String> examiners) {
 		DataBankerConnection dbc = new DataBankerConnection();
 		for (int i = 0; i < examiners.size(); i++) {
@@ -400,21 +342,6 @@ public class DataBankerEvent implements DataBankerEventInterface {
 		if (deleteExaminersFromEvent(eventID)) {
 			setExaminersForEvent(eventID, examiners);
 		}
-	}
-
-	public void updateParticipantsID(int oldEventID, int newEventID) {
-		DataBankerConnection dbc = new DataBankerConnection();
-		Statement stmt = dbc.getStatement();
-		String query = "UPDATE Event_has_participants SET Event_id=" + newEventID + " WHERE Event_id=" + oldEventID;
-
-		try {
-			stmt.executeUpdate(query);
-			dbc.close();
-			stmt.close();
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-
 	}
 }
 
