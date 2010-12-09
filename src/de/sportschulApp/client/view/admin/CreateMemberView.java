@@ -24,6 +24,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import de.sportschulApp.client.presenter.admin.CreateMemberPresenter;
 import de.sportschulApp.client.view.localization.LocalizationConstants;
+import de.sportschulApp.shared.CourseTariff;
 import de.sportschulApp.shared.Member;
 import eu.maydu.gwt.validation.client.DefaultValidationProcessor;
 import eu.maydu.gwt.validation.client.ValidationProcessor;
@@ -36,6 +37,8 @@ CreateMemberPresenter.Display {
 		private VerticalPanel courseVerticalPanel;
 		private Label gradeLabel;
 		private ListBox gradeListBox;
+		private Label tariffLabel;
+		private ListBox tariffListBox;
 
 		public CourseSelectorWidget() {
 			courseVerticalPanel = new VerticalPanel();
@@ -47,6 +50,13 @@ CreateMemberPresenter.Display {
 			courseInputPanel.add(courseLabel);
 			courseInputPanel.add(courseListBox);
 
+			HorizontalPanel tariffInputPanel = new HorizontalPanel();
+			tariffLabel = new Label(constants.tariff() + ": ");
+			tariffListBox = new ListBox();
+			tariffListBox.insertItem("<" + constants.select() + ">", 0);
+			tariffInputPanel.add(tariffLabel);
+			tariffInputPanel.add(tariffListBox);
+			
 			HorizontalPanel gradeInputPanel = new HorizontalPanel();
 			gradeLabel = new Label(constants.grade() + ": ");
 			gradeListBox = new ListBox();
@@ -55,6 +65,7 @@ CreateMemberPresenter.Display {
 			gradeInputPanel.add(gradeListBox);
 
 			courseVerticalPanel.add(courseInputPanel);
+			courseVerticalPanel.add(tariffInputPanel);
 			courseVerticalPanel.add(gradeInputPanel);
 
 		}
@@ -104,6 +115,11 @@ CreateMemberPresenter.Display {
 				i++;
 			}
 
+		}
+
+		public void setTariffList(ArrayList<CourseTariff> tariffList) {
+			// TODO Auto-generated method stub
+			
 		}
 
 	}
@@ -638,6 +654,11 @@ CreateMemberPresenter.Display {
 		courseList.get(index).setBeltList(beltList);
 	}
 
+	public void setTariffList(int index, ArrayList<CourseTariff> tariffList) {
+		// TODO Auto-generated method stub
+		courseList.get(index).setTariffList(tariffList);
+	}
+
 	public void setCourseList(ArrayList<String> courseList) {
 		for (int i = 0; i < 10; i++) {
 			this.courseList.get(i).setCourseList(courseList);
@@ -650,5 +671,6 @@ CreateMemberPresenter.Display {
 		pictureUploadPanel.add(image);
 		this.imageUrl = imageUrl;
 	}
+
 
 }

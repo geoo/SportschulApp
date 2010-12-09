@@ -7,6 +7,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import de.sportschulApp.shared.Belt;
 import de.sportschulApp.shared.Course;
+import de.sportschulApp.shared.CourseTariff;
 import de.sportschulApp.shared.Event;
 import de.sportschulApp.shared.EventParticipant;
 import de.sportschulApp.shared.Member;
@@ -84,5 +85,7 @@ public interface AdminService extends RemoteService {
 	void updateCourse(Course course);
 
 	Integer updateEvent(Event event);
+
+	ArrayList<CourseTariff> getTariff(String selectedCourseName);
 
 }

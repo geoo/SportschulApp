@@ -12,6 +12,7 @@ import de.sportschulApp.server.databanker.DataBankerMember;
 import de.sportschulApp.server.databanker.DataBankerUser;
 import de.sportschulApp.shared.Belt;
 import de.sportschulApp.shared.Course;
+import de.sportschulApp.shared.CourseTariff;
 import de.sportschulApp.shared.Event;
 import de.sportschulApp.shared.EventParticipant;
 import de.sportschulApp.shared.Member;
@@ -182,6 +183,11 @@ AdminService {
 
 	public Integer updateEvent(Event event) {
 		return dbe.updateEvent(event);
+	}
+	
+	public ArrayList<CourseTariff> getTariff(String courseName){
+		return dbc.getCourseTariffsForCourse(courseName);
+		
 	}
 
 }

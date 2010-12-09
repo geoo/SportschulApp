@@ -6,6 +6,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import de.sportschulApp.shared.Belt;
 import de.sportschulApp.shared.Course;
+import de.sportschulApp.shared.CourseTariff;
 import de.sportschulApp.shared.Event;
 import de.sportschulApp.shared.EventParticipant;
 import de.sportschulApp.shared.Member;
@@ -88,4 +89,9 @@ public interface AdminServiceAsync {
 	void updateCourse(Course course, AsyncCallback<Void> callback);
 
 	void updateEvent(Event event, AsyncCallback<Integer> callback);
+
+	void getTariff(
+			String selectedCourseName,
+			AsyncCallback<ArrayList<CourseTariff>> asyncCallback);
+	
 }

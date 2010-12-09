@@ -79,7 +79,6 @@ public class ShowBeltPresenter implements Presenter{
 				// TODO Auto-generated method stub
 
 			}
-
 			@Override
 			public void onSuccess(Void result) {
 				History.fireCurrentHistoryState();
@@ -93,7 +92,7 @@ public class ShowBeltPresenter implements Presenter{
 			public void onFailure(Throwable caught) {
 				Window.alert("Fehler beim laden der Gurtfarbe");
 			}
-
+			@Override
 			public void onSuccess(Belt result) {
 				belt = result;
 				display.setData(result);

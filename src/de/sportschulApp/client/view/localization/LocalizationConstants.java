@@ -271,4 +271,6 @@ public interface LocalizationConstants extends Constants {
 	String yellowOrange();
 
 	String zipcode();
+
+	String tariff();
 }

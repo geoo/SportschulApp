@@ -26,6 +26,7 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.TextBoxBase;
 import com.google.gwt.user.client.ui.Widget;
+import de.sportschulApp.shared.CourseTariff;
 
 import de.sportschulApp.client.presenter.Presenter;
 import de.sportschulApp.client.services.AdminServiceAsync;
@@ -133,6 +134,8 @@ public class CreateMemberPresenter implements Presenter {
 		void setCourseList(ArrayList<String> courseList);
 
 		void setImage(PreloadedImage image, String imageUrl);
+
+		void setTariffList(int test, ArrayList<CourseTariff> result);
 
 	}
 
@@ -244,6 +247,7 @@ public class CreateMemberPresenter implements Presenter {
 			}
 		});
 
+		//TODO
 		display.getUploadHandler().addOnFinishUploadHandler(
 				onFinishUploaderHandler);
 		for (int i = 0; i < 10; i++) {
@@ -253,6 +257,7 @@ public class CreateMemberPresenter implements Presenter {
 
 						public void onChange(ChangeEvent event) {
 							getBeltList(test);
+							getTariffList(test);
 						}
 					});
 			display.getGradeHandler(i).addChangeHandler(
@@ -434,6 +439,24 @@ public class CreateMemberPresenter implements Presenter {
 		}
 	}
 
+	public void getTariffList(int index){
+		final int test = index;
+		rpcService.getTariff(display.getSelectedCourseName(index),
+				new AsyncCallback<ArrayList<CourseTariff>>() {
+			public void onFailure(Throwable caught) {
+
+			}
+
+			public void onSuccess(ArrayList<CourseTariff> result) {
+				display.setTariffList(test, result);
+
+			}
+
+		
+			
+		});
+	}
+	
 	public void getBeltList(int index) {
 		final int test = index;
 		rpcService.getBeltList(display.getSelectedCourseName(index),

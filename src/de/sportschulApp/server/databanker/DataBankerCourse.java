@@ -517,6 +517,43 @@ public class DataBankerCourse implements DataBankerCourseInterface {
 		return courseTariffs;
 	}
 
+	public ArrayList<CourseTariff> getCourseTariffsForCourse(String courseName) {
+		ArrayList<CourseTariff> courseTariffs = new ArrayList<CourseTariff>();
+		
+		DataBankerConnection dbc = new DataBankerConnection();
+		int courseID = 0;
+		
+		ResultSet rs = null;
+		Statement stmt = dbc.getStatement();
+		String query2 = "SELECT Courses_id FROM Courses WHERE name='" + courseName + "'";
+		try {
+			rs = stmt.executeQuery(query2);
+			while (rs.next()) {
+				courseID=rs.getInt(1);
+			}
+			rs.close();
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+		
+		String query = "SELECT name,costs FROM Course_has_tariff WHERE Course_ID='" + courseID + "'";
+
+		try {
+			rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				courseTariffs.add(new CourseTariff(rs.getString(1), rs.getString(2)));
+			}
+			rs.close();
+			dbc.close();
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+		return courseTariffs;
+	}
+
 	public String nextBelt(int courseID, int lastBelt) {
 
 		int newBelt = lastBelt + 1;
