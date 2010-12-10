@@ -16,13 +16,16 @@ public class Event implements Serializable {
 	private String startTime;
 	private String endTime;
 	private String type;
+	private String happened;
+	private String user;
+	private String dateHappened;
 
 
 	public Event() {
 
 	}
 
-	public Event(int eventID, String type, String name, String costs, String date, String startTime, String endTime, String location, ArrayList<String> examiners, ArrayList<EventParticipant> participants) {
+	public Event(int eventID, String type, String name, String costs, String date, String startTime, String endTime, String location, ArrayList<String> examiners, ArrayList<EventParticipant> participants, String happened, String user, String dateHappened) {
 		this.eventID = eventID;
 		this.type = type;
 		this.name = name;
@@ -33,6 +36,9 @@ public class Event implements Serializable {
 		this.location = location;
 		this.examiners = examiners;
 		this.participants = participants;
+		this.happened = happened;
+		this.user = user;
+		this.dateHappened = dateHappened;
 	}
 
 	/**
@@ -173,6 +179,48 @@ public class Event implements Serializable {
 	 */
 	public String getEndTime() {
 		return endTime;
+	}
+
+	/**
+	 * @param happened the happened to set
+	 */
+	public void setHappened(String happened) {
+		this.happened = happened;
+	}
+
+	/**
+	 * @return the happened
+	 */
+	public String getHappened() {
+		return happened;
+	}
+
+	/**
+	 * @param user the user to set
+	 */
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	/**
+	 * @return the user
+	 */
+	public String getUser() {
+		return user;
+	}
+
+	/**
+	 * @param dateHappened the dateHappened to set
+	 */
+	public void setDateHappened(String dateHappened) {
+		this.dateHappened = dateHappened;
+	}
+
+	/**
+	 * @return the dateHappened
+	 */
+	public String getDateHappened() {
+		return dateHappened;
 	}
 
 }

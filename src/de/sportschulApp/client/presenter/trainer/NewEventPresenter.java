@@ -3,6 +3,8 @@ package de.sportschulApp.client.presenter.trainer;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
@@ -20,6 +22,7 @@ public class NewEventPresenter implements Presenter {
 		Widget asWidget();
 		void setEventListBox(ArrayList<Event> events);
 		HasClickHandlers getContinueButton();
+		Event getSelectedItem();
 	}
 
 	private final Display display;
@@ -35,7 +38,14 @@ public class NewEventPresenter implements Presenter {
 	}
 
 	private void bind() {
-		
+		this.display.getContinueButton().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent e) {
+				Event event = display.getSelectedItem();
+				if (Window.confirm("Sind sie sicher, dass sie das Event: " + event.getName() + " (" + event.getType() + ") starten wollen? Ein Event kann nur einmal durchgeführt werden.")) {
+					
+				}
+			}
+		});
 	}
 	
 	public void fillEventListBox() {
