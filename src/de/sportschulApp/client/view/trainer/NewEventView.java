@@ -27,6 +27,7 @@ NewEventPresenter.Display {
 	private LocalizationConstants constants;
 	private ListBox selectEventListBox;
 	private Label continueLabel;
+	private ArrayList<Event> events;
 
 	public NewEventView(LocalizationConstants constants) {
 		this.constants = constants;
@@ -74,8 +75,15 @@ NewEventPresenter.Display {
 	
 	public void setEventListBox(ArrayList<Event> events) {
 		for (int i = 0; i < events.size(); i++) {
-			selectEventListBox.addItem(events.get(i).getName() + " (" + events.get(i).getType() + " - " + events.get(i).getDate() + ")");
+			if (events.get(i).getHappened().equals("Nein")) {
+				this.events.add(events.get(i));
+				selectEventListBox.addItem(events.get(i).getName() + " (" + events.get(i).getType() + " - " + events.get(i).getDate() + ")");
+			}
 		}
+	}
+	
+	public Event getSelectedItem() {
+		return events.get(selectEventListBox.getSelectedIndex());
 	}
 	
 	public HasClickHandlers getContinueButton() {

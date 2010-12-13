@@ -19,7 +19,7 @@ public class DataBankerEvent implements DataBankerEventInterface {
 		DataBankerConnection dbc = new DataBankerConnection();
 		try {
 			if (event.getEventID() > 0) {
-				PreparedStatement stmt = dbc.getConnection().prepareStatement("INSERT INTO Event(Event_id, name, type, costs, location, date, startTime, endTime) VALUES(?,?,?,?,?,?,?,?)");
+				PreparedStatement stmt = dbc.getConnection().prepareStatement("INSERT INTO Event(Event_id, name, type, costs, location, date, startTime, endTime, happened, user, dateHappened) VALUES(?,?,?,?,?,?,?,?,?,?,?)");
 				
 				stmt.setInt(1, event.getEventID());
 				stmt.setString(2, event.getName());
@@ -29,12 +29,16 @@ public class DataBankerEvent implements DataBankerEventInterface {
 				stmt.setString(6, event.getDate());
 				stmt.setString(7, event.getStartTime());
 				stmt.setString(8, event.getEndTime());
+				stmt.setString(9, "Nein");
+				stmt.setString(10, "-");
+				stmt.setString(11, "-");
+				
 				
 				stmt.executeUpdate();
 				setExaminersForEvent(event.getEventID(), event.getExaminers());
 				stmt.close();
 			} else {
-				PreparedStatement stmt = dbc.getConnection().prepareStatement("INSERT INTO Event(name, type, costs, location, date, startTime, endTime) VALUES(?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+				PreparedStatement stmt = dbc.getConnection().prepareStatement("INSERT INTO Event(name, type, costs, location, date, startTime, endTime, happened, user, dateHappened) VALUES(?,?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 				
 				stmt.setString(1, event.getName());
 				stmt.setString(2, event.getType());
@@ -43,6 +47,9 @@ public class DataBankerEvent implements DataBankerEventInterface {
 				stmt.setString(5, event.getDate());
 				stmt.setString(6, event.getStartTime());
 				stmt.setString(7, event.getEndTime());
+				stmt.setString(8, "Nein");
+				stmt.setString(9, "-");
+				stmt.setString(10, "-");
 				
 				stmt.executeUpdate();
 				ResultSet generatedKeys = stmt.getGeneratedKeys();
@@ -154,6 +161,9 @@ public class DataBankerEvent implements DataBankerEventInterface {
 				event.setStartTime(rs.getString("startTime"));
 				event.setEndTime(rs.getString("endTime"));
 				event.setLocation(rs.getString("location"));
+				event.setHappened(rs.getString("happened"));
+				event.setUser(rs.getString("user"));
+				event.setDateHappened(rs.getString("dateHappened"));
 				event.setExaminers(getExaminersForEvent(event.getEventID()));
 
 			}
@@ -189,6 +199,9 @@ public class DataBankerEvent implements DataBankerEventInterface {
 				newEvent.setDate(rs.getString(6));
 				newEvent.setStartTime(rs.getString(7));
 				newEvent.setEndTime(rs.getString(8));
+				newEvent.setHappened(rs.getString(9));
+				newEvent.setUser(rs.getString(10));
+				newEvent.setDateHappened(rs.getString(11));
 				newEvent.setExaminers(getExaminersForEvent(newEvent.getEventID()));
 				events.add(newEvent);
 			}
