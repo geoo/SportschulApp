@@ -1,9 +1,9 @@
 package de.sportschulApp.client.presenter.admin;
 
+import gwtupload.client.IUploadStatus.Status;
 import gwtupload.client.IUploader;
 import gwtupload.client.MultiUploader;
 import gwtupload.client.PreloadedImage;
-import gwtupload.client.IUploadStatus.Status;
 import gwtupload.client.PreloadedImage.OnLoadPreloadedImageHandler;
 
 import java.util.ArrayList;
@@ -26,12 +26,12 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.TextBoxBase;
 import com.google.gwt.user.client.ui.Widget;
-import de.sportschulApp.shared.CourseTariff;
 
 import de.sportschulApp.client.presenter.Presenter;
 import de.sportschulApp.client.services.AdminServiceAsync;
 import de.sportschulApp.client.view.admin.CreateMemberView.CourseSelectorWidget;
 import de.sportschulApp.client.view.localization.LocalizationConstants;
+import de.sportschulApp.shared.CourseTariff;
 import de.sportschulApp.shared.Member;
 import eu.maydu.gwt.validation.client.ValidationProcessor;
 import eu.maydu.gwt.validation.client.actions.StyleAction;
@@ -43,7 +43,8 @@ import eu.maydu.gwt.validation.client.validators.strings.StringLengthValidator;
 
 public class CreateMemberPresenter implements Presenter {
 	public interface Display {
-		void addNewCourseSelector();
+		void addNewCourseSelector(String courseName, float tariff,
+				int graduation);
 
 		Widget asWidget();
 
@@ -65,7 +66,7 @@ public class CreateMemberPresenter implements Presenter {
 
 		TextBox getBarcodeTextBox();
 
-		TextBox getBeltsizeTextBox();
+		ListBox getBeltsizeTextBox();
 
 		ListBox getBirthTextBox1();
 
@@ -117,6 +118,8 @@ public class CreateMemberPresenter implements Presenter {
 
 		HasClickHandlers getSendButton();
 
+		HasClickHandlers getNewCourseSelectorLabel();
+
 		TextBox getStreetTextBox();
 
 		CheckBox getSurnameCheckBox();
@@ -138,6 +141,10 @@ public class CreateMemberPresenter implements Presenter {
 		void setTariffList(int test, ArrayList<CourseTariff> result);
 
 		int calculateTrainingUnits();
+
+		void addNewCourseSelector();
+
+		void removeLastCourseSelector();
 
 	}
 
@@ -173,6 +180,9 @@ public class CreateMemberPresenter implements Presenter {
 
 	private ValidationProcessor validator;
 	private ArrayList<Float> tariffs;
+	private float tariff;
+	private int graduation;
+	private int courseSelectorIndex;
 
 	public CreateMemberPresenter(AdminServiceAsync rpcService,
 			HandlerManager eventBus, Display display) {
@@ -204,7 +214,6 @@ public class CreateMemberPresenter implements Presenter {
 		getCourseList();
 		setupValidation();
 		createView = true;
-		System.out.println(barcodeID);
 
 	}
 
@@ -236,7 +245,14 @@ public class CreateMemberPresenter implements Presenter {
 					display.getBirthTextBox3().removeStyleName(
 							"validationFailedBorder");
 				}
-
+				if(display.getBeltsizeTextBox().getSelectedIndex()==0){
+					display.getBeltsizeTextBox().setStyleName(
+					"validationFailedBorder");
+					success = false;
+				}else {
+					display.getBeltsizeTextBox().removeStyleName(
+					"validationFailedBorder");
+				}
 				if (success) {
 					System.out.println("validation success");
 					fillForm();
@@ -252,7 +268,6 @@ public class CreateMemberPresenter implements Presenter {
 			}
 		});
 
-		// TODO
 		display.getUploadHandler().addOnFinishUploadHandler(
 				onFinishUploaderHandler);
 		for (int i = 0; i < 10; i++) {
@@ -268,20 +283,25 @@ public class CreateMemberPresenter implements Presenter {
 
 				public void onChange(ChangeEvent event) {
 					display.getSelectedTariff(test);
-					display.addNewCourseSelector();
 				}
 			});
 		}
 
+		display.getNewCourseSelectorLabel().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				display.addNewCourseSelector();
+			}
+		});
+
 		display.getForenameCheckBox().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				if (display.getForenameCheckBox().getValue()) {
-					// TODO haken setzen
+					// haken setzen
 					display.getAccoutForenameTextbox().setText(
 							constants.likeAbove());
 					display.getAccoutForenameTextbox().setReadOnly(true);
 				} else {
-					// TODO haken entfernen
+					// haken entfernen
 					display.getAccoutForenameTextbox().setText("");
 					display.getAccoutForenameTextbox().setReadOnly(false);
 					display.getAccoutForenameTextbox().setFocus(true);
@@ -292,12 +312,12 @@ public class CreateMemberPresenter implements Presenter {
 		display.getSurnameCheckBox().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				if (display.getSurnameCheckBox().getValue()) {
-					// TODO haken setzen
+					// haken setzen
 					display.getAccoutSurnameTextbox().setText(
 							constants.likeAbove());
 					display.getAccoutSurnameTextbox().setReadOnly(true);
 				} else {
-					// TODO haken entfernen
+					// haken entfernen
 					display.getAccoutSurnameTextbox().setText("");
 					display.getAccoutSurnameTextbox().setReadOnly(false);
 					display.getAccoutSurnameTextbox().setFocus(true);
@@ -316,7 +336,7 @@ public class CreateMemberPresenter implements Presenter {
 
 		ArrayList<String> courseNames = new ArrayList<String>();
 
-		for (int index = 0; index < 10; index++) {
+		for (int index = 0; index < 15; index++) {
 			if (!courseListWidget.get(index).getSelectedCourseName()
 					.equals(display.getListBoxString())) {
 				if ((!courseListWidget.get(index).getSelectedBeltName()
@@ -327,6 +347,7 @@ public class CreateMemberPresenter implements Presenter {
 							.getSelectedCourseName());
 					grades.add(display.getSelectedBeltNr(index));
 					tariffs.add(display.getSelectedTariff(index));
+
 				} else {
 					error = true;
 					Window.alert("Sie haben einen Kurs ohne Gürtelfarbe oder Tarif angegeben");
@@ -396,8 +417,8 @@ public class CreateMemberPresenter implements Presenter {
 									birthDay, birthMonth, birthYear, display
 											.getPictureUrl(), display
 											.getDiseasesTextBox().getText(),
-									display.getBeltsizeTextBox().getText(),
-									display.getNoteTextBox().getText(), display
+									getBeltsize(), display.getNoteTextBox()
+											.getText(), display
 											.calculateTrainingUnits(),
 									accountForename, accountSurname, display
 											.getAccountNumberTextBox()
@@ -413,6 +434,7 @@ public class CreateMemberPresenter implements Presenter {
 							} catch (NullPointerException e) {
 							}
 							if (createView) {
+
 								rpcService.updateMember(member,
 										new AsyncCallback<String>() {
 											public void onFailure(
@@ -422,15 +444,13 @@ public class CreateMemberPresenter implements Presenter {
 											}
 
 											public void onSuccess(String result) {
-												// TODO Auto-generated method
-												// stub
-												System.out
-														.println("ERFOLG");
-												System.out
-														.println("RESULT: "+result);
+												Window.alert("Mitgliedseintrag erfolgreich geändert.");
+												History.newItem("adminMembersShowMembers");
+
 											}
 
 										});
+
 							} else {
 								rpcService.saveMember(member,
 										new AsyncCallback<String>() {
@@ -468,6 +488,10 @@ public class CreateMemberPresenter implements Presenter {
 		}
 	}
 
+	private String getBeltsize() {
+		return display.getBeltsizeTextBox().getItemText(display.getBeltsizeTextBox().getSelectedIndex());
+	}
+
 	public void getTariffList(int index) {
 		final int test = index;
 		rpcService.getTariff(display.getSelectedCourseName(index),
@@ -478,6 +502,36 @@ public class CreateMemberPresenter implements Presenter {
 
 					public void onSuccess(ArrayList<CourseTariff> result) {
 						display.setTariffList(test, result);
+
+					}
+
+				});
+	}
+
+	public void getTariffListForEdit(final int index, final float tariff) {
+		final int test = index;
+		rpcService.getTariff(display.getSelectedCourseName(index),
+				new AsyncCallback<ArrayList<CourseTariff>>() {
+					public void onFailure(Throwable caught) {
+
+					}
+
+					public void onSuccess(ArrayList<CourseTariff> result) {
+						display.setTariffList(test, result);
+						for (int i = 1; i < display.getCourseList().get(index)
+								.getTariffListBox().getItemCount(); i++) {
+							String temp1 = display.getCourseList().get(index)
+									.getTariffListBox().getItemText(i);
+							int temp2 = temp1.indexOf("-");
+							temp1 = temp1.substring(temp2 + 2,
+									temp1.length() - 2);
+
+							if (Float.parseFloat(temp1) == tariff) {
+								display.getCourseList().get(index)
+										.getTariffListBox().setSelectedIndex(i);
+
+							}
+						}
 
 					}
 
@@ -512,6 +566,34 @@ public class CreateMemberPresenter implements Presenter {
 
 	}
 
+	public void getBeltListForEdit(final int index, final int graduation) {
+		final int test = index;
+		rpcService.getBeltList(display.getSelectedCourseName(index),
+				new AsyncCallback<ArrayList<String>>() {
+					public void onFailure(Throwable caught) {
+
+					}
+
+					public void onSuccess(ArrayList<String> result) {
+						display.setBeltList(test, result);
+
+						// TODO
+						System.out
+								.println("GRADUATION:" + graduation + ":test");
+
+						for (int i = 0; i < result.size(); i++) {
+							System.out.println(display.getCourseList()
+									.get(index).getGraduationListBox()
+									.getItemText(i));
+						}
+						display.getCourseList().get(index)
+								.getGraduationListBox()
+								.setSelectedIndex(graduation);
+
+					}
+				});
+	}
+
 	private void getMember(String barcodeID) {
 		rpcService.getMemberByBarcodeID(Integer.parseInt(barcodeID),
 				new AsyncCallback<Member>() {
@@ -521,10 +603,56 @@ public class CreateMemberPresenter implements Presenter {
 					}
 
 					public void onSuccess(Member result) {
-
 						display.fillForm(result);
+
+						int course, graduation;
+						float tariff;
+						for (int i = 0; i < result.getCourses().size(); i++) {
+							course = result.getCourses().get(i);
+							tariff = result.getTariffs().get(i);
+							graduation = result.getGraduations().get(i);
+							getMemberCourses(course, tariff, graduation, i);
+						}
+						display.removeLastCourseSelector();
 					}
 				});
+	}
+
+	public void getMemberCourses(int course, final float tariff,
+			final int graduation, final int index1) {
+
+		display.addNewCourseSelector();
+
+		rpcService.getCourseName(course, new AsyncCallback<String>() {
+
+			public void onFailure(Throwable caught) {
+			}
+
+			public void onSuccess(String result) {
+
+				fillCourseSelector(result, tariff, graduation, index1);
+				getTariffListForEdit(index1, tariff);
+				getBeltListForEdit(index1, graduation);
+
+				// TODO
+			}
+
+		});
+
+	}
+
+	private void fillCourseSelector(String result, float tariff,
+			int graduation, int index) {
+		for (int i = 0; i < display.getCourseList().get(index)
+				.getCourseListBox().getItemCount(); i++) {
+
+			if (display.getCourseList().get(index).getCourseListBox()
+					.getItemText(i).equals(result)) {
+				display.getCourseList().get(index).getCourseListBox()
+						.setItemSelected(i, true);
+			}
+		}
+
 	}
 
 	public void go(HasWidgets container) {
@@ -612,11 +740,12 @@ public class CreateMemberPresenter implements Presenter {
 						.addActionForFailure(new StyleAction(
 								"validationFailedBorder")));
 
+		/*
 		validator.addValidators("beltsize",
 				new NotEmptyValidator(display.getBeltsizeTextBox())
 						.addActionForFailure(new StyleAction(
 								"validationFailedBorder")));
-
+*/
 		validator
 				.addValidators("accountForename", new StringLengthValidator(
 						display.getAccountForenameTextBox(), 2, 30)
@@ -651,7 +780,7 @@ public class CreateMemberPresenter implements Presenter {
 		popupDesc.addDescription("zipcode ", display.getZipcodeTextBox());
 		popupDesc.addDescription("city ", display.getCityTextBox());
 		popupDesc.addDescription("phone ", display.getPhoneTextBox());
-		popupDesc.addDescription("beltsize ", display.getBeltsizeTextBox());
+		//popupDesc.addDescription("beltsize ", display.getBeltsizeTextBox());
 		popupDesc.addDescription("mobilephone ",
 				display.getmobilephoneTextBox());
 		popupDesc.addDescription("fax ", display.getFaxTextBox());

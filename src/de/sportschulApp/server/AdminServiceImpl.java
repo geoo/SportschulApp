@@ -194,4 +194,9 @@ AdminService {
 		return dbm.updateMember(member);
 	}
 
+	public ArrayList<String> getMemberCourses(int course, float tariff) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -67,7 +67,7 @@ h1 {
 .formHeader {
 	background-color: #e2eaf6;
 	white-space: nowrap !important;
-	display: block;	
+	display: block;
 	padding-left: 10px;
 	padding-top: 5px;
 	border-bottom: 1px dashed #44618c;
@@ -92,7 +92,7 @@ h1 {
 	padding: 5px;
 }
 
-.formWrapper .gwt-Label{
+.formWrapper .gwt-Label {
 	font-size: 15px;
 }
 
@@ -154,13 +154,42 @@ h1 {
 	width: 500px;
 }
 
-.detailsDataPanel td:nth-child(1) {
-	color:#6d747f;
-	padding-right:50px;
-}
+.detailsDataPanel
+ 
+td
+:nth-child
+ 
+(1)
+{
+color
+:
+ 
+#6d747f
+;
 
-.detailsDataPanel td:nth-child(2){
-	text-align: right;
+	
+padding-right
+:
+ 
+50
+px
+;
+
+
+}
+.detailsDataPanel
+ 
+td
+:nth-child
+ 
+(2){
+text-align
+:
+ 
+right
+;
+
+
 }
 .secondaryDetailsData {
 	width: 100%;
@@ -174,22 +203,81 @@ h1 {
 	font-size: 15px;
 }
 
-.primaryDetailsData td:nth-child(1) {
-	color: #6d747f;
-	padding-right: 50 px;
-}
+.primaryDetailsData
+ 
+td
+:nth-child
+ 
+(1)
+{
+color
+:
+ 
+#6d747f
+;
 
-.primaryDetailsData td:nth-child(2) {
-	text-align:right;
-}
+	
+padding-right
+:
+ 
+50
+px
+;
 
-.secondaryDetailsData td:nth-child(1) {
-	color:#6d747f;
-	padding-right: 50 px;
-}
 
-.secondaryDetailsData td:nth-child(2) {
-	text-align: right;
+}
+.primaryDetailsData
+ 
+td
+:nth-child
+ 
+(2)
+{
+text-align
+:
+ 
+right
+;
+
+
+}
+.secondaryDetailsData
+ 
+td
+:nth-child
+ 
+(1)
+{
+color
+:
+ 
+#6d747f
+;
+
+	
+padding-right
+:
+ 
+50
+px
+;
+
+
+}
+.secondaryDetailsData
+ 
+td
+:nth-child
+ 
+(2)
+{
+text-align
+:
+ 
+right
+;
+
+
 }
 .primaryDetailsData tr {
 	border-bottom: 1px solid black !important;
@@ -281,8 +369,6 @@ h1 {
 .memberCreateWrapper {
 	width: 500px;
 	margin: 20px auto 0 auto;
-	padding-top: 20px;
-	padding-left: 20px;
 	background-color: #f5f7fa !important;
 	margin-bottom: 80px;
 	border: 1px solid #a9adc3 !important;
@@ -338,6 +424,7 @@ h1 {
 	width: 160px;
 	font-size: 16px;
 	padding-right: 7px;
+	padding-left: 20px;
 }
 
 .memberCreateWrapper .gwt-ListBox {
@@ -357,7 +444,6 @@ h1 {
 
 .memberCreateWrapper td {
 	height: 50px;
-	background-color: #f5f7fa;
 	width: 200px;
 }
 
@@ -533,7 +619,7 @@ h1 {
 }
 
 .createCourseForm {
-	padding-left: 20px;	
+	padding-left: 20px;
 	padding-top: 20px;
 }
 
@@ -596,7 +682,6 @@ h1 {
 	margin: 20px auto 0 auto;
 	background-color: #f5f7fa;
 	border: 1px solid #a9adc3 !important;
-
 }
 
 .createEventWrapper td {
@@ -822,7 +907,8 @@ h1 {
 	border-bottom: 2px dashed #D4DCED;
 }
 
-.AdditionalisclosurePanel{
+.AdditionalisclosurePanel {
+	
 }
 
 .userValidationFailedBorder {
@@ -855,4 +941,47 @@ h1 {
 	font-size: 15px !important;
 	white-space: nowrap !important;
 	color: #346492;
+}
+
+.courseSelectorPanel {
+	background-color: #E2EAF6 !important;
+	padding-right: 20px;
+	padding-top: 10px;
+	padding-left: 10px;
+	border-bottom: 2px dashed #D4DCED;
+	margin-left: 20px;
+}
+
+.courseSelectLabel {
+	text-decoration: underline;
+	width: 160px;
+	font-size: 16px;
+	padding-right: 7px;
+}
+
+.likeAbovePanel td {
+	height: 25px !important;
+	width: 200px;
+
+}
+
+
+.addNewCourseSelctorLabel {
+	color: #346492;
+	cursor: pointer;
+	font-size: 14px !important;
+	white-space: nowrap !important;
+	padding-left: 5px;
+	margin-left: 20px;
+}
+
+.formHeader2 {
+	background-color: #E2EAF6;
+	border-bottom: 1px dashed #44618C;
+	display: block;
+	height: 35px;
+	padding-left: 20px;
+	padding-top: 5px;
+	white-space: nowrap !important;
+	font-size: 18px;
 }
