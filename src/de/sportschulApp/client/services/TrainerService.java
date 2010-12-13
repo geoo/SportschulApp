@@ -6,6 +6,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import de.sportschulApp.shared.Event;
+import de.sportschulApp.shared.EventParticipant;
 import de.sportschulApp.shared.Member;
 
 
@@ -26,5 +27,8 @@ public interface TrainerService extends RemoteService {
 	
 	ArrayList<Event> getEventList();
 
+	void startEvent(int eventID, String user);
+	
+	ArrayList<EventParticipant> getEventParticipants(int eventID);
 
 }

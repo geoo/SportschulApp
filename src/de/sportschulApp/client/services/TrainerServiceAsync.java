@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import de.sportschulApp.shared.Event;
+import de.sportschulApp.shared.EventParticipant;
 import de.sportschulApp.shared.Member;
 
 public interface TrainerServiceAsync {
@@ -21,4 +22,10 @@ public interface TrainerServiceAsync {
 			AsyncCallback<String> callback);
 
 	void getEventList(AsyncCallback<ArrayList<Event>> callback);
+
+	void startEvent(int eventID, String user, AsyncCallback<Void> callback);
+
+	void getEventParticipants(int eventID,
+			AsyncCallback<ArrayList<EventParticipant>> callback);
+
 }

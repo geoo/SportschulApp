@@ -13,19 +13,19 @@ public class Event implements Serializable {
 	private String location;
 	private String name;
 	private ArrayList<EventParticipant> participants;
+	private ArrayList<Integer> courses;
 	private String startTime;
 	private String endTime;
 	private String type;
 	private String happened;
 	private String user;
-	private String dateHappened;
 
 
 	public Event() {
 
 	}
 
-	public Event(int eventID, String type, String name, String costs, String date, String startTime, String endTime, String location, ArrayList<String> examiners, ArrayList<EventParticipant> participants, String happened, String user, String dateHappened) {
+	public Event(int eventID, String type, String name, String costs, String date, String startTime, String endTime, String location, ArrayList<String> examiners, ArrayList<Integer> courses, ArrayList<EventParticipant> participants, String happened, String user) {
 		this.eventID = eventID;
 		this.type = type;
 		this.name = name;
@@ -38,7 +38,7 @@ public class Event implements Serializable {
 		this.participants = participants;
 		this.happened = happened;
 		this.user = user;
-		this.dateHappened = dateHappened;
+		this.courses = courses;
 	}
 
 	/**
@@ -210,17 +210,16 @@ public class Event implements Serializable {
 	}
 
 	/**
-	 * @param dateHappened the dateHappened to set
+	 * @param courses the courses to set
 	 */
-	public void setDateHappened(String dateHappened) {
-		this.dateHappened = dateHappened;
+	public void setCourses(ArrayList<Integer> courses) {
+		this.courses = courses;
 	}
 
 	/**
-	 * @return the dateHappened
+	 * @return the courses
 	 */
-	public String getDateHappened() {
-		return dateHappened;
+	public ArrayList<Integer> getCourses() {
+		return courses;
 	}
-
 }

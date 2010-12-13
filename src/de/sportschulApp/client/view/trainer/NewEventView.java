@@ -27,7 +27,7 @@ NewEventPresenter.Display {
 	private LocalizationConstants constants;
 	private ListBox selectEventListBox;
 	private Label continueLabel;
-	private ArrayList<Event> events;
+	private ArrayList<Event> events = new ArrayList<Event>();
 
 	public NewEventView(LocalizationConstants constants) {
 		this.constants = constants;

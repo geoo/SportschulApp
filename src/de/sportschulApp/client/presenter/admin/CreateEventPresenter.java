@@ -1,5 +1,6 @@
 package de.sportschulApp.client.presenter.admin;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -17,6 +18,7 @@ import com.google.gwt.user.client.ui.Widget;
 import de.sportschulApp.client.presenter.Presenter;
 import de.sportschulApp.client.services.AdminServiceAsync;
 import de.sportschulApp.client.view.localization.LocalizationConstants;
+import de.sportschulApp.shared.Course;
 import de.sportschulApp.shared.Event;
 import eu.maydu.gwt.validation.client.ValidationProcessor;
 import eu.maydu.gwt.validation.client.actions.StyleAction;
@@ -54,6 +56,8 @@ public class CreateEventPresenter implements Presenter {
 		ValidationProcessor getValidator();
 
 		VerticalPanel getWrapper();
+		
+		void setCourses(ArrayList<Course> courses);
 	}
 
 	private final LocalizationConstants constants;
@@ -86,6 +90,7 @@ public class CreateEventPresenter implements Presenter {
 	}
 
 	private void bind() {
+		fetchCourseList();
 
 		display.getCreateEventButtonHandler().addClickHandler(
 				new ClickHandler() {
@@ -129,6 +134,17 @@ public class CreateEventPresenter implements Presenter {
 						}
 					}
 				});
+	}
+
+	private void fetchCourseList() {
+		rpcService.getCompleteCourseList(new AsyncCallback<ArrayList<Course>>() {
+			public void onFailure(Throwable caught) {
+				Window.alert("Fehler beim abfragen der Kursinformationen.");
+			}
+			public void onSuccess(ArrayList<Course> result) {
+				display.setCourses(result);
+			}
+		});
 	}
 
 	public void getEventDetails(String eventID) {

@@ -129,7 +129,7 @@ public class ListMemberView extends Composite implements ListMemberPresenter.Dis
 	public VerticalPanel createSearchPanel() {
 		VerticalPanel listMemberMenuWrapper = new VerticalPanel();
 		listMemberMenuWrapper.addStyleName("formWrapper");
-		listMemberMenuWrapper.setWidth("700px");
+		listMemberMenuWrapper.setWidth("100%");
 
 		HorizontalPanel formHeader = new HorizontalPanel();
 		formHeader.addStyleName("formHeader");

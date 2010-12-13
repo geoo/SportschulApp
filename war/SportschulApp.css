@@ -562,7 +562,12 @@ h1 {
 	border-bottom: 2px dashed #D4DCED;
 }
 
-
+.coursesInputFieldWrapper {
+	width: 100%;
+	border-top: 2px dashed #D4DCED;
+	border-bottom: 2px dashed #D4DCED;
+	margin-bottom: 10px;
+}
 
 .dateInputFieldsTable .gwt-Label {
 	padding-right: 10px;
