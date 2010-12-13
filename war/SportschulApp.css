@@ -952,6 +952,13 @@ right
 	padding-right: 7px;
 }
 
+.likeAbovePanel td {
+	height: 25px !important;
+	width: 200px;
+
+}
+
+
 .addNewCourseSelctorLabel {
 	color: #346492;
 	cursor: pointer;

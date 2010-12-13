@@ -95,7 +95,6 @@ public class CreateMemberView extends Composite implements
 						} else {
 							courseList.get(i).setCourseLabel(j + 1);
 							j++;
-							//TODO
 
 						}
 
@@ -235,7 +234,6 @@ public class CreateMemberView extends Composite implements
 	private Label barcodeLabel;
 	private TextBox barcodeTextBox;
 	private Label beltsizeLabel;
-	private TextBox beltsizeTextBox;
 	private Label birthLabel;
 	private ListBox birthTextBox1;
 	private ListBox birthTextBox2;
@@ -282,6 +280,7 @@ public class CreateMemberView extends Composite implements
 	private TextBox zipcodeTextBox;
 	private VerticalPanel courseSelectorWrapper;
 	private Label newCourseSelectorLabel;
+	private ListBox beltsizeListBox;
 
 	public CreateMemberView(LocalizationConstants constants) {
 
@@ -374,20 +373,26 @@ public class CreateMemberView extends Composite implements
 		mobilephoneInputPanel.add(mobilephoneTextBox);
 
 		HorizontalPanel accountOwnerForenameInputPanel = new HorizontalPanel();
+		VerticalPanel likeAbovePanel = new VerticalPanel();
+		likeAbovePanel.setStyleName("likeAbovePanel");
 		accountOwnerForenameLabel = new Label(constants.forename() + ":* ");
 		accountOwnerForenameTextBox = new TextBox();
 		likeAbove = new CheckBox(constants.likeAbove());
 		accountOwnerForenameInputPanel.add(accountOwnerForenameLabel);
-		accountOwnerForenameInputPanel.add(accountOwnerForenameTextBox);
-		accountOwnerForenameInputPanel.add(likeAbove);
+		accountOwnerForenameInputPanel.add(likeAbovePanel);
+		likeAbovePanel.add(accountOwnerForenameTextBox);
+		likeAbovePanel.add(likeAbove);
 
 		HorizontalPanel accountOwnerSurnameInputPanel = new HorizontalPanel();
+		VerticalPanel likeAbovePanel2 = new VerticalPanel();
+		likeAbovePanel2.setStyleName("likeAbovePanel");
 		accountOwnerSurnameLabel = new Label(constants.surname() + ":* ");
 		accountOwnerSurnameTextBox = new TextBox();
 		likeAbove2 = new CheckBox(constants.likeAbove());
 		accountOwnerSurnameInputPanel.add(accountOwnerSurnameLabel);
-		accountOwnerSurnameInputPanel.add(accountOwnerSurnameTextBox);
-		accountOwnerSurnameInputPanel.add(likeAbove2);
+		accountOwnerSurnameInputPanel.add(likeAbovePanel2);
+		likeAbovePanel2.add(accountOwnerSurnameTextBox);
+		likeAbovePanel2.add(likeAbove2);
 
 		HorizontalPanel accountNumberInputPanel = new HorizontalPanel();
 		accountNumberLabel = new Label(constants.accountNumber() + ":* ");
@@ -474,11 +479,23 @@ public class CreateMemberView extends Composite implements
 		diseasesInputPanel.add(diseasesLabel);
 		diseasesInputPanel.add(diseasesTextBox);
 
+		
+		//TODO
 		HorizontalPanel beltsizeInputPanel = new HorizontalPanel();
 		beltsizeLabel = new Label(constants.beltsize() + ":* ");
-		beltsizeTextBox = new TextBox();
+		beltsizeListBox = new ListBox();
+		beltsizeListBox.addItem("<auswählen>");
+		beltsizeListBox.addItem("200");
+		beltsizeListBox.addItem("220");
+		beltsizeListBox.addItem("240");
+		beltsizeListBox.addItem("260");
+		beltsizeListBox.addItem("280");
+		beltsizeListBox.addItem("300");
+
+		beltsizeListBox.setWidth("255px");
+		
 		beltsizeInputPanel.add(beltsizeLabel);
-		beltsizeInputPanel.add(beltsizeTextBox);
+		beltsizeInputPanel.add(beltsizeListBox);
 
 		HorizontalPanel noteInputPanel = new HorizontalPanel();
 		noteLabel = new Label(constants.note() + ": ");
@@ -577,7 +594,15 @@ public class CreateMemberView extends Composite implements
 		int temp = Integer.parseInt("" + (member.getBirthYear())) - 2009;
 		birthTextBox3.setSelectedIndex(-temp);
 		phoneTextBox.setText(member.getPhone());
-		beltsizeTextBox.setText(member.getBeltsize());
+		//TODO
+		for(int i=0;i<beltsizeListBox.getItemCount();i++){
+			if(beltsizeListBox.getItemText(i).equals(member.getBeltsize())){
+				beltsizeListBox.setSelectedIndex(i);
+			}
+		
+		}
+		//beltsizeListBox.setSelectedIndex(i);
+		//beltsizeTextBox.setText(member.getBeltsize());
 		mobilephoneTextBox.setText(member.getMobilephone());
 		faxTextBox.setText(member.getFax());
 		emailTextBox.setText(member.getEmail());
@@ -641,8 +666,8 @@ public class CreateMemberView extends Composite implements
 		return barcodeTextBox;
 	}
 
-	public TextBox getBeltsizeTextBox() {
-		return beltsizeTextBox;
+	public ListBox getBeltsizeTextBox() {
+		return beltsizeListBox;
 	}
 
 	public ListBox getBirthTextBox1() {
@@ -809,6 +834,10 @@ public class CreateMemberView extends Composite implements
 
 	public HasClickHandlers getNewCourseSelectorLabel() {
 		return newCourseSelectorLabel;
+	}
+
+	public void removeLastCourseSelector() {
+		courseSelectorWrapper.remove(courseSelectorWrapper.getWidgetCount()-2);
 	}
 
 }
