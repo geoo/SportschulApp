@@ -234,8 +234,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 				member.setBankNumber(rs.getString("bankNumber"));
 
 			}
-			
-			
+
 			ArrayList<Integer> courses = new ArrayList<Integer>();
 			ArrayList<Integer> graduation = new ArrayList<Integer>();
 			ArrayList<Float> tariffs = new ArrayList<Float>();
@@ -251,8 +250,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 			member.setCourses(courses);
 			member.setGraduations(graduation);
 			member.setTariffs(tariffs);
-			
-			
+
 			rs.close();
 			rs2.close();
 			dbc.close();
@@ -324,7 +322,6 @@ public class DataBankerMember implements DataBankerMemberInterface {
 				String query2 = "SELECT * FROM Member_has_courses WHERE barcode_id='"
 						+ member.getBarcodeID() + "'";
 
-				
 				rs2 = stmt2.executeQuery(query2);
 				if (rs2.wasNull()) {
 				}
@@ -336,11 +333,10 @@ public class DataBankerMember implements DataBankerMemberInterface {
 				member.setCourses(courses);
 				member.setGraduations(graduation);
 				member.setTariffs(tariffs);
-				
-				
+
 				rs2.close();
 				stmt2.close();
-				
+
 				memberList.add(member);
 			}
 			rs.close();
@@ -548,6 +544,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 				member.setAccountNumber(rs.getString("accountNumber"));
 				member.setBankName(rs.getString("bankName"));
 				member.setBankNumber(rs.getString("bankNumber"));
+				
 				ArrayList<Integer> courses = new ArrayList<Integer>();
 				ArrayList<Integer> graduation = new ArrayList<Integer>();
 				ArrayList<Float> tariffs = new ArrayList<Float>();
@@ -557,8 +554,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 				String query2 = "SELECT * FROM Member_has_courses WHERE barcode_id='"
 						+ member.getBarcodeID() + "'";
 
-				
-				rs2 = stmt.executeQuery(query2);
+				rs2 = stmt2.executeQuery(query2);
 				if (rs2.wasNull()) {
 				}
 				while (rs2.next()) {
@@ -569,8 +565,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 				member.setCourses(courses);
 				member.setGraduations(graduation);
 				member.setTariffs(tariffs);
-				
-				
+
 				rs2.close();
 				stmt2.close();
 
@@ -673,7 +668,6 @@ public class DataBankerMember implements DataBankerMemberInterface {
 				String query2 = "SELECT * FROM Member_has_courses WHERE barcode_id='"
 						+ member.getBarcodeID() + "'";
 
-				
 				rs2 = stmt.executeQuery(query2);
 				if (rs2.wasNull()) {
 				}
@@ -685,8 +679,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 				member.setCourses(courses);
 				member.setGraduations(graduation);
 				member.setTariffs(tariffs);
-				
-				
+
 				rs2.close();
 				stmt2.close();
 
@@ -826,7 +819,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 
 					.getConnection()
 					.prepareStatement(
-					"INSERT INTO Member(Member_id, barcode_id, forename, surname, zipcode, city, street, phone, mobilephone, fax, email, homepage, birthDay, birthMonth, birthYear, picture, diseases, beltsize, note, trainingunits, accountForename, accountSurname, accountNumber, bankName, bankNumber) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+							"INSERT INTO Member(Member_id, barcode_id, forename, surname, zipcode, city, street, phone, mobilephone, fax, email, homepage, birthDay, birthMonth, birthYear, picture, diseases, beltsize, note, trainingunits, accountForename, accountSurname, accountNumber, bankName, bankNumber) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			stmt.setInt(1, member.getMemberID());
 			stmt.setInt(2, member.getBarcodeID());
 			stmt.setString(3, member.getForename());
@@ -855,7 +848,6 @@ public class DataBankerMember implements DataBankerMemberInterface {
 
 			stmt.executeUpdate();
 
-
 			PreparedStatement stmt3 = null;
 			try {
 				for (int i = 0; i < member.getCourses().size(); i++) {
@@ -869,11 +861,14 @@ public class DataBankerMember implements DataBankerMemberInterface {
 					stmt3.setFloat(4, member.getTariffs().get(i));
 					stmt3.executeUpdate();
 				}
-			} catch (NullPointerException e) {
+			} catch (IndexOutOfBoundsException e) {
 				System.out.println(e);
 				System.out.println("courses out of bounds");
 			}
-			stmt3.close();
+			try {
+				stmt3.close();
+			} catch (NullPointerException e) {
+			}
 			dbc.close();
 			stmt.close();
 		} catch (SQLException e) {

@@ -95,5 +95,8 @@ public interface AdminServiceAsync {
 			AsyncCallback<ArrayList<CourseTariff>> asyncCallback);
 
 	void updateMember(Member member, AsyncCallback<String> asyncCallback);
+
+	void getMemberCourses(int course, float tariff,
+			AsyncCallback<ArrayList<String>> asyncCallback);
 	
 }

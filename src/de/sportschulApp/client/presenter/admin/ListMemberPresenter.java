@@ -24,14 +24,20 @@ import de.sportschulApp.client.services.AdminServiceAsync;
 import de.sportschulApp.shared.Member;
 
 @SuppressWarnings("unchecked")
-public class ListMemberPresenter implements Presenter{
-	public interface Display{
+public class ListMemberPresenter implements Presenter {
+	public interface Display {
 		Widget asWidget();
+
 		HasClickHandlers getSearchButton();
+
 		TextBox getSearchInput();
+
 		HasValue<String> getSearchQuery();
+
 		HasClickHandlers getShowAllButton();
+
 		void setMemberList(ArrayList<Member> memberList);
+
 		void setSelectionModel(SingleSelectionModel selectionModel);
 	}
 
@@ -39,7 +45,8 @@ public class ListMemberPresenter implements Presenter{
 	private final HandlerManager eventBus;
 	private final AdminServiceAsync rpcService;
 
-	public ListMemberPresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display) {
+	public ListMemberPresenter(AdminServiceAsync rpcService,
+			HandlerManager eventBus, Display display) {
 		this.display = display;
 		this.rpcService = rpcService;
 		this.eventBus = eventBus;
@@ -74,13 +81,15 @@ public class ListMemberPresenter implements Presenter{
 
 	public void executeSearch() {
 		String searchQuery = new String(display.getSearchQuery().getValue());
-		rpcService.searchMember(searchQuery, new AsyncCallback<ArrayList<Member>>() {
-			public void onFailure(Throwable caught) {
-			}
-			public void onSuccess(ArrayList<Member> result) {
-				display.setMemberList(result);
-			}
-		});
+		rpcService.searchMember(searchQuery,
+				new AsyncCallback<ArrayList<Member>>() {
+					public void onFailure(Throwable caught) {
+					}
+
+					public void onSuccess(ArrayList<Member> result) {
+						display.setMemberList(result);
+					}
+				});
 	}
 
 	public void fetchListData() {
@@ -88,15 +97,15 @@ public class ListMemberPresenter implements Presenter{
 			public void onFailure(Throwable caught) {
 				Window.alert("Abrufen der Mitgliedsdaten fehlgeschlagen.");
 			}
+
 			public void onSuccess(ArrayList<Member> result) {
-				System.out.println("testtest");
 				display.setMemberList(result);
 			}
 		});
 
 	}
 
-	public Display getDisplay(){
+	public Display getDisplay() {
 		return display;
 	}
 

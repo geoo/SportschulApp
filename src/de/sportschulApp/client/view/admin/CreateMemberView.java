@@ -7,13 +7,17 @@ import gwtupload.client.IFileInput.FileInputType;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.rpc.client.RpcService;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextArea;
@@ -39,10 +43,21 @@ public class CreateMemberView extends Composite implements
 		private ListBox gradeListBox;
 		private Label tariffLabel;
 		private ListBox tariffListBox;
-		private ArrayList<CourseTariff> tariffList;
+		private Label courseSelectLabel;
+		int index;
+		private Image deleteButton;
+		private HorizontalPanel tariffInputPanel;
+		private HorizontalPanel courseHorizontalPanel;
 
 		public CourseSelectorWidget() {
+
+			courseHorizontalPanel = new HorizontalPanel();
 			courseVerticalPanel = new VerticalPanel();
+			courseHorizontalPanel.add(courseVerticalPanel);
+
+			courseHorizontalPanel.setStyleName("courseSelectorPanel");
+			courseSelectLabel = new Label();
+			courseSelectLabel.setStyleName("courseSelectLabel");
 
 			HorizontalPanel courseInputPanel = new HorizontalPanel();
 			courseLabel = new Label(constants.course() + ": ");
@@ -51,7 +66,7 @@ public class CreateMemberView extends Composite implements
 			courseInputPanel.add(courseLabel);
 			courseInputPanel.add(courseListBox);
 
-			HorizontalPanel tariffInputPanel = new HorizontalPanel();
+			tariffInputPanel = new HorizontalPanel();
 			tariffLabel = new Label(constants.tariff() + ": ");
 			tariffListBox = new ListBox();
 			tariffListBox.insertItem("<" + constants.select() + ">", 0);
@@ -65,18 +80,67 @@ public class CreateMemberView extends Composite implements
 			gradeInputPanel.add(gradeLabel);
 			gradeInputPanel.add(gradeListBox);
 
+			deleteButton = new Image("/imgs/Symbol_Delete.png");
+			deleteButton.setStyleName("clickable");
+			deleteButton.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					courseSelectorWrapper.remove(index - 1);
+
+					int j = 0;
+					for (int i = 0; i < 15; i++) {
+
+						if (!courseList.get(i).getCourseSelector().isAttached()) {
+							courseList.get(i).resetSelector();
+
+						} else {
+							courseList.get(i).setCourseLabel(j + 1);
+							j++;
+							//TODO
+
+						}
+
+					}
+
+				}
+			});
+
+			courseVerticalPanel.add(courseSelectLabel);
 			courseVerticalPanel.add(courseInputPanel);
 			courseVerticalPanel.add(tariffInputPanel);
 			courseVerticalPanel.add(gradeInputPanel);
+			courseHorizontalPanel.add(deleteButton);
 
+		}
+
+		public void resetSelector() {
+			courseListBox.setSelectedIndex(0);
+			gradeListBox.setSelectedIndex(0);
+			tariffListBox.setSelectedIndex(0);
+		}
+
+		public void noDeleteButton() {
+			deleteButton.setVisible(false);
+			// courseHorizontalPanel.remove(deleteButton);
 		}
 
 		public HasChangeHandlers getCourseHandler() {
 			return courseListBox;
 		}
 
-		public VerticalPanel getCourseSelector() {
-			return courseVerticalPanel;
+		public ListBox getCourseListBox() {
+			return courseListBox;
+		}
+
+		public ListBox getGraduationListBox() {
+			return gradeListBox;
+		}
+
+		public ListBox getTariffListBox() {
+			return tariffListBox;
+		}
+
+		public HorizontalPanel getCourseSelector() {
+			return courseHorizontalPanel;
 		}
 
 		public HasChangeHandlers getGradeHandler() {
@@ -92,13 +156,16 @@ public class CreateMemberView extends Composite implements
 			return gradeListBox.getSelectedIndex();
 		}
 
+		public VerticalPanel getWrapper() {
+			return courseSelectorWrapper;
+		}
+
 		public String getSelectedCourseName() {
 			int selected = courseListBox.getSelectedIndex();
 			return courseListBox.getItemText(selected);
 		}
 
 		public String getSelectedTariff() {
-			// TODO Auto-generated method stub
 			int selected = tariffListBox.getSelectedIndex();
 			String temp = tariffListBox.getItemText(selected);
 			temp = temp.substring((temp.indexOf("-") + 1), temp.length() - 2);
@@ -120,7 +187,7 @@ public class CreateMemberView extends Composite implements
 				gradeListBox.insertItem(itr.next(), i);
 				i++;
 			}
-			gradeListBox.setItemSelected(0, true);
+			// gradeListBox.setItemSelected(0, true);
 
 		}
 
@@ -135,7 +202,6 @@ public class CreateMemberView extends Composite implements
 		}
 
 		public void setTariffList(ArrayList<CourseTariff> tariffList) {
-			// TODO Auto-generated method stub
 			tariffListBox.clear();
 			tariffListBox.insertItem("<" + constants.select() + ">", 0);
 			for (int j = 0; j < tariffList.size(); j++) {
@@ -143,7 +209,11 @@ public class CreateMemberView extends Composite implements
 						+ tariffList.get(j).getCosts() + " €", j + 1);
 			}
 			gradeListBox.setItemSelected(0, true);
-			this.tariffList = tariffList;
+		}
+
+		public void setCourseLabel(int i) {
+			courseSelectLabel.setText("Kurs " + i);
+			index = i;
 		}
 
 	}
@@ -210,6 +280,8 @@ public class CreateMemberView extends Composite implements
 	private VerticalPanel wrapper = new VerticalPanel();
 	private Label zipcodeLabel;
 	private TextBox zipcodeTextBox;
+	private VerticalPanel courseSelectorWrapper;
+	private Label newCourseSelectorLabel;
 
 	public CreateMemberView(LocalizationConstants constants) {
 
@@ -228,6 +300,11 @@ public class CreateMemberView extends Composite implements
 				constants.additionalInformations());
 		additionalDisclosurePanel.setContent(createMemberPanel2);
 		additionalDisclosurePanel.setStyleName("AdditionalisclosurePanel");
+
+		Label header = new Label("Mitglied anlegen");
+		header.setStyleName("formHeader2");
+
+		wrapper.add(header);
 		wrapper.add(importantDisclosurePanel);
 		wrapper.add(bankAccountDisclosurePanel);
 		wrapper.add(additionalDisclosurePanel);
@@ -409,7 +486,7 @@ public class CreateMemberView extends Composite implements
 		noteInputPanel.add(noteLabel);
 		noteInputPanel.add(noteTextBox);
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 15; i++) {
 			courseList.add(new CourseSelectorWidget());
 		}
 
@@ -436,18 +513,45 @@ public class CreateMemberView extends Composite implements
 		createMemberPanel.add(beltsizeInputPanel);
 		createMemberPanel2.add(diseasesInputPanel);
 		createMemberPanel2.add(noteInputPanel);
-		createMemberPanel.add(courseList.get(1).getCourseSelector());
+
+		courseSelectorWrapper = new VerticalPanel();
+		createMemberPanel.add(courseSelectorWrapper);
+		courseSelectorWrapper.add(courseList.get(0).getCourseSelector());
+		courseList.get(0).setCourseLabel(1);
+		courseList.get(0).noDeleteButton();
+		newCourseSelectorLabel = new Label("Weiteren Kurs hinzufügen");
+		newCourseSelectorLabel.setStyleName("addNewCourseSelctorLabel");
+		courseSelectorWrapper.add(newCourseSelectorLabel);
+
 		createMemberPanel.add(pictureUploadPanel);
 
 	}
 
 	public void addNewCourseSelector() {
+		for (int i = 0; i < 15; i++) {
+			if (!courseList.get(i).getCourseSelector().isAttached()) {
+				courseSelectorWrapper.insert(courseList.get(i)
+						.getCourseSelector(), courseSelectorWrapper
+						.getWidgetCount() - 1);
+				courseList.get(i).setCourseLabel(courseSelectorWrapper
+						.getWidgetCount() - 1);
+				break;
+			}
+		}
+	}
+
+	public void addNewCourseSelector(String course, float tariff, int graduation) {
+		System.out
+				.println("LALALAL" + course + "," + tariff + "," + graduation);
+		int temp2 = 0;
 		for (int i = 0; i < 10; i++) {
 			if (!courseList.get(i).getCourseSelector().isAttached()) {
 				createMemberPanel.insert(courseList.get(i).getCourseSelector(),
 						createMemberPanel.getWidgetCount() - 1);
+				temp2 = i;
 				break;
 			}
+
 		}
 	}
 
@@ -480,6 +584,7 @@ public class CreateMemberView extends Composite implements
 		homepageTextBox.setText(member.getHomepage());
 		diseasesTextBox.setText(member.getDiseases());
 		noteTextBox.setText(member.getNote());
+		imageUrl = member.getPicture();
 
 		if (member.getAccountForename().equals(member.getForename())) {
 			accountOwnerForenameTextBox.setText(constants.likeAbove());
@@ -500,6 +605,7 @@ public class CreateMemberView extends Composite implements
 		accountNumberTextBox.setText(member.getAccountNumber());
 		bankNameTextBox.setText(member.getBankName());
 		bankNumberTextBox.setText(member.getBankNumber());
+
 
 	}
 
@@ -671,7 +777,6 @@ public class CreateMemberView extends Composite implements
 	}
 
 	public void setTariffList(int index, ArrayList<CourseTariff> tariffList) {
-		// TODO Auto-generated method stub
 		courseList.get(index).setTariffList(tariffList);
 	}
 
@@ -700,6 +805,10 @@ public class CreateMemberView extends Composite implements
 		} catch (IndexOutOfBoundsException e) {
 		}
 		return temp3;
+	}
+
+	public HasClickHandlers getNewCourseSelectorLabel() {
+		return newCourseSelectorLabel;
 	}
 
 }
