@@ -53,4 +53,23 @@ TrainerService {
 		return (new AdminServiceImpl().getEventParticipants(eventID));
 	}
 
+	public void abortEvent(int eventID) {
+		dbe.abortEvent(eventID);
+	}
+
+	public void saveEvent(int eventID, ArrayList<EventParticipant> participants) {
+		dbe.setParticipantsForEvent(eventID, participants);
+	}
+
+	public void endEvent(int eventID) {
+		dbe.endEvent(eventID);
+	}
+
+	public Event getEvent(int eventID) {
+		return (new AdminServiceImpl().getEventByEventID(eventID));
+	}
+
+	public void setPassedValues(Event event, ArrayList<EventParticipant> participants) {
+		dbe.setPassedValues(event, participants);
+	}
 }

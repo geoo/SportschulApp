@@ -71,7 +71,7 @@ public class NavigationView extends Composite implements NavigationPresenter.Dis
 		} catch (NullPointerException e) {
 			languagePicker.setSelectedIndex(0);
 		}
-
+		
 		languagePanel.add(languageLabel);
 		languagePanel.add(languagePicker);
 

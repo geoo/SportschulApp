@@ -29,6 +29,8 @@ public class TrainerNavigationPresenter implements Presenter {
 		HasClickHandlers getMenuTrainingNewTraining();
 
 		HasClickHandlers getMenuTrainingNewEvent();
+		
+		HasClickHandlers getMenuTrainingContinueEventLabel();
 	}
 
 	private final Display display;
@@ -66,6 +68,13 @@ public class TrainerNavigationPresenter implements Presenter {
 				new ClickHandler() {
 					public void onClick(ClickEvent event) {
 						History.newItem("trainerNewEvent");
+					}
+				});
+		
+		display.getMenuTrainingContinueEventLabel().addClickHandler(
+				new ClickHandler() {
+					public void onClick(ClickEvent event) {
+						History.newItem("trainerContinueEvent");
 					}
 				});
 

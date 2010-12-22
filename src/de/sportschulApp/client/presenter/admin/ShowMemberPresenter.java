@@ -7,6 +7,7 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -19,6 +20,7 @@ public class ShowMemberPresenter implements Presenter{
 		Widget asWidget();
 		HasClickHandlers getDeleteLabel();
 		HasClickHandlers getEditLabel();
+		HasClickHandlers getCloseLabel();
 		void setMemberCourses(String courses);
 		void setMemberData(Member member);
 	}
@@ -27,10 +29,12 @@ public class ShowMemberPresenter implements Presenter{
 	private final Display display;
 	private Member member = new Member();
 	private final AdminServiceAsync rpcService;
+	private DialogBox popup;
 
-	public ShowMemberPresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display, int barcodeID) {
+	public ShowMemberPresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display, int barcodeID, DialogBox popup) {
 		this.display = display;
 		this.rpcService = rpcService;
+		this.popup = popup;
 		bind();
 		fetchMemberData(barcodeID);
 	}
@@ -54,6 +58,12 @@ public class ShowMemberPresenter implements Presenter{
 						}
 					});
 				}
+			}
+		});
+		
+		display.getCloseLabel().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				popup.hide();
 			}
 		});
 	}

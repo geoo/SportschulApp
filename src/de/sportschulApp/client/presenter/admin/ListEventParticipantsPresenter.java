@@ -13,6 +13,7 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -48,6 +49,8 @@ public class ListEventParticipantsPresenter implements Presenter{
 		TextBox getBarcodeTextBox();
 		HasClickHandlers getScanButton();
 		Image getScanImage();
+		Column<EventParticipant, Boolean> getPaidColumn();
+		Column<EventParticipant, Boolean> getParticipationColumn();
 	}
 
 	private final Display display;
@@ -130,15 +133,15 @@ public class ListEventParticipantsPresenter implements Presenter{
 						for (int i = 0; i < display.getCellTable().getDisplayedItems().size(); i++) {
 							if (display.getCellTable().getDisplayedItems().get(i).getBarcodeID().equals(display.getBarcodeTextBox().getText())) {
 								if (participatesCheckBox.getValue() == true) {
-									display.getCellTable().getDisplayedItems().get(i).setParticipant("Ja");
+									display.getParticipationColumn().getFieldUpdater().update(i, display.getCellTable().getDisplayedItem(i), true);
 								} else {
-									display.getCellTable().getDisplayedItems().get(i).setParticipant("Nein");
+									display.getParticipationColumn().getFieldUpdater().update(i, display.getCellTable().getDisplayedItem(i), false);
 								}
 								
 								if (participantPaidCheckBox.getValue() == true) {
-									display.getCellTable().getDisplayedItems().get(i).setPaid("Ja");
+									display.getPaidColumn().getFieldUpdater().update(i, display.getCellTable().getDisplayedItem(i), true);
 								} else {
-									display.getCellTable().getDisplayedItems().get(i).setPaid("Nein");
+									display.getPaidColumn().getFieldUpdater().update(i, display.getCellTable().getDisplayedItem(i), false);
 								}
 								
 								if (participantNoteTextBox.getText().length() > 1) {
@@ -148,6 +151,8 @@ public class ListEventParticipantsPresenter implements Presenter{
 						}
 						participantEditor.hide();
 						display.getCellTable().redraw();
+						display.getBarcodeTextBox().setText("");
+						display.getBarcodeTextBox().setFocus(true);
 					}
 				});
 				

@@ -24,7 +24,7 @@ public class TrainerNavigationView extends Composite implements TrainerNavigatio
 	private Label logOutLabel;
 	private Label menuTrainingNewTraining;
 	private Label menuTrainingNewEvent;
-
+	private Label menuTrainingContinueEvent;
 
 	public TrainerNavigationView(int tabIndex, LocalizationConstants constants) {
 		VerticalPanel adminHeadPanel = new VerticalPanel();
@@ -119,6 +119,10 @@ public class TrainerNavigationView extends Composite implements TrainerNavigatio
 	public HasClickHandlers getMenuTrainingNewEvent() {
 		return menuTrainingNewEvent;
 	}
+	
+	public HasClickHandlers getMenuTrainingContinueEventLabel() {
+		return menuTrainingContinueEvent;
+	}
 
 	public HorizontalPanel getSubNavigationElements(int navigationID) {
 		HorizontalPanel subNavPanel = new HorizontalPanel();
@@ -130,6 +134,8 @@ public class TrainerNavigationView extends Composite implements TrainerNavigatio
 			subNavPanel.add(menuTrainingNewTraining);
 			menuTrainingNewEvent = new Label("Event starten");
 			subNavPanel.add(menuTrainingNewEvent);
+			menuTrainingContinueEvent = new Label("Event fortsetzen");
+			subNavPanel.add(menuTrainingContinueEvent);
 		}
 
 

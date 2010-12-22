@@ -1,36 +1,28 @@
 package de.sportschulApp.client.view.trainer;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import de.sportschulApp.client.presenter.trainer.NewEventPresenter;
+import de.sportschulApp.client.presenter.trainer.ContinueEventPresenter;
 import de.sportschulApp.client.view.localization.LocalizationConstants;
 import de.sportschulApp.shared.Event;
 
-public class NewEventView extends Composite implements
-NewEventPresenter.Display {
+public class ContinueEventView extends Composite implements
+ContinueEventPresenter.Display {
 
 	private VerticalPanel newEventWrapper;
-	private LocalizationConstants constants;
 	private ListBox selectEventListBox;
 	private Label continueLabel;
 	private ArrayList<Event> events = new ArrayList<Event>();
 
-	public NewEventView(LocalizationConstants constants) {
-		this.constants = constants;
+	public ContinueEventView(LocalizationConstants constants) {
 
 		newEventWrapper = new VerticalPanel();
 		newEventWrapper.addStyleName("newEventWrapper");
@@ -46,7 +38,7 @@ NewEventPresenter.Display {
 		continueLabel = new Label("Weiter");
 		continueLabel.addStyleName("clickableLabel");
 
-		formWrapper.add(new Label("Wählen sie die Prüfung oder das Event aus, dass sie durchführen möchten. Ein Event/Prüfung kann nur einmal gestartet werden. Man kann ein Event aber abbrechen/pausieren und an einem späteren Zeitpunkt fortführen."));
+		formWrapper.add(new Label("Wählen sie die Prüfung oder das Event aus, dass sie fortsetzen möchten."));
 		formWrapper.add(selectEventListBox);
 		formWrapper.add(continueLabel);
 
@@ -75,7 +67,7 @@ NewEventPresenter.Display {
 	
 	public void setEventListBox(ArrayList<Event> events) {
 		for (int i = 0; i < events.size(); i++) {
-			if (events.get(i).getHappened().equals("Nein")) {
+			if (events.get(i).getHappened().equals("Ja")) {
 				this.events.add(events.get(i));
 				selectEventListBox.addItem(events.get(i).getName() + " (" + events.get(i).getType() + " - " + events.get(i).getDate() + ")");
 			}

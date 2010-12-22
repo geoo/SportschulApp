@@ -897,3 +897,9 @@ h1 {
 	white-space: nowrap !important;
 	font-size: 18px;
 }
+
+.buttonPanel {
+	display: block;
+	margin: auto;
+	width: 350px;
+}

@@ -4,14 +4,10 @@ import java.util.ArrayList;
 
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -45,10 +41,8 @@ CreateEventPresenter.Display {
 	private Label eventNameLabel;
 	private TextBox eventNameTextBox;
 	private ArrayList<String> examiners = new ArrayList<String>();
-	private ArrayList<Integer> courseIDs = new ArrayList<Integer>();
 	private ArrayList<Course> courses = new ArrayList<Course>();
 	private FlexTable examinersInputFieldsTable = new FlexTable();
-	private FlexTable coursesTable = new FlexTable();
 	private Label locationLabel;
 	private TextBox locationTextBox;
 	private RadioButton rb0;
@@ -59,6 +53,8 @@ CreateEventPresenter.Display {
 	private ListBox endTimeListBoxMinutes;
 	private DefaultValidationProcessor validator = new DefaultValidationProcessor();
 	private VerticalPanel wrapper = new VerticalPanel();
+	private HorizontalPanel coursesWrapper;
+	private ListBox coursesListBox;
 
 	public CreateEventView(LocalizationConstants constants) {
 		this.constants = constants;
@@ -100,7 +96,7 @@ CreateEventPresenter.Display {
 			deleteButton.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
 					examiners.remove(numRow);
-					refreshCoursesTable();
+					refreshExaminersInputTable();
 				}
 			});
 			examinersInputFieldsTable.setWidget(numRow, 2, deleteButton);
@@ -111,54 +107,6 @@ CreateEventPresenter.Display {
 		}
 	}
 	
-	private void addCoursesRow(final FlexTable coursesTable, Boolean firstField) {
-		final int numRow = coursesTable.getRowCount();
-		
-		final ListBox coursesListBox = new ListBox();
-
-		for (int i = 0; i < courses.size(); i++) {
-			coursesListBox.addItem(courses.get(i).getName());
-		}
-		
-		if ((numRow < courseIDs.size()) && !(courseIDs.isEmpty())) {
-			for (int i = 0; i < courses.size(); i++) {
-				if (courses.get(i).getCourseID() == courseIDs.get(numRow)) {
-					coursesListBox.setSelectedIndex(i);
-				}
-			}
-		} else {
-			courseIDs.add(courses.get(0).getCourseID());
-		}
-		
-		coursesListBox.addChangeHandler(new ChangeHandler() {
-			public void onChange(ChangeEvent event) {
-				courseIDs.set(numRow, courses.get(coursesListBox.getSelectedIndex()).getCourseID());
-			}
-		});
-
-		if (firstField) {
-			coursesTable.setWidget(numRow, 0, new Label("Kurse: "));
-		}
-
-		coursesTable.setWidget(numRow, 1, coursesListBox);
-
-		if (!firstField) {
-			Image deleteButton = new Image("/imgs/Symbol_Delete.png");
-			deleteButton.setStyleName("clickable");
-
-			deleteButton.addClickHandler(new ClickHandler() {
-				public void onClick(ClickEvent event) {
-					courseIDs.remove(numRow);
-					refreshCoursesTable();
-				}
-			});
-			coursesTable.setWidget(numRow, 2, deleteButton);
-		} else {
-			HorizontalPanel placeholderPanel = new HorizontalPanel();
-			placeholderPanel.setWidth("16px");
-			coursesTable.setWidget(numRow, 2, placeholderPanel);
-		}
-	}
 
 	@Override
 	public Widget asWidget() {
@@ -189,28 +137,26 @@ CreateEventPresenter.Display {
 		rb1 = new RadioButton("eventType", "Event");
 		rb0.setValue(true);
 		
+		
 		eventTypePanel.add(eventTypeLabel);
 		eventTypePanel.add(rb0);
 		eventTypePanel.add(rb1);
 		
-		VerticalPanel coursesWrapper = new VerticalPanel();
-		coursesWrapper.addStyleName("coursesInputFieldWrapper");
+		coursesWrapper = new HorizontalPanel();
+		coursesWrapper.add(new Label("Kurs:"));
+		
 
-		coursesTable.setCellPadding(0);
-		coursesTable.setCellSpacing(0);
-		coursesTable.addStyleName("tariffInputFieldsTable");
-
-		Label addCourseLabel = new Label("Weiteren Kurs hinzufügen");
-		addCourseLabel.addStyleName("clickableLabel");
-
-		addCourseLabel.addClickHandler(new ClickHandler() {
+		rb0.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				addCoursesRow(coursesTable, false);
+				coursesWrapper.setVisible(true);
 			}
 		});
-
-		coursesWrapper.add(coursesTable);
-		coursesWrapper.add(addCourseLabel);
+		
+		rb1.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				coursesWrapper.setVisible(false);
+			}
+		});
 
 		HorizontalPanel dateInputPanel = new HorizontalPanel();
 		dateLabel = new Label(constants.date() + ": ");
@@ -233,6 +179,7 @@ CreateEventPresenter.Display {
 				startTimeListBoxHour.addItem("" + i);
 			}
 		}
+		startTimeListBoxHour.setSelectedIndex(12);
 		startTimeListBoxMinutes = new ListBox();
 		for (int i = 0; i < 60; i++) {
 			if (i < 10) {
@@ -255,6 +202,7 @@ CreateEventPresenter.Display {
 				endTimeListBoxHour.addItem("" + i);
 			}
 		}
+		endTimeListBoxHour.setSelectedIndex(20);
 		endTimeListBoxMinutes = new ListBox();
 		for (int i = 0; i < 60; i++) {
 			if (i < 10) {
@@ -337,7 +285,6 @@ CreateEventPresenter.Display {
 		locationTextBox.setText(event.getLocation());
 		dateBox.getTextBox().setText(event.getDate());
 		examiners = event.getExaminers();
-		courseIDs = event.getCourses();
 
 		for (int i = 0; i < startTimeListBoxHour.getItemCount(); i++) {
 			if (startTimeListBoxHour.getValue(i).equals(event.getStartTime().substring(0, 2))) {
@@ -362,14 +309,22 @@ CreateEventPresenter.Display {
 				endTimeListBoxMinutes.setSelectedIndex(i);
 			}
 		}
+		
+		for (int i = 0; i < courses.size(); i++) {
+			if (courses.get(i).getCourseID() == event.getCourseID()) {
+				coursesListBox.setSelectedIndex(i);
+			}
+		}
 
 		refreshExaminersInputTable();
 
 		if (event.getType().equals("Prüfung")) {
 			rb0.setValue(true);
+			coursesWrapper.setVisible(true);
 		}
 		if (event.getType().equals("Event")) {
 			rb1.setValue(true);
+			coursesWrapper.setVisible(false);
 		}
 	}
 
@@ -409,7 +364,7 @@ CreateEventPresenter.Display {
 		event.setDate(dateBox.getTextBox().getValue());
 		event.setStartTime(startTimeListBoxHour.getValue(startTimeListBoxHour.getSelectedIndex()) + ":" + startTimeListBoxMinutes.getValue(startTimeListBoxMinutes.getSelectedIndex()));
 		event.setEndTime(endTimeListBoxHour.getValue(endTimeListBoxHour.getSelectedIndex()) + ":" + endTimeListBoxMinutes.getValue(endTimeListBoxMinutes.getSelectedIndex()));
-		event.setCourses(courseIDs);
+		
 
 		ArrayList<String> examinersTemp = new ArrayList<String>();
 		for (int i = 0; i < examiners.size(); i++) {
@@ -421,9 +376,11 @@ CreateEventPresenter.Display {
 
 		if(rb0.getValue()) {
 			event.setType("Prüfung");
+			event.setCourseID(courses.get(coursesListBox.getSelectedIndex()).getCourseID());
 		}
 		if(rb1.getValue()) {
 			event.setType("Event");
+			event.setCourseID(0);
 		}
 
 		return event;
@@ -451,18 +408,13 @@ CreateEventPresenter.Display {
 		}
 	}
 	
-	private void refreshCoursesTable() {
-		coursesTable.removeAllRows();
-
-		addCoursesRow(coursesTable, true);
-
-		for (int i = 1; i < courseIDs.size(); i++) {
-			addCoursesRow(coursesTable, false);
-		}
-	}
-	
 	public void setCourses(ArrayList<Course> courses) {
 		this.courses = courses;
-		refreshCoursesTable();
+		
+		coursesListBox = new ListBox();
+		for (int i = 0; i < courses.size(); i++) {
+			coursesListBox.addItem(courses.get(i).getName());
+		}
+		coursesWrapper.add(coursesListBox);
 	}
 }

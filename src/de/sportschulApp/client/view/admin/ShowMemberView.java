@@ -2,6 +2,7 @@ package de.sportschulApp.client.view.admin;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -36,6 +37,7 @@ ShowMemberPresenter.Display {
 	private Label surnameLabel = new Label();
 	private Label trainingUnitsLabel = new Label();
 	private Label zipcodeLabel = new Label();
+	private Label closeLabel;
 
 	public ShowMemberView(LocalizationConstants constants) {
 		VerticalPanel memberPanel = new VerticalPanel();
@@ -47,9 +49,11 @@ ShowMemberPresenter.Display {
 
 		editLabel = new Label("Mitglied bearbeiten");
 		deleteLabel = new Label("Mitglied löschen");
+		closeLabel = new Label("Schließen");
 
 		metaPanel.add(editLabel);
 		metaPanel.add(deleteLabel);
+		metaPanel.add(closeLabel);
 
 		memberPanel.add(metaPanel);
 
@@ -120,6 +124,10 @@ ShowMemberPresenter.Display {
 
 	public HasClickHandlers getEditLabel() {
 		return editLabel;
+	}
+	
+	public HasClickHandlers getCloseLabel() {
+		return closeLabel;
 	}
 
 	public void setMemberCourses(String courses) {

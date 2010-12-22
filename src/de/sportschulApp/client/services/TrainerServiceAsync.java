@@ -28,4 +28,16 @@ public interface TrainerServiceAsync {
 	void getEventParticipants(int eventID,
 			AsyncCallback<ArrayList<EventParticipant>> callback);
 
+	void abortEvent(int eventID, AsyncCallback<Void> callback);
+
+	void saveEvent(int eventID, ArrayList<EventParticipant> participants,
+			AsyncCallback<Void> callback);
+
+	void endEvent(int eventID, AsyncCallback<Void> callback);
+
+	void getEvent(int eventID, AsyncCallback<Event> callback);
+
+	void setPassedValues(Event event, ArrayList<EventParticipant> participants,
+			AsyncCallback<Void> callback);
+
 }

@@ -19,6 +19,7 @@ public class ShowBeltView extends Composite implements ShowBeltPresenter.Display
 	private TextBox beltTextBox = new TextBox();
 	private Label deleteLabel;
 	private Label renameLabel;
+	private Label closeLabel;
 
 	public ShowBeltView(LocalizationConstants constants) {
 		VerticalPanel detailsPanel = new VerticalPanel();
@@ -31,9 +32,10 @@ public class ShowBeltView extends Composite implements ShowBeltPresenter.Display
 		deleteLabel = new Label("Gurtfarbe löschen");
 		renameLabel = new Label("umbenennen");
 		renameLabel.setStyleName("clickableLabel");
+		closeLabel = new Label("Schließen");
 
 		metaPanel.add(deleteLabel);
-
+		metaPanel.add(closeLabel);
 		detailsPanel.add(metaPanel);
 
 		HorizontalPanel renamePanel = new HorizontalPanel();
@@ -65,6 +67,10 @@ public class ShowBeltView extends Composite implements ShowBeltPresenter.Display
 
 	public HasClickHandlers getRenameLabel() {
 		return renameLabel;
+	}
+	
+	public HasClickHandlers getCloseLabel() {
+		return closeLabel;
 	}
 
 	public void setData(Belt belt) {
