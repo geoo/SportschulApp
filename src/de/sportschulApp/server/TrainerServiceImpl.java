@@ -21,6 +21,11 @@ TrainerService {
 	public Member getMemberByBarcodeID(int barcodeID) {
 		return dbm.getMember(barcodeID);
 	}
+	public Member getMemberByBarcodeID2(int barcodeID, int month, int year) {
+		Member temp = dbm.getMember(barcodeID);
+		temp.setTrainingUnitsInMonth(dbm.getTrainingsPresenceInt(temp.getBarcodeID(), month, year));
+		return temp;
+	}
 
 	public String getNote(int barcodeID) {
 		return dbm.getNote(barcodeID);
@@ -53,23 +58,11 @@ TrainerService {
 		return (new AdminServiceImpl().getEventParticipants(eventID));
 	}
 
-	public void abortEvent(int eventID) {
-		dbe.abortEvent(eventID);
+	public String removeTrainingsPresence(int barcodeID, int day, int month,
+			int year) {
+		dbm.deleteTrainingsPresence(barcodeID, day, month, year);
+		return null;
 	}
+	
 
-	public void saveEvent(int eventID, ArrayList<EventParticipant> participants) {
-		dbe.setParticipantsForEvent(eventID, participants);
-	}
-
-	public void endEvent(int eventID) {
-		dbe.endEvent(eventID);
-	}
-
-	public Event getEvent(int eventID) {
-		return (new AdminServiceImpl().getEventByEventID(eventID));
-	}
-
-	public void setPassedValues(Event event, ArrayList<EventParticipant> participants) {
-		dbe.setPassedValues(event, participants);
-	}
 }

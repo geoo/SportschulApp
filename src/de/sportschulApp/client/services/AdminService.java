@@ -91,5 +91,5 @@ public interface AdminService extends RemoteService {
 	String updateMember(Member member);
 
 	ArrayList<String> getMemberCourses(int course, float tariff);
-	
+
 }

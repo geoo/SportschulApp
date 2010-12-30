@@ -281,6 +281,7 @@ public class CreateMemberView extends Composite implements
 	private VerticalPanel courseSelectorWrapper;
 	private Label newCourseSelectorLabel;
 	private ListBox beltsizeListBox;
+	private Label header;
 
 	public CreateMemberView(LocalizationConstants constants) {
 
@@ -300,7 +301,7 @@ public class CreateMemberView extends Composite implements
 		additionalDisclosurePanel.setContent(createMemberPanel2);
 		additionalDisclosurePanel.setStyleName("AdditionalisclosurePanel");
 
-		Label header = new Label("Mitglied anlegen");
+		header = new Label("Mitglied anlegen");
 		header.setStyleName("formHeader2");
 
 		wrapper.add(header);
@@ -578,6 +579,8 @@ public class CreateMemberView extends Composite implements
 	}
 
 	public void fillForm(Member member) {
+		
+		header.setText("Mitglied bearbeiten");
 		importantDisclosurePanel.setOpen(true);
 		additionalDisclosurePanel.setOpen(true);
 		forenameTextBox.setText(member.getForename());

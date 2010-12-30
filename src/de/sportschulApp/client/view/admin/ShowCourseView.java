@@ -22,7 +22,6 @@ public class ShowCourseView extends Composite implements ShowCoursePresenter.Dis
 	private Label courseTariffsLabel = new Label();
 	private Label deleteLabel;
 	private Label editLabel;
-	private Label closeLabel;
 
 	public ShowCourseView(LocalizationConstants constants) {
 		VerticalPanel detailsPanel = new VerticalPanel();
@@ -34,11 +33,9 @@ public class ShowCourseView extends Composite implements ShowCoursePresenter.Dis
 
 		editLabel = new Label("Kurs bearbeiten");
 		deleteLabel = new Label("Kurs löschen");
-		closeLabel = new Label("Schließen");
 
 		metaPanel.add(editLabel);
 		metaPanel.add(deleteLabel);
-		metaPanel.add(closeLabel);
 
 		detailsPanel.add(metaPanel);
 
@@ -71,10 +68,6 @@ public class ShowCourseView extends Composite implements ShowCoursePresenter.Dis
 
 	public HasClickHandlers getEditLabel() {
 		return editLabel;
-	}
-	
-	public HasClickHandlers getCloseLabel() {
-		return closeLabel;
 	}
 
 	public void setData(Course course) {

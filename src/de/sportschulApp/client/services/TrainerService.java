@@ -30,14 +30,10 @@ public interface TrainerService extends RemoteService {
 	void startEvent(int eventID, String user);
 	
 	ArrayList<EventParticipant> getEventParticipants(int eventID);
-	
-	void abortEvent(int eventID);
-	
-	void endEvent(int eventID);
 
-	void saveEvent(int eventID, ArrayList<EventParticipant> participants);
-	
-	Event getEvent(int eventID);
-	
-	void setPassedValues(Event event, ArrayList<EventParticipant> participants);
+
+	String removeTrainingsPresence(int barcodeID, int date, int month, int year);
+
+	Member getMemberByBarcodeID2(int barcodeID, int month, int year);
+
 }

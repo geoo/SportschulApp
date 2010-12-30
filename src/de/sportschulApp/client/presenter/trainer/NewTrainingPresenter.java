@@ -1,5 +1,6 @@
 package de.sportschulApp.client.presenter.trainer;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -29,6 +30,8 @@ import de.sportschulApp.shared.Member;
 public class NewTrainingPresenter implements Presenter {
 
 	public interface Display {
+		HashMap<Integer, String> getBarcodeIDs();
+
 		Widget asWidget();
 
 		TextBox getBarcodeTextBox();
@@ -39,10 +42,16 @@ public class NewTrainingPresenter implements Presenter {
 
 		Image getScanImage();
 
-		VerticalPanel getWrapper();
+		VerticalPanel getMemberEntryPanel();
+		
+		void setMemberList(ArrayList<Member> memberList);
+
+		void addMemberToList(Member result);
+
+		void setRpcService(TrainerServiceAsync rpcService);
+
 	}
 
-	private HashMap<Integer, String> barcodeIDs = new HashMap<Integer, String>();
 	private LocalizationConstants constants;
 	private final Display display;
 	private final TrainerServiceAsync rpcService;
@@ -54,6 +63,9 @@ public class NewTrainingPresenter implements Presenter {
 		this.rpcService = rpcService;
 		constants = display.getConstants();
 		bind();
+		display.setRpcService(rpcService);
+		
+		
 
 	}
 
@@ -62,7 +74,6 @@ public class NewTrainingPresenter implements Presenter {
 				today.getMonth(), today.getYear(), new AsyncCallback<String>() {
 
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
 
 			}
 
@@ -77,14 +88,14 @@ public class NewTrainingPresenter implements Presenter {
 		display.getBarcodeTextBox().addKeyUpHandler(new KeyUpHandler() {
 			public void onKeyUp(KeyUpEvent event) {
 				if (event.getNativeKeyCode() == 13) {
-					rpcService.getMemberByBarcodeID(Integer.parseInt(display
-							.getBarcodeTextBox().getValue()),
+					rpcService.getMemberByBarcodeID2(Integer.parseInt(display
+							.getBarcodeTextBox().getValue()), today.getMonth(), today.getYear(),
 							new AsyncCallback<Member>() {
 
 						private MemberTrainingEntryPresenter presenter;
 
 						public void onFailure(Throwable caught) {
-							// TODO Auto-generated method stub
+							
 
 						}
 
@@ -94,46 +105,54 @@ public class NewTrainingPresenter implements Presenter {
 									System.out
 									.println("Barcode nicht in DB!");
 								} else {
-									if (barcodeIDs.containsKey(result
+									if (display.getBarcodeIDs().containsKey(result
 											.getBarcodeID())) {
-										// TODO Member schon gescannt
+										//Member schon gescannt
 										System.out
 										.println("Member schon gescannt!");
 									} else {
 
-										barcodeIDs.put(
+										display.getBarcodeIDs().put(
 												result.getBarcodeID(),
 												null);
-										if (display.getWrapper()
+										if (display.getMemberEntryPanel()
 												.getWidgetCount() == 0) {
-											display.getWrapper()
-											.setStyleName(
-													"memberEntryPanel");
+										//	display.getMemberEntryPanel()
+										//	.setStyleName(
+										//			"memberEntryPanel");
 
+											display.addMemberToList(result);
+											
+											//TODO
 											addTrainingspresence(result
 													.getBarcodeID());
+											/*
 											presenter = new MemberTrainingEntryPresenter(
 													rpcService,
 													result,
 													new MemberTrainingEntryView(
 															constants));
-											display.getWrapper()
+											display.getMemberEntryPanel()
 											.insert((MemberTrainingEntryView) presenter
 													.asWidget(),
-													0);
+													0);*/
 										} else {
+											display.addMemberToList(result);
+
 											addTrainingspresence(result
 													.getBarcodeID());
+											/*
 											presenter = new MemberTrainingEntryPresenter(
 													rpcService,
 													result,
 													new MemberTrainingEntryView(
 															constants));
 
-											display.getWrapper()
+											display.getMemberEntryPanel()
 											.insert((MemberTrainingEntryView) presenter
 													.asWidget(),
 													0);
+													*/
 										}
 									}
 								}

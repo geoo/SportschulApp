@@ -28,16 +28,10 @@ public interface TrainerServiceAsync {
 	void getEventParticipants(int eventID,
 			AsyncCallback<ArrayList<EventParticipant>> callback);
 
-	void abortEvent(int eventID, AsyncCallback<Void> callback);
+	void removeTrainingsPresence(int barcodeID, int date, int month, int year,
+			AsyncCallback<String> asyncCallback);
 
-	void saveEvent(int eventID, ArrayList<EventParticipant> participants,
-			AsyncCallback<Void> callback);
+	void getMemberByBarcodeID2(int barcodeID, int month, int year, AsyncCallback<Member> callback);
 
-	void endEvent(int eventID, AsyncCallback<Void> callback);
-
-	void getEvent(int eventID, AsyncCallback<Event> callback);
-
-	void setPassedValues(Event event, ArrayList<EventParticipant> participants,
-			AsyncCallback<Void> callback);
 
 }

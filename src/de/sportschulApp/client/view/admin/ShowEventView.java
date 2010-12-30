@@ -16,7 +16,6 @@ public class ShowEventView extends Composite implements ShowEventPresenter.Displ
 
 	private Label deleteLabel;
 	private Label editLabel;
-	private Label closeLabel;
 	private Label showParticipantsLabel;
 	private Label eventCostsLabel = new Label();
 	private Label eventDateLabel = new Label();
@@ -37,12 +36,10 @@ public class ShowEventView extends Composite implements ShowEventPresenter.Displ
 		editLabel = new Label("Event bearbeiten");
 		showParticipantsLabel = new Label("Teilnehmer bearbeiten");
 		deleteLabel = new Label("Event löschen");
-		closeLabel = new Label("Schließen");
 
 		metaPanel.add(editLabel);
 		metaPanel.add(showParticipantsLabel);
 		metaPanel.add(deleteLabel);
-		metaPanel.add(closeLabel);
 
 		detailsPanel.add(metaPanel);
 
@@ -81,10 +78,6 @@ public class ShowEventView extends Composite implements ShowEventPresenter.Displ
 	
 	public HasClickHandlers getShowParticipantsLabel() {
 		return showParticipantsLabel;
-	}
-	
-	public HasClickHandlers getCloseLabel() {
-		return closeLabel;
 	}
 
 	public void setData(Event event) {

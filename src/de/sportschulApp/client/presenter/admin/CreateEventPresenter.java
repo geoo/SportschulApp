@@ -86,6 +86,7 @@ public class CreateEventPresenter implements Presenter {
 		editItem = true;
 		bind();
 		setupValidation();
+		getEventDetails(eventID);
 	}
 
 	private void bind() {
@@ -142,7 +143,6 @@ public class CreateEventPresenter implements Presenter {
 			}
 			public void onSuccess(ArrayList<Course> result) {
 				display.setCourses(result);
-				getEventDetails(eventID);
 			}
 		});
 	}

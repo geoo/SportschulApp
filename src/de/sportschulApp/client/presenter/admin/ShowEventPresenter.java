@@ -7,7 +7,6 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -21,19 +20,16 @@ public class ShowEventPresenter implements Presenter{
 		HasClickHandlers getDeleteLabel();
 		HasClickHandlers getEditLabel();
 		HasClickHandlers getShowParticipantsLabel();
-		HasClickHandlers getCloseLabel();
 		void setData(Event event);
 	}
 
 	private final Display display;
 	private Event event = new Event();
 	private final AdminServiceAsync rpcService;
-	private DialogBox popup;
 
-	public ShowEventPresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display, int eventID, DialogBox popup) {
+	public ShowEventPresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display, int eventID) {
 		this.display = display;
 		this.rpcService = rpcService;
-		this.popup = popup;
 		bind();
 		fetchData(eventID);
 	}
@@ -63,12 +59,6 @@ public class ShowEventPresenter implements Presenter{
 						}
 					});
 				}
-			}
-		});
-		
-		display.getCloseLabel().addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				popup.hide();
 			}
 		});
 	}

@@ -48,8 +48,6 @@ public class ListEventParticipantsView extends Composite implements ListEventPar
 	private Button scanButton;
 	private LocalizationConstants constants;
 	private Image scanImage;
-	private Column<EventParticipant, Boolean> participationColumn;
-	private Column<EventParticipant, Boolean> paidColumn;
 
 	public ListEventParticipantsView(HandlerManager eventBus, LocalizationConstants constants) {
 		this.eventBus = eventBus;
@@ -160,7 +158,7 @@ public class ListEventParticipantsView extends Composite implements ListEventPar
 			}
 		});
 
-		participationColumn = new Column<EventParticipant, Boolean>(
+		Column<EventParticipant, Boolean> participationColumn = new Column<EventParticipant, Boolean>(
 				new CheckboxCell(true)) {
 			@Override
 			public Boolean getValue(EventParticipant object) {
@@ -179,11 +177,10 @@ public class ListEventParticipantsView extends Composite implements ListEventPar
 				} else {
 					object.setParticipant("Nein");
 				}
-				cellTable.redraw();
 			}
 		});
 
-		paidColumn = new Column<EventParticipant, Boolean>(
+		Column<EventParticipant, Boolean> paidColumn = new Column<EventParticipant, Boolean>(
 				new CheckboxCell(true)) {
 			@Override
 			public Boolean getValue(EventParticipant object) {
@@ -202,7 +199,6 @@ public class ListEventParticipantsView extends Composite implements ListEventPar
 				} else {
 					object.setPaid("Nein");
 				}
-				cellTable.redraw();
 			}
 		});
 
@@ -283,14 +279,6 @@ public class ListEventParticipantsView extends Composite implements ListEventPar
 
 	public void setSelectionModel(SingleSelectionModel selectionModel) {
 		this.selectionModel = selectionModel;
-	}
-	
-	public Column<EventParticipant, Boolean> getParticipationColumn() {
-		return participationColumn;
-	}
-	
-	public Column<EventParticipant, Boolean> getPaidColumn() {
-		return paidColumn;
 	}
 
 }

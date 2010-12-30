@@ -46,7 +46,7 @@ NewEventPresenter.Display {
 		continueLabel = new Label("Weiter");
 		continueLabel.addStyleName("clickableLabel");
 
-		formWrapper.add(new Label("Wählen sie die Prüfung oder das Event aus, dass sie durchführen möchten. Ein Event/Prüfung kann nur einmal gestartet werden. Man kann ein Event aber abbrechen/pausieren und an einem späteren Zeitpunkt fortführen."));
+		formWrapper.add(new Label("Wählen sie die Prüfung oder das Event aus, dass sie durchführen möchten. Ein Event/Prüfung kann nur einmal gestartet werden. Danach steht es nicht mehr zur Auswahl und bekommt den Status 'stattgefunden'."));
 		formWrapper.add(selectEventListBox);
 		formWrapper.add(continueLabel);
 

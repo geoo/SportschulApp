@@ -786,6 +786,7 @@ public class DataBankerMember implements DataBankerMemberInterface {
 		return false;
 
 	}
+	
 
 	/**
 	 * �ndert einen Mitgliedereintrag
@@ -878,4 +879,6 @@ public class DataBankerMember implements DataBankerMemberInterface {
 		return "Mitglied gespeichert";
 
 	}
+
+	
 }

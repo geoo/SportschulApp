@@ -16,7 +16,6 @@ public class ShowUserView extends Composite implements ShowUserPresenter.Display
 
 	private Label deleteLabel;
 	private Label editLabel;
-	private Label closeLabel;
 	private Label userForenameLabel = new Label();
 	private Label userNameLabel = new Label();
 	private Label userPermissionLabel = new Label();
@@ -32,11 +31,9 @@ public class ShowUserView extends Composite implements ShowUserPresenter.Display
 
 		editLabel = new Label("Benutzer bearbeiten");
 		deleteLabel = new Label("Benutzer löschen");
-		closeLabel = new Label("Schließen");
 
 		metaPanel.add(editLabel);
 		metaPanel.add(deleteLabel);
-		metaPanel.add(closeLabel);
 
 		detailsPanel.add(metaPanel);
 
@@ -66,10 +63,6 @@ public class ShowUserView extends Composite implements ShowUserPresenter.Display
 
 	public HasClickHandlers getEditLabel() {
 		return editLabel;
-	}
-	
-	public HasClickHandlers getCloseLabel() {
-		return closeLabel;
 	}
 
 	public void setData(User user) {

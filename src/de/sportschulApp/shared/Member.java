@@ -33,7 +33,8 @@ public class Member implements Serializable {
 	private String surname;
 	private int trainingunits;
 	private int zipcode;
-
+	private int trainingUnitsInMonth;
+	
 	public Member() {
 	}
 
@@ -494,4 +495,19 @@ public class Member implements Serializable {
 	public void setZipcode(int zipcode) {
 		this.zipcode = zipcode;
 	}
+
+	/**
+	 * @param trainingUnitsInMonth the trainingUnitsInMonth to set
+	 */
+	public void setTrainingUnitsInMonth(int trainingUnitsInMonth) {
+		this.trainingUnitsInMonth = trainingUnitsInMonth;
+	}
+
+	/**
+	 * @return the trainingUnitsInMonth
+	 */
+	public int getTrainingUnitsInMonth() {
+		return trainingUnitsInMonth;
+	}
+
 }

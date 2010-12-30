@@ -13,7 +13,7 @@ public class Event implements Serializable {
 	private String location;
 	private String name;
 	private ArrayList<EventParticipant> participants;
-	private int courseID;
+	private ArrayList<Integer> courses;
 	private String startTime;
 	private String endTime;
 	private String type;
@@ -22,9 +22,10 @@ public class Event implements Serializable {
 
 
 	public Event() {
+
 	}
 
-	public Event(int eventID, String type, String name, String costs, String date, String startTime, String endTime, String location, ArrayList<String> examiners, int courseID, ArrayList<EventParticipant> participants, String happened, String user) {
+	public Event(int eventID, String type, String name, String costs, String date, String startTime, String endTime, String location, ArrayList<String> examiners, ArrayList<Integer> courses, ArrayList<EventParticipant> participants, String happened, String user) {
 		this.eventID = eventID;
 		this.type = type;
 		this.name = name;
@@ -37,7 +38,7 @@ public class Event implements Serializable {
 		this.participants = participants;
 		this.happened = happened;
 		this.user = user;
-		this.courseID = courseID;
+		this.courses = courses;
 	}
 
 	/**
@@ -209,16 +210,16 @@ public class Event implements Serializable {
 	}
 
 	/**
-	 * @param courseID the courseID to set
+	 * @param courses the courses to set
 	 */
-	public void setCourseID(int courseID) {
-		this.courseID = courseID;
+	public void setCourses(ArrayList<Integer> courses) {
+		this.courses = courses;
 	}
 
 	/**
-	 * @return the courseID
+	 * @return the courses
 	 */
-	public int getCourseID() {
-		return courseID;
+	public ArrayList<Integer> getCourses() {
+		return courses;
 	}
 }

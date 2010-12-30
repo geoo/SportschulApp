@@ -10,7 +10,6 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
@@ -26,19 +25,16 @@ public class ShowBeltPresenter implements Presenter{
 		HasKeyUpHandlers getBeltTextBoxOnKeyUp();
 		HasClickHandlers getDeleteLabel();
 		HasClickHandlers getRenameLabel();
-		HasClickHandlers getCloseLabel();
 		void setData(Belt belt);
 	}
 
 	private Belt belt = new Belt();
 	private final Display display;
 	private final AdminServiceAsync rpcService;
-	private DialogBox popup;
 
-	public ShowBeltPresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display, int beltID, DialogBox popup) {
+	public ShowBeltPresenter(AdminServiceAsync rpcService, HandlerManager eventBus, Display display, int beltID) {
 		this.display = display;
 		this.rpcService = rpcService;
-		this.popup = popup;
 		bind();
 		fetchData(beltID);
 	}
@@ -70,12 +66,6 @@ public class ShowBeltPresenter implements Presenter{
 		display.getRenameLabel().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				doRenameBelt();
-			}
-		});
-		
-		display.getCloseLabel().addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				popup.hide();
 			}
 		});
 	}
